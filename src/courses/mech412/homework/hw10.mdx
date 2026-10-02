@@ -1,0 +1,257 @@
+<p className="eyebrow">Homework 10 · 2019 sheet (the 2024 sheet is not in the archive) · Lectures 21–23</p>
+
+# HW10: PI design, lead/lag, lead-lag for K_v = 100, Bode margins, Nyquist
+
+<div className="lede">
+
+The last homework combines <Ch slug="root-locus">Chapter 18</Ch> (PI by root locus), <Ch slug="lead-lag">Chapter 20</Ch> (lead, lag, lead-lag), <Ch slug="bode-margins">Chapter 19</Ch> (margins) and <Ch slug="nyquist">Chapter 21</Ch>. The official file is made of **Dorf & Bishop solution-manual pages**, and two of them are wrong or answer a different problem (Q3: a missing gain of 50; Q5(b): a different $L(s)$). Both are flagged below. Anthony did not do HW10; Q2, Q4, Q5 repeat the 2024 practice <Hw n="8">HW8</Hw>.
+
+</div>
+
+<Problem id="HW10 Q1" title="PI control of 400/[s(s+40)], K_I = 1: choose K_P for about 20 % overshoot; settling time" tags="PI, closed-loop zero, root locus">
+
+<Statement>
+
+Negative unity feedback, process $\dfrac{400}{s(s+40)}$, PI controller $G_c=K_P+K_I/s$. (a) Set $K_I=1$ and find $K_P$ for about 20% overshoot. (b) Approximate 2% settling time?
+
+</Statement>
+
+<Think>
+
+Put the unknown $K_P$ where the root locus wants it: as a **gain in front of a fraction** $1+K\dfrac{N}{D}=0$. Then pick the point on the locus where the dominant pair gives roughly the wanted overshoot, **but check the zero**: the closed-loop transfer function has a zero at $-K_I/K_P$, and a zero near the poles inflates the overshoot.
+
+</Think>
+
+<Steps>
+<Step title="1. Characteristic equation">
+
+$1+\Big(K_P+\dfrac1s\Big)\dfrac{400}{s(s+40)}=0\Rightarrow s^2(s+40)+400K_Ps+400=0\Rightarrow s^3+40s^2+400K_Ps+400=0.$
+
+</Step>
+<Step title="2. Standard form for the root locus in K_P">
+
+Move the $K_P$ term out: $1+K_P\dfrac{400s}{s^3+40s^2+400}=0$ (open-loop zero at the origin, poles from $s^3+40s^2+400$).
+
+</Step>
+<Step title="3. Which K_P?">
+
+20% overshoot needs $\zeta=0.45$ for a pure second-order system; because of the closed-loop zero a point slightly inside that ray is chosen. Take $K_P=0.5$: $s^3+40s^2+200s+400=0$ has roots $-34.55$ and $-2.73\pm j2.04$ ✔.
+
+</Step>
+<Step title="4. Check by simulation">
+
+Step response: **OS 20.7%**, 2% settling **1.52 s** ✔ (the exact $K_P$ for 20.0% overshoot is 0.515, poles $-34.3$, $-2.83\pm j1.90$).
+
+</Step>
+<Step title="5. Settling time">
+
+$t_s\approx4/\sigma=4/2.73=1.47$ s, using the real part $\sigma=2.73$ of the dominant pair (not $4/(\zeta\omega_n)$ with $\zeta=0.45$).
+
+</Step>
+<Step title="6. A sweep (how K_P moves things)">
+
+$K_P=0.6$: OS 16.5%; $0.8$: 11%; $1.0$: 8% (real poles $-24,-14.8,-1.12$, slowed by the pole near the zero); $1.5$: 5.4% (poles $-19.7\pm j13.7$, $-0.70$).
+
+</Step>
+</Steps>
+
+<Answer>
+
+$K_P\approx0.5$ (0.515 exact); $t_s(2\%)\approx1.5$ s.
+
+*Real-world:* a motor loop where the integral action removes offset and its zero is the price.
+
+</Answer>
+
+<Callout kind="note" title="Why a pair with ζ = 0.8 gives 20 % overshoot">
+
+The poles $-2.73\pm j2.04$ have $\zeta=0.80$, which alone gives only about 1.5% overshoot. But the closed-loop transfer function has a **zero at $s=-K_I/K_P=-2$**, almost on top of the pole pair. A zero near the poles adds a derivative-like component to the response and inflates the overshoot to 20%. **When you choose poles for an overshoot, always check where the zeros lie.**
+
+</Callout>
+
+<Traps>
+
+- Using the pole damping only; the PI zero matters.
+- The parameter appears in the $s$-term, not as a simple gain: rewrite the characteristic equation to put it in standard form.
+- $t_s=4/(\zeta\omega_n)$ with $\zeta=0.45$ would be wrong: use $\sigma=2.73$.
+
+</Traps>
+
+<Source>Dorf E10.2 ✔ (all numbers reproduced). No Anthony version.</Source>
+
+<ToolLink tool="root-locus">Try K_P on the root-locus tool</ToolLink>
+
+</Problem>
+
+<Problem id="HW10 Q2" title="Lead and lag compensators for 40/[s(s+2)] with PM 30° (= HW8 A1)" tags="lead, lag">
+
+<Statement>
+
+Same question as <Hw n="8">HW8 Part A1</Hw> (full derivation there). The Dorf manual's designs:
+
+</Statement>
+
+<Steps>
+<Step title="Lead (P10.38)">
+
+$G_c=2.88\dfrac{s+2.04}{s+5.88}$: loop $L=\dfrac{115.29(s+2.04)}{s(s+2)(s+5.88)}$; **PM = 30.4° at $\omega_c=9.95$ rad/s**, bandwidth 17.43 rad/s ✔ (digest: 30.3° at 9.96).
+
+</Step>
+<Step title="Lag (P10.39)">
+
+$G_c=\dfrac{1+1.48s}{1+11.08s}$: $K_v=20$ (ramp error 0.05 ✔), **PM = 28.85° at $\omega_c=2$ rad/s**, bandwidth 3.57 rad/s ✔ (digest: 28.95° at 1.995).
+
+</Step>
+</Steps>
+
+<Answer>
+
+Lead $2.88\dfrac{s+2.04}{s+5.88}$; lag $\dfrac{1+1.48s}{1+11.08s}$.
+
+</Answer>
+
+<Callout kind="warn" title="⚠ The manual's lag misses the spec">
+
+PM $=28.85^\circ$ is about 1° **short** of the 30° requirement. The handwritten HW8 solution's lag ($\beta=4$, $0.25\dfrac{s+0.285}{s+0.071}$) gives 30.6° ✔: use that one. The other manual pages in the file (P10.37, P10.40: a lag for $K_v=50$, $2.5\dfrac{1+1.64s}{1+30.5s}$, PM 28.9°) answer different textbook problems.
+
+</Callout>
+
+</Problem>
+
+<Problem id="HW10 Q3" title="Lead-lag compensator for 100/[s(s+5)(s+10)]: K_v = 100, GM ≥ 10 dB, PM ≥ 40°" tags="lead-lag, K_v, missing gain">
+
+<Statement>
+
+Chemical-process plant $G=\dfrac{100}{s(s+5)(s+10)}$; small ramp error means $K_v=100$; margins $GM\ge10$ dB, $PM\ge40^\circ$. Find a lead-lag compensator (unity feedback) and draw the canonical block diagram.
+
+</Statement>
+
+<Think>
+
+Look first at what $K_v$ the plant has: $K_v=\dfrac{100}{5\cdot10}=2$. So the loop needs **an extra gain of 50** just to meet the accuracy spec, and with that gain the loop is **unstable**. The lag part cuts the gain at crossover (while keeping it large at low frequency), and the lead part restores phase.
+
+</Think>
+
+<Steps>
+<Step title="1. The accuracy fixes the gain">
+
+$K_v=\lim_{s\to0}sG_cG=100\Rightarrow$ with $G_c(0)=K$ we need $K\cdot2=100\Rightarrow K=50$.
+
+</Step>
+<Step title="2. The uncompensated loop at K = 50">
+
+$50G$ is **unstable** (PM $-40.5^\circ$ at 15.9 rad/s, GM $-16.5$ dB): the compensator must provide both gain reduction at crossover and phase.
+
+</Step>
+<Step title="3. The manual's compensator">
+
+$$G_c(s)=\frac{(s+2.5)(s+0.9871)}{(s+36.54)(s+0.0675)}$$
+
+Lead: zero 2.5, pole 36.54. Lag: zero 0.9871, pole 0.0675 (ratios both 14.6). Dorf reports GM 12.35 dB, PM 41.8°, $K_v=100$.
+
+</Step>
+<Step title="4. Why it works (hand check at ω = 9 rad/s)">
+
+Lead: $\tan^{-1}\dfrac{9}{2.5}-\tan^{-1}\dfrac{9}{36.54}=74.5^\circ-13.8^\circ=+60.7^\circ$. Lag: $\tan^{-1}\dfrac{9}{0.987}-\tan^{-1}\dfrac{9}{0.0675}=83.7^\circ-89.6^\circ=-5.9^\circ$. Net $+54.8^\circ$. Plant (with the 50): $-90^\circ-\tan^{-1}\dfrac95-\tan^{-1}\dfrac9{10}=-90^\circ-61^\circ-42^\circ=-193^\circ$. Loop phase $=-138^\circ\Rightarrow PM\approx42^\circ$ ✔. The lag has gain about 1 at $\omega=9$ but 14.6 at low frequency, so it cuts the crossover gain while keeping $K_v$; the lead pole at 36.5 limits the noise gain.
+
+</Step>
+<Step title="5. Recipe to reproduce the design">
+
+(1) $K=50$ for $K_v$. (2) Read the phase of $50G$ at the desired crossover ($\approx9$ rad/s): $-193^\circ$, so about $+55^\circ$ is needed (40° + 15° safety). (3) Lead $\alpha=\dfrac{1-\sin55^\circ}{1+\sin55^\circ}\approx0.1$, or split the phase between lead ($\approx60^\circ$) and lag ($-6^\circ$). (4) Lag zero and pole a decade or more below the crossover (0.987 and 0.0675). (5) Check the margins.
+
+</Step>
+<Step title="6. Block diagram">
+
+$R\to\oplus\to[50]\to\Big[\dfrac{s+2.5}{s+36.54}\Big]\to\Big[\dfrac{s+0.9871}{s+0.0675}\Big]\to\Big[\dfrac{100}{s(s+5)(s+10)}\Big]\to Y$, unity feedback.
+
+</Step>
+</Steps>
+
+<Answer>
+
+$G_c(s)=50\dfrac{(s+2.5)(s+0.9871)}{(s+36.54)(s+0.0675)}$: $K_v=100$, $GM=12.35$ dB, $PM=41.8^\circ$ ($\omega_{gc}=9.01$, $\omega_{pc}=20.87$ rad/s).
+
+*Real-world:* a chemical-process loop where the operator wants tight ramp tracking yet comfortable stability margins: a lag-lead is the classical compromise.
+
+</Answer>
+
+<Callout kind="warn" title="⚠ Official (Dorf AP10.9) error: the printed compensator is missing a gain of 50">
+
+With $G_c$ exactly as printed (DC gain 1.0005) the loop has **$K_v=2.0$, $PM=32.6^\circ$, $GM=46.3$ dB**: it does not meet the specs. With the missing **factor 50** the numbers are exactly Dorf's ($\omega_{gc}=9.01$, $PM=41.8^\circ$, $\omega_{pc}=20.87$, $GM=12.35$ dB, $K_v=100.05$). Either the compensator should include the gain 50 or the manual's plant is $5000/[s(s+5)(s+10)]$.
+
+</Callout>
+
+<Traps>
+
+- $K_v$ is a property of the **whole loop**: scale the compensator DC gain accordingly (the printed one forgot).
+- Always compute the margins of the compensated loop; never trust a printed result.
+- A lag-lead has two corner pairs; the lag pole must be well below the crossover.
+
+</Traps>
+
+<Source>Dorf AP10.9 ✘ as printed; ✔ with $K=50$ (digest recomputation). No Anthony version.</Source>
+
+<ToolLink tool="lead-lag">Design it in the lead/lag tool</ToolLink>
+
+</Problem>
+
+<Problem id="HW10 Q4" title="Bode plot, GM and PM of L(s) = 10(1+0.4s)/[s(1+2s)(1+0.24s+0.04s²)]" tags="Bode, margins">
+
+<Statement>
+
+Same loop as <Hw n="8">HW8 Part A2</Hw>.
+
+</Statement>
+
+<Answer>
+
+Dorf E9.11: the system is **stable**, $GM=3.91$ dB (at 3.74 rad/s), $PM=14.4^\circ$ (at 2.76 rad/s) ✔ (digest: 3.907 dB at 3.74, 14.44° at 2.76). The factor breakdown is in HW8: zero 2.5, pole 0.5, quadratic $\omega_n=5$, $\zeta=0.6$.
+
+</Answer>
+
+</Problem>
+
+<Problem id="HW10 Q5" title="Nyquist plots and maximum K for K/[s(s²+s+6)] and K(s+1)/[s²(s²+6)]" tags="Nyquist, wrong L(s) in manual">
+
+<Statement>
+
+Nyquist plots and stability of (a) $L=\dfrac{K}{s(s^2+s+6)}$ and (b) $L=\dfrac{K(s+1)}{s^2(s^2+6)}$ (the same as <Hw n="8">HW8 A3</Hw>).
+
+</Statement>
+
+<Steps>
+<Step title="(a) Manual (Dorf P9.2) and the check">
+
+Real-axis crossing at $\omega=\sqrt6$ where $\mathrm{Re}=-K/6$: stable for $K<6$ ✔ (at $K=6$ the poles are $\pm j\sqrt6$ and $-1$).
+
+</Step>
+<Step title="(b) The sheet's L(s)">
+
+Closed-loop polynomial $s^4+6s^2+Ks+K$ has no $s^3$ term, so it is **unstable for every $K$** ($N=2$, $Z=2$; for $K=1$ the roots are $0.088\pm j2.42$ and $-0.088\pm j0.40$; the roots sum to zero because there is no $s^3$ term ✔).
+
+</Step>
+</Steps>
+
+<Answer>
+
+(a) stable for $K<6$. (b) unstable for all $K$ (for the sheet's $L$).
+
+</Answer>
+
+<Callout kind="warn" title="⚠ The manual's (b) answers a different L(s)">
+
+Dorf prints $L=\dfrac{K(s+1)}{s^2(s+6)}$ and concludes "the polar plot never encircles $-1$, so the system is stable for all $K$". HW10 and HW8-2024 print $L=\dfrac{K(s+1)}{s^2(s^2+6)}$ (a lightly damped pair at $\pm j\sqrt6$), which is **unstable for every $K$**. The handwritten HW8 solution handles the sheet's version correctly. Use the textbook's "stable for all $K$" only for $L=K(s+1)/[s^2(s+6)]$. Other manual pages in the file: P9.1, P9.3, P9.4.
+
+</Callout>
+
+<Source>Dorf P9.2 (a) ✔; (b) ✔ for the sheet's $L$ by root computation, ✘ for the printed conclusion.</Source>
+
+<ToolLink tool="nyquist">Draw the Nyquist plot</ToolLink>
+
+</Problem>
+
+<Examined>
+
+PI by root locus: $\text{MT3 practice}$. Lead-lag with a $K_v$ spec: $\text{final F2009 P6}$ and $\text{F2010}$. Margins: every final. Nyquist with $j\omega$-axis poles: the final-exam Nyquist questions.
+
+</Examined>

@@ -1,0 +1,352 @@
+<p className="eyebrow">Midterm 2 · Winter 2024 (Prof. Mongeau) · covers Lectures 9–16 · 30 + 20 + 25 + 25 = 100 marks</p>
+
+# Midterm 2, Winter 2024: analog circuits, hydraulic dashpot + lever, nonlinear circuit, sensitivity
+
+<div className="lede">
+
+The most recent paper, so the best guide to what the last MT2 looked like. **Source quality warning:** the archive contains only the handwritten *solutions* (8 pages, some black redaction boxes); the question statements are **not** in the file, so each statement below is *reconstructed* from the solution pages and marked so. The answers themselves are solid: everything was recomputed. Allowed: two crib sheets and the analogies handout (handout 2).
+
+</div>
+
+<Problem id="MT2 W2024 Q1a" title="Mobility and impedance analogs of an electrical ladder (15 marks)" tags="analogy table, labels">
+
+<Statement>
+
+*(Reconstructed.)* A ladder of $L$, $C$, $R_1$, $R_2$ with input $e_i$ and output $e_o$ (reading of the sketch: source $e_i$, series $L$, shunt $C$, series $R_1$, shunt $R_2$, output across $R_2$). Draw the equivalent mechanical systems in the **mobility** and **impedance** analogies and label potential and flux. Marking: 4 elements × 2 marks + 6 labels × 1 mark (+1).
+
+</Statement>
+
+<Think>
+
+Use the analogy table (handout 2). **Mobility:** velocity $\equiv$ voltage, force $\equiv$ current, mass $\equiv$ capacitor to ground, spring $\equiv$ inductor $L=1/k$, dashpot $\equiv$ resistor $r=1/R_M$. **Impedance:** force $\equiv$ voltage, velocity $\equiv$ current, mass $\equiv$ inductor, spring $\equiv$ capacitor $C=1/k$, dashpot $\equiv$ resistor $R_M$ itself. Series and parallel swap between the two analogs.
+
+</Think>
+
+<Steps>
+<Step title="1. Mobility (electrical ladder as velocity/force)">
+
+Vertical mechanical chain: ceiling; dashpot $r=1/R_2$ to a node (the output $e_o$, a velocity); dashpot $r=1/R_1$; mass $m=C$; spring $C_M=L$; bottom end driven by the input velocity $e_i$. Labels: potential = velocity ($\equiv e$), flux = force ($\equiv i$).
+
+</Step>
+<Step title="2. Impedance">
+
+From a ceiling, two dashpots $R_1$ and $R_2$ in parallel branches to ground (output $e_o$ marked as the output force on the $R_2$ branch); below their common node a spring with $C=C_M$, then a mass with $m=L$ at the bottom with the input force $e_i(t)$. Labels: potential = force ($\equiv e$), flux = velocity ($\equiv i$).
+
+</Step>
+</Steps>
+
+<Answer>
+
+Mobility: $m=C$, $C_M=L$, $r=1/R$; potential = velocity, flux = force. Impedance: $m=L$, $C_M=C$, $R_M=R$; potential = force, flux = velocity.
+
+*Real-world:* the same ladder can be a car-suspension-like chain (mass, spring, dampers) or an RLC low-pass; the analog lets you reuse circuit tools.
+
+</Answer>
+
+<Callout kind="note" title="Reconstructed question">
+
+The original circuit is not in the PDF; the sketch is internally consistent with handout 2. The reading of the ladder is an inference. Not an error.
+
+</Callout>
+
+<Traps>
+
+- Mobility: a dashpot $c$ becomes a resistor $1/c$; impedance: $R_M=c$ itself.
+- A mass has only one terminal on ground in mobility (capacitor to ground); a spring is an inductor $L=1/k$.
+- Label every potential and flux (6 labels).
+
+</Traps>
+
+<Source>official solution figure; statement reconstructed.</Source>
+
+</Problem>
+
+<Problem id="MT2 W2024 Q1b" title="Fluid–mechanical coupled analog circuit with transformers (15 marks)" tags="mixed analogs, transformer 1/A, ρ placement">
+
+<Statement>
+
+*(Reconstructed.)* A coupled fluid–mechanical system: two chambers (pressures $P_1,P_2$), resistances $R_1,R_2$, compliance $C$, density $\rho$, a piston or diaphragm of area $A$ coupling to a mechanical element with two springs $k_1,k_2$, input pressure $P_i$. Draw the equivalent circuit (impedance analog for the fluid, mobility for the mechanical part) with transformers $1/A$.
+
+</Statement>
+
+<Think>
+
+Fluid side: impedance analog (pressure = potential, volume flow = flux): $R_h\to\rho R$, $C_h\to C/\rho$. Mechanical side: mobility analog (velocity = potential). The piston converts $F=AP$ and $\dot x=q/A$: a **transformer $1/A$** between the two. Springs that share the same end velocity are in **parallel** (two inductors across the same nodes).
+
+</Think>
+
+<Steps>
+<Step title="1. Fluid input">
+
+Source $P_i$; series resistor $\rho R_1$ to node $P_1$; capacitor $C/\rho$ from $P_1$ to ground.
+
+</Step>
+<Step title="2. First transformer and the mechanics">
+
+Transformer $1/A$ to the mechanical node (velocity $\dot x$ of the piston) with two inductors in parallel, $1/k_1$ and $1/k_2$, to ground.
+
+</Step>
+<Step title="3. Second transformer and the fluid output">
+
+Transformer $1/A$ to node $P_2$ with capacitor $C/\rho$ to ground and series resistor $R_2\rho$ to the output terminal.
+
+</Step>
+</Steps>
+
+<CircuitBoard source={{kind:'Is',label:'P_i',sub:'input'}} sections={[{type:'series',el:{kind:'R',label:'ρR₁'}},{type:'shunt',stack:[{kind:'C',label:'C/ρ'}],node:'P₁'},{type:'xfmr',ratio:'1/A'},{type:'shunt',stack:[{kind:'L',label:'1/k₁'}],node:'ẋ'},{type:'shunt',stack:[{kind:'L',label:'1/k₂'}]},{type:'xfmr',ratio:'1/A'},{type:'shunt',stack:[{kind:'C',label:'C/ρ'}],node:'P₂'},{type:'series',el:{kind:'R',label:'R₂ρ'}}]} title="Fluid–mechanical–fluid circuit (6 elements, 2 transformers)" caption="Six elements as in the official solution: ρR₁, C/ρ, 1/k₁, 1/k₂, C/ρ, R₂ρ; transformers 1/A on each side of the mechanical mobility part." />
+
+<Answer>
+
+$\rho R_1\to(P_1,\ C/\rho)\to[1/A]\to(\dot x,\ 1/k_1\parallel1/k_2)\to[1/A]\to(P_2,\ C/\rho)\to R_2\rho$.
+
+*Real-world:* a pressure signal driving a spring-restrained piston (a pneumatic actuator, a loudspeaker-cabinet-like coupling): the circuit shows the actuator's low-pass behaviour.
+
+</Answer>
+
+<Callout kind="note" title="Reconstructed question">
+
+The original circuit is absent; the drawing is accepted as printed. The $\rho$ placement ($\rho R$, $C/\rho$) follows handout 2 for mass-flow resistances; it differs between the pneumatic and hydraulic rows (mass flow vs volume flow). Not flagged as an error.
+
+</Callout>
+
+<Traps>
+
+- Mixed analogs: the fluid side is impedance (pressure = potential), the mechanical side mobility (velocity = potential), hence the transformer.
+- The $\rho$ factors ($\rho R$, $C/\rho$) are easy to drop or invert.
+
+</Traps>
+
+<Source>official solution figure (6 elements); statement reconstructed.</Source>
+
+</Problem>
+
+<Problem id="MT2 W2024 Q2" title="Hydraulic dashpot + lever: Z/Y and closed-loop Y/E (20 marks)" tags="dashpot, lag 1/(Ts+1), lever feedback">
+
+<Statement>
+
+*(Reconstructed.)* A hydraulic controller built from a pilot valve with a power piston ($y=\tfrac Ksx$), a lever with arm lengths $a$, $b$, and a hydraulic dashpot (spring $k$, piston area $A$, orifice resistance $R$, density $\rho$) that feeds the power-piston displacement $y$ back to the lever as $z$. (a) Derive $Z/Y$ for the dashpot, draw the block diagram from $E$ to $Y$. (b) Find $Y/E$.
+
+</Statement>
+
+<Think>
+
+Same dashpot as <Hw n="6">HW6 Q2</Hw> and $\text{MT2 F2022 Q1b}$: a spring in series with an orifice. It is a **lag** from $y$ to $z$ (the output $z$ follows $y$ slowly). The lever gives negative feedback through $z$.
+
+</Think>
+
+<Steps>
+<Step title="(a) 1. Spring force = piston force">
+
+$k(y-z)=A(P_2-P_1)$.
+
+</Step>
+<Step title="(a) 2. Orifice (mass flow q)">
+
+$q=\dfrac{P_2-P_1}{R}$.
+
+</Step>
+<Step title="(a) 3. Continuity">
+
+The mass flow that crosses the orifice equals the mass pushed by the piston movement: $q\,dt=\rho A\,dz$.
+
+</Step>
+<Step title="(a) 4. Combine">
+
+$y-z=\dfrac Ak(P_2-P_1)=\dfrac AkRq=\dfrac{RA^2\rho}{k}\dot z$. So $y=z+T\dot z$ with $T=\dfrac{RA^2\rho}{k}$ and
+$$\frac{Z(s)}{Y(s)}=\frac{1}{Ts+1}.$$
+
+</Step>
+<Step title="(a) 5. Block diagram">
+
+$E\to\dfrac{b}{a+b}\to\oplus\to X\to\dfrac Ks\to Y$; from $Y$ through $\dfrac1{Ts+1}\to Z\to\dfrac a{a+b}$ back to the junction with a minus sign (the final formula has $+1$ in the denominator, i.e. negative feedback).
+
+</Step>
+<Step title="(b) Closed loop">
+
+$$\frac YE=\frac{\dfrac b{a+b}\dfrac Ks}{1+\dfrac a{a+b}\dfrac Ks\dfrac1{Ts+1}}.$$
+Multiply numerator and denominator by $(a+b)s(Ts+1)$:
+$$\frac YE=\frac{bK(Ts+1)}{(a+b)T\,s^2+(a+b)s+aK}.$$
+For large $K$ this tends to $b/a$ (the lever ratio).
+
+</Step>
+</Steps>
+
+<Answer>
+
+$\dfrac ZY=\dfrac1{Ts+1}$, $T=\dfrac{RA^2\rho}{k}$; $\dfrac YE=\dfrac{bK(Ts+1)}{(a+b)Ts^2+(a+b)s+aK}$.
+
+*Real-world:* a hydraulic excavator or servo valve: the dashpot lets the lever feedback "forget" slow movements, giving PI-like action, so the arm does not droop under steady load.
+
+</Answer>
+
+<Callout kind="note" title="Reconstructed question; marks">
+
+The sheet shows "20 pts" at (a), "15 pts" beside the dashpot derivation and "5 pts" for (b); the paper total says Q2 is worth 20. The $\rho$ factor appears because $q$ is a **mass** flow rate here; if $q$ is a volume flow, drop $\rho$: $T=RA^2/k$. Use the units the question gives and be consistent.
+
+</Callout>
+
+<Traps>
+
+- The dashpot is a **lag** $1/(Ts+1)$ from $y$ to $z$, not a lead.
+- The sign at the junction is not clearly drawn in the sketch; the final transfer function has $+1$ in the denominator, which is negative feedback.
+
+</Traps>
+
+<Source>official solution p.3 and p.4 ✔ ($T=RA^2\rho/k$ and $Y/E$ verified by algebra).</Source>
+
+</Problem>
+
+<Problem id="MT2 W2024 Q3" title="Nonlinear circuit: state equations, operating point, linearised resistor (25 marks)" tags="three states, cubic resistor, incremental resistance">
+
+<Statement>
+
+*(Reconstructed from the figure and values.)* Source $e_i(t)\to R_1\to$ node A ($e_A$, capacitor $C_A$ to ground) $\to$ inductor $L$ (current $i_L$) $\to R_2\to$ node B ($e_B=e_o$, capacitor $C_B$ to ground) $\to$ a nonlinear resistor to ground with current $i_o=\tfrac14e_o^3$. $R_1=1$, $R_2=2$, $C_A=\tfrac12$ F, $C_B=\tfrac16$ F, $L=3$ H; $e_i(t)=8+e_i'(t)$. (a) Write the nonlinear state equations (15). (b) Find the operating point (5). (c) Linearise the resistor and draw the linearised circuit (5).
+
+</Statement>
+
+<Think>
+
+The recipe of <Ch slug="linearization">Chapter 9</Ch> and <Hw n="5">HW5</Hw>: states = capacitor voltages and the inductor current, KCL at each node, KVL for the inductor branch; set derivatives to zero for the operating point; linearise the cubic. The key trap: the **incremental** resistance $1/(di/de)$ is not the static ratio $\bar e/\bar\imath$. (This is the circuit of $\text{T3 Q2}$ with $L=3$ H instead of $\tfrac13$ H.)
+
+</Think>
+
+<Steps>
+<Step title="(a) 1. Node B">
+
+$C_B\dot e_B=i_L-i_o\Rightarrow\dot e_o=\dfrac1{C_B}\Big[i_L-\tfrac14e_o^3\Big]=6\Big[i_L-\tfrac14e_o^3\Big]$.
+
+</Step>
+<Step title="(a) 2. Node A">
+
+$C_A\dot e_A=i_i-i_L$ with $i_i=\dfrac1{R_1}(e_i-e_A)$: $\dot e_A=\dfrac1{C_A}\Big[\dfrac1{R_1}(e_i-e_A)-i_L\Big]=2[e_i-e_A-i_L]$.
+
+</Step>
+<Step title="(a) 3. Inductor branch (KVL)">
+
+$e_A-e_o=R_2i_L+L\dfrac{di_L}{dt}\Rightarrow\dfrac{di_L}{dt}=\dfrac1L\big[e_A-e_o-R_2i_L\big]=\tfrac13[e_A-e_o-2i_L]$.
+
+</Step>
+<Step title="(b) 1. DC equations (derivatives zero, ē_i = 8)">
+
+(i) $0=(8-\bar e_A)-\bar\imath_L\Rightarrow\bar\imath_L=8-\bar e_A$. (ii) $\bar\imath_L=\tfrac14\bar e_o^3$. (iii) $\bar e_A=\bar e_o+R_2\bar\imath_L=\bar e_o+2\bar\imath_L$.
+
+</Step>
+<Step title="(b) 2. Solve">
+
+From (i) and (iii): $\bar e_o+2\bar\imath_L=8-\bar\imath_L\Rightarrow\bar e_o+3\bar\imath_L=8$. With (ii): $\bar e_o+\tfrac34\bar e_o^3=8$. Try $\bar e_o=2$: $2+\tfrac34\cdot8=8$ ✔. (The function $e+\tfrac34e^3$ is monotone, so this is the only real root.) So $\bar e_o=2$ V, $\bar\imath_L=\tfrac14\cdot8=2$ A, $\bar e_A=2+2\cdot2=6$ V, $\bar e_i=8$ V.
+
+</Step>
+<Step title="(c) Linearise the resistor">
+
+$i_o'=\dfrac{d}{de_o}\Big(\tfrac14e_o^3\Big)e_o'=\tfrac34\bar e_o^2e_o'=3\,e_o'$, so the incremental resistance is $R=e_o'/i_o'=\tfrac13\ \Omega$ (conductance 3 S). The linearised circuit is the same circuit with this resistor in place of the nonlinear element.
+
+</Step>
+<Step title="(c) Completion: the linearised state equations (not on the official sheet)">
+
+$\dot e_A'=2[e_i'-e_A'-i_L']$, $\;\dot e_o'=-18e_o'+6i_L'$, $\;\dot i_L'=\tfrac13[e_A'-e_o'-2i_L']$. Jacobian at $(6,2,2)$: rows $[-2,0,-2]$, $[0,-18,6]$, $[\tfrac13,-\tfrac13,-\tfrac23]$; eigenvalues $-1.39\pm0.55j$ and $-17.9$: stable, so the operating point is stable.
+
+</Step>
+</Steps>
+
+<Answer>
+
+$\bar e_o=2$ V, $\bar e_A=6$ V, $\bar\imath_L=2$ A, $\bar e_i=8$ V; linearised resistor $R=\tfrac13\ \Omega$.
+
+*Real-world:* for small signals around 8 V the nonlinear load behaves like a stiff $\tfrac13\ \Omega$ resistor, so ripple on the output is small.
+
+</Answer>
+
+<Callout kind="warn" title="⚠ Typos on the official sheet">
+
+(i) The sheet writes "$\dot{\bar e}_A=6$": it means $\bar e_A=6$. (ii) The last symbol in its node-A equation, "$i_2$", is clearly $i_L$. (iii) It stops at the linearised resistor: the full linearised state model above is the digest's completion.
+
+</Callout>
+
+<Traps>
+
+- Slope vs ratio: $R_{lin}=1/(di/de)=\tfrac13\ \Omega$, **not** the static ratio $\bar e_o/\bar\imath_o=1\ \Omega$. This is the key trap.
+- At DC the inductor is a short and capacitors are open: $\bar e_A=\bar e_o+R_2\bar\imath_L$.
+- The cubic $\bar e_o+\tfrac34\bar e_o^3=8$ has exactly one real root.
+
+</Traps>
+
+<Source>official solution ✔ (recomputed: root of $0.75e^3+e-8$ is 2, $f(6,2,2)=0$, incremental resistance $1/3$).</Source>
+
+</Problem>
+
+<Problem id="MT2 W2024 Q4" title="Block diagram, closed-loop transfer function, sensitivity, steady-state disturbance (25 marks)" tags="sensitivity S, final value, disturbance">
+
+<Statement>
+
+*(Reconstructed.)* Reference $R(s)$, error $E_d(s)$, a motor-like block $\dfrac{K_m}{\tau s+1}$ (output $W_o$), a gain block equal to 2, a summing junction with a disturbance $\Delta V_1$, an integrator $\dfrac1s$ giving the output $T(s)$, a feedback path $\dfrac2{K_1}\to Y(s)\to K_2$ back to the first junction, and a second disturbance $\Delta T(s)$ entering through $K_3$ ahead of the motor block. (a) Build the block diagram from the equations (10). (b) Find $T_c(s)=T/R$ and the sensitivity $S^{T_c}_{K_m}$ (8). (c) Steady state of $T$ for $\Delta V_1=A/s$ (7).
+
+</Statement>
+
+<Think>
+
+Reduce the diagram, then use the definition **$S^F_K=\dfrac{\partial F/F}{\partial K/K}$** and the chain rule, or its shortcut for a loop: $S=\dfrac{1}{1+L}$ for a gain in the forward path. Finally apply the final-value theorem (only valid if the closed loop is stable).
+
+</Think>
+
+<Steps>
+<Step title="(a) Equations behind the diagram">
+
+$E_o=\dfrac{\tau s+1}{K_m}W_o+K_3\Delta T\Rightarrow W_o=\dfrac{K_m}{\tau s+1}(E_o-K_3\Delta T)$, and $Y=\dfrac{2T}{K_1}$ so $T=\tfrac12K_1Y$.
+
+</Step>
+<Step title="(b) 1. Loop gain and closed loop">
+
+Forward path $G=2\cdot\dfrac{K_m}{\tau s+1}\cdot\dfrac1s=\dfrac{2K_m}{s(\tau s+1)}$; feedback $H=\dfrac{2K_2}{K_1}$, so $L=GH=\dfrac{4K_mK_2}{K_1s(\tau s+1)}$:
+$$T_c=\frac{G}{1+GH}=\frac{2K_m}{\tau s^2+s+4K_mK_2/K_1}.$$
+
+</Step>
+<Step title="(b) 2. Sensitivity to K_m (direct)">
+
+$K_m$ is in the forward path, so $S^{T_c}_{K_m}=S^{T_c}_GS^G_{K_m}=\dfrac1{1+L}\cdot1$. Direct check with $D=\tau s^2+s+4K_mK_2/K_1$: $\dfrac{K_m}{T_c}=\dfrac D2$, $\dfrac{\partial T_c}{\partial K_m}=\dfrac2D-\dfrac{2K_m\cdot4K_2/K_1}{D^2}$; product $=1-\dfrac{4K_mK_2/K_1}{D}=\dfrac{\tau s^2+s}{D}$:
+$$S^{T_c}_{K_m}=\frac{s(\tau s+1)}{\tau s^2+s+4K_mK_2/K_1}.$$
+
+</Step>
+<Step title="(b) 3. Reading S">
+
+$S=0$ at DC (feedback removes sensitivity to $K_m$ at low frequency) and $S\to1$ at high frequency.
+
+</Step>
+<Step title="(c) Disturbance ΔV₁ = A/s">
+
+With the other inputs zero, $\Delta V_1$ enters before the integrator with a minus sign: $T=\dfrac{-\frac1s}{1+L}\Delta V_1=-\dfrac{(\tau s+1)\Delta V_1}{\tau s^2+s+4K_mK_2/K_1}$. The denominator has all-positive coefficients (stable second order for positive $K$'s), so the final-value theorem is valid:
+$$T(\infty)=\lim_{s\to0}sT(s)=-\frac{A}{4K_mK_2/K_1}=-\frac{AK_1}{4K_mK_2}.$$
+
+</Step>
+</Steps>
+
+<Answer>
+
+$T_c=\dfrac{2K_m}{\tau s^2+s+4K_mK_2/K_1}$; $S^{T_c}_{K_m}=\dfrac{s(\tau s+1)}{\tau s^2+s+4K_mK_2/K_1}$; $T(\infty)=-\dfrac{AK_1}{4K_mK_2}$.
+
+*Real-world:* like a thermostat or flow loop: zero DC sensitivity means a drifting actuator gain $K_m$ is fully compensated at steady state; a constant disturbance leaves a small, known offset.
+
+</Answer>
+
+<Callout kind="note" title="Reconstruction caveats">
+
+The block labelled "R" must equal 2 for the official formula (loop gain $4K_mK_2/K_1=2\cdot K_m\cdot\tfrac2{K_1}\cdot K_2$); the sketch is not entirely legible. The disturbance enters **after** the $K_m$ block and **before** the integrator: that is the reading used here (the digest's interpretation of the figure). The $\Delta T(s)$ path ($K_3$) appears in part (a) but is not used in (b) or (c).
+
+</Callout>
+
+<Traps>
+
+- The final-value theorem is legitimate only because the closed loop is stable.
+- A larger $K_2$ or $K_m$ shrinks the disturbance offset.
+- $S$ is zero at DC and tends to 1 at high frequency.
+
+</Traps>
+
+<Source>official solution ✔ ($T_c$, $S$ and $T(\infty)$ verified by algebra; also $S=1/(1+L)$).</Source>
+
+</Problem>
+
+<Examined>
+
+This paper mirrors the whole of Block 2: analogs ($\text{Q1}$, <Ch slug="analogies">Chapter 10</Ch>), hydraulics ($\text{Q2}$, <Ch slug="hydraulic-thermal">Chapter 13</Ch>), nonlinear circuits ($\text{Q3}$, <Ch slug="linearization">Chapter 9</Ch>), sensitivity ($\text{Q4}$, <Ch slug="sensitivity">Chapter 14</Ch>). Same dashpot: $\text{HW6 Q2}$, $\text{MT2 F2022 Q1b}$.
+
+</Examined>

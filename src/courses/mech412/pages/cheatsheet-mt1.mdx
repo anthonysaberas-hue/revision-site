@@ -1,0 +1,66 @@
+<p className="eyebrow">Exam toolkit · Midterm 1 · Lectures 1–8 · one 8½×11 sheet</p>
+
+# Cheat sheet, Midterm 1: Laplace, time response, block diagrams, state space
+
+<div className="lede">
+
+What the MT1 sheet needs to hold, rebuilt from Anthony's actual sheet and corrected (his slips are listed in the errata). The **handout** supplies the Laplace table and Methods 1/2, so this sheet holds what the handout does not. Print it, or rebuild it by hand: writing it **is** the revision.
+
+</div>
+
+## 1 · Laplace and partial fractions (L2)
+
+- $F(s)=\int_0^\infty f\,e^{-st}dt$; $\mathcal L\{\dot f\}=sF-f(0)$, $\mathcal L\{\ddot f\}=s^2F-sf(0)-\dot f(0)$; shift $e^{-as}F$; $\mathcal L\{e^{-at}f\}=F(s+a)$.
+- **IVT** $f(0^+)=\lim_{s\to\infty}sF$. **FVT** $f(\infty)=\lim_{s\to0}sF$ (only if all poles of $sF$ are in the LHP).
+- Proper $F=B(s)/A(s)$, $\deg A>\deg B$; zeros = roots of $B$, poles = roots of $A$.
+- **Real simple poles:** cover-up, $A=(s+p)F|_{s=-p}$. **Complex pair:** $\dfrac{Bs+C}{s^2+as+b}$, complete the square $(s+\alpha)^2+\omega^2$: $\dfrac{s+\alpha}{\cdots}\to e^{-\alpha t}\cos\omega t$, $\dfrac{\omega}{\cdots}\to e^{-\alpha t}\sin\omega t$. **Repeated:** $\dfrac{a_0s+b}{(s+\alpha)^2}+\dfrac{A}{s+\alpha}$.
+- **ODE:** $a\ddot y+b\dot y+cy=u\Rightarrow(as^2+bs+c)Y=U+(as+b)y(0)+a\dot y(0)$.
+- Check every inverse with $f(0)$ (IVT) and $f(\infty)$ (FVT). Try integer roots of a cubic first.
+- Phasor: $z=x+jy=Ae^{j\varphi}$, $\varphi=\operatorname{atan2}(y,x)$ (**quadrant!**). $\sin t=\dfrac{e^{jt}-e^{-jt}}{2j}$.
+
+## 2 · Second-order response (L4)
+
+$G=\dfrac{\omega_n^2}{s^2+2\zeta\omega_ns+\omega_n^2}$; poles $-\zeta\omega_n\pm j\omega_n\sqrt{1-\zeta^2}=-\sigma\pm j\omega_d$; angle from the negative real axis $\beta=\cos^{-1}\zeta$.
+
+| quantity | formula |
+|---|---|
+| overshoot | $OS=100\,e^{-\pi\zeta/\sqrt{1-\zeta^2}}$; $\zeta=\dfrac{-\ln(OS/100)}{\sqrt{\pi^2+\ln^2(OS/100)}}$ |
+| peak time | $t_p=\pi/\omega_d$ (also: set $\dot y=0$) |
+| rise time | $t_r=(\pi-\beta)/\omega_d$ (rule of thumb $1.8/\omega_n$) |
+| settling | $t_s(2\%)=4/(\zeta\omega_n)=4/\sigma$; $t_s(5\%)=3/\sigma$ |
+| two exponentials $Ae^{at}+Be^{bt}=0$ | $t=\dfrac{\ln(-B/A)}{a-b}$ |
+
+A **zero** near the poles raises overshoot; to cut overshoot, raise $\zeta$ (poles away from the imaginary axis). Pole at $-\sigma$: decays; on the axis: constant amplitude; right half-plane: grows.
+
+## 3 · Block diagrams and Mason (L5, L7)
+
+- Series: multiply. **Feedback:** $T=\dfrac{G}{1+GH}$ (positive feedback $\dfrac G{1-GH}$); error ratio $\dfrac1{1+GH}$.
+- Move a take-off or summer across a block: compensate with the block or its inverse.
+- **Mason:** $T=\dfrac{\sum P_k\Delta_k}{\Delta}$, $\Delta=1-\sum L_i+\sum L_iL_j(\text{non-touching})-\dots$, $\Delta_k=\Delta$ without the loops touching path $k$. Steps: paths, loops, which touch. Loop gain = **product** around the loop.
+- Magnitude and phase at $s=j\omega$: $|G|=\dfrac{|\text{num}|}{|\text{den}|}$, $\varphi=\sum\angle\text{zeros}-\sum\angle\text{poles}$ (e.g. $\dfrac{s+4}{(s+2)(s+3)}$: $\varphi=\tan^{-1}\frac\omega4-\tan^{-1}\frac\omega2-\tan^{-1}\frac\omega3$).
+- Properties: linear $g(au_1+bu_2)=ag(u_1)+bg(u_2)$; time-invariant; $y=\int g(t-\tau)u(\tau)d\tau\leftrightarrow GU$.
+
+## 4 · State space (L7–L9)
+
+- $\dot x=Ax+Bu$, $y=Cx+Du$; $G=C(sI-A)^{-1}B+D$; $\Phi(s)=(sI-A)^{-1}$, $\Phi(t)=e^{At}$; characteristic equation $\det(sI-A)=0$; $\Phi(0)=I$, $\dot\Phi(0)=A$.
+- **Method 2:** $Z/U=1/\text{den}$, $x_i=z^{(i-1)}$, $A$ = companion (last row $-a_n\ \dots\ -a_1$), $B=[0\ \dots\ 1]^T$, $C=[b_n-a_nb_0\ \dots\ b_1-a_1b_0]$, $D=b_0$.
+- **Method 1:** $\beta_0=b_0$, $\beta_k=b_k-\sum_{i=1}^ka_i\beta_{k-i}$; $B=[\beta_1\dots\beta_n]^T$, $C=[1\ 0\dots0]$, $D=\beta_0$.
+- 3-integrator diagram: $\dddot z=u-a_3z-a_2\dot z-a_1\ddot z$, $y=b_1\ddot z+b_2\dot z+b_3z$: states in reverse order, $C=[b_3\ b_2\ b_1]$.
+- **Diagonalise:** $x=P\hat x$, $P$ = Vandermonde $\begin{bmatrix}1&1\\\lambda_1&\lambda_2\end{bmatrix}$, $P^{-1}AP=\mathrm{diag}(\lambda_i)$, $y=CP\hat x+Du$.
+- Step response: $x=\Phi(t)x(0)+A^{-1}(\Phi(t)-I)B$ (unit step, $A$ invertible).
+- **Always convert back to $G(s)$ to check.**
+
+## 5 · Mechanics (L3) and short facts
+
+- $M\ddot x+C\dot x+Kx=f$; $\omega_n=\sqrt{K_{eq}/m_{eq}}$; $C_{eq}=2\zeta\omega_nm_{eq}$; springs parallel $K_1+K_2$, series $\dfrac1{K_1}+\dfrac1{K_2}$.
+- Inertias: disc $\tfrac12mr^2$; rolling $\tfrac32mr^2$ (with $x=R\theta$); rod about centre $\tfrac1{12}ml^2$, about an end $\tfrac13ml^2$; **parallel axis** $I=I_G+md^2$. $T=\tfrac12m\dot x^2$, $V=\tfrac12Kx^2$, $D=\tfrac12C\dot x^2$.
+- **Massless node:** forces sum to zero (spring on the deflection, damper on the relative velocity).
+- Rotation about a pin: moments about the pin; a spring or damper at arm $r$ contributes $kr^2$, $cr^2$.
+- Matlab: `residue` (repeated pole: ascending powers), `step`, `impulse`, `tf2ss`, `lsim`.
+- Bullet embedded in a block: $v'=\dfrac{mv}{m+M}$.
+
+<Callout kind="note" title="Slips to avoid (from the errata)">
+
+$\mathcal L\{\sin2t\}=2/(s^2+4)$; $\Phi(s)=(sI-A)^{-1}$ not $\det$; free term $\dot y(0)+(s+a)y(0)$; Mason loop gain is a product; $\tan^{-1}(\omega/4)$ not $4/\omega$; always check $f(0)$.
+
+</Callout>

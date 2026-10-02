@@ -1,0 +1,165 @@
+<p className="eyebrow">Problem Set 6 · Winter 2025</p>
+
+# Starting inlets & wind tunnels
+
+<p className="lede">Two problems that are really one idea: a normal shock makes the flow need a bigger throat, $A^*_y/A^*_x = p_{0x}/p_{0y}$. A wind tunnel's second throat and an inlet's throat must both be able to swallow the post-shock flow. This is the problem type that appears in nearly every Quiz 2 and final. Theory: <NoteRef ch="inlets">Chapter 9</NoteRef>.</p>
+
+<Remember title="The two area ratios of a supersonic inlet">
+
+- **Isentropic (design)**: $A_{in}/A_t = (A/A^*)_{M_\infty}$, from A2 **supersonic**.
+- **Starting (shock at the lip)**: $A_{in}/A_t = (A/A^*)_{M_y}$, from A3 then A2 **subsonic**.
+
+The second is always smaller. Mixing them up is the classic mistake (PS6 P2).
+
+</Remember>
+
+<Problem id="PS6 P1" title="Minimum second-throat ratio to start a Mach 4 wind tunnel" tags="wind tunnel, second throat, Table A3">
+
+<Statement>
+
+A wind tunnel is designed to produce Mach 4 in the test section. Just prior to starting, a normal shock is located at the entrance of the test section. What is the minimum area ratio of the two throats, $A_{t2}/A_{t1}$, needed to reach this starting condition?
+
+</Statement>
+
+<Think>
+
+The starting criterion of <NoteRef ch="inlets" sec="supersonic-wind-tunnel-the-second-throat">§9.3</NoteRef>. Mass conservation with the same $T_0$ gives $p_{0x}A^*_x = p_{0y}A^*_y$. The first throat is $A^*_x$; the second throat must be at least $A^*_y$ when the shock is strongest, i.e. at the test-section entrance where $M = 4$. One table lookup.
+
+</Think>
+
+<Plan>
+
+$A_{t1} = A^*_x$ → shock at $M_x = 4$ → A3: $p_{0y}/p_{0x} = A^*_x/A^*_y$ → $A_{t2} \ge A^*_y$ → ratio.
+
+<TunnelStartingFramesFigure Mtest={4} />
+
+</Plan>
+
+<Steps>
+<Step title="1. The post-shock sonic area">
+
+<T>A3 @ Mₓ = 4.0: M_y = 0.4350, p₀ᵧ/p₀ₓ = 0.1388</T> <CalcLink calc="normal" q="in=Mx&v=4">check</CalcLink>
+
+$$
+\frac{A^*_y}{A^*_x} = \frac{p_{0x}}{p_{0y}} = \frac{1}{0.1388} = 7.205
+$$
+
+</Step>
+<Step title="2. The starting requirement">
+
+The second throat must accept $A^*_y$ when the shock has receded to the test-section entrance, and $A_{t1} = A^*_x$:
+
+$$
+\frac{A_{t2}}{A_{t1}} \ge \frac{A^*_y}{A^*_x}\Big|_{M = 4} = 7.20
+$$
+
+</Step>
+<Step title="3. Why the entrance is the worst case">
+
+The shock is strongest where M is highest, at the test-section entrance (M = 4). There the $p_0$ loss is largest and $A^*_y$ is largest. Any position upstream in the nozzle needs a smaller second throat.
+
+</Step>
+</Steps>
+
+<Answer>
+
+- $A_{t2}/A_{t1} \ge 7.20$ (exact 7.2046).
+
+</Answer>
+
+Set 7.3 to see it start and 6 to see it blocked:
+
+<WindTunnelStartSim initialMtest={4} initialAt2={7.3} initialProgress={0.75} />
+
+<Traps>
+
+- **Anthony's mistake:** he read <T>A3 @ Mₓ = 4: p₀ᵧ/p₀ₓ</T> as 0.1368 instead of 0.1388, giving 7.3 instead of 7.20. Read the table row slowly.
+- He also detoured through the test-section area ($A_{test}/A_{t1} = 10.719$). It cancels: $A_{t2}/A_{t1} = A^*_y/A^*_x = 1/(p_{0y}/p_{0x})$ directly.
+- Over 7 times the first throat: this is why high-Mach tunnels need a variable second throat. Open it to start, then close it down to reduce losses.
+
+</Traps>
+
+<Source>official 2025 solution · Anthony's tablet solution PS06-mine</Source>
+
+</Problem>
+
+<Problem id="PS6 P2" title="SR-71 inlet: swallow the shock at M 1.75, then slow down" tags="inlet starting, Kantrowitz, A2 + A3">
+
+<Statement>
+
+The SR-71 Blackbird had supersonic diffusers whose inner cone could move in and out to change the area ratio. Suppose we wish to start the diffuser at a flight speed of Mach 1.75.
+
+(a) What must the area ratio $A_{inlet}/A_{throat}$ be to swallow the normal shock?
+(b) Once started, find the Mach number the Blackbird can decelerate to while maintaining sonic flow at the throat, keeping the area ratio of (a).
+
+</Statement>
+
+<Think>
+
+The inlet-starting recipe (<NoteRef ch="inlets" sec="starting-by-overspeed-the-kantrowitz-limit">§9.2</NoteRef>) run in the "find the geometry" direction. (a) uses the post-shock flow: shock at the lip, $M_y$ chokes exactly at the throat. (b) is then the isentropic **design** Mach number of that geometry, A2 supersonic.
+
+</Think>
+
+<Plan>
+
+(a) $M_x = 1.75$ → A3 → $M_y$ → A2 (subsonic row) → $A_{in}/A^*_y = A_{in}/A_t$.
+(b) Same $A_{in}/A_t$ = $A/A^*$ of a supersonic isentropic flow → A2 supersonic → M.
+
+<InletThreeStatesFigure M={1.75} />
+
+</Plan>
+
+<Steps>
+<Step title="(a) Shock at the lip">
+
+<T>A3 @ Mₓ = 1.75: M_y = 0.6281</T> <CalcLink calc="normal" q="in=Mx&v=1.75">check</CalcLink>
+
+The subsonic flow behind the shock must just reach $M = 1$ at the throat, so $A_t = A^*_y$: <T>A2 @ M = 0.63: A/A\* = 1.157</T>
+
+$$
+\frac{A_{in}}{A_t} = \left(\frac{A}{A^*}\right)_{M_y = 0.628} = 1.157
+$$
+
+A smaller throat would push the shock out; a larger one swallows it.
+
+</Step>
+<Step title="(b) Slow down until the throat is just sonic">
+
+Started, the flow decelerates isentropically from $M_\infty$ in the converging inlet. The throat is exactly sonic when $A_{in}/A^* = 1.157$, supersonic branch: <T>A2 @ A/A\* = 1.157 (sup): M = 1.475</T> <CalcLink calc="isentropic" q="in=A&v=1.157&b=sup">check</CalcLink>
+
+</Step>
+<Step title="Why the two numbers differ">
+
+At $M = 1.75$ the isentropic ratio would be $(A/A^*)_{1.75} = 1.386$. The starting ratio 1.157 is smaller, so right after starting at 1.75 the throat is still supersonic (about M 1.5) with a shock just downstream. Slowing to 1.475 gives ideal, shock-free diffusion. Slowing further unstarts the inlet: the shock pops out in front of the lip.
+
+</Step>
+</Steps>
+
+<Answer>
+
+- (a) $A_{in}/A_t = 1.157$
+- (b) $M = 1.475$
+
+</Answer>
+
+<InletStartSim initialM={1.75} initialRatio={0.8643} />
+
+Press *PS6 P2*, then drag M∞ down to 1.475 (still started) and below (unstart).
+
+<Traps>
+
+- **Anthony's mistake in (a):** he wrote $A_{in}/A^* = 1.38$, the **isentropic** $A/A^*$ at M = 1.75 (A2 supersonic). That is the design ratio, not the swallowing condition. Swallowing uses the post-shock $M_y = 0.628$ and the post-shock $A^*_y$: 1.157.
+- **In (b)** he wrote M = 1.48 (close to 1.475) but quoted $A_{in}/A^* = 1.38$ again, which is inconsistent: $A/A^*$ at 1.48 is 1.157. Right number, wrong reasoning: on an exam the reasoning carries the points.
+- This is why the SR-71 had a translating spike: open wide to swallow, then close for efficient diffusion. A fixed inlet above $A_{in}/A_t = 1.666$ (design M 1.98) can never be started by overspeed.
+
+</Traps>
+
+<Source>official 2025 solution · Anthony's tablet solution PS06-mine</Source>
+
+</Problem>
+
+<Examined>
+
+The same recipe, exam by exam: [Q2 W2019](#/mech430/exam/q2-w2019) P1 (design 1.5 → overspeed to 1.83, or open the throat by 7.5 %), [Q2 W2023](#/mech430/exam/q2-w2023) P1 (design 1.3 → start at 1.40, ṁ ratio 0.979), [Q2 F2023](#/mech430/exam/q2-f2023) (two-throat tunnel, blocking), [Final B](#/mech430/exam/final-b) P1 (design 1.4 → start at 1.59, ṁ ratio 0.958).
+
+</Examined>

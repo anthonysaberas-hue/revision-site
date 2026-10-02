@@ -1,0 +1,179 @@
+<p className="eyebrow">Chapter 9</p>
+
+# Pitot, inlets & wind tunnels
+
+<p className="lede">Four machines, one idea: a normal shock is a patch between two isentropic flows, and it makes the flow need a bigger throat. A pitot probe measures the stagnation pressure behind its own bow shock. A supersonic inlet must swallow its shock to start. A wind tunnel needs a second throat big enough for the post-shock flow. A train in a tunnel is a piston.</p>
+
+## Pitot probe
+
+A pitot probe brings the flow to rest at its tip and reads the stagnation pressure. A side port (or a wall tap) reads the static pressure.
+
+**Subsonic:** the flow decelerates isentropically, so the probe reads the true $p_0$:
+
+$$
+\frac{p_0}{p} = \left(1 + \frac{\gamma-1}{2}M^2\right)^{\frac{\gamma}{\gamma-1}}
+$$
+
+**Supersonic:** a detached **bow shock** stands in front of the probe. On the stagnation streamline it is a normal shock, so the tip reads $p_{0y}$, not $p_{0x}$. The side port, far behind the curved, decaying shock, reads about $p_x$. Combining $p_y/p_x$ with the isentropic stop behind the shock gives the **Rayleigh pitot formula**:
+
+$$
+\frac{p_{0y}}{p_x} = \frac{\left(\frac{\gamma+1}{2}M_x^2\right)^{\frac{\gamma}{\gamma-1}}}{\left(\frac{2\gamma M_x^2}{\gamma+1} - \frac{\gamma-1}{\gamma+1}\right)^{\frac{1}{\gamma-1}}}
+$$
+
+Table A3 has a $p_x/p_{0y}$ column for exactly this: <CalcLink calc="normal" q="in=pitot&v=0.10112">pitot calculator</CalcLink>.
+
+<PitotSim />
+
+<Trap title="Using p₀/p on a supersonic pitot reading">
+
+PS5 P4: $p_x = 45$ kPa and $p_{pitot} - p_x = 400$ kPa, so $p_x/p_{0y} = 45/445 = 0.1011$ → <T>A3: Mₓ = 2.70</T>, $V = 2.70 \times 319.9 = 864$ m/s. Treating 445/45 as an isentropic $p_0/p$ would give $M = 2.15$, a 20 % error. Also: the manometer reads a **difference**; add $p_x$ back.
+
+</Trap>
+
+## Supersonic diffuser (inlet)
+
+A jet engine wants slow, high-pressure air. For subsonic flight a diverging duct does it. For supersonic flight the obvious idea is a **C-D nozzle run backwards**: converge to slow the supersonic flow to $M = 1$ at the throat, then diverge to slow it further subsonically. The engine behind sets the back pressure, so the flow takes the subsonic branch after the throat.
+
+Isentropic and therefore perfect, with no $p_0$ loss. And very **unstable**.
+
+### Why the perfect diffuser unstarts
+
+Design for $M_\infty = 1.5$: $A_{in}/A^* = 1.1762$, so $A_t = 0.850\,A_{in}$.
+
+Now let the aircraft slow slightly to 1.45 (a throttle bump). The geometry is fixed, but $A/A^*(1.45) = 1.1440$, so the flow needs $A^* = 0.874\,A_{in}$. That is **larger** than the physical throat (0.850). In isentropic flow nothing can pass through less than $A^*$. We are pushing too much mass through too small a hole, and supersonic flow can't warn the upstream flow.
+
+Nature's answer, in Higgins' words: like someone who tried to swallow too much food, the inlet **vomits the shock**. A normal shock is disgorged and stands **in front of** the inlet. Behind it the flow is subsonic, so it *can* adjust: the excess **spills around the cowl**, and the throat is choked with the post-shock stagnation pressure. This "unstart" is violent. It costs $p_0$ ($p_{0y}/p_{0x} = 0.9448$ at 1.45) and thrust (spillage).
+
+### Unstarted from the beginning
+
+Worse: an aircraft accelerating from subsonic flight reaches $M = 1$ with the inlet essentially sonic at the lip, so the throat is already too small. A shock forms in front as soon as it goes supersonic, and stays there. Since $A^*_y \gt A^*_x$, the inlet is **still unstarted at its design Mach number**. It was never started.
+
+### Starting by overspeed: the Kantrowitz limit
+
+Keep accelerating. The shock gets stronger, $p_{0y}$ falls, but $M_y$ falls too and the post-shock flow needs less area to go sonic. Eventually the shock is pulled back to the lip and the throat can just pass the whole post-shock flow, $A_t = A^*_y$, with no spillage. Any faster and the shock enters the converging section, where it is unstable, and it is **swallowed** through the throat in milliseconds. The inlet has **started**.
+
+<Remember title="The starting condition (shock at the lip)">
+
+$$
+\frac{A_{in}}{A_t} = \left(\frac{A}{A^*}\right)_{M_y}, \qquad M_y = M_y(M_{start})
+$$
+
+Recipe (fixed geometry): $A_{in}/A_t$ → **A2 subsonic** → $M_y$ → **A3 inverse** → $M_x = M_{start}$.
+
+M 1.5 design: $A_{in}/A_t = 1.1762$ → <T>A2 (sub): M_y = 0.61</T> → <T>A3: Mₓ = 1.83</T>. The aircraft must **overspeed to Mach 1.83** to start a Mach 1.5 inlet.
+
+</Remember>
+
+Kantrowitz and Donaldson (NACA, 1945) wrote both curves explicitly:
+
+$$
+\left(\frac{A_t}{A_{in}}\right)_{design} = M\left[\frac{2}{\gamma+1}\left(1 + \frac{\gamma-1}{2}M^2\right)\right]^{-\frac{\gamma+1}{2(\gamma-1)}}
+\qquad
+\left(\frac{A_t}{A_{in}}\right)_{start} = M_y\left[\frac{2}{\gamma+1}\left(1 + \frac{\gamma-1}{2}M_y^2\right)\right]^{-\frac{\gamma+1}{2(\gamma-1)}}
+$$
+
+Once started, the aircraft can slow back to 1.5 and run the ideal isentropic diffuser. But dip below 1.5 and it unstarts, and you need 1.83 again. Between the two curves the inlet can be either started or unstarted depending on where it came from: **hysteresis**. Real inlets run slightly faster than design (throat a bit bigger than $A^*$), with the shock held just past the throat by the back pressure, where M is low and the loss small.
+
+### The Mach 1.98 limit
+
+As $M_x \to \infty$, $M_y \to 0.378$ and $(A/A^*)_{M_y} \to 1.666$. An inlet with $A_{in}/A_t$ larger than 1.666 can **never** be started by overspeeding, however fast you go. $A/A^* = 1.666$ is the design ratio for $M = 1.98$. So any fixed inlet designed for more than about Mach 2 needs **variable geometry**.
+
+### Variable throat
+
+Instead of overspeeding, open the throat at the design Mach number until it accepts the whole post-shock flow, $A_t = A^*_y$:
+
+$$
+\frac{A_t}{A_{in}} = \left(\frac{A^*}{A}\right)_{M_y} \qquad M = 1.5 \Rightarrow M_y = 0.7011 \Rightarrow A/A^* = 1.0944 \Rightarrow \frac{A_t}{A_{in}} = 0.914
+$$
+
+Open from 85 % to 91 % of the inlet area, swallow the shock, then close back to 0.850. Equivalently the throat must open by $A^*_y/A^*_x = p_{0x}/p_{0y}$. The SR-71 did this with a translating spike ([PS6 P2](#/mech430/ps/ps06)).
+
+<InletStartSim />
+
+Run the three demos: the fixed Mach 1.5 inlet traces the full hysteresis loop; the variable throat starts at 1.5; the Mach 2.5 fixed inlet sits under the asymptote and never starts.
+
+<Remember title="Spillage of an unstarted inlet">
+
+Unstarted with a design-sized throat ($A_t = A^*_x$): the throat is still choked, same area, same $T_0$, same $M = 1$, only $p_0$ differs. So
+
+$$
+\frac{\dot m_{unstarted}}{\dot m_{started}} = \frac{p_{0y}}{p_{0x}}\Big|_{M_\infty}
+$$
+
+Q2 W2023 (M 1.3): 0.979. Final B (M 1.4): 0.958.
+
+</Remember>
+
+Below about Mach 1.3 a normal shock costs almost nothing, so some low-supersonic aircraft just use a **normal-shock inlet** that never starts.
+
+## Supersonic wind tunnel: the second throat
+
+A continuous tunnel: reservoir → C-D nozzle (throat $A_{t1}$) → test section at $M_{test}$ → diffuser with a second throat $A_{t2}$ → compressor back to the reservoir. The diffuser must slow the flow to subsonic so the compressor work is small. A perfectly isentropic tunnel would be a perpetual-motion machine.
+
+Starting sequence as $p_b$ drops:
+1. The **smaller** throat chokes first. If $A_{t2} \lt A_{t1}$, the second throat chokes and isolates the tunnel from $p_b$: it can never start.
+2. With $A_{t1}$ choked, a normal shock appears after the first throat and **marches toward the test section**, getting stronger. $A^*_y$ grows.
+3. The worst moment is the shock at the **test-section entrance**, at $M_{test}$. The second throat must pass $A^*_y$ then.
+4. Then the shock enters the constant-area section (unstable), **snaps through**, and parks past the second throat: started.
+
+$$
+\frac{A_{t2}}{A_{t1}} \ge \left(\frac{A^*_y}{A^*_x}\right)_{M_{test}} = \frac{p_{0x}}{p_{0y}}\Big|_{M_{test}}
+$$
+
+If $A_{t2}$ is too small the second throat chokes on the post-shock flow while the shock is still in the nozzle: the tunnel is **blocked**. The shock sits where $p_{0y}/p_{0x} = A_{t1}/A_{t2}$ and lowering $p_b$ won't move it.
+
+Hysteresis again: once started, raise $p_b$ to pull the shock back toward the second throat (weaker shock, smaller loss). Push it past the throat and the tunnel unstarts. A variable second throat (opened for starting, then closed) is the practical answer.
+
+<WindTunnelStartSim />
+
+<TunnelStartingFramesFigure Mtest={2.5} />
+
+## Shinkansen in a tunnel
+
+A bullet train at 300 km/h (83.3 m/s) is only Mach 0.24 in open country. But a train that **fills** a tunnel is a piston. It imposes $V_p' = 83.3$ m/s on the air, and a shock runs ahead of it (notes §9.4):
+
+$$
+M_s = \frac{\gamma+1}{4}\frac{V_p'}{c_x} + \sqrt{\left(\frac{\gamma+1}{4}\frac{V_p'}{c_x}\right)^2 + 1} = 1.154 \quad\Rightarrow\quad \frac{p_y}{p_x} = 1.39
+$$
+
+A 39 % (5.7 psi) overpressure bursting out of the tunnel exit can cause permanent hearing loss. To keep it under 3 psi: $p_y/p_x = 17.7/14.7 = 1.204$ → $M_s = 1.082$ → $V_p'/c_x = 0.1315$ → $V_p' = 45.8$ m/s (165 km/h). Too slow.
+
+Better: enlarge the tunnel so the train becomes a **leaky piston**. In the train frame the air approaches at $83.3 - 45.8 = 37.5$ m/s with $c_y = 348\sqrt{1.053} = 357$ m/s, so $M = 0.105$. The gap is choked, $A^* = A_{tunnel} - A_{train}$, and <T>A2 @ M = 0.105: A/A\* = 5.56</T>:
+
+$$
+\frac{A_{tunnel}}{A_{tunnel} - A_{train}} = 5.56 \Rightarrow A_{tunnel} = 1.22\,A_{train}
+$$
+
+And with $A_{tunnel}/A^* = 2.50$ at $M = 0.24$, i.e. $A_{tunnel} = 1.66\,A_{train}$ (29 % larger diameter), isentropic theory says **no shock at all**. Real tunnels are bigger than that and still boom, because the real flow is far from 1-D. Today's fix is shaped tunnel portals (like a gun silencer).
+
+<TrainTunnelFigure />
+
+<MovingShockSim initialUp={83.3} />
+
+## Caveats
+
+Boundary layers in a diffuser face an **adverse pressure gradient** and separate easily, so diffusers are much harder to design than nozzles. Real supersonic deceleration is done by systems of oblique shocks (Chapters 12–13). Wind tunnels fight boundary-layer growth and keep getting bigger. Yet these 1-D quasi-steady tools still give remarkably accurate design numbers.
+
+<Examined>
+
+**The inlet-starting problem appears in nearly every Quiz 2 and final.** Same three questions every time:
+
+1. **Design ratio**: $A_{in}/A_t = (A/A^*)_{M_{design}}$ from A2 (supersonic).
+2. **Start by overspeed** (fixed geometry): that ratio → A2 **subsonic** → $M_y$ → A3 inverse → $M_x$. Or **start by opening the throat** at $M_{design}$: A3 → $M_y$ → A2 → $A_t/A_{in}$, or simply multiply by $p_{0x}/p_{0y}$.
+3. **Unstarted mass flow** = $p_{0y}/p_{0x}$ at $M_\infty$.
+
+- [Q2 W2019](#/mech430/exam/q2-w2019) P1: design 1.5 → start at 1.83; variable throat +7.5 % (0.850 → 0.914).
+- [Q2 W2023](#/mech430/exam/q2-w2023) P1: design 1.3 → start at 1.40; ṁ ratio 0.979.
+- [Q2 F2023](#/mech430/exam/q2-f2023): two-throat tunnel; recognise the blocked state.
+- [Final B](#/mech430/exam/final-b) P1: design 1.4 ($A_{in}/A_t = 1.1149$) → start at 1.59; ṁ ratio 0.958.
+- Problem sets: [PS5](#/mech430/ps/ps05) P4 (pitot), P5 (starting and blocking); [PS6](#/mech430/ps/ps06) P1 (second throat), P2 (SR-71 inlet).
+
+</Examined>
+
+## Check yourself
+
+1. A pitot probe in a Mach 2 flow reads 5.64 times the static pressure. Is that $p_0/p$? → No, it's $p_{0y}/p_x$; the true $p_0/p$ at Mach 2 is 7.82.
+2. Why does an isentropic inlet unstart if the aircraft slows slightly? → $A^*$ grows above the physical throat, and isentropic flow can't pass less than $A^*$; the shock is expelled.
+3. A fixed inlet designed for Mach 1.4: starting Mach? → $A_{in}/A_t = 1.1149$ → $M_y = 0.65$ → $M_x \approx 1.59$.
+4. Why can't a fixed Mach 2.5 inlet be started by overspeeding? → $A_{in}/A_t = 2.64 \gt 1.666$, the largest $(A/A^*)_{M_y}$ any shock can produce.
+5. Mach 3 wind tunnel: minimum $A_{t2}/A_{t1}$? → $1/0.3283 = 3.05$.

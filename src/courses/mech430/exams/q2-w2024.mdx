@@ -1,0 +1,242 @@
+<p className="eyebrow">Quiz 2 · Winter 2024 · 80 min · closed book, tables provided</p>
+
+# Quiz 2, Winter 2024
+
+<p className="lede">Two problems, both marked by Prof. Higgins: a nozzle + Fanno pipe in which you must find ṁ, locate the shock to within ±0.1 m and give the exit state (70 pts), and Rayleigh heat addition with thermal choking (30 pts). Class average 65.1 % (median 68 %).</p>
+
+<Callout kind="note" title="Before you start">
+
+**Topics tested**
+- Choking via the subsonic branch, the choked ṁ, supersonic Fanno with $L > L^*$, and shock-position iteration by bracketing. See [Ch. 10 Fanno flow](#/mech430/ch/fanno), [Ch. 8 Flow with shocks](#/mech430/ch/shocks-in-flow) and [Ch. 6 Nozzles](#/mech430/ch/nozzles).
+- Rayleigh flow and thermal choking. See [Ch. 11 Rayleigh flow](#/mech430/ch/rayleigh).
+
+**Recipes used:** R2 (nozzle + Fanno pipe) and R5 (Rayleigh) on the [exam recipes page](#/mech430/page/recipes).
+
+**Tables:** A2, A3, A4, A5. γ = 1.4.
+
+</Callout>
+
+<Problem id="W2024 P1" title="Nozzle + Fanno pipe: ṁ, shock location and exit state (70 pts)" tags="Fanno, normal shock, iteration, choked mass flow">
+
+<Statement>
+
+A reservoir of air at 1000 kPa and 500 K feeds a frictional pipe through a converging-diverging nozzle. The nozzle throat diameter is 1 cm and the pipe diameter is 2 cm, so $A_{pipe}/A_{throat} = (d_{pipe}/d_{throat})^2$. The pipe is 0.75 m long with a friction coefficient of 0.005. Use MW = 30 kg/kmol for air. The downstream chamber is at a back pressure of 200 kPa. Find:
+
+(a) Without solving for the exact flow, the **mass flow rate (kg/s)**. Justify your answer.
+
+(b) Whether a shock wave is present. If it is, its **location to within ±0.1 m**. If not, **justify why you can rule it out.**
+
+(c) **The pressure, temperature and Mach number** at the exit of the pipe.
+
+</Statement>
+
+<Think>
+
+This is recipe R2 again, the same family as W2019 P3, but this time the exit is **not** choked, so you **do** match $p_b$. Signs to read off in 30 seconds:
+
+- $A/A_t = (2/1)^2 = 4$.
+- $4fL/D = 4(0.005)(0.75)/0.02 = 0.75$. Because $4f/D = 1$ m⁻¹, **$4fL/D$ equals $L$ in metres**. Higgins wrote "Convenient!"
+- "Without solving the exact flow" in (a) means: prove that the throat is choked, then use the choked-flow formula.
+- "±0.1 m" means: bracket the shock between two guesses and interpolate linearly.
+
+</Think>
+
+<Plan>
+
+Subsonic test (justify choking) → ṁ → supersonic test ($L$ vs $L^*$) → shock at the entrance ($p_{exit}$ vs $p_b$) → move the shock in (x = 0.2 m) → bracket and interpolate → exit state.
+
+<NozzlePipeSim AR={4} fL={0.75} pb={0.2} p0={1000} />
+
+</Plan>
+
+<Steps>
+<Step title="1. (a) Subsonic test: is the throat choked?">
+
+Look at the critical case where the throat has only just choked, with subsonic flow after it:
+
+<T>A2 @ A/A* = 4 (sub): M₁ = 0.15, p/p₀ = 0.98441</T> → $p_1 = 984$ kPa — <CalcLink calc="isentropic" q="in=A&v=4&b=sub">check</CalcLink>
+
+<T>A4 @ M = 0.15: 4fL*/D = 27.932</T> → $27.932 - 0.75 = 27.18$, so the Mach number hardly changes and $p_2 \approx p_1 \approx 984$ kPa. — <CalcLink calc="fanno" q="in=M&v=0.15">check</CalcLink>
+
+That subsonic exit would have to equal $p_b = 200$ kPa. It is far higher, so "we are sucking harder": **the throat must be choked**, and the flow goes supersonic, at least for a while after the throat.
+
+</Step>
+<Step title="2. (a) Choked mass flow">
+
+$A_t = \pi(0.005)^2 = 7.854\times10^{-5}$ m², $R = 8314/30 = 277.1$ J/kg·K:
+
+$$
+\dot m = \frac{p_0}{\sqrt{T_0}}\sqrt{\frac{\gamma}{R}}\frac{A_t}{1.2^3} = \frac{10^6}{\sqrt{500}}\sqrt{\frac{1.4}{277.1}}\times\frac{7.854\times10^{-5}}{1.728} = 0.145\ \text{kg/s}
+$$
+
+</Step>
+<Step title="3. (b) Supersonic all the way?">
+
+<T>A2 @ A/A* = 4 (sup): M₁ = 2.94, p/p₀ = 0.0298, T/T₀ = 0.36648</T> → $p_1 = 29.8$ kPa, $T_1 = 183.2$ K — <CalcLink calc="isentropic" q="in=A&v=4&b=sup">check</CalcLink>
+
+<T>A4 @ M = 2.94: 4fL*/D = 0.51291</T> → $p^* = 132.1$ kPa, $T^* = 416.6$ K — <CalcLink calc="fanno" q="in=M&v=2.94">check</CalcLink>
+
+$0.513 < 0.75$: **the flow cannot stay supersonic**, so there is a shock. Cross-check: $p^* = 0.5283 \times 1000/4 = 132.1$ kPa, which is the same $p^*$ on both sides of any shock in this pipe.
+
+</Step>
+<Step title="4. (b) Shock at the pipe entrance">
+
+<T>A3 @ Mₓ = 2.94: M_y = 0.4788, p_y = 295.5 kPa, T_y = 478.1 K</T> — <CalcLink calc="normal" q="in=Mx&v=2.94">check</CalcLink>
+
+<T>A4 @ M = 0.48: 4fL*/D = 1.2453</T> → $1.2453 - 0.75 = 0.4953$ → <T>A4 @ 0.4953 (sub): M₂ = 0.60, p/p* = 1.7634, T/T* = 1.1194</T> — <CalcLink calc="fanno" q="in=fL&v=0.4953&b=sub">check</CalcLink>
+
+$p_2 = 132.4 \times 1.7634 = 233.5$ kPa and $T_2 = 466.6$ K. The exit is subsonic, so it must match 200 kPa, and it doesn't. But it is close. $p_{exit} > p_b$: "sucking harder", so **move the shock into the duct**. Try $x_s$ = 0.2 m.
+
+</Step>
+<Step title="5. (b) Shock at x = 0.2 m">
+
+Supersonic up to the shock: $0.51291 - 0.2 = 0.3129$:
+
+<T>A4 @ 0.3129 (sup): Mₓ = 2.03, pₓ = 52.77 kPa, Tₓ = 274 K</T> — <CalcLink calc="fanno" q="in=fL&v=0.3129&b=sup">check</CalcLink>
+
+<T>A3 @ Mₓ = 2.03: M_y = 0.5723, p_y = 244.9 kPa</T> → <T>A4 @ M = 0.5723: 4fL*/D = 0.6228</T>
+
+**Only the remaining pipe** counts: $0.75 - 0.2 = 0.55$, so $0.6228 - 0.55 = 0.073$:
+
+<T>A4 @ 0.073 (sub): M₂ = 0.80, p/p* = 1.2893</T> → $p_2 = 168.8$ kPa, $T_2 = 442.5$ K
+
+Too low. The answer is **bracketed** between 0 and 0.2 m.
+
+</Step>
+<Step title="6. (b) Bracket and interpolate">
+
+| $x_s$ (m) | $M_x$ | $M_{exit}$ | $T_{exit}$ (K) | $p_{exit}$ (kPa) |
+|---|---|---|---|---|
+| 0.0 | 2.94 | 0.60 | 466.6 | 233.5 |
+| 0.1 (Anthony's trial) | 2.41 | 0.67 | 458.8 | 206.9 |
+| 0.2 | 2.03 | 0.80 | 442.5 | 168 |
+| **exact (lib)** 0.114 | 2.35 | 0.691 | 456.4 | 200 |
+
+Linear interpolation of the first and third rows for 200 kPa gives **$x_s \approx 0.10$ m**. The plot shows why the straight chord lands a little upstream of the exact curve.
+
+<ShockIterationPlot AR={4} fL={0.75} p0={1000} pb={200} unit="kPa" lengthPerFL={1} interp guesses={[{ x: 0, label: 'x = 0' }, { x: 0.2, label: 'x = 0.2' }, { x: 0.1, label: 'x = 0.1' }]} />
+
+</Step>
+<Step title="7. (c) Exit state by interpolation">
+
+- $M_{exit} \approx 0.60 + 0.20 \times \frac{0.1}{0.2} = 0.70$
+- $p_{exit} \approx 233.5 + (168 - 233.5)\frac{0.1}{0.2} \approx 200$ kPa (it must be, since the exit is subsonic)
+- $T_{exit} \approx 466.6 + (442.5 - 466.6)\frac{0.1}{0.2} = 454.5$ K
+
+Professor's optional check: $\dot m = p\sqrt{\gamma/(RT)}\,M A = 0.147$ kg/s, about 1 % off the 0.145, from the linear interpolation.
+
+</Step>
+</Steps>
+
+<Answer>
+
+- (a) **ṁ = 0.145 kg/s**. The throat is choked, because the subsonic solution would exit at about 984 kPa, far above 200 kPa.
+- (b) A normal shock **is** present, at **$x_s \approx 0.1$ m** from the pipe entrance ($M_x \approx 2.4$; the marking says "≈ 2.5"). Exact: 0.114 m, $M_x$ = 2.35.
+- (c) **$p_{exit} \approx 200$ kPa, $T_{exit} \approx 454$ K, $M_{exit} \approx 0.7$** (exact 456 K, M = 0.69).
+
+</Answer>
+
+<Traps>
+
+- Marking scheme (/70): (a) formula +5, answer +5, **justification via the subsonic branch +10**. (b) $M_x$ = 2.94 +10, "$L_{1-2} > L^*$" +10, entrance shock with $p^*$ = 132 kPa +10, iterate to ≈ 0.1 m +10. (c) exit state +10.
+- **Anthony's red correction:** after a shock at $x$, subtract **only the remaining pipe**, $4f(L - x)/D$. "The remaining part only!!" Using the full 0.75 gave M = 0.72 and $p$ = 199.3, which is right by accident.
+- **"Use T* not T":** get temperatures through the $T^*$ of the post-shock Fanno line ($T^* = T_0/1.2 = 416.7$ K, the same everywhere because $T_0$ is constant).
+- Here $p_b = 200$ kPa is above $p^* = 132$ kPa, so the exit is **not** choked and must match $p_b$. Compare W2019 P3, where $p_b$ was below $p^*$.
+- **Exam-speed version:** "a) A/A* = 4 → sub M = 0.15 → 984 kPa; 27.93 − 0.75 ≈ same ⇒ $p_{exit}$ ≈ 984 ⋙ 200 ⇒ choked: ṁ = 0.1445. b) sup M = 2.94, 4fL*/D = 0.513 < 0.75 ⇒ shock. Entrance: $M_y$ = 0.4788 → 1.2453 − 0.75 → M = 0.6 → 233 kPa > 200 ⇒ move downstream. x = 0.1: 0.513 − 0.1 → $M_x$ = 2.41 → $M_y$ = 0.522 → 0.917 − **(0.75 − 0.1)** = 0.267 → M = 0.67 → 207 kPa, 459 K. ⇒ $x_s$ ≈ 0.1 m."
+
+</Traps>
+
+<Source>official W2024 solution pp. 3–6 and grading scheme p. 9 · Anthony's minimum-writing notes pp. 9–13, second pass with red corrections · exact values from lib/nozzlePipe.ts</Source>
+
+</Problem>
+
+<Problem id="W2024 P2" title="Rayleigh flow: heat addition and thermal choking (30 pts)" tags="Rayleigh, thermal choking, A5">
+
+<Statement>
+
+A subsonic flow at Mach 0.75 enters a duct with heat addition, with a static temperature of 300 K and a static pressure of 100 kPa. Use $c_p$ = 1 kJ/kg·K for air.
+
+(a) If Δq = 15 kJ/kg of heat is added in the duct, find the **exit temperature, pressure and Mach number**.
+
+(b) If Δq = 50 kJ/kg is added, keeping the same upstream stagnation conditions as in part (a), **to what value must the Mach number at the entrance decrease?**
+
+</Statement>
+
+<Think>
+
+Constant area, no friction and heat addition: this is **Rayleigh flow**, table A5 (recipe R5). Anchor everything to the starred state of the inlet's Rayleigh line. The very first thing to compute is the most heat the flow can take, $\Delta q^* = c_p(T_0^* - T_{01})$:
+
+- $\Delta q$ below $\Delta q^*$: march along the same line to $T_{02}/T_0^*$.
+- $\Delta q$ above $\Delta q^*$: the flow **thermally chokes**. With $T_{01}$ fixed, the inlet Mach number drops until the added heat is exactly the new $\Delta q^*$.
+
+</Think>
+
+<Plan>
+
+$M_1$ → A2 → $T_{01}$, $p_{01}$ → A5 at $M_1$ → $T_0^*$, $T^*$, $p^*$ → $\Delta q^*$ → compare → A5 at $T_{02}/T_0^*$ → $M_2$, $T_2$, $p_2$.
+
+<RayleighHeatPlot M1={0.75} T1={300} p1={100} cp={1000} qa={15000} qb={50000} />
+
+</Plan>
+
+<Steps>
+<Step title="1. Inlet stagnation state">
+
+<T>A2 @ M = 0.75: T/T₀ = 0.8988, p/p₀ = 0.68857</T> → $T_{01} = 333.7$ K, $p_{01} = 145.2$ kPa — <CalcLink calc="isentropic" q="in=M&v=0.75">check</CalcLink>
+
+</Step>
+<Step title="2. The starred reference state of this Rayleigh line">
+
+<T>A5 @ M = 0.75: T₀/T₀* = 0.94009, T/T* = 1.0142, p/p* = 1.3427</T> — <CalcLink calc="rayleigh" q="in=M&v=0.75">check</CalcLink>
+
+$T_0^* = 333.7/0.94009 = 355.0$ K, $T^* = 295.8$ K, $p^* = 100/1.3427 = 74.48$ kPa.
+
+$$
+\Delta q^* = c_p(T_0^* - T_{01}) = 1\times(355.0 - 333.7) = 21.3\ \text{kJ/kg}
+$$
+
+15 kJ/kg is less than 21.3, so in (a) the heat fits.
+
+</Step>
+<Step title="3. (a) Exit state">
+
+$T_{02} = 333.7 + 15/1 = 348.7$ K, so $T_{02}/T_0^* = 348.7/355.0 = 0.982$:
+
+<T>A5 @ T₀/T₀* = 0.982 (sub): M₂ = 0.86, p/p* = 1.1791, T/T* = 1.0283</T> (exact M₂ = 0.855) — <CalcLink calc="rayleigh" q="in=T0&v=0.982&b=sub">check</CalcLink>
+
+$p_2 = 74.48 \times 1.1791 = 87.8$ kPa, and $T_2 = 295.8 \times 1.0283 = 304$ K.
+
+</Step>
+<Step title="4. (b) 50 kJ/kg is above the 21.3 kJ/kg the line can take">
+
+The flow chokes. $T_{01} = 333.7$ K stays fixed (same upstream stagnation state), so the inlet must move to a new Rayleigh line on which 50 kJ/kg is exactly $\Delta q^*$:
+
+$$
+\frac{T_{01}}{T_0^{*,new}} = \frac{333.7}{333.7 + 50} = 0.8697
+$$
+
+<T>A5 @ T₀/T₀* = 0.8697 (sub): M = 0.65</T> (exact 0.652) — <CalcLink calc="rayleigh" q="in=T0&v=0.8697&b=sub">check</CalcLink>
+
+</Step>
+</Steps>
+
+<Answer>
+
+- (a) **$M_2 \approx 0.86$, $p_2 \approx 87.8$ kPa, $T_2 \approx 304$ K** (exact: 0.855, 88.3 kPa, 304.3 K).
+- (b) The flow chokes, and the inlet Mach number must drop to **$M_1 \approx 0.65$**, with $M_2 = 1$.
+
+</Answer>
+
+<Traps>
+
+- **Official slip, corrected:** the solution writes $T_2$ = 301.7 K, but $T^* \times (T/T^*)_{M=0.86} = 295.8 \times 1.0283 = $ **304 K** (the marking line says "302 K"). The grading sheet also prints $T_{02}/T_0^*$ = 0.985, while the solution computes 0.982. Use 0.982.
+- **Compare Δq with Δq\* first.** Noting that Δq exceeds Δq\* was worth 5 of the 15 marks in (b).
+- $T_0^*$ is fixed **along one Rayleigh line** (fixed ṁ/A). When the inlet Mach number changes in (b), the line, and so its $T_0^*$, changes.
+- Use A5's $T_0/T_0^*$ column. Don't use A2's $A/A^*$ by mistake (a classic error on the practice finals).
+- **Exam-speed version:** "$T_{01}$ = 300/0.8988 = 333.7. A5 @ 0.75 → $T_0^*$ = 355.0, T* = 295.8, p* = 74.48. q* = 21.3 > 15 ✓. 348.7/355.0 = 0.982 → M = 0.86 → p = 87.8 kPa, T = 304 K. b) 50 > 21.3 ⇒ choke: 333.7/383.7 = 0.8697 → $M_{in}$ = 0.65."
+
+</Traps>
+
+<Source>official W2024 solution pp. 7–8 and grading p. 10 · Anthony's Rayleigh recipe (Final exam prep, pp. 1–3) · exact values from lib/rayleigh.ts</Source>
+
+</Problem>

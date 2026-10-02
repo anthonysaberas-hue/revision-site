@@ -1,0 +1,280 @@
+<p className="eyebrow">Final practice B · 6 problems · 3 hours · original</p>
+
+# Final practice B (mock)
+
+<div className="lede">
+
+A second original paper in the Final format, with different topics from <Ex id="final-mock-a">practice A</Ex>, so that together they cover every chapter of the course. All numbers were recomputed independently (air properties from CoolProp; the third digit may differ from the printed tables).
+
+| # | Topic | Chapters |
+|---|---|---|
+| 1 | Heat sink and thermal resistance budget | 3 (fins) |
+| 2 | Concrete wall exposed to fire | 4 (semi-infinite) |
+| 3 | Heated plate in a fast air stream | 7 |
+| 4 | Vertical plate: free convection plus radiation | 9, 12 |
+| 5 | Cross-flow exchanger | 11 |
+| 6 | Spectrum, glass cover and radiation shields | 12, 13 |
+
+</div>
+
+<Problem id="B1" title="Transistor on a finned heat sink: the temperature chain" tags="thin fins, corrected length, thermal-resistance budget">
+
+<Statement>
+
+A 25 W transistor sits on a heat sink: base $8\times6$ cm, 9 straight fins ($k=200$ W/mK, thickness 1.5 mm, height 2.5 cm, length 6 cm along the flow), cooled by 30 °C air with $h=45$ W/m²K on all surfaces. The contact resistance case–sink is 0.3 K/W and the junction–case resistance is 1.2 K/W. Find (a) the fin efficiency, (b) the thermal resistance of the sink to the air, (c) the base, case and junction temperatures, (d) the maximum power if the junction must stay below 125 °C.
+
+</Statement>
+
+<Think>
+
+Thin fins: $m=\sqrt{2h/kt}$; corrected length $L_c=H+t/2$ for the convective tip. Sink resistance $R=1/[h(\eta A_{fin}+A_{unfinned})]$. Then everything is in series: $T_j=T_\infty+\dot Q(R_{sink}+R_{contact}+R_{jc})$.
+
+</Think>
+
+<Steps>
+<Step title="1. (a) Fin efficiency">
+
+$m=\sqrt{\dfrac{2(45)}{200(0.0015)}}=17.32$ m⁻¹; $L_c=0.025+0.00075=0.02575$ m; $mL_c=0.446$; $\eta=\dfrac{\tanh0.446}{0.446}=0.939$.
+
+</Step>
+<Step title="2. (b) Sink resistance">
+
+$A_{fin}=9(2)(0.06)(0.02575)=0.02781$ m²; unfinned base: $0.08(0.06)-9(0.0015)(0.06)=0.0048-0.00081=0.00399$ m². $hA_{eff}=45(0.939\cdot0.02781+0.00399)=45(0.03010)=1.354$ W/K, so $R_{sink}=0.7385$ K/W.
+
+</Step>
+<Step title="3. (c) Temperatures">
+
+Base $=30+25(0.7385)=48.5$ °C; case $=48.5+25(0.3)=56.0$ °C; junction $=56.0+25(1.2)=86.0$ °C.
+
+</Step>
+<Step title="4. (d) Maximum power">
+
+$\dot Q_{max}=\dfrac{125-30}{0.7385+0.3+1.2}=42.4$ W.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**(a) 0.939; (b) 0.739 K/W; (c) 48.5 / 56.0 / 86.0 °C; (d) 42.4 W.** The largest single resistance is the junction–case (1.2 K/W, set by the transistor package): no heat sink can reduce it.
+
+</Answer>
+
+</Problem>
+
+<Problem id="B2" title="A concrete wall exposed to fire (semi-infinite solid)" tags="erf, penetration, surface heat flux, time to reach a temperature at depth">
+
+<Statement>
+
+A thick concrete wall ($k=1.4$ W/mK, $\rho=2300$ kg/m³, $c_p=880$ J/kgK) at 20 °C has its surface suddenly raised to 700 °C by a fire and held there. After 30 min find (a) the temperature at depths 2, 5 and 10 cm, (b) the surface heat flux, (c) the penetration depth. (d) How long until the point 10 cm deep reaches 100 °C?
+
+</Statement>
+
+<Think>
+
+Semi-infinite solid with a prescribed surface temperature: $\dfrac{T-T_i}{T_s-T_i}=\mathrm{erfc}\left(\dfrac x{2\sqrt{\alpha t}}\right)$; surface flux $q''=\dfrac{k(T_s-T_i)}{\sqrt{\pi\alpha t}}$; penetration $\delta\approx2\sqrt{\alpha t}$.
+
+</Think>
+
+<Steps>
+<Step title="1. Diffusivity and length scale">
+
+$\alpha=\dfrac{1.4}{2300(880)}=6.917\times10^{-7}$ m²/s; $t=1800$ s: $\sqrt{\alpha t}=0.03528$ m; $2\sqrt{\alpha t}=0.0706$ m.
+
+</Step>
+<Step title="2. (a) Temperatures">
+
+$T=T_s+(T_i-T_s)\,\mathrm{erf}(\eta)$ with $\eta=\dfrac x{2\sqrt{\alpha t}}$: $x=2$ cm, $\eta=0.283$, $\mathrm{erf}=0.311$, $T=700-680(0.311)=488$ °C; $x=5$ cm, $\eta=0.709$, $\mathrm{erf}=0.684$, $T=235$ °C; $x=10$ cm, $\eta=1.417$, $\mathrm{erf}=0.954$, $T=51$ °C.
+
+</Step>
+<Step title="3. (b) Surface flux">
+
+$q''=\dfrac{1.4(680)}{\sqrt{\pi(6.917\times10^{-7})(1800)}}=15.2$ kW/m².
+
+</Step>
+<Step title="4. (c) Penetration depth">
+
+$\delta=2\sqrt{\alpha t}=7.1$ cm: beyond it the wall has hardly noticed the fire (the 10 cm point is at 51 °C).
+
+</Step>
+<Step title="5. (d) Time for 100 °C at 10 cm">
+
+$\mathrm{erf}(\eta)=\dfrac{700-100}{680}=0.882\Rightarrow\eta=1.106$ (from an erf table, interpolating); $t=\dfrac{x^2}{4\alpha\eta^2}=\dfrac{0.01}{4(6.917\times10^{-7})(1.224)}=2952$ s $\approx49$ min.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**(a) 488, 235, 51 °C; (b) 15.2 kW/m²; (c) 7.1 cm; (d) about 49 min.** The slow diffusion (low $\alpha$) is why concrete protects steel reinforcement for an hour or so.
+
+</Answer>
+
+</Problem>
+
+<Problem id="B3" title="A 2 m plate in a 15 m/s air stream" tags="mixed flat plate, transition location, drag, tripped-flow comparison">
+
+<Statement>
+
+Air at 15 °C and 15 m/s flows along a 2 m long, 1 m wide flat plate at 80 °C. Take the properties at the film temperature (47.5 °C: $k=0.0279$ W/mK, $\nu=1.773\times10^{-5}$ m²/s, $Pr=0.7046$, $\rho=1.101$ kg/m³). Find (a) $Re_L$ and the transition location, (b) the average $h$ and the heat rate, (c) the drag force on one side, (d) what the answer would be if the flow were tripped to turbulent at the leading edge.
+
+</Statement>
+
+<Steps>
+<Step title="1. (a) Reynolds number and transition">
+
+$Re_L=\dfrac{15(2)}{1.773\times10^{-5}}=1.69\times10^6$; $x_{cr}=\dfrac{5\times10^5\nu}V=0.591$ m: the first 30 % is laminar.
+
+</Step>
+<Step title="2. (b) Mixed-flow coefficient and heat">
+
+$\overline{Nu}=(0.037Re_L^{0.8}-871)Pr^{1/3}=2389$; $\bar h=\dfrac{0.0279}2(2389)=33.3$ W/m²K; $\dot Q=\bar hA\Delta T=33.3(2)(65)=4330$ W.
+
+</Step>
+<Step title="3. (c) Drag">
+
+$C_f=\dfrac{0.074}{Re_L^{1/5}}-\dfrac{1742}{Re_L}=0.003173$; $F=C_fA\dfrac{\rho V^2}2=0.003173(2)\dfrac{1.101(225)}2=0.786$ N.
+
+</Step>
+<Step title="4. Local coefficients at the transition">
+
+Just before $x_{cr}$: $Nu_x=0.332\sqrt{5\times10^5}\,Pr^{1/3}=208.9$, $h=9.9$ W/m²K. Just after: $Nu_x=0.0296(5\times10^5)^{0.8}Pr^{1/3}=954.5$, $h=45.1$ W/m²K: the coefficient jumps by a factor 4.6 when the layer becomes turbulent.
+
+</Step>
+<Step title="5. (d) Tripped flow">
+
+$\overline{Nu}=0.037Re_L^{0.8}Pr^{1/3}=3165$, $\bar h=44.1$ W/m²K, $\dot Q=5740$ W: 32 % more than the mixed estimate.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**(a) $1.69\times10^6$, $x_{cr}=0.59$ m; (b) 33.3 W/m²K, 4.33 kW; (c) 0.79 N; (d) 44.1 W/m²K, 5.74 kW if tripped.**
+
+</Answer>
+
+</Problem>
+
+<Problem id="B4" title="A vertical heated plate: free convection plus radiation" tags="Ra, laminar vertical plate, h_rad, total loss">
+
+<Statement>
+
+A vertical plate 0.5 m tall and 2 m wide ($\varepsilon=0.85$) is at 90 °C in still 25 °C air; the surroundings are at 25 °C. Find the natural-convection and radiation heat losses.
+
+</Statement>
+
+<Steps>
+<Step title="1. Properties at $T_f=57.5$ °C (330.65 K)">
+
+$k=0.02862$ W/mK, $\nu=1.872\times10^{-5}$ m²/s, $\alpha=2.660\times10^{-5}$ m²/s, $Pr=0.7036$, $\beta=1/330.65=3.024\times10^{-3}$ K⁻¹.
+
+</Step>
+<Step title="2. Rayleigh number">
+
+$Ra_L=\dfrac{g\beta\Delta TL^3}{\nu\alpha}=\dfrac{9.81(3.024\times10^{-3})(65)(0.5)^3}{(1.872\times10^{-5})(2.660\times10^{-5})}=4.84\times10^8<10^9$: **laminar**.
+
+</Step>
+<Step title="3. Nusselt number and $h$">
+
+Laminar formula: $Nu=0.68+\dfrac{0.67Ra^{1/4}}{[1+(0.492/Pr)^{9/16}]^{4/9}}=76.9$; $h=\dfrac{76.9(0.02862)}{0.5}=4.40$ W/m²K. (The all-$Ra$ Churchill–Chu form gives $Nu=98.2$, $h=5.62$: 28 % higher; for $Ra<10^9$ the laminar equation is the more accurate one.)
+
+</Step>
+<Step title="4. Losses">
+
+$A=0.5(2)=1.0$ m². $\dot Q_{conv}=4.40(1.0)(65)=286$ W. $\dot Q_{rad}=\varepsilon A\sigma(T_s^4-T_{surr}^4)=0.85(1.0)(5.67\times10^{-8})(363.15^4-298.15^4)=457$ W ($h_{rad}=7.04$ W/m²K). Total $=743$ W.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**Convection 286 W, radiation 457 W, total 743 W:** radiation carries 62 % of the loss.
+
+</Answer>
+
+<Traps>
+
+Quoting only the convection result would under-predict by a factor 2.6. The two correlations differ by 28 % here: note which one the formula sheet gives and apply its stated range.
+
+</Traps>
+
+</Problem>
+
+<Problem id="B5" title="A cross-flow exchanger: water heating air" tags="ε–NTU, cross-flow both unmixed, rating">
+
+<Statement>
+
+Hot water ($\dot m=0.8$ kg/s, $c_p=4180$) enters a finned-tube cross-flow exchanger (both fluids unmixed) at 90 °C. Air ($\dot m=1.5$ kg/s, $c_p=1006$) enters at 20 °C. $UA=2200$ W/K. Find the heat transfer rate and both outlet temperatures.
+
+</Statement>
+
+<Steps>
+<Step title="1. Capacity rates and NTU">
+
+$C_w=3344$, $C_a=1509$ W/K: $C_{min}=C_a$, $C_r=0.451$; $NTU=\dfrac{2200}{1509}=1.458$.
+
+</Step>
+<Step title="2. Effectiveness (cross-flow, both unmixed)">
+
+$\varepsilon=1-\exp\!\left\{\dfrac{NTU^{0.22}}{C_r}\left[e^{-C_rNTU^{0.78}}-1\right]\right\}=1-\exp\{\dfrac{1.0865}{0.4513}[e^{-0.4513(1.3419)}-1]\}=0.665$. (Counterflow would give 0.69; parallel flow 0.60.)
+
+</Step>
+<Step title="3. Heat and outlets">
+
+$\dot Q=\varepsilon C_{min}(90-20)=0.665(1509)(70)=70.2$ kW. $T_{air,o}=20+\dfrac{70\,243}{1509}=66.5$ °C; $T_{water,o}=90-\dfrac{70\,243}{3344}=69.0$ °C.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**$\dot Q=70.2$ kW; air leaves at 66.5 °C; water at 69.0 °C.**
+
+</Answer>
+
+</Problem>
+
+<Problem id="B6" title="Spectrum, a glass cover and a radiation shield" tags="band fraction, transmissivity, greenhouse effect, shield">
+
+<Statement>
+
+(a) The Sun is a blackbody at 5800 K: find the peak wavelength and the fraction of its emission below 0.7 µm. (b) A glass cover transmits 90 % of the radiation below 2.7 µm and none above. What fraction of the solar radiation passes through it? What fraction of the radiation from a 350 K absorber plate passes back out? (c) Two large parallel plates at 700 K ($\varepsilon=0.6$) and 350 K ($\varepsilon=0.9$): find the net flux without a shield, and with one thin shield ($\varepsilon=0.15$ on both sides), and with two. What is the temperature of the single shield?
+
+</Statement>
+
+<Steps>
+<Step title="1. (a)">
+
+$\lambda_{max}=\dfrac{2897.8}{5800}=0.50$ µm. At $\lambda T=0.7(5800)=4060$ µm·K: $f=0.49$: **49 %** of the solar radiation is at wavelengths below 0.7 µm (36.8 % lies in the visible 0.4–0.7 µm).
+
+</Step>
+<Step title="2. (b) Glass cover">
+
+Solar: $\lambda T=2.7(5800)=15\,660$, $f=0.972$: transmitted fraction $=0.9(0.972)=0.875$. The 350 K plate: $\lambda T=2.7(350)=945$ µm·K, $f=1.6\times10^{-4}$: transmitted fraction $=1.5\times10^{-4}$, i.e. essentially nothing: the radiation is trapped (**greenhouse effect**).
+
+</Step>
+<Step title="3. (c) Plates without a shield">
+
+$q=\dfrac{\sigma(700^4-350^4)}{1/0.6+1/0.9-1}=\dfrac{12\,763}{1.778}=7179$ W/m².
+
+</Step>
+<Step title="4. With shields">
+
+One shield adds $(2/0.15-1)=12.33$: $q=\dfrac{12\,763}{1.778+12.33}=905$ W/m² (12.6 %). Two shields: $\dfrac{12\,763}{1.778+24.67}=483$ W/m² (6.7 %).
+
+</Step>
+<Step title="5. Shield temperature (one shield)">
+
+$T_3^4=T_1^4-\dfrac{q(1/0.6+1/0.15-1)}\sigma=2.401\times10^{11}-\dfrac{905(7.333)}{5.67\times10^{-8}}=1.231\times10^{11}$; $T_3=592$ K.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**(a) 0.50 µm, 49 %; (b) 87.5 % passes in, $1.5\times10^{-4}$ passes out; (c) 7179 → 905 → 483 W/m²; $T_{shield}=592$ K.**
+
+</Answer>
+
+</Problem>

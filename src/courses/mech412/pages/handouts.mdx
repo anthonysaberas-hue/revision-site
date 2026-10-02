@@ -1,0 +1,85 @@
+<p className="eyebrow">Exam toolkit · reproduced from Handout 1 (MT1) and Handout 2 (MT2)</p>
+
+# Handouts 1 and 2: the tables the exams hand you
+
+<div className="lede">
+
+MT1 came with **Handout 1** (a Laplace table, the transfer-function and state-space definitions, Methods 1 and 2); MT2 came with **Handout 2** (the analogies table). These are rebuilt here from the course material, so you can solve any past paper with nothing else. Everything below was cross-checked against the worked examples.
+
+</div>
+
+## Handout 1 · Laplace transform pairs
+
+| $f(t)$, $t\ge0$ | $F(s)$ |
+|---|---|
+| unit impulse $\delta(t)$ | $1$ |
+| unit step $1(t)$ | $\dfrac1s$ |
+| ramp $t$ | $\dfrac1{s^2}$ |
+| $\dfrac{t^{n}}{n!}$ | $\dfrac1{s^{n+1}}$ |
+| $e^{-at}$ | $\dfrac1{s+a}$ |
+| $te^{-at}$ | $\dfrac1{(s+a)^2}$ |
+| $\sin\omega t$ | $\dfrac{\omega}{s^2+\omega^2}$ |
+| $\cos\omega t$ | $\dfrac{s}{s^2+\omega^2}$ |
+| $e^{-at}\sin\omega t$ | $\dfrac{\omega}{(s+a)^2+\omega^2}$ |
+| $e^{-at}\cos\omega t$ | $\dfrac{s+a}{(s+a)^2+\omega^2}$ |
+| unit step response of $\dfrac{\omega_n^2}{s^2+2\zeta\omega_ns+\omega_n^2}$, $\zeta<1$ | $1-e^{-\sigma t}\Big(\cos\omega_dt+\dfrac{\sigma}{\omega_d}\sin\omega_dt\Big)$, $\sigma=\zeta\omega_n$, $\omega_d=\omega_n\sqrt{1-\zeta^2}$ |
+
+**Operations.**
+
+| Operation | Rule |
+|---|---|
+| derivative | $\mathcal L\{\dot f\}=sF-f(0)$, $\mathcal L\{\ddot f\}=s^2F-sf(0)-\dot f(0)$ |
+| integral | $\mathcal L\{\int_0^tf\}=F/s$ |
+| time shift | $\mathcal L\{f(t-a)1(t-a)\}=e^{-as}F(s)$ |
+| frequency shift | $\mathcal L\{e^{-at}f\}=F(s+a)$ |
+| multiplication by $t$ | $\mathcal L\{tf\}=-F'(s)$ |
+| convolution | $\mathcal L\{\int_0^tg(t-\tau)u(\tau)d\tau\}=G(s)U(s)$ |
+| initial value | $f(0^+)=\lim_{s\to\infty}sF(s)$ |
+| final value | $f(\infty)=\lim_{s\to0}sF(s)$ (only if all poles of $sF$ are in the LHP) |
+
+## Handout 1 · Transfer function and state space
+
+**Transfer function.** $G(s)=\dfrac{Y(s)}{U(s)}$ with zero initial conditions $=\dfrac{b_0s^n+b_1s^{n-1}+\dots+b_n}{s^n+a_1s^{n-1}+\dots+a_n}$; poles = roots of the denominator, zeros = roots of the numerator.
+
+**State space.** $\dot x=Ax+Bu$, $y=Cx+Du$; $G(s)=C(sI-A)^{-1}B+D$; $\Phi(s)=(sI-A)^{-1}$; $\Phi(t)=\mathcal L^{-1}\{\Phi(s)\}=e^{At}$; characteristic polynomial $\det(sI-A)$; diagonalisation $P^{-1}AP=\mathrm{diag}(\lambda_1,\dots,\lambda_n)$ with $x=P\hat x$ (for distinct eigenvalues $P=$ Vandermonde).
+
+**Step response of a state model.** $x(t)=\Phi(t)x(0)+\int_0^t\Phi(t-\tau)Bu(\tau)\,d\tau$; for a unit step and invertible $A$: $x=\Phi(t)x(0)+A^{-1}(\Phi(t)-I)B$.
+
+### Method 2 (companion form, numerator through the output equation)
+
+For $\dfrac YU=\dfrac{b_0s^n+b_1s^{n-1}+\dots+b_n}{s^n+a_1s^{n-1}+\dots+a_n}$: introduce $Z/U=1/(\text{den})$, $Y=(\text{num})Z$ and the states $x_i=z^{(i-1)}$:
+$$A=\begin{bmatrix}0&1&\cdots&0\\\vdots&&\ddots&\\0&0&\cdots&1\\-a_n&-a_{n-1}&\cdots&-a_1\end{bmatrix},\ B=\begin{bmatrix}0\\\vdots\\0\\1\end{bmatrix},\ C=[\,b_n-a_nb_0,\ \dots,\ b_1-a_1b_0\,],\ D=b_0 .$$
+
+### Method 1 (the $\beta$ method: the input derivative goes into $B$)
+
+$\beta_0=b_0$; $\beta_1=b_1-a_1\beta_0$; $\beta_2=b_2-a_1\beta_1-a_2\beta_0$; in general $\beta_k=b_k-\sum_{i=1}^{k}a_i\beta_{k-i}$. States $x_1=y-\beta_0u$, $x_{k+1}=\dot x_k-\beta_ku$. Same companion $A$ as above,
+$$B=\begin{bmatrix}\beta_1\\\beta_2\\\vdots\\\beta_n\end{bmatrix},\qquad C=[1\ \ 0\ \cdots\ 0],\qquad D=\beta_0=b_0 .$$
+
+Check: both methods must return the same transfer function. Worked cases: $\text{MT1 W2009 Q3}$ ($\beta=0,0,10,0$), $\text{MT1 W2017 Q2}$ ($\beta=0,0.9,0$), $\text{MT1 W2019 Q4}$ ($\beta=1,-4,32$).
+
+## Handout 2 · The analogies table
+
+| System | Potential | Flux | Resistance | Capacitance | Inductance |
+|---|---|---|---|---|---|
+| electrical | voltage $V$ | current $i$ | $R$ | $C$ | $L$ |
+| mechanical **impedance** | force $f$ | velocity $u$ | $R_M$ (damper) | $C_M=1/k$ (spring) | $M_M$ (mass) |
+| mechanical **mobility** | velocity $u$ | force $f$ | $r_M=1/R_M$ | $M_M$ (mass, to ground) | $C_M=1/k$ (spring) |
+| liquid level | head $h$ | flow $q$ | $R_l=2H/Q$ | $C_l=A_{tank}$ | $M_l=\dfrac{L_{pipe}}{gA_{pipe}}$ |
+| acoustic | pressure $p$ | volume flow $U$ | $R_A=d\Delta p/dU$ | $C_A=\dfrac V{\rho c_0^2}$ | $M_A=\rho L/A$ |
+| pneumatic | pressure $p$ | mass flow $q_m$ | $R_{pn}=d\Delta p/dq$ | $C_{pn}=\dfrac V{nR_{gas}T}$ | $M_{pn}=L/A$ |
+| hydraulic | pressure $p$ | mass flow $q_m$ | $R_h=d\Delta p/dq$ | $C_h=\rho V/\beta$ | $M_h=L/A$ |
+| thermal | temperature $\theta$ | heat flow $q_h$ | $R_t=1/(hA)$ | $C_t=mc_p$ | none |
+
+**Source swap.** A given *velocity* is a voltage source in the mobility analog and a current source in the impedance analog; a given *force* is a current source in mobility and a voltage source in impedance.
+
+**Coupling elements.** Same analog on both sides: **transformer** (mechanical-to-acoustic $S:1$; lever with arms $l_1,l_2$: ratio $l_2/l_1$; piston/area $A_p$); different analogs on the two sides (for example a motor: electrical impedance to mechanical mobility): a **gyrator**. Impedance seen through a transformer scales with the square of the ratio.
+
+**Conversions for mass-flow resistances** (hydraulic and pneumatic): $R_A=\rho R_f$, $M_A=\rho M_f$, $C_A=C_f/\rho$.
+
+**Mobility drawing rules (the four that decide the marks).** (1) Nodes = absolute velocities. (2) If there is a force input, **start with that component** (current source). (3) Masses go from their node to ground; wall elements go from the node to ground; elements between two masses go between the two nodes. (4) Count the energy stores to get the order.
+
+<Callout kind="note" title="Where the handout and the notes disagree">
+
+The L11 slide shows the gear ratio $(n_2/n_1):1$ on both analogs; the consistent reciprocal pair is mobility $(m_2/m_1):1$ and impedance $(m_1/m_2):1$ (Anthony's MT2 sheet is right). See the <Ch slug="analogies">analogies chapter</Ch>.
+
+</Callout>

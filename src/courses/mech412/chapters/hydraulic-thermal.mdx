@@ -1,0 +1,126 @@
+<p className="eyebrow">Chapter 13 · Lecture 15 · HW6 Q2 · T08 Q1, Q3</p>
+
+# Liquid level, hydraulic servos, thermal systems
+
+<div className="lede">
+
+Tanks, valves, hydraulic cylinders and thermometers all obey one pattern: *something flows through a resistance into a storage*. This chapter gives you that pattern once and then spends it on the three situations the exams love: two interacting tanks, a hydraulic servo with a dashpot feedback (the speed governor), and the master analogy table.
+
+</div>
+
+<Idea title="The 30-second version">
+
+- **Liquid level:** potential = head $h$ (m), flux = volume flow $q$ (m³/s). Valve $R_l=\dfrac{dh}{dq}=\dfrac{2\bar H}{\bar Q}$, tank $C_l=$ **tank area**. A single tank: $\dfrac{H}{Q_i}=\dfrac{R_l}{R_lC_ls+1}$.
+- **Interacting tanks:** $\dfrac{Q_2}{Q_1}=\dfrac{1}{R_1R_2C_1C_2s^2+(R_1C_1+R_2C_2+R_2C_1)s+1}$. The cross term $R_2C_1$ is the *interaction*.
+- **Hydraulic servo** (valve + piston): an **integrator**, $Y/X=K/s$. Feed back through a lever and a dashpot-spring and you get P, PD or PI.
+- **Thermal:** $R_t=\Delta\theta/q_h$, $C_t=mc_p$ — a first-order RC (a thermometer in a bath). Thermal systems have **no inertance**.
+
+</Idea>
+
+## Everyday picture: a toilet cistern
+
+The tank is the capacitor, the outlet is the resistor, the float valve is a proportional controller. Fill fast: the level rises; the valve closes as the level approaches the target. Two rain barrels joined by a hose are the *interacting* tanks of the exam.
+
+## A single tank
+
+1. **Valve (turbulent orifice):** $Q=K_t\sqrt H$. Linearise: $dQ=\tfrac12K_tH^{-1/2}dH$, so
+ $$R_l=\frac{dH}{dQ}=\frac{2\sqrt{\bar H}}{K_t}=\frac{2\bar H}{\bar Q}$$
+ (the slope of the tangent at the operating point; this is the handout's $R_l=2H/Q$).
+2. **Tank:** net inflow = rate of change of stored volume: $q_{in}-q_o=C_l\dot h$ with $C_l=S$ (the cross-section) and $q_o=h/R_l$.
+3. $R_lC_l\dot h+h=R_lq_i$, so $\dfrac H{Q_i}=\dfrac{R_l}{R_lC_ls+1}$. Time constant $R_lC_l$.
+
+**Standard (pressure-based) analog:** $R_A=\rho gR_l$ and $C_A=C_l/(\rho g)$ (area over $\rho g$): use this form when the valve resistance is quoted in N·s/m⁵.
+
+## Interacting tanks (MT2 W2012 Q2, make-up Q3, T08 Q1)
+
+Tank 1 ($C_1$, head $h_1$) feeds tank 2 ($C_2$, $h_2$) through $R_1$ (called $R_B$ in $\text{W2012}$); tank 2 drains to atmosphere through $R_2$ ($R_C$).
+
+1. **Tank 1:** $C_1\dot h_1=q_{in}-q_1$ with $q_1=\dfrac{h_1-h_2}{R_1}$ ⇒ $\Big(C_1s+\dfrac1{R_1}\Big)H_1=Q_{in}+\dfrac{H_2}{R_1}$.
+2. **Tank 2:** $C_2\dot h_2=q_1-q_{out}$ with $q_{out}=\dfrac{h_2}{R_2}$ ⇒ $\Big(C_2s+\dfrac1{R_1}+\dfrac1{R_2}\Big)H_2=\dfrac{H_1}{R_1}$.
+3. **Eliminate $H_1$** and use $H_2=R_2Q_{out}$:
+ $$\boxed{\frac{Q_{out}}{Q_{in}}=\frac1{R_1C_1R_2C_2\,s^2+(R_1C_1+R_2C_2+R_2C_1)\,s+1}}.$$
+
+**Why $R_2C_1$?** Tank 2 pulls on tank 1 through $R_1$; the head $h_2$ pushes back. If the tanks did *not* interact (a buffer between them) you would get a product of first-order lags. The cross term makes the combination *slower*.
+
+**Numbers** ($\text{W2012 Q2}$: $S_1=S_2=2$ m², all $R=1$ s/m²): $\dfrac1{4s^2+6s+1}$, poles $-0.19$ and $-1.31$ (time constants 5.2 s and 0.76 s), 2 % settling time $\approx20$ s from the slow pole. **Make-up Q3 (water, $A=2.56$ m², $R=5\times10^5$ N·s/m⁵):** $C=A/(\rho g)=2.61\times10^{-4}$ m⁵/N so $RC=130.5$ s; $\tau^2s^2+3\tau s+1$ has poles $-0.0029$ and $-0.0201$ s⁻¹: settling time **≈1390 s (23 min)**. Doubling tank 2's area gives 1830 s — about 30 % slower, not twice.
+
+<Tanks3D />
+
+### Two inputs: superposition (T08 Q1)
+
+A disturbance $q_d$ enters tank 2 (a tap), $q_i$ enters tank 1. By linearity treat them separately:
+
+- **Case 1 ($q_d=0$):** in the T08 arrangement tank 1 drains *freely* into tank 2 ($q_1=H_1/R_1$, the jet falls into the second tank), so the tanks do **not** interact and the two lags simply multiply: $\dfrac{H_2}{Q_i}=\dfrac{R_2}{(R_1C_1s+1)(R_2C_2s+1)}$.
+- **Case 2 ($q_i=0$):** tank 1 stays empty, $\dfrac{H_2}{Q_d}=\dfrac{R_2}{R_2C_2s+1}$.
+- **Total:** $H_2=\dfrac{R_2Q_i}{(R_1C_1s+1)(R_2C_2s+1)}+\dfrac{R_2Q_d}{R_2C_2s+1}$.
+
+With a proportional controller $q_i=K_p(r-h_2)$ (all constants 1): $\dfrac{H_2}{R}=\dfrac{K_p}{s^2+2s+1+K_p}$, damping $\zeta=1/\sqrt{1+K_p}$ (always underdamped), final value $\dfrac{K_p}{1+K_p}$ (**an offset $\dfrac1{1+K_p}$ remains: no integrator**), overshoot $e^{-\pi/\sqrt{K_p}}$, settling time $\approx4$ s whatever $K_p$. (Disturbance offset: Chapter 14.)
+
+## Hydraulic servomotor and the speed governor
+
+A **spool valve** admits oil to one side of a power piston in proportion to the spool displacement $x$; the piston *keeps moving* as long as the valve is open:
+
+$$
+\boxed{\frac YX=\frac Ks}\qquad(\text{an integrator}).
+$$
+
+**Dashpot feedback.** A dashpot $b$ in series with a spring $k$ (the junction $z$ is massless, so the forces balance): $b(\dot y-\dot z)=kz$, hence
+
+$$
+\frac{Z}{Y}=\frac{bs}{bs+k}\quad(\text{cylinder moves; a high-pass}),\qquad\text{or}\quad\frac ZY=\frac1{Ts+1},\;T=\frac{\rho RA^2}k\ (\text{cylinder fixed; a low-pass}).
+$$
+
+### Worked example: the governor (MT2 W2019 Q2)
+
+Engine speed rises ⇒ the fly-ball sleeve rises (error $e$) ⇒ the lever moves the pilot valve ⇒ the power piston moves $y$ (closing the fuel valve) ⇒ the dashpot-spring position $z$ feeds back to the lever. Lever arms $a_1,a_2$.
+
+1. **Lever:** $x=\dfrac{a_2}{a_1+a_2}e-\dfrac{a_1}{a_1+a_2}z$.
+2. **Servo:** $Y=\dfrac Ks\,X$.
+3. **Feedback unit:** $\dfrac ZY=\dfrac{bs}{bs+k}$.
+4. **Closed loop:**
+ $$\frac YE=\frac{\frac{a_2}{a_1+a_2}\frac Ks}{1+\frac{a_1}{a_1+a_2}\frac{bs}{bs+k}\frac Ks}=\frac{a_2K(bs+k)}{s\big[(a_1+a_2)(bs+k)+a_1bK\big]}.$$
+5. **High gain** ($\gg1$ drops the 1): $\dfrac YE\approx\dfrac{a_2}{a_1}\cdot\dfrac{bs+k}{bs}=\dfrac{a_2}{a_1}\Big(1+\dfrac kb\cdot\dfrac1s\Big)$.
+6. **PI controller:** $K_p=\dfrac{a_2}{a_1}$, $T_i=\dfrac bk$.
+
+*Why this matters:* the integral action removes the steady-state speed error that a proportional-only governor leaves (a constant load change). **The piston keeps moving while $e\ne0$.**
+
+<HydraulicServo3D />
+
+**The same circuit with the cylinder fixed (MT2 F2022 Q2):** $\dfrac ZY=\dfrac1{Ts+1}$, $T=\dfrac{\rho RA^2}k$, closed loop $\dfrac{bK(Ts+1)}{(a+b)s(Ts+1)+aK}$ and, for large $K$, $\dfrac YE\approx\dfrac ba(Ts+1)$: a **PD** controller. (Which end of the dashpot is fixed decides P+I or P+D.)
+
+**The hydraulic dashpot (HW6 Q2, MT2 F2022 Q1b, W2024 Q2).** A piston (area $A$) in a cylinder, with an orifice $R$ (mass-flux resistance), oil density $\rho$, spring $k$ on the cylinder. The *relative* velocity pushes oil through the orifice: $Q=A(\dot y-\dot z)$, $P_2-P_1=\rho RQ$, $A(P_2-P_1)=kz$ ⇒ $\dfrac ZY=\dfrac{Ts}{Ts+1}$, $T=\dfrac{\rho RA^2}{k}$ (a car shock absorber in series with a spring).
+
+**Servo with bellows and lever (T08 Q3):** $Y/X=K_H/s$, lever $x=w$, $y=-z$ ⇒ force balance $p_iA=k(x+y)$ ⇒ $\dfrac Y{P_i}=\dfrac{A/k}{s/K_H+1}$ (DC gain $A/k$; the tutorial's printed $A/(ks/K_H+1)$ drops the $k$ from the "+1" term).
+
+## Thermal systems
+
+$R_t=\dfrac{\Delta\theta}{q_h}=\dfrac1K$ (K = heat-transfer coefficient × area), $C_t=mc_p$. A thermometer in a bath: $RC\dot\theta+\theta=\theta_b$, i.e. $\dfrac\Theta{\Theta_b}=\dfrac1{RCs+1}$. A constant bath temperature gives an exponential approach; a ramping bath gives a ramp with **lag $RC$**. Thermal systems have no inertance (heat has no momentum). A meat thermometer reading 63 % of the way in 30 s has $RC=30$ s.
+
+## The master analogy table (handout 2)
+
+| System | Potential | Flux | Resistance | Capacitance | Inductance |
+|---|---|---|---|---|---|
+| liquid level | $h$ [m] | $q$ [m³/s] | $R_l=2H/Q$ | $C_l=A_{tank}$ | $M_l=\dfrac{L_{pipe}}{gA_{pipe}}$ |
+| pneumatic | $p$ [Pa] | $q_m$ [kg/s] | $R_{pn}=d(\Delta p)/dq$ | $C_{pn}=\dfrac V{nR_{gas}T}$ | $M_{pn}=L/A$ |
+| acoustic | $p$ | $U$ [m³/s] | $R_A=d(\Delta p)/dU$ | $C_A=\dfrac V{\rho c_0^2}$ | $M_A=\rho L/A$ |
+| hydraulic | $p$ | $q_m$ | $R_h=d(\Delta p)/dq$ | $C_h=\rho V/\beta$ | $M_h=L/A$ |
+| thermal | $\theta$ [K] | $q_h$ [W] | $R_t=1/K$ | $C_t=mc_p$ | — |
+| mech. impedance | $f$ | $u$ | $R_M$ | $C_M=1/k$ | $M_M$ |
+| mech. mobility | $u$ | $f$ | $r_M=1/R_M$ | $M_M$ | $C_M=1/k$ |
+| electrical | $V$ | $i$ | $R$ | $C$ | $L$ |
+
+*"Standard" analog* means potential × flux = power (pressure × volume flow). Liquid level with head $h$ and volume flow $q$ is *not* standard (head × flow is not power); that is why the pressure-form $R_A=\rho gR_l$, $C_A=C_l/\rho g$ exists.
+
+<Examined>
+
+- Tanks: $\text{MT2 W2012 Q2}$, $\text{W2019 Q1b}$ (three tanks, five valves), $\text{make-up Q3}$, $\text{W2011 Q2}$, T08 Q1; the float-in-a-tank circuit of $\text{W2019 Q1c}$ (volume $V=C_lh-A_c(h-x)$ gives the transformer $A_c:1$).
+- Hydraulic servos: $\text{MT2 W2019 Q2}$, $\text{F2022 Q1b/Q2}$, $\text{W2024 Q2}$, <Hw n="6">HW6</Hw> Q2, T08 Q3.
+
+</Examined>
+
+### Check yourself
+
+1. Valve with $\bar H=1$ m and $\bar Q=0.01$ m³/s: $R_l$? *(2 s/m².)*
+2. Why does the tank equation have a cross term $R_2C_1$? *(Interaction: tank 2's head pushes back on tank 1.)*
+3. A hydraulic servo with constant spool displacement: what does the piston do? *(Moves at constant speed: integrator.)*
+4. In the governor, which constant sets the integral time? *($T_i=b/k$.)*

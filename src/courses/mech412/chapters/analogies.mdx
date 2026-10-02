@@ -1,0 +1,145 @@
+<p className="eyebrow">Chapter 10 · Lecture 11 · HW5 · T07 Q2 · handout 2</p>
+
+# Impedance and mobility analogies, transformers and gyrators
+
+<div className="lede">
+
+The most-examined skill in MECH 412: given a mechanical (or hydraulic, or acoustic) system, **draw an equivalent electrical circuit**. Every MT2 has it as Question 1. The reason it is worth the points: once the circuit is drawn, you already know how to analyse it (Chapter 8), and the *same* circuit language works for mass–spring systems, tanks, pipes and motors alike.
+
+</div>
+
+<Idea title="The 30-second version">
+
+Pick which mechanical quantity plays the role of **voltage** (the "potential") and which plays **current** (the "flux"). Two choices:
+
+- **Mobility analog:** potential = **velocity**, flux = **force**. The circuit has the same *shape* as the mechanical sketch (parallel stays parallel). Masses are **capacitors to ground**, springs are **inductors**, dashpots are **resistors**.
+- **Impedance analog:** potential = **force**, flux = **velocity**. It is the *dual* of the other: series ↔ parallel, mass → **inductor**, spring → **capacitor**, dashpot → **resistor**.
+
+Both give the same equations; use whichever is easier. Then translate between domains with **transformers** (levers, gears, piston areas) and **gyrators**.
+
+</Idea>
+
+## Why does this work at all?
+
+Compare a mass–spring–damper and a series RLC loop:
+
+$$
+M\ddot x+R_M\dot x+\frac1{C_M}x=F(t)\qquad\longleftrightarrow\qquad L\ddot q+R\dot q+\frac1Cq=e(t).
+$$
+
+Same equation, different symbols. Systems described by the same differential equation are *analogous*, and the solution of one is the solution of the other.
+
+## The element maps
+
+| Mechanical element | Relation | **Mobility** circuit element | **Impedance** circuit element |
+|---|---|---|---|
+| **mass** $M_M$ | $F=M_M\dot u$ | capacitor $C=M_M$ (one end **grounded**) | inductor $L=M_M$ |
+| **spring** $k=1/C_M$ | $F=k\!\int\!u\,dt$ | inductor $L=C_M=1/k$ | capacitor $C=C_M=1/k$ |
+| **dashpot** $R_M$ | $F=R_M(u_1-u_2)$ | resistor $r_M=1/R_M$ | resistor $R_M$ |
+| given **velocity** source | | voltage source | current source |
+| given **force** source | | current source | voltage source |
+
+<Remember title="Why a mass is always grounded">
+
+Newton's law holds in an *inertial* frame: the mass accelerates relative to the fixed ground, not relative to another mass. So a mass is a capacitor with **one terminal to ground** in the mobility analog. A spring or dashpot, by contrast, sees the **relative** velocity $u_1-u_2$ of its two ends, so it connects *between* two nodes (or from a node to ground if the other end is fixed to a wall).
+
+</Remember>
+
+<Callout kind="note" title="Compliance, not stiffness">
+
+The handout uses the **compliance** $C_M=1/k$. In the impedance analog the spring is a capacitor whose *value* is $1/k$, not $k$ (the official solution to $\text{MT2 F2022 Q1a}$ labels one capacitor with the stiffness instead of the compliance).
+
+</Callout>
+
+## The recipe for the mobility analog (this is what you do on the exam)
+
+1. **Nodes = absolute velocities** of the masses, plus **ground** (every fixed wall).
+2. **Start with the force input** (the crib-sheet rule: "if there is a force input, start with that component"): a current source into the node of the mass it pushes.
+3. **Each mass** → capacitor $M_M$ from its node to ground.
+4. **Each spring/dashpot between two masses** → inductor $C_M$ / resistor $1/R_M$ between the two nodes (a spring and dashpot in parallel mechanically are in parallel electrically).
+5. **Each spring/dashpot to a wall** → from the mass's node to ground.
+6. Label every element and say *potential = velocity, flux = force* in your answer (marks are given for labels).
+7. **Check the order:** number of storage elements (masses + springs) = number of states.
+
+### Example 1: a single mass (the building block)
+
+A mass $M$ held by a spring $k$ and dashpot $R_M$ to the wall, force $F$ on it.
+
+**Mobility:** all three elements share the same velocity, so they are in *parallel* across the node, with the force as a current source.
+
+<CircuitBoard source={{kind:'Is',label:'F(t)',sub:'force'}} sections={[{type:'shunt',stack:[{kind:'C',label:'M_M',sub:'mass'}],node:'u'},{type:'shunt',stack:[{kind:'L',label:'C_M = 1/k',sub:'spring'}]},{type:'shunt',stack:[{kind:'R',label:'r_M = 1/R_M',sub:'dashpot'}]}]} title="Mobility analog: potential = velocity, flux = force" caption="Parallel: the same velocity across all three elements. KCL: F = M u′ + R_M u + (1/C_M)∫u dt." />
+
+**Impedance:** the same *force-balance* appears as a *series* loop (the same velocity/current runs through all three), with the force as a voltage source.
+
+<CircuitBoard close source={{kind:'Vs',label:'F(t)',sub:'force'}} sections={[{type:'series',el:{kind:'L',label:'M_M',sub:'mass'}},{type:'series',el:{kind:'C',label:'C_M = 1/k',sub:'spring'}},{type:'series',el:{kind:'R',label:'R_M',sub:'dashpot'}}]} title="Impedance analog: potential = force, flux = velocity" caption="Series: the same current (velocity) through every element. KVL: F = M u′ + (1/C_M)∫u dt + R_M u." />
+
+Both give $M\dot u+R_Mu+\tfrac1{C_M}\!\int u\,dt=F$ ✔.
+
+### Example 2: two carts ($\text{MT2 W2012 Q1a}$)
+
+Cart 1 (mass $M_1$, velocity $\dot p$) is pushed by force $u$ and joined to cart 2 (mass $M_2$, velocity $\dot q$) by a spring $k_1$ and dashpot $b_1$ in parallel; cart 2 is joined to the wall by $k_2$ and $b_2$ in parallel. Wheels frictionless.
+
+1. Nodes $\dot p$, $\dot q$.
+2. Force source $u$ into node $\dot p$.
+3. $M_1$ from $\dot p$ to ground; $M_2$ from $\dot q$ to ground.
+4. $k_1$ and $b_1$ **between** the nodes (parallel pair).
+5. $k_2$, $b_2$ from $\dot q$ to ground.
+
+<CircuitBoard source={{kind:'Is',label:'u',sub:'force'}} sections={[{type:'shunt',stack:[{kind:'C',label:'M₁'}],node:'ṗ'},{type:'bridge',els:[{kind:'L',label:'C₁ = 1/k₁'},{kind:'R',label:'r₁ = 1/b₁'}]},{type:'shunt',stack:[{kind:'C',label:'M₂'}],node:'q̇'},{type:'shunt',stack:[{kind:'L',label:'C₂ = 1/k₂'}]},{type:'shunt',stack:[{kind:'R',label:'r₂ = 1/b₂'}]}]} title="Mobility analog of the two carts" caption="Elements joining the two carts sit between the nodes; elements to the wall go to ground. Four storage elements (M₁, M₂, k₁, k₂) so the system is 4th order." />
+
+The impedance analog is the dual: the shared elements ($b_1,k_1$) are shared between two loops, the force is a voltage source in the loop of cart 1.
+
+## Levers, gears, pistons: transformers
+
+A **lever** (arms $l_1,l_2$): moments $f_1l_1=f_2l_2$ and small displacements $u_1l_2=u_2l_1$. A transformer changes the *level* of the potential and flux but conserves power $f\!\cdot\!u$.
+
+- **Mobility analog** ratio $(l_1/l_2):1$; **impedance analog** ratio $(l_2/l_1):1$ (reciprocal, because mobility = 1/impedance).
+- Quantities seen through a transformer scale by the ratio **squared**: $\xi_{M1}=(l_1/l_2)^2\xi_{M2}$ and $Z_{M1}=(l_2/l_1)^2Z_{M2}$.
+- **Gear trains** ($n$ = number of teeth/radius): mobility $(n_2/n_1):1$, impedance $(n_1/n_2):1$ (Anthony's crib sheet; the slide prints the same label on both, which is the inconsistency to be aware of). A load inertia $J_2$ seen from shaft 1 is $J_1^{eq}=J_1+(n_1/n_2)^2J_2$.
+- **Piston (hydraulic/acoustic):** force $F=A\,p$, velocity-to-volume-flow $U=A\,u$: a transformer of ratio $A$ (Chapter 12).
+
+### Example 3: a pivoted bar ($\text{MT2 F2022 Q1a}$ = HW5 Q5)
+
+A uniform bar (mass $m$, length $L$) pivots about a point $L/4$ from its left end. Spring $k$ at the left end, damper $c$ and force $F(t)$ at the right end.
+
+1. $I_O=I_G+m(L/4)^2=\tfrac{mL^2}{12}+\tfrac{mL^2}{16}=\dfrac{7mL^2}{48}$ (parallel-axis theorem; the centre of mass is $L/4$ from the pivot).
+2. Spring at arm $L/4$, damper and force at arm $3L/4$: moments about the pivot
+
+ $$\frac{7mL^2}{48}\ddot\theta+\frac{9cL^2}{16}\dot\theta+\frac{kL^2}{16}\theta=\frac{3L}4F .$$
+3. **Mobility (potential $\dot\theta$, flux torque):** a torque source $3FL/4$ into one node; in parallel: capacitor $7mL^2/48$ (inertia), resistor $16/(9cL^2)$ (damper), inductor $16/(kL^2)$ (spring).
+4. **Impedance:** one series loop: voltage source $3FL/4$, inductor $7mL^2/48$, resistor $9cL^2/16$, capacitor $16/(kL^2)$ (**compliance**, the reciprocal of the stiffness).
+5. *Or keep the translations* $x=\tfrac L4\theta$ and $y=\tfrac{3L}4\theta$ and join the blocks by transformers with the arm ratios.
+
+<Trap title="Lever mistakes">
+
+Forgetting the parallel-axis term; squaring the arms in the elements but not in the force source (the source carries the *first* power of its arm); using the spring *stiffness* instead of *compliance* in the impedance analog.
+
+</Trap>
+
+## Transformer or gyrator? The one rule
+
+When you couple two subsystems:
+
+- both sides drawn in the **same** analog (both mobility, or both impedance) ⇒ **transformer** ($a/c=g$, $cb=d$, potential → potential);
+- the two sides use **different** analogs (e.g. fluid in impedance form, a piston in mobility form) ⇒ **gyrator** (potential → flux: $a=cd$, $g=cb$).
+
+*The motor and the loudspeaker* are the textbook examples: the armature circuit (impedance form: voltage, current) coupled to the shaft (mobility form: velocity, torque) through a **gyrator** with constant $K_t$, or through a **transformer** if you draw both sides in mobility form (Chapter 11).
+
+## The dot method (converting between the two analogs)
+
+For **planar** circuits only: (1) put a dot inside every loop and one outside, (2) connect the dots with lines that each cross exactly one element, (3) replace each crossed element by its dual (L ↔ C, R ↔ 1/R, series ↔ parallel, voltage source ↔ current source), (4) redraw. Useful when you drew one analog and the problem asks for the other.
+
+<Examined>
+
+- **Every MT2 Q1:** $\text{W2009}$ (dashpot with hydraulic coupling), $\text{W2010}$ (tissue-stiffness device), $\text{W2011}$ (three masses and a hydro-pneumatic system), $\text{W2012}$ (two carts), $\text{W2019}$ (two masses with velocity generators; liquid-level circuit), $\text{F2022}$ (pivoted bar), $\text{W2024}$ (electrical ladder).
+- <Hw n="5">HW5</Hw> Q3–Q5 (analogs, a rod linking two masses, a lever), T07 Q2.
+- The velocity **generator** question (why a force generator is used for a human subject): an ideal velocity source could produce huge forces.
+
+</Examined>
+
+### Check yourself
+
+1. In the mobility analog, which element is in parallel with a mass if both are attached to the same wall? *(The spring and dashpot, all across the same node.)*
+2. Series or parallel: a spring and dashpot joining two moving masses, in the *impedance* analog? *(They share the same relative velocity, which is the current ⇒ series.)*
+3. A lever with arm ratio $l_1:l_2=1:3$ in the mobility analog: transformer ratio? *($(l_1/l_2):1=1:3$.)*
+4. Pressure drives a piston of area $A$ against a spring. Transformer or gyrator if fluid is impedance-type and the piston mobility-type? *(Gyrator: different analogs.)*

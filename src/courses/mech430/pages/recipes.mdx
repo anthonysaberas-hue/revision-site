@@ -1,0 +1,288 @@
+<p className="eyebrow">Exam toolkit</p>
+
+# Exam recipes
+
+<p className="lede">Every MECH 430 exam problem is one of eight templates. Recognise the template, run its flowchart, read the tables in the listed order, and dodge the known traps. This page is built from Anthony's own March–April 2025 prep notes ("minimum writing" re-solves of every Quiz 2 and his "Final exam prep" recipes), with his wording kept wherever possible.</p>
+
+<Idea title="The minimum-writing philosophy">
+
+Write only the chain, highlight the one decisive comparison, and move on. A typical line from his notes:
+
+> "A/A\* = 5 → M = 3.2 → p/p0 = 0.02023 → p = 0.2023 → 4fL\*/D = 0.52216 < 4fL₁₋₂/D = 1.2 → it can't happen without a shock."
+
+1. **Nondimensionalise pipe length immediately:** work in 4fL/D, never metres (1.2 for W2019, 0.2 for W2023, 0.75 for W2024, 20 for F2023, 200 for Final B).
+2. **Every case is a hypothesis → compute → compare** against the one thing that must match ($p_{back}$, or $L \le L^*$, or $\Delta q \le \Delta q^*$, or $A^*_y \le A_t$).
+3. **Highlight the comparison** that kills or confirms the hypothesis.
+4. Use the **nearest table row**: "no need to interpolate; just use nearest value".
+5. When the numbers barely change (4fL/D = 0.2 against 4fL\*/D = 14.5), **skip the step**: "M almost the same → P_exit ≈ P_in".
+
+</Idea>
+
+## Which template is it?
+
+| You see… | Template |
+|---|---|
+| C-D nozzle feeding a pipe, a back pressure, "where is the shock?" | [1. Nozzle + Fanno pipe](#1-nozzle--fanno-pipe--back-pressure) |
+| A tank feeding a long tube, vacuum downstream | [1. (tank variant)](#1-nozzle--fanno-pipe--back-pressure) |
+| "Inlet", "diffuser", "start", "swallow the shock", "spillage" | [2. Inlet starting](#2-inlet-starting) |
+| Heat added in a constant-area duct, "thermal choking", detonation | [3. Rayleigh duct](#3-rayleigh-duct-heat-addition) |
+| Chamber $p_0$, $T_0$, "optimum expansion", thrust ratios, Isp | [4. Rocket nozzle](#4-rocket-nozzle) |
+| Wedge, diamond, angle of attack, lift and drag | [5. Shock-expansion airfoil](#5-shock-expansion-airfoil) |
+| Numbered points, "use the MOC", "present in a table" | [6. MOC table](#6-moc-table) |
+| Inlet + shock + combustor + nozzle, "thrust of the engine" | [7. Combined engine](#7-combined-engine-ramjet) |
+| Piston, "impulsively", moving shock, shock tube, diaphragm | [8. Piston / shock tube](#8-piston--shock-tube) |
+
+## 1. Nozzle + Fanno pipe + back pressure
+
+**Recognition cues:** a reservoir, a C-D nozzle (or a plain converging entry), a constant-area pipe with friction factor f, and a back pressure. Asked: ṁ, exit state, shock location, the back pressure for a given event. The single most examined problem: [W2019 P3](#/mech430/exam/q2-w2019#w2019-p3), [W2023 P2](#/mech430/exam/q2-w2023#w2023-p2), [W2024 P1](#/mech430/exam/q2-w2024#w2024-p1), [F2023 P2](#/mech430/exam/q2-f2023#f2023-p2), [Final B P2](#/mech430/exam/final-b#final-b-p2), [PS7 P4–P6](#/mech430/ps/ps07#ps7-p4).
+
+<RecipeFlow
+  caption="Decision procedure for a nozzle feeding a Fanno pipe (Anthony's W2019/W2024 chain)."
+  nodes={[
+    'Compute A_pipe/A_t and 4fL/D up front. Number the stations.',
+    { q: 'Subsonic branch: A/A* → sub M → Fanno to the exit. Does p_exit match p_b?', yes: 'Subsonic everywhere (or the first-choking case). Done.', no: 'p_exit ≫ p_b: we are "sucking harder", the throat is choked and the flow goes supersonic past it.' },
+    'Choked ṁ from the throat: ṁ = A_t (p0/√T0) √(γ/R) / 1.2³.',
+    { q: 'Supersonic branch: is 4fL*/D(M1) ≥ 4fL/D?', yes: 'Supersonic pipe possible: march L2* = L1* − L, compare p with p_b (shock at the exit, or waves outside).', no: 'L > L*: a shock must sit in the pipe (never compute L − L*).' },
+    'Try the shock at the pipe entrance: My, py → Fanno (sub) → exit M and p.',
+    { q: 'Is p_b below p* of the post-shock Fanno line?', yes: 'Exit is choked (M = 1, p_exit = p*). Find the shock position where L* after the shock = the REMAINING pipe.', no: 'Exit subsonic: move the shock until p_exit = p_b; bracket two trials and interpolate.' },
+    'State M_exit, p_exit, shock location (range), and ṁ.',
+  ]}
+/>
+
+**Table sequence:** A2 (A/A\*, both branches) → A4 (4fL\*/D, p/p\*) → A3 (shock) → A4 again on the new line → A2/A3 for $p_0$ bookkeeping.
+
+**Tank variant (no throat, F2023 P2, Final B P2):** 4fL/D → assume $L = L^*$ → A4 gives $M_{in}$ → p\* from $p_0$. If $p^* > p_b$ the flow is choked: $M_{exit} = 1$, $p_{exit} = p^*$ (it need not equal $p_b$). Then $\dot m = A\frac{p_0}{\sqrt{T_0}}\sqrt{\gamma/R}\,M_{in}/(1+0.2M_{in}^2)^3$. To change ṁ at fixed $p_0$, $T_0$: new $M_{in}$ → new $L = (4fL^*/D)(D/4f)$.
+
+<Trap title="Common traps (Anthony's red corrections)">
+
+- **"The remaining part only!!"** After a shock at x, compare against $4f(L - x)/D$, not the whole pipe (W2024 second pass).
+- **"Use T\* not T"**: get exit temperatures through the post-shock line's $T^*$.
+- **Never compute L − L\*** when L > L\* (Higgins' "WRONG" with a cartoon on W2019).
+- Subsonic exit ⇒ $p_e = p_b$. Choked exit ⇒ $p_e$ need not match ("once the back pressure is below p\*, the flow is isolated from it").
+- One M per state: don't mix table rows (p/p\* from 1.84 with py/px from 1.86).
+- $p^*$ after the shock barely changes between trials: a free sanity check.
+
+</Trap>
+
+<NozzlePipeSim AR={5} fL={1.2} pb={0.1} p0={1000} />
+
+## 2. Inlet starting
+
+**Recognition cues:** "supersonic inlet/diffuser designed for M", "start", "swallow the shock", "overspeed", "variable throat", "spillage", "mass flow of the unstarted inlet". Uses: [W2019 P1](#/mech430/exam/q2-w2019#w2019-p1), [W2023 P1](#/mech430/exam/q2-w2023#w2023-p1), [Final B P1](#/mech430/exam/final-b#final-b-p1), [PS6 P1–P2](#/mech430/ps/ps06#ps6-p1).
+
+<RecipeFlow
+  caption="Inlet starting in four moves (Kantrowitz)."
+  nodes={[
+    'Design: A_in/A_t = A/A*(M_design) from A2.',
+    { q: 'Fixed geometry? (start by overspeeding)', yes: 'Shock at the lip, post-shock flow just chokes the throat: A_in/A_t = A/A*(My) on the SUBSONIC branch → My → A3 inverse → Mx = required flight M.', no: 'Variable throat: open it by A_t,new/A_t,old = A*y/A*x = p0x/p0y at M_design (W2019: 1/0.9298 = +7.55 %).' },
+    'After starting, slow back down to M_design and close the throat back to the design value.',
+    'Unstarted ṁ ratio = p0y/p0x at M∞ (everything else in the choked formula cancels).',
+  ]}
+/>
+
+**Table sequence:** A2 (sup) → A2 (sub) → A3 (inverse via My) → A3 ($p_{0y}/p_{0x}$).
+
+<Trap>
+
+- The starting condition uses the **subsonic** A/A\* root.
+- Unstarted: the throat still chokes, but with $p_{0y}$. "Everything is the same at the throat (same area, Mach number, stagnation temperature)."
+- A wind tunnel's second throat is the same idea: $A_{t2}/A_{t1} = p_{0x}/p_{0y}$ at the test Mach ([PS6 P1](#/mech430/ps/ps06#ps6-p1)).
+
+</Trap>
+
+<InletStartSim initialM={1.4} initialRatio={0.897} />
+
+## 3. Rayleigh duct (heat addition)
+
+**Recognition cues:** constant area, "heat added", "combustor", Δq or $T_{02}$ given, "thermal choking", "maximum heat", detonation. Uses: [W2024 P2](#/mech430/exam/q2-w2024#w2024-p2), [Final A P1](#/mech430/exam/final-a#final-a-p1), [Final B P3](#/mech430/exam/final-b#final-b-p3), [PS8 P1–P4](#/mech430/ps/ps08#ps8-p1).
+
+From his notes: "Rayleigh flow: no friction, with heat exchange." $\rho_1V_1 = \rho_2V_2$, $p_1 + \rho_1V_1^2 = p_2 + \rho_2V_2^2$, and $\delta q = c_p(T_{02} - T_{01})$.
+
+<RecipeFlow
+  caption="Rayleigh recipe (Final exam prep p1–3)."
+  nodes={[
+    'Inlet M1 → A2: T01 = T1/(T/T0), p01 = p1/(p/p0).',
+    'A5 at M1: T0/T0*, p0/p0*, T/T*, p/p* → the * references (fixed for this Rayleigh line).',
+    'T02 = T01 + Δq/cp.',
+    { q: 'Is Δq ≤ Δq* = cp(T0* − T01)?', yes: 'T02/T0* → A5 on the SAME branch → M2 → T2 = T*(T/T*), p2 = p*(p/p*), p02 = p0*(p0/p0*).', no: 'Thermal choking: the inlet M must change so that Δq becomes the new Δq*: T01/T0*new = T01/(T01 + Δq/cp) → A5 → new M_in (W2024: 0.8697 → 0.65). Exit M = 1.' },
+  ]}
+/>
+
+**Detonation shortcut (Final A P1):** a normal shock joins two points on the same Rayleigh line with the same $T_0$, so $T_0^*$ is unchanged across the shock. Apply the Rayleigh $T_0/T_0^*$ at the upstream M directly: $\dfrac{\Delta q}{c_pT_1} = \dfrac{(M^2-1)^2}{2(\gamma+1)M^2}$ → M = 4.83 for Δq = 4000 kJ/kg, $c_p$ = 3, $T_1$ = 300 K.
+
+<Trap>
+
+- **Don't confuse A/A\* (A-2) with p₀/p₀\* (A-5).** Both students on Final B P3 used 1.8229 (A/A\* at 0.34) instead of 1.1822 (p₀/p₀\*), which wrecked the nozzle exit area.
+- Choose the branch: subsonic stays subsonic, supersonic stays supersonic. Heat always drives M toward 1.
+- Heating a subsonic flow *raises* M and *lowers* $p_0$; T can fall near M = 1 (above $M = 1/\sqrt\gamma$).
+
+</Trap>
+
+
+## 4. Rocket nozzle
+
+**Recognition cues:** chamber $p_0$, $T_0$, MW, "optimum/maximum thrust at altitude", "same nozzle in space", Isp, thrust ratios, over/under-expanded exit. Uses: [W2019 P2](#/mech430/exam/q2-w2019#w2019-p2), [Final A P2](#/mech430/exam/final-a#final-a-p2), [PS3 P2](#/mech430/ps/ps03#ps3-p2), [PS4 P1–P3](#/mech430/ps/ps04#ps4-p1).
+
+<RecipeFlow
+  caption="Rocket recipe R1."
+  nodes={[
+    'Design p_e = p_amb ⇒ M_e = √{[(p0/p_e)^((γ−1)/γ) − 1]·2/(γ−1)}; A_e/A* from A2.',
+    'Work per unit ṁ (ṁ cancels when chamber and throat are unchanged): F/ṁ = V_e + (p_e − p_amb)/(ρ_e V_e).',
+    'V_e = √[(2γ/(γ−1)) R T0 (1 − (p_e/p0)^((γ−1)/γ))]; p_e/(ρ_e V_e) = R T_e/V_e.',
+    { q: 'Ambient differs from design?', yes: 'Add the pressure term (space: p_amb = 0). Infinite area ratio: V_max = √(2γRT0/(γ−1)).', no: 'Isp = F/ṁ = V_e.' },
+    { q: 'Asked about the jet at the lip?', yes: 'Over-expanded: p_amb/p_e = py/px → A3 Mn → σ = asin(Mn/M_e) → θ-β-M δ. Under-expanded to vacuum: turn = ν_max − ν(M_e) = 130.45° − ν(M_e).', no: 'Done.' },
+  ]}
+/>
+
+<Trap>
+
+- Isp here is F/ṁ in m/s, no $g_0$.
+- W2019: same nozzle in space $1420.06/(1420.06 + 219.65) = 0.866$; infinite nozzle $1420.06/2049.39 = 0.693$.
+- The lip shock is **oblique**: py/px fixes only $M_n$.
+
+</Trap>
+
+<RocketThrustSim />
+
+## 5. Shock-expansion airfoil
+
+**Recognition cues:** wedge, diamond, flat plate, half-angle ε, angle of attack α, "pressure on each surface", lift and drag. Uses: [Final A P3](#/mech430/exam/final-a#final-a-p3), [Final B P4](#/mech430/exam/final-b#final-b-p4), [PS10 P2](#/mech430/ps/ps10#ps10-p2), [PS9 P2–P3](#/mech430/ps/ps09#ps9-p2).
+
+<RecipeFlow
+  caption="Shock-expansion theory (R6 + R7)."
+  nodes={[
+    'Assign turns: windward front face δ = ε + α, leeward δ = ε − α (negative ⇒ that face starts with a fan). Shoulder turn = 2ε.',
+    'Front faces: θ-β-M → σ (weak) → Mxn = M sin σ → A3 → py/px, Myn → M = Myn/sin(σ − δ).',
+    'Rear faces: ν = ν(M_front) + 2ε → A6 → M → p = p_front (p/p0)(M_rear)/(p/p0)(M_front).',
+    'Face length (c/2)/cos ε; forces: D = A[sin(ε−α)(p_up,front − p_lo,rear) + sin(ε+α)(p_lo,front − p_up,rear)], L = A[cos(ε+α)(p_lo,front − p_up,rear) + cos(ε−α)(p_lo,rear − p_up,front)].',
+  ]}
+/>
+
+His worked examples: M = 4, σ = 30° → δ = 17.5°, $M_{xn} = 2$, $M_{yn} = 0.5774$, $M_y = 0.5774/\sin(12.5^\circ) = 2.66$. M = 2, 10° expansion: ν = 26.38 → 36.38 → M = 2.38, p = 0.552 atm.
+
+<Trap>
+
+- **Read the θ-β-M chart carefully.** On Final A P3, 35° instead of 34.3° changed the lift by 12 %.
+- $p_0$ is constant through a fan, not across a shock.
+- Check whether the exam's lift/drag definitions are the usual ones (Final A swapped them).
+
+</Trap>
+
+<DiamondAirfoilSim initialM={2} initialEps={10} initialAlpha={5} pInf={100} chord={1} />
+
+## 6. MOC table
+
+**Recognition cues:** numbered points on a sketch, wall angles at intersections, "use the Method of Characteristics", "present your answers in a table". Uses: [Final A P4](#/mech430/exam/final-a#final-a-p4), [Final B P5](#/mech430/exam/final-b#final-b-p5), [PS10 P3–P4](#/mech430/ps/ps10#ps10-p3).
+
+His boxed definitions: **$C_I = \nu + \theta$ = constant along right-running; $C_{II} = \nu - \theta$ = constant along left-running.**
+
+<RecipeFlow
+  caption="MOC point by point."
+  nodes={[
+    'Table header: Point | C_I | C_II | θ | ν | M | μ | p. Initial points carry the given M AND the local wall angle.',
+    { q: 'Interior point?', yes: 'C_I from the up-left point (on its right-running line), C_II from the down-left point: θ = (C_I − C_II)/2, ν = (C_I + C_II)/2.', no: 'Wall point: θ = θ_wall. Upper wall: ν = C_II + θ. Lower wall: ν = C_I − θ.' },
+    'ν → A6 → M → μ = asin(1/M).',
+    'Pressure: isentropic, p = p_ref (p/p0)(M)/(p/p0)(M_ref). ALWAYS fill this column.',
+    { q: 'Same-family lines crossing, or M below 1?', yes: 'MOC breaks down: a shock forms (compression) or no characteristics exist (subsonic).', no: 'Continue to the next point.' },
+  ]}
+/>
+
+Line directions for drawing: right-running at θ − μ, left-running at θ + μ.
+
+<Trap>
+
+- Both practice-final students **forgot the pressures although they were asked**.
+- One invariant at a wall, two in the interior. Don't average at a wall.
+- His own slip: ν = 17.38 gives M ≈ 1.69, not 1.75 (1.75 has ν = 19.27).
+
+</Trap>
+
+<MOCChannelSim preset="finalB" />
+
+## 7. Combined engine (ramjet)
+
+**Recognition cues:** an inlet, a shock "positioned at A = …", a combustor with Δq, a nozzle, "thrust of the engine", "what happens if the pilot adds fuel". Uses: [Final B P3](#/mech430/exam/final-b#final-b-p3), the semester project (Marquardt RJ43-9: M 2.7 at 18 km, inlet d = 0.89 m, 53 kN, kerosene 43 MJ/kg, unstart fuel flow, start at M 2.3), [PS8 P4](#/mech430/ps/ps08#ps8-p4).
+
+<RecipeFlow
+  caption="March through the engine handing on (M, p0, T0) at every junction."
+  nodes={[
+    'Free stream: A2 at M∞ → p0x, T0, A*x = A_in/(A/A*)(M∞) (started inlet).',
+    'Shock: A_shock/A*x → sup M → A3: My, p0y/p0x. T0 unchanged; A*y = A*x p0x/p0y.',
+    'Diffuser: A_comb/A*y → SUB M_c (A2).',
+    { q: 'Rayleigh (A5!): is Δq ≤ cp(T0* − T01)?', yes: 'T02/T0* → M2; p02 = p0y (p0/p0*)(M2)/(p0/p0*)(M_c).', no: 'Thermal choking: the shock is pushed upstream; too much ⇒ unstart (bow shock, spillage, thrust lost).' },
+    'Nozzle throat: A_t = A_comb/(A/A*)(M2). Exit: p∞/p02 → M_e → A_e = A_t (A/A*)(M_e).',
+    'Thrust (CV around the engine): F = ṁ(V_e − V∞) + (p_e − p∞)A_e, with ṁ = ρ∞V∞A_in.',
+  ]}
+/>
+
+<Trap>
+
+- A-5's $p_0/p_0^*$, not A-2's A/A\* (the Final B error).
+- Fixed geometry, more fuel: the nozzle throat demands a higher $p_{02}$, so the shock moves **forward** to a weaker position; when it reaches the inlet throat the inlet unstarts. The project's "maximum fuel flow before unstart" is exactly this limit.
+- Start at a lower Mach (project: M 2.3) by opening the inlet throat: $A_t/A_{in} = 1/(A/A^*)(M_y)$ at the start Mach.
+
+</Trap>
+
+<RamjetSim preset="rj43" />
+
+## 8. Piston / shock tube
+
+**Recognition cues:** "impulsively", piston velocity, "moving shock", "lab frame", diaphragm, driver/driven gas, Riemann invariants, x–t diagram. Uses: [Final A P5](#/mech430/exam/final-a#final-a-p5), [PS5 P1–P2](#/mech430/ps/ps05#ps5-p1), [PS11 P1–P6](#/mech430/ps/ps11#ps11-p1).
+
+<RecipeFlow
+  caption="Unsteady waves (R9)."
+  nodes={[
+    'c1 = √(γRT1). Draw the x–t diagram: piston path, shock or fan.',
+    { q: 'Piston pushed into the gas?', yes: 'Shock: Vp/c1 = (2/(γ+1))(Ms − 1/Ms) → Ms → A3 at Ms (shock frame) for Ty/Tx, py/px. Shock speed W = Ms c1.', no: 'Piston pulled: centred expansion. Carry u − 2c/(γ−1) from the gas at rest: c = c1 − (γ−1)/2 |Vp|; T = c²/(γR); p/p1 = (T/T1)^(γ/(γ−1)).' },
+    'Shock tube: solve the shock-tube equation for p2/p1 from p4/p1, then u2 = u3 (contact) and p2 = p3.',
+    'Sketch p(x) at two times: plateau behind a shock that outruns the piston; a fan that widens linearly.',
+  ]}
+/>
+
+<Trap>
+
+- The shock is faster than the piston.
+- The fan's invariant comes from the undisturbed gas, the family that is **not** the fan.
+- Fan tail speed $u + c$ may still be positive (Final A: +108 m/s).
+- Behind the moving shock the gas moves at the piston speed; its lab-frame Mach is $u_p/c_2$.
+
+</Trap>
+
+<PistonXTSim up0={200} T1={300} />
+
+## Anthony's decision rules (the "how do I know" list)
+
+**Is the flow choked?**
+
+- Converging (or first) throat: if $p_b < p^* = 0.5283\,p_0$ the flow **must** choke ("P = 5 < 5.283 ⇒ flow must choke", F2023).
+- "Since flow must choke, it chokes at the min A." With two throats, at the smaller one.
+- C-D nozzle feeding a pipe: first try the **subsonic** branch after the throat. If $p_{exit} \gg p_b$ ("984 kPa vs 200 kPa"), the flow choked and went supersonic: "since we are 'sucking' harder, flow must go supersonic, at least for a bit past throat". That check was worth +10 on W2024.
+- Tank → Fanno pipe with unknown exit: "assume L = L\*". If $p^* > p_b$, choked.
+- Vacuum downstream: "the flow will always choke", so L = L\*.
+- Rayleigh: if Δq > Δq\*, thermally choked and the inlet M must drop.
+- Choked ṁ: $\dot m = A^*\frac{p_0}{\sqrt{T_0}}\sqrt{\gamma/R}\,/1.2^3$ (γ = 1.4).
+
+**Shock between two throats (F2023 P1):** "We know that A\*y > A\*x, or we need flow to pass the A_t2, so let's take A\*y = A_t2." Then $A_{t1}/A_{t2} = p_{0y}/p_{0x}$ fixes the shock. **"Be aware of location!!"**: shocks sit in the diverging part after each throat. The "supersonic through both throats" solution can't be reached with fixed areas (the blocked wind tunnel). See [F2023 P1](#/mech430/exam/q2-f2023#f2023-p1).
+
+## Pre-exam checklist
+
+- [ ] Draw the geometry and number the stations (①, ②, x|y at shocks, \* at choke points).
+- [ ] Compute 4fL/D, A/A\* and $A_{t1}/A_{t2}$ up front.
+- [ ] State the hypothesis in words (subsonic / supersonic / shock at … / choked).
+- [ ] Do the **one comparison** ($p_{exit}$ vs $p_b$; L vs L\*; Δq vs Δq\*; $A^*_y$ vs $A_t$) and highlight it.
+- [ ] If choked: M = 1 at the exit or throat, $p_{exit} = p^*$, ṁ from the choked formula (right MW and area; $A_{throat} \neq A_{pipe}$).
+- [ ] Final answers with units. Pressures for MOC points. The quantity actually asked (g/s vs kg/s; % increase; degrees).
+- [ ] Read θ-β-M charts carefully, and use **A-5 (not A-2)** for $p_0/p_0^*$ in Rayleigh.
+
+<Remember title="Anthony's warnings to himself">
+
+1. "The remaining part only!!" — $4f(L-x)/D$ after a shock.
+2. "Use T\* not T."
+3. "Be aware of location!!" — diverging part after each throat.
+4. Subsonic-branch check first: quick, and it justifies choking.
+5. When $p_b < p^*$ the exit is choked: stop trying to match $p_b$.
+6. One M per state; don't mix table rows.
+
+</Remember>
+
+See also the [formula cheat sheet](#/mech430/page/cheatsheet).

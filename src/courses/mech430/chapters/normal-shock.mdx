@@ -1,0 +1,202 @@
+<p className="eyebrow">Chapter 7</p>
+
+# Normal shocks
+
+<p className="lede">Push on a gas harder and harder and the sound waves you send stop being gentle: they pile up into a jump a few mean free paths thick. Across that jump, mass, momentum and energy are conserved, but entropy is not. Four equations give every Table A3 column, and one inequality explains why only compression shocks exist.</p>
+
+<Idea title="The whole chapter in four lines">
+
+- A shock is a **discontinuity**: we can only use the **integral** conservation laws across it (Chapter 3), never the differential ones.
+- In the shock frame it is **steady, adiabatic, 1-D, constant area**. So $T_0$ is constant and $\rho V$, $p + \rho V^2$, $h + V^2/2$ all match on both sides.
+- Supersonic in, subsonic out: $M_x > 1 \Rightarrow M_y < 1$. Pressure, density and temperature jump **up**.
+- $p_0$ drops and $A^*$ grows by the same factor: $p_{0x}A^*_x = p_{0y}A^*_y$. That loss **is** the entropy rise.
+
+</Idea>
+
+## How a shock forms
+
+Recall the sound-wave piston of Chapter 4: a wall nudged at $dV$ sends a weak wave at speed $c$. Now **keep accelerating** the piston in steps $dV_1, dV_2, dV_3, \dots$ (notes §7.1).
+
+- Wave $c_2$ travels into gas that wave $c_1$ has already **compressed**. Sound is isentropic, so that gas is slightly **warmer**: $c_2 > c_1$.
+- Wave $c_2$ also **rides on gas already moving** at $dV_1$. In the lab it travels at $c_2 + dV_1$.
+- Both effects make every later wave faster than the one in front. The rear waves catch up and **coalesce** into one finite jump: a shock.
+
+Expansions do the opposite. Pull the piston back and each new wave runs into gas that is **colder** and **moving backward**, so it is slower than the one ahead. The waves **spread out** into a fan, and a rarefaction shock never forms. This is exactly PS5 P1: press *Pull piston out* below.
+
+<ShockFormationSim />
+
+<Remember title="Reading an x–t diagram">
+
+Time goes up, so a **steeper line is a slower wave** (speed = 1/slope). The piston path starts vertical (at rest) and leans over as it speeds up. Higgins' trick: cut a slit in a sheet of paper along x and slide the diagram down behind it, and you see the movie.
+
+</Remember>
+
+How thin is the result? A few mean free paths: under a micron in air, crossed in about a nanosecond. On that scale even a decelerating shock is perfectly steady, and there is no time for heat transfer or friction with a wall. That is why we can treat **any** shock (moving, curved, decaying) as a steady, adiabatic, 1-D normal shock locally.
+
+## The control volume
+
+Ride with the shock (add $V_{shock}$ to everything, Galilean change of frame). Gas enters from the x side at $V_x$ and leaves at $V_y$. Wrap a control volume tightly around the shock.
+
+<ShockCVFigure Mx={2} />
+
+Because it is thin: $A_x = A_y$, no wall force, no heat, steady. Four unknowns ($p_y, \rho_y, T_y, V_y$) and four equations (mass, momentum, energy, $p = \rho R T$). As with isentropic flow, the answer looks best in Mach numbers.
+
+## Deriving the relations
+
+<Steps label="🪜 Derivation, one line at a time">
+<Step title="1. Energy: T₀ does not change">
+
+Adiabatic, no work: $h_x + V_x^2/2 = h_y + V_y^2/2$, so $c_pT_{0x} = c_pT_{0y}$:
+
+$$
+T_{0x} = T_{0y} \quad\Rightarrow\quad \frac{T_y}{T_x} = \frac{1 + \frac{\gamma-1}{2}M_x^2}{1 + \frac{\gamma-1}{2}M_y^2}
+$$
+
+</Step>
+<Step title="2. Mass + ideal gas: a second pressure ratio">
+
+Continuity with $A_x = A_y$ gives $\rho_y/\rho_x = V_x/V_y$. With $p = \rho R T$ and $V = Mc = M\sqrt{\gamma R T}$:
+
+$$
+\frac{p_y}{p_x} = \frac{\rho_y T_y}{\rho_x T_x} = \frac{M_x}{M_y}\sqrt{\frac{T_y}{T_x}} = \frac{M_x}{M_y}\sqrt{\frac{1 + \frac{\gamma-1}{2}M_x^2}{1 + \frac{\gamma-1}{2}M_y^2}}
+$$
+
+</Step>
+<Step title="3. Momentum: the first pressure ratio">
+
+$p_x + \rho_xV_x^2 = p_y + \rho_yV_y^2$. Use $\rho V^2 = \gamma p M^2$:
+
+$$
+p_x\left(1 + \gamma M_x^2\right) = p_y\left(1 + \gamma M_y^2\right) \quad\Rightarrow\quad \frac{p_y}{p_x} = \frac{1 + \gamma M_x^2}{1 + \gamma M_y^2}
+$$
+
+This one holds for **any** constant-area flow without wall force (it returns in Rayleigh flow).
+
+</Step>
+<Step title="4. Both must hold: equate and solve for M_y">
+
+Square, expand, and the result factors. One root is $M_y = M_x$ (nothing happens: no shock). Divide out $M_y^2 - M_x^2 \ne 0$:
+
+$$
+M_y^2 = \frac{2 + (\gamma-1)M_x^2}{2\gamma M_x^2 - (\gamma-1)}
+$$
+
+The function is **symmetric**: put $M_y$ in and you get $M_x$ back. The two branches are the same flow played forwards and backwards.
+
+</Step>
+<Step title="5. Everything in terms of Mₓ alone">
+
+Substitute $M_y(M_x)$ into steps 1–3 to get the working relations below. These are the columns of Table A3.
+
+</Step>
+</Steps>
+
+## Working relations (equation sheet)
+
+$$
+\frac{p_y}{p_x} = \frac{2\gamma M_x^2 - (\gamma-1)}{\gamma+1}
+\qquad
+\frac{\rho_y}{\rho_x} = \frac{V_x}{V_y} = \frac{(\gamma+1)M_x^2}{2 + (\gamma-1)M_x^2}
+$$
+
+$$
+\frac{T_y}{T_x} = \frac{\left[2\gamma M_x^2 - (\gamma-1)\right]\left[2 + (\gamma-1)M_x^2\right]}{(\gamma+1)^2M_x^2}
+$$
+
+$$
+\frac{p_{0y}}{p_{0x}} = \frac{A^*_x}{A^*_y} = \left[\frac{2\gamma M_x^2 - (\gamma-1)}{\gamma+1}\right]^{-\frac{1}{\gamma-1}}\left[\frac{(\gamma+1)M_x^2}{2 + (\gamma-1)M_x^2}\right]^{\frac{\gamma}{\gamma-1}}
+$$
+
+| Mₓ | M_y | p_y/pₓ | ρ_y/ρₓ | T_y/Tₓ | p₀ᵧ/p₀ₓ |
+|---|---|---|---|---|---|
+| 1.5 | 0.7011 | 2.458 | 1.862 | 1.320 | 0.9298 |
+| 2.0 | 0.5774 | 4.500 | 2.667 | 1.688 | 0.7209 |
+| 2.2 | 0.5471 | 5.480 | 2.951 | 1.857 | 0.6281 |
+| 3.0 | 0.4752 | 10.33 | 3.857 | 2.679 | 0.3283 |
+| 4.0 | 0.4350 | 18.50 | 4.571 | 4.047 | 0.1388 |
+
+<CalcLink calc="normal" q="in=Mx&v=2">Normal-shock calculator (Table A3)</CalcLink>. For γ ≠ 1.4 (argon, CO₂…) the table is useless and you must use the formulas, as in [PS5 P2](#/mech430/ps/ps05).
+
+<Trap title="Static vs stagnation, x vs y">
+
+$T_0$ is the **same** on both sides; $p_0$ is **not**. So never carry $p_0$ across a shock "because it's the reservoir". After the shock, every isentropic relation uses $p_{0y}$ and $A^*_y$.
+
+</Trap>
+
+## Stagnation pressure, A* and entropy
+
+Mass flow anywhere can be written with the sonic area (Chapter 5):
+
+$$
+\dot m = \frac{p_0 A^*}{\sqrt{T_0}}\sqrt{\frac{\gamma}{R}}\left(\frac{2}{\gamma+1}\right)^{\frac{\gamma+1}{2(\gamma-1)}}
+$$
+
+Across the shock $\dot m$ and $T_0$ are unchanged, so the product $p_0A^*$ is unchanged:
+
+$$
+p_{0x}A^*_x = p_{0y}A^*_y \qquad\Longleftrightarrow\qquad \frac{p_{0y}}{p_{0x}} = \frac{A^*_x}{A^*_y}
+$$
+
+This one line is the key to every problem in Chapters 8 and 9: **a shock makes the flow need a bigger throat**.
+
+Entropy: apply $\Delta s = c_p\ln(T_2/T_1) - R\ln(p_2/p_1)$ to the *stagnation* states. $T_{0x} = T_{0y}$ kills the first term, and $s_0 = s$ by definition (isentropic stop), so
+
+$$
+s_y - s_x = -R\ln\frac{p_{0y}}{p_{0x}}
+$$
+
+<EntropyJumpFigure />
+
+<Idea title="Why there is no expansion shock (three independent reasons)">
+
+1. **Second law.** For $M_x \lt 1$ the formula gives $\Delta s \lt 0$ in an adiabatic process. Forbidden.
+2. **Wave steepening.** Rarefaction waves spread out (PS5 P1); nothing ever coalesces into a jump.
+3. **Signal speed.** An expansion "shock" would be a pressure jump moving slower than sound into the gas ahead, yet a pressure jump sends sound waves that would outrun it.
+
+The subsonic branch of $M_y(M_x)$ is the real shock run backwards like a film of a breaking coffee cup. Only **compression** shocks with $M_x \gt 1$ exist.
+
+</Idea>
+
+Higgins: you can't buy an "entropimeter", but you can buy a pitot probe. Engineers talk about **total-pressure loss** of an inlet or a duct; they are really talking about entropy.
+
+## Strong and weak shocks
+
+**Strong** ($M_x \to \infty$):
+
+$$
+M_y \to \sqrt{\frac{\gamma-1}{2\gamma}} = 0.378, \qquad \frac{\rho_y}{\rho_x} = \frac{V_x}{V_y} \to \frac{\gamma+1}{\gamma-1} = 6, \qquad \frac{p_y}{p_x} \to \frac{2\gamma}{\gamma+1}M_x^2, \qquad \frac{T_y}{T_x} \to \frac{2\gamma(\gamma-1)}{(\gamma+1)^2}M_x^2
+$$
+
+A shock cannot squeeze air more than 6 times, but $p$ and $T$ grow like $M_x^2$ without bound. Above about Mach 5, vibration, dissociation and ionisation soak up energy, γ stops being constant, and we leave this course (hypersonics).
+
+**Weak** ($M_x \to 1$): the jumps are linear in $(M_x^2 - 1)$ but the entropy rise is **cubic**:
+
+$$
+\frac{p_y}{p_x} \approx 1 + \frac{2\gamma}{\gamma+1}(M_x^2 - 1), \qquad \frac{\Delta s}{R} \approx \frac{2\gamma}{3(\gamma+1)^2}(M_x^2 - 1)^3
+$$
+
+So below about $M_x = 1.3$ a normal shock is almost isentropic ($p_{0y}/p_{0x} = 0.979$ at 1.3). This is why simple "normal-shock inlets" are fine on low-supersonic aircraft (Chapter 9).
+
+## Explore
+
+<NormalShockSim />
+
+The same shock in a real duct. Colour by p or T to see the jump, and press the gas buttons to reproduce PS5 P2:
+
+<ShockDuctSim />
+
+<Examined>
+
+- **Every** Quiz 2 and final uses Table A3: shocks in nozzles ([Chapter 8](#/mech430/ch/shocks-in-flow)), inlets and tunnels ([Chapter 9](#/mech430/ch/inlets)), shocks in Fanno pipes, oblique shocks ($M_x\sin\sigma$), moving shocks.
+- Direct use: [PS5](#/mech430/ps/ps05) P1 (no rarefaction shock), P2 (arbitrary γ: formulas, not tables), P4 (pitot).
+- Read the nearest row, no interpolation. Know which column you need: $p_{0y}/p_{0x}$ for A\* and losses, $p_x/p_{0y}$ for pitot problems.
+
+</Examined>
+
+## Check yourself
+
+1. Across a normal shock, which of $T_0$, $p_0$, $A^*$, $\dot m$ stay constant? → $T_0$ and $\dot m$. $p_0$ falls and $A^*$ rises by the same factor.
+2. $M_x = 2$: how much bigger must a downstream throat be to pass the same flow? → $A^*_y/A^*_x = 1/0.7209 = 1.387$, about 39 % bigger.
+3. Why can't we use $dp/\rho + V\,dV = 0$ across a shock? → The derivatives don't exist at a discontinuity; only the integral forms apply.
+4. What is the largest density ratio a shock in air can produce? → $(\gamma+1)/(\gamma-1) = 6$.
+5. Is a Mach 1.2 normal shock a big loss? → No: $p_{0y}/p_{0x} = 0.993$. Losses grow like $(M_x^2-1)^3$.

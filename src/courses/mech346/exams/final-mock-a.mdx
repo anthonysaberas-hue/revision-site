@@ -1,0 +1,291 @@
+<p className="eyebrow">Final practice A · 6 problems · 3 hours · original</p>
+
+# Final practice A (mock)
+
+<div className="lede">
+
+An original paper in the format of the Final (three hours, six problems, the whole course with the weight on Chapters 8–13, and one problem that could come straight from the assignments). **No past final was available**, so this is a reconstruction of the pattern from the syllabus, the midterms and the assignments; every number was recomputed independently. Closed book on the real exam: you get the formula sheet plus Tables 4-2/4-3 and the property tables. Try each problem on paper first, then open the steps.
+
+| # | Topic | Chapters | Source type |
+|---|---|---|---|
+| 1 | Insulated steam pipe | 3 | like assignment 3-81 |
+| 2 | Quenching a steel plate | 4 | like Midterm 2 Q2 |
+| 3 | Heated cable in the wind | 7 | like assignment 7-65 |
+| 4 | Water heated in a small tube | 8 | internal flow |
+| 5 | Oil cooler: sizing and fouling | 11 | LMTD / ε–NTU |
+| 6 | Furnace with a reradiating wall | 13 | like Example 13-9 |
+
+</div>
+
+<Problem id="A1" title="Insulated steam pipe: heat loss, surface temperature and savings" tags="cylindrical resistances, convection, insulation">
+
+<Statement>
+
+A steel pipe ($r_1=2.5$ cm, $r_2=2.8$ cm, $k=45$ W/mK) carries steam at 200 °C with an inside coefficient $h_i=100$ W/m²K. It is covered by 4 cm of fiberglass ($k=0.04$ W/mK, so $r_3=6.8$ cm). The outside combined coefficient is $h_o=15$ W/m²K and the room is at 20 °C. Per metre of pipe, find (a) the heat loss, (b) the outer surface temperature of the insulation, (c) the temperature at the pipe–insulation interface, (d) the saving compared with the bare pipe.
+
+</Statement>
+
+<Think>
+
+A cylindrical series circuit: inside film, steel wall, insulation, outside film. Per metre of pipe: $R_i=\dfrac1{h_i2\pi r_1}$, $R_{pipe}=\dfrac{\ln(r_2/r_1)}{2\pi k}$, $R_{ins}=\dfrac{\ln(r_3/r_2)}{2\pi k_{ins}}$, $R_o=\dfrac1{h_o2\pi r_3}$.
+
+</Think>
+
+<Steps>
+<Step title="1. Resistances (K·m/W)">
+
+$R_i=\dfrac1{100(2\pi)(0.025)}=0.06366$; $R_{pipe}=\dfrac{\ln(2.8/2.5)}{2\pi(45)}=0.000401$; $R_{ins}=\dfrac{\ln(6.8/2.8)}{2\pi(0.04)}=3.5305$; $R_o=\dfrac1{15(2\pi)(0.068)}=0.1560$.
+
+</Step>
+<Step title="2. (a) Heat loss">
+
+$R_{tot}=3.7506$; $\dot Q'=\dfrac{200-20}{3.7506}=48.0$ W/m.
+
+</Step>
+<Step title="3. (b) Outer surface of the insulation">
+
+$T_3=T_\infty+\dot Q'R_o=20+48.0(0.1560)=27.5$ °C (safe to touch).
+
+</Step>
+<Step title="4. (c) Interface">
+
+$T_2=200-\dot Q'(R_i+R_{pipe})=200-48.0(0.06406)=196.9$ °C: the steel wall is almost isothermal with the steam.
+
+</Step>
+<Step title="5. (d) Bare pipe">
+
+$R_{bare}=0.06366+0.000401+\dfrac1{15(2\pi)(0.028)}=0.06406+0.3789=0.4430$; $\dot Q'_{bare}=\dfrac{180}{0.4430}=406$ W/m. Saving $=1-\dfrac{48.0}{406}=88$ %. (The critical radius $k/h=2.7$ mm is far below $r_2$, so insulation helps.)
+
+</Step>
+</Steps>
+
+<Answer>
+
+**(a) 48.0 W/m; (b) 27.5 °C; (c) 196.9 °C; (d) 88 % saved (406 → 48 W/m).**
+
+</Answer>
+
+</Problem>
+
+<Problem id="A2" title="Quenching a steel plate: lumped fails, one-term works" tags="Bi, plane wall one-term, center time, surface temperature, Q">
+
+<Statement>
+
+A steel plate 5 cm thick ($k=43$ W/mK, $\rho=7800$ kg/m³, $c_p=490$ J/kgK) at a uniform 600 °C is quenched in a fluid at 40 °C with $h=500$ W/m²K on both faces. (a) Is the lumped system valid? (b) How long until the **centre** reaches 200 °C? (c) What is the surface temperature then? (d) The heat removed per m² of plate by then.
+
+</Statement>
+
+<Think>
+
+Half-thickness $L=2.5$ cm; for a plate $L_c=L$, so $Bi=hL/k$. If $Bi>0.1$ use the one-term plane-wall solution with $\theta_0=A_1e^{-\lambda_1^2Fo}$ and the surface $\theta_s=\theta_0\cos\lambda_1$.
+
+</Think>
+
+<Steps>
+<Step title="1. (a) Biot number">
+
+$\alpha=\dfrac k{\rho c_p}=\dfrac{43}{7800(490)}=1.125\times10^{-5}$ m²/s. $Bi=\dfrac{500(0.025)}{43}=0.291>0.1$: **lumped not valid**; use the one-term solution.
+
+</Step>
+<Step title="2. Coefficients (Table 4-2, interpolated between $Bi=0.2$ and 0.3; exact roots in brackets)">
+
+$\lambda_1\approx0.5129$ (0.5144), $A_1\approx1.0436$ (1.0438).
+
+</Step>
+<Step title="3. (b) Time to the centre">
+
+$\theta_0=\dfrac{200-40}{600-40}=0.2857=A_1e^{-\lambda_1^2Fo}\Rightarrow Fo=\dfrac{\ln(1.0438/0.2857)}{0.5144^2}=4.90$ ($>0.2$ ✓). $t=\dfrac{Fo\,L^2}\alpha=\dfrac{4.90(0.025)^2}{1.125\times10^{-5}}=272$ s (4.5 min).
+
+</Step>
+<Step title="4. (c) Surface temperature">
+
+$\theta_s=\theta_0\cos\lambda_1=0.2857(0.8707)=0.2488$: $T_s=40+0.2488(560)=179.3$ °C.
+
+</Step>
+<Step title="5. (d) Heat removed per m² (both faces)">
+
+$Q_{max}=\rho c_p(2L)(T_i-T_\infty)=7800(490)(0.05)(560)=1.070\times10^8$ J/m². $\dfrac Q{Q_{max}}=1-\theta_0\dfrac{\sin\lambda_1}{\lambda_1}=1-0.2857(0.9565)=0.7267$. $Q=77.8$ MJ/m².
+
+</Step>
+</Steps>
+
+<Answer>
+
+**(a) $Bi=0.29$: no; (b) 272 s; (c) 179 °C (centre-to-surface difference 21 K); (d) 77.8 MJ/m² (73 % of the maximum).**
+
+</Answer>
+
+</Problem>
+
+<Problem id="A3" title="An electric cable in a crossflow of wind" tags="Churchill–Bernstein, surface temperature, maximum power">
+
+<Statement>
+
+A 2 cm diameter cable is in a 20 °C wind of 8 m/s. (a) Find $h$ (assume a surface temperature near 60 °C so that the film temperature is about 40 °C). (b) The cable dissipates 80 W per metre: find its surface temperature. (c) What maximum power per metre keeps the surface below 60 °C?
+
+</Statement>
+
+<Steps>
+<Step title="1. Properties at 40 °C">
+
+$k=0.02735$ W/mK, $\nu=1.700\times10^{-5}$ m²/s, $Pr=0.7055$.
+
+</Step>
+<Step title="2. (a) $Re$, $Nu$, $h$">
+
+$Re_D=\dfrac{8(0.02)}{1.700\times10^{-5}}=9412$; Churchill–Bernstein: $Nu=0.3+\dfrac{0.62(97.02)(0.8900)}{[1+(0.4/0.7055)^{2/3}]^{1/4}}\left[1+\left(\dfrac{9412}{282\,000}\right)^{5/8}\right]^{4/5}=51.7$. $h=\dfrac{51.7(0.02735)}{0.02}=70.8$ W/m²K.
+
+</Step>
+<Step title="3. (b) Surface temperature at 80 W/m">
+
+$T_s=T_\infty+\dfrac{\dot Q'}{h\pi D}=20+\dfrac{80}{70.8(\pi)(0.02)}=38.0$ °C (lower than the 60 °C guess: the film temperature would then be 29 °C; the correlation's property sensitivity is small).
+
+</Step>
+<Step title="4. (c) Maximum power for $T_s\le60$ °C">
+
+$\dot Q'_{max}=h\pi D(60-20)=70.8(0.06283)(40)=178$ W/m.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**(a) $h=70.8$ W/m²K; (b) 38.0 °C; (c) 178 W/m.**
+
+</Answer>
+
+</Problem>
+
+<Problem id="A4" title="Water heated in a thin tube (constant heat flux)" tags="Gnielinski vs Dittus–Boelter, T_e, wall temperature, pressure drop, pump power">
+
+<Statement>
+
+Water at 15 °C and $\dot m=0.07$ kg/s enters a 1.2 cm diameter, 2.5 m long tube heated with a uniform flux $q''_s=25\,\text{kW/m}^2$. Find the exit water temperature, the heat transfer coefficient, the wall temperature at the exit, the pressure drop and the pumping power.
+
+</Statement>
+
+<Think>
+
+Constant flux: $T_e$ comes from the energy balance; $h$ from a turbulent correlation at the bulk mean temperature; $T_s=T_m+q''_s/h$ at the exit.
+
+</Think>
+
+<Steps>
+<Step title="1. Exit temperature">
+
+$A_s=\pi(0.012)(2.5)=0.09425$ m²; $\dot Q=25\,000(0.09425)=2356$ W; $T_e=15+\dfrac{2356}{0.07(4180)}=23.0$ °C. Bulk mean $T_b=19.0$ °C: $\rho=998.5$, $c_p=4184$, $k=0.5964$, $\mu=1.026\times10^{-3}$, $Pr=7.20$.
+
+</Step>
+<Step title="2. Reynolds number">
+
+$Re=\dfrac{4\dot m}{\pi D\mu}=\dfrac{4(0.07)}{\pi(0.012)(1.026\times10^{-3})}=7240$: turbulent (entry length $10D=12$ cm, only 5 % of the tube).
+
+</Step>
+<Step title="3. Nusselt number and $h$">
+
+$f=(0.79\ln7240-1.64)^{-2}=0.0345$. Gnielinski: $Nu=\dfrac{(0.0345/8)(6240)(7.20)}{1+12.7\sqrt{0.0043}\,(7.20^{2/3}-1)}=59.2$; $h=\dfrac{59.2(0.5964)}{0.012}=2941$ W/m²K. (Dittus–Boelter: $Nu=62.0$, $h=3081$: 5 % higher.)
+
+</Step>
+<Step title="4. Wall temperature at the exit">
+
+$T_{s,e}=T_e+\dfrac{q''_s}h=23.0+\dfrac{25\,000}{2941}=31.5$ °C.
+
+</Step>
+<Step title="5. Pressure drop and power">
+
+$V_m=\dfrac{0.07}{998.5(1.131\times10^{-4})}=0.620$ m/s; $\Delta P=f\dfrac LD\dfrac{\rho V^2}2=0.0345\dfrac{2.5}{0.012}\dfrac{998.5(0.620)^2}2=1380$ Pa; power $=\dfrac{\dot m\Delta P}\rho=0.097$ W.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**$T_e=23.0$ °C; $h=2940$ W/m²K; $T_{s,exit}=31.5$ °C; $\Delta P=1.38$ kPa; pumping power 0.10 W.**
+
+</Answer>
+
+</Problem>
+
+<Problem id="A5" title="An oil cooler: area, then the effect of fouling" tags="LMTD sizing, ε–NTU rating of the fouled unit">
+
+<Statement>
+
+Oil ($\dot m=1.2$ kg/s, $c_p=2100$) must be cooled from 110 °C to 70 °C by water ($\dot m=0.9$ kg/s, $c_p=4180$) entering at 30 °C in a counterflow double-pipe exchanger with $U=350$ W/m²K. (a) Find the water outlet temperature and the required area. (b) After a year of fouling $UA$ has dropped by 20 %: find the new heat rate and both outlet temperatures.
+
+</Statement>
+
+<Steps>
+<Step title="1. (a) Duty and water outlet">
+
+$\dot Q=1.2(2100)(40)=100.8$ kW; $T_{c,o}=30+\dfrac{100\,800}{0.9(4180)}=56.8$ °C.
+
+</Step>
+<Step title="2. Area by LMTD (counterflow)">
+
+$\Delta T_1=110-56.8=53.2$; $\Delta T_2=70-30=40$; $\Delta T_{lm}=\dfrac{53.2-40}{\ln(53.2/40)}=46.3$ K; $A=\dfrac{100\,800}{350(46.3)}=6.22$ m² ($UA=2178$ W/K).
+
+</Step>
+<Step title="3. (b) Rating the fouled unit by ε–NTU">
+
+$UA_{fouled}=0.8(2178)=1742$ W/K. $C_{oil}=2520$ (= $C_{min}$), $C_{water}=3762$, $C_r=0.670$, $NTU=\dfrac{1742}{2520}=0.691$. $\varepsilon=\dfrac{1-e^{-NTU(1-C_r)}}{1-C_re^{-NTU(1-C_r)}}=0.437$. $\dot Q=0.437(2520)(110-30)=88.1$ kW.
+
+</Step>
+<Step title="4. Outlets">
+
+$T_{oil,o}=110-\dfrac{88\,121}{2520}=75.0$ °C; $T_{water,o}=30+\dfrac{88\,121}{3762}=53.4$ °C.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**(a) 56.8 °C, $A=6.22$ m²; (b) $\dot Q=88.1$ kW, oil leaves at 75.0 °C (instead of 70), water at 53.4 °C.** A 20 % loss in $UA$ costs only 13 % of the heat but leaves the oil 5 K too hot.
+
+</Answer>
+
+</Problem>
+
+<Problem id="A6" title="A radiating duct with insulated side walls" tags="three-surface network, reradiating surface, radiosity">
+
+<Statement>
+
+A square enclosure: the floor (1) and ceiling (2), each $1\times1$ m and 1 m apart, are gray: $\varepsilon_1=0.9$ at 900 K and $\varepsilon_2=0.7$ at 400 K. The four side walls (3) are insulated (reradiating). $F_{12}=0.1998$. Find the net heat transfer between floor and ceiling and the temperature of the side walls.
+
+</Statement>
+
+<Think>
+
+With $\dot Q_3=0$ the side walls act as a node joining 1 and 2 through $R_{13}$ and $R_{23}$. In parallel with the direct path $R_{12}$, the effective space resistance is $R_{12}\parallel(R_{13}+R_{23})$.
+
+</Think>
+
+<Steps>
+<Step title="1. Resistances (m⁻²)">
+
+$R_1=\dfrac{1-0.9}{0.9}=0.1111$; $R_2=\dfrac{1-0.7}{0.7}=0.4286$; $R_{12}=\dfrac1{0.1998}=5.004$; $R_{13}=R_{23}=\dfrac1{1-0.1998}=1.2497$. (Area 1 m² for each.)
+
+</Step>
+<Step title="2. Effective space resistance">
+
+$R_{eff}=\left[\dfrac1{5.004}+\dfrac1{2.4994}\right]^{-1}=1.667$.
+
+</Step>
+<Step title="3. Heat transfer">
+
+$\dot Q_{12}=\dfrac{\sigma(T_1^4-T_2^4)}{R_1+R_{eff}+R_2}=\dfrac{5.67\times10^{-8}(900^4-400^4)}{0.1111+1.667+0.4286}=\dfrac{3.575\times10^4}{2.2067}=16.2$ kW.
+
+</Step>
+<Step title="4. Side-wall temperature">
+
+Radiosities: $J_1=E_{b1}-\dot Q R_1=37\,200-1800=35\,400$; $J_2=E_{b2}+\dot QR_2=1452+6943=8395$ W/m². For a reradiating surface with equal resistances to 1 and 2: $J_3=(J_1+J_2)/2=21\,898$ W/m² $=E_{b3}$, $T_3=\left(\dfrac{21\,898}{5.67\times10^{-8}}\right)^{1/4}=788$ K.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**$\dot Q_{12}=16.2$ kW (of which 5.4 kW directly and 10.8 kW through the side walls); $T_3=788$ K.**
+
+</Answer>
+
+</Problem>

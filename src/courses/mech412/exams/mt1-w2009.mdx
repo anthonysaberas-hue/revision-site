@@ -1,0 +1,304 @@
+<p className="eyebrow">Midterm 1 · Winter 2009 · covers Lectures 1–8 · 100 marks</p>
+
+# Midterm 1, Winter 2009: block diagram, partial fractions, state space, short questions
+
+<div className="lede">
+
+A clean paper in the classic MT1 format: reduce a block diagram, invert a Laplace transform with a complex pair, build a state-space model of a system with a **massless junction**, then short questions. Marks: Q1 20, Q2 25, Q3 30, Q4 25. The official solution is a handwritten sheet; it has **one symbol typo** (Q1) and **hesitates on the bullet question** (Q4). Every answer below was re-derived.
+
+</div>
+
+<Problem id="MT1 W2009 Q1" title="Block-diagram reduction: a motor-driven mass–spring–damper with back-emf feedback (20 marks)" tags="block diagrams, series, feedback loop">
+
+<Statement>
+
+$V(s)$ enters a summing junction (+, with the feedback −). Forward path: $\dfrac{1}{Ls+R}\to K_f\to\dfrac{1}{ms^2+bs+k}\to X(s)$. Feedback path from $X(s)$: a block $K_es$ (velocity feedback) back to the junction. Use block-diagram reduction to find $X(s)/V(s)$.
+
+</Statement>
+
+<Think>
+
+Three blocks in series just **multiply** into one forward block; then use the golden formula for one loop, **closed loop $=\dfrac{\text{forward}}{1+\text{forward}\times\text{feedback}}$**. Physically it is a motor-driven mass–spring–damper: voltage $\to$ current $\left(\tfrac1{Ls+R}\right)\to$ force $(K_f)\to$ position, with the back-emf $K_e\,sX$ fed back.
+
+</Think>
+
+<Steps>
+<Step title="1. Multiply the series blocks">
+
+$P_1=\dfrac{K_f}{(Ls+R)(ms^2+bs+k)}$.
+
+</Step>
+<Step title="2. Feedback block">
+
+$P_2=K_es$.
+
+</Step>
+<Step title="3. Loop formula">
+
+$\dfrac XV=\dfrac{P_1}{1+P_1P_2}=\dfrac{1}{1/P_1+P_2}$ (dividing top and bottom by $P_1$ avoids nested fractions).
+
+</Step>
+<Step title="4. Expand the denominator of 1/P₁">
+
+$(Ls+R)(ms^2+bs+k)=mLs^3+(bL+mR)s^2+(kL+bR)s+kR$.
+
+</Step>
+<Step title="5. Add the feedback term over K_f">
+
+$\dfrac1{P_1}+P_2=\dfrac{mLs^3+(bL+mR)s^2+(kL+bR)s+kR+K_fK_es}{K_f}$.
+
+</Step>
+<Step title="6. Result">
+
+$$\frac{X}{V}=\frac{K_f}{mLs^3+(bL+mR)s^2+(kL+bR+K_fK_e)s+kR}.$$
+
+</Step>
+<Step title="7. Checks">
+
+(i) $K_e=0$: $\dfrac{K_f}{(Ls+R)(ms^2+bs+k)}$, the forward path alone ✔. (ii) DC gain $K_f/(kR)$: a voltage $V$ gives current $V/R$, force $K_fV/R$, static deflection $K_fV/(Rk)$ ✔. (iii) $K_fK_e$ appears **only in the $s^1$ coefficient**: the back-emf acts like extra damping.
+
+</Step>
+</Steps>
+
+<Answer>
+
+$\dfrac{X}{V}=\dfrac{K_f}{mLs^3+(bL+mR)s^2+(kL+bR+K_fK_e)s+kR}$.
+
+*Real-world:* a voice-coil or solenoid positioner: the faster it moves, the more the back-emf brakes it.
+
+</Answer>
+
+<Callout kind="warn" title="⚠ Official solution typo">
+
+The final line of the handwritten solution prints $K_pK_e$ where the problem's symbols give $K_fK_e$ ($K_p$ is a slip for $K_f$). Everything else (the $bR+kL$ and $kR$ terms) matches.
+
+</Callout>
+
+<Traps>
+
+- Forgetting the $K_f$ in the $s$-coefficient of the feedback term.
+- Using $1-P_1P_2$ (positive feedback): the junction **subtracts** the feedback.
+
+</Traps>
+
+<Source>official solution ✔ up to one symbol typo.</Source>
+
+</Problem>
+
+<Problem id="MT1 W2009 Q2" title="Partial fractions: F(s) = (3s² + 2s + 2)/[(s+2)(s²+2s+5)] (25 marks)" tags="complex poles, completing the square">
+
+<Statement>
+
+Find $f(t)$ for $F(s)=\dfrac{3s^2+2s+2}{(s+2)(s^2+2s+5)}$.
+
+</Statement>
+
+<Think>
+
+One real pole ($-2$) and one complex pair ($-1\pm2j$). Split into "a real-pole term" plus "a second-order term with a linear numerator", then rewrite the second-order term as a shifted cosine/sine pair using $(s+1)^2+2^2$.
+
+</Think>
+
+<Steps>
+<Step title="1. Set up">
+
+$F=\dfrac{A}{s+2}+\dfrac{Bs+C}{s^2+2s+5}$.
+
+</Step>
+<Step title="2. Cover-up for the real pole">
+
+$A=\dfrac{3\cdot4-4+2}{4-4+5}=\dfrac{10}{5}=2$.
+
+</Step>
+<Step title="3. Match numerators">
+
+$3s^2+2s+2=2(s^2+2s+5)+(Bs+C)(s+2)=(2+B)s^2+(4+2B+C)s+(10+2C)$. $s^2$: $B=1$; $s^0$: $10+2C=2\Rightarrow C=-4$; check $s^1$: $4+2-4=2$ ✔.
+
+</Step>
+<Step title="4. Complete the square">
+
+$s^2+2s+5=(s+1)^2+2^2$ and $s-4=(s+1)-5=(s+1)-\tfrac52\cdot2$:
+$$F=\frac{2}{s+2}+\frac{s+1}{(s+1)^2+2^2}-\frac52\cdot\frac{2}{(s+1)^2+2^2}.$$
+
+</Step>
+<Step title="5. Table">
+
+$\dfrac1{s+a}\leftrightarrow e^{-at}$, $\dfrac{s+a}{(s+a)^2+\omega^2}\leftrightarrow e^{-at}\cos\omega t$, $\dfrac{\omega}{(s+a)^2+\omega^2}\leftrightarrow e^{-at}\sin\omega t$:
+$$f(t)=2e^{-2t}+e^{-t}\cos2t-\tfrac52e^{-t}\sin2t.$$
+
+</Step>
+<Step title="6. Checks">
+
+Initial value: $f(0)=2+1=3$ and $\lim_{s\to\infty}sF=3$ ✔. Final value 0 (all poles stable) ✔.
+
+</Step>
+</Steps>
+
+<Answer>
+
+$f(t)=2e^{-2t}+e^{-t}\cos2t-\tfrac52e^{-t}\sin2t$: a decaying exponential plus a damped oscillation at 2 rad/s.
+
+</Answer>
+
+<Traps>
+
+- After completing the square the sine needs numerator $\omega=2$, so $-5=-\tfrac52\cdot2$.
+- Always check the $s^1$ coefficient when matching.
+
+</Traps>
+
+<Source>official ✔ (identical).</Source>
+
+<ToolLink tool="pfe">Check in the partial-fraction tool</ToolLink>
+
+</Problem>
+
+<Problem id="MT1 W2009 Q3" title="Spring–mass–damper with a series spring and dashpot: Y/U, ODE, state space (30 marks)" tags="massless junction, Maxwell element, input derivative">
+
+<Statement>
+
+Mass $m=0.1$ kg hangs from the ceiling by a spring $k_1=6$ N/m and also from a branch consisting of a spring $k_2=4$ N/m in series with a dashpot $b=0.4$ N·s/m (dashpot top fixed to the ceiling; its lower end is the massless point $z$, joined to $k_2$). Force $u$ on the mass; $y$ and $z$ measured from equilibrium; zero initial conditions; output $y$. (a) $Y/U$; (b) the equivalent differential equation in $y$ and $u$; (c) one valid state-space representation.
+
+</Statement>
+
+<Think>
+
+The series spring–dashpot is a **Maxwell element**: the same force passes through both. The junction $z$ is **massless**, so the two forces there balance. Eliminating $z$ gives a **third-order** system (three energy stores: two springs and the mass).
+
+</Think>
+
+<Steps>
+<Step title="(a) 1. Mass">
+
+$m\ddot y+k_1y+k_2(y-z)=u$ (E1).
+
+</Step>
+<Step title="(a) 2. Massless junction">
+
+Spring pulls with $k_2(y-z)$, dashpot with $b\dot z$: $k_2(y-z)=b\dot z$ (E2).
+
+</Step>
+<Step title="(a) 3. Laplace">
+
+(E1): $[ms^2+k_1+k_2]Y=k_2Z+U$. (E2): $k_2Y=(k_2+bs)Z\Rightarrow Z=\dfrac{k_2Y}{k_2+bs}$.
+
+</Step>
+<Step title="(a) 4. Substitute Z">
+
+$\Big[ms^2+k_1+k_2-\dfrac{k_2^2}{k_2+bs}\Big]Y=U\Rightarrow\big[(ms^2+k_1+k_2)(k_2+bs)-k_2^2\big]Y=(k_2+bs)U$.
+
+</Step>
+<Step title="(a) 5. Expand">
+
+$(ms^2+k_1+k_2)(k_2+bs)-k_2^2=mbs^3+mk_2s^2+(k_1+k_2)bs+k_1k_2$ (the $k_2^2$ cancels against $(k_1+k_2)k_2$ leaving $k_1k_2$).
+
+</Step>
+<Step title="(a) 6. Numbers">
+
+$mb=0.04$, $mk_2=0.4$, $(k_1+k_2)b=4$, $k_1k_2=24$: $\dfrac{0.4s+4}{0.04s^3+0.4s^2+4s+24}$. Divide by $0.04$:
+$$\frac YU=\frac{10s+100}{s^3+10s^2+100s+600}.$$
+
+</Step>
+<Step title="(b) Differential equation">
+
+$\dddot y+10\ddot y+100\dot y+600y=10\dot u+100u$.
+
+</Step>
+<Step title="(c) Why the naive choice fails">
+
+The right side has $\dot u$, so $x=(y,\dot y,\ddot y)$ would give a state equation containing $\dot u$: not a valid state model. Use Ogata's "$\beta$" method.
+
+</Step>
+<Step title="(c) The β's">
+
+Standard form $a_1=10$, $a_2=100$, $a_3=600$; $b_0=b_1=0$, $b_2=10$, $b_3=100$. $\beta_0=b_0=0$; $\beta_1=b_1-a_1\beta_0=0$; $\beta_2=b_2-a_1\beta_1-a_2\beta_0=10$; $\beta_3=b_3-a_1\beta_2-a_2\beta_1-a_3\beta_0=100-100=0$.
+
+</Step>
+<Step title="(c) States and matrices">
+
+$x_1=y-\beta_0u=y$; $x_2=\dot x_1-\beta_1u=\dot y$; $x_3=\dot x_2-\beta_2u=\ddot y-10u$. Then $\dot x_1=x_2$, $\dot x_2=x_3+10u$, $\dot x_3=-600x_1-100x_2-10x_3+\beta_3u$ ($\beta_3=0$):
+$$\dot x=\begin{bmatrix}0&1&0\\0&0&1\\-600&-100&-10\end{bmatrix}x+\begin{bmatrix}0\\10\\0\end{bmatrix}u,\qquad y=\begin{bmatrix}1&0&0\end{bmatrix}x.$$
+Check: converting back gives exactly $\dfrac{10s+100}{s^3+10s^2+100s+600}$ ✔. Here $x_3$ is "acceleration minus $10u$", an auxiliary variable that removes the input derivative.
+
+</Step>
+</Steps>
+
+<Answer>
+
+(a) $\dfrac{10s+100}{s^3+10s^2+100s+600}$; (b) $\dddot y+10\ddot y+100\dot y+600y=10\dot u+100u$; (c) the matrices above.
+
+*Real-world:* a vehicle seat or mount with a Maxwell element: the series damper "lets go" at low frequency, so at DC the static stiffness is just $k_1$ (DC gain $100/600=1/6=1/k_1$ ✔).
+
+</Answer>
+
+<Traps>
+
+- Treating $z$ as having mass (it has none: the forces balance).
+- Choosing $x_3=\ddot y$ and getting a $\dot u$ term in the state equation (ill-posed).
+- The spring deflection is $y-z$ (sign).
+
+</Traps>
+
+<Source>official ✔ (verified numerically).</Source>
+
+<ToolLink tool="state-space">Verify the state model</ToolLink>
+
+</Problem>
+
+<Problem id="MT1 W2009 Q4" title="Multiple choice and short questions (25 marks)" tags="IVT, pulley, momentum, terminology, Matlab">
+
+<Statement>
+
+Five short items: initial value theorem; equations of motion of a spring–mass–pulley system; a bullet fired into a block on a spring; names of the elements of a feedback diagram; matching Matlab commands.
+
+</Statement>
+
+<Steps>
+<Step title="1. Initial-value theorem">
+
+(b) $f(0^+)=\lim_{s\to\infty}sF(s)$.
+
+</Step>
+<Step title="2. Pulley with inertia">
+
+The equations require **(e) a, b and c**: the sum of vertical forces on the mass, the sum of vertical forces on the pulley, and the sum of moments about the pulley centre. **Not (d)**: the tension is *not* constant along the string for a pulley with inertia (it changes across the pulley).
+
+</Step>
+<Step title="3. Bullet in a block">
+
+$m=0.02$ kg, $v=600$ m/s into $M=5$ kg on a spring ($k=200$ N/m). The bullet embeds, so momentum is conserved just after impact: $(m+M)v'=mv\Rightarrow v'=\dfrac{0.02\cdot600}{5.02}=2.390$ m/s: **(a)**.
+
+</Step>
+<Step title="4. Feedback diagram names">
+
+$G$ = direct (forward) transfer function; $C$ = controlled output; $H$ = feedback transfer function; $R$ = reference input; $B$ = primary feedback signal; $E$ = error (actuating) signal.
+
+</Step>
+<Step title="5. Matlab matches">
+
+(a) response to $\delta(t)$: `impulse`; (b) response to $1(t)$: `step`; (c) TF to state space: `tf2ss`; (d) partial fractions: `residue`; (e) arbitrary input: `lsim`.
+
+</Step>
+</Steps>
+
+<Answer>
+
+(1) b; (2) e; (3) a, 2.390 m/s; (4) as listed; (5) impulse, step, tf2ss, residue, lsim.
+
+</Answer>
+
+<Callout kind="warn" title="⚠ Official solution hesitates on the bullet question">
+
+The official sheet computes $12/5.04=2.381$ (using $M+2m$, option (d)) and comments "answer d or (a) better; note: there is an error in the text". The textbook's formula $m/(M+2m)$ is wrong; the bullet embeds in the block so the right one is $m/(M+m)$. **Correct: (a), 2.390 m/s.**
+
+</Callout>
+
+<Source>official ✔ except the bullet question.</Source>
+
+</Problem>
+
+<Examined>
+
+This paper is the template for MT1: a block-diagram reduction (<Ch slug="block-diagrams">Chapter 5</Ch>), a partial-fraction inverse (<Ch slug="laplace">Chapter 2</Ch>), and a state-space model with an input derivative (<Ch slug="state-space">Chapter 7</Ch>). Compare $\text{MT1 W2017}$, $\text{W2019}$, $\text{F2011}$, $\text{F2007}$.
+
+</Examined>

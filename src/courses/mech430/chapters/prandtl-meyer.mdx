@@ -1,0 +1,103 @@
+<p className="eyebrow">Chapter 13</p>
+
+# Prandtl–Meyer expansion
+
+<p className="lede">Turn a supersonic flow away from itself (a convex corner) and it does not shock: it fans out through infinitely many Mach waves, speeds up and drops pressure smoothly. One function, ν(M), tells you how much turning a flow "has already used", and the whole chapter is ν₂ = ν₁ + θ.</p>
+
+## Compression corners vs expansion corners
+
+Zoom into a corner that is slightly rounded. Each bit of wall turning sends out a weak disturbance along the local Mach line, at μ = $\sin^{-1}(1/M)$ to the flow.
+
+- **Compressive (concave) corner.** Each wave turns the flow up and slows it, so the next Mach angle is *larger* and the next wave is steeper. Later waves catch up with earlier ones and coalesce into an **oblique shock** (Ch. 12). It is the 2-D twin of a piston pushed into a tube, whose compression waves steepen into a shock.
+- **Expansive (convex) corner.** Each wave turns the flow down and speeds it up, so μ gets *smaller* and successive waves lean further back. They **diverge** and never meet. No shock forms, the flow stays isentropic, and a sharp corner gives a **centred Prandtl–Meyer fan**: straight rays from the corner, like a piston pulled out of a tube.
+
+<Idea title="Geometry of the fan">
+
+The fan's first ray (the **head**) is the Mach line of the incoming flow, at μ₁ to the upstream direction. The last ray (the **tail**) is the Mach line of the outgoing flow, at μ₂ to the *turned* direction. In between, every ray is a Mach line of the local flow.
+
+</Idea>
+
+## The Prandtl–Meyer function
+
+Across one weak wave the tangential velocity is unchanged (same argument as Ch. 12). A small turn dν therefore changes the speed by
+
+$$
+d\nu = \sqrt{M^2 - 1}\,\frac{dV}{V}
+$$
+
+Write $dV/V$ in terms of M with $V = Mc$ and the adiabatic $c/c_0 = (1 + \frac{\gamma-1}{2}M^2)^{-1/2}$, then integrate from M = 1 (where we define ν = 0):
+
+$$
+\nu(M) = \sqrt{\frac{\gamma+1}{\gamma-1}}\tan^{-1}\sqrt{\frac{\gamma-1}{\gamma+1}\left(M^2-1\right)} - \tan^{-1}\sqrt{M^2-1}
+$$
+
+ν(M) is **the angle a sonic flow must be turned through to reach M**. It is tabulated in Table A6 (with μ). For a real corner of angle θ:
+
+$$
+\nu_2 = \nu_1 + \theta \quad\Rightarrow\quad M_2 \text{ from A6}
+$$
+
+Because the fan is isentropic, $p_0$ and $T_0$ do not change, so the pressure ratio is a ratio of A2 entries:
+
+$$
+\frac{p_2}{p_1} = \frac{(p/p_0)_{M_2}}{(p/p_0)_{M_1}} = \left[\frac{1 + \frac{\gamma-1}{2}M_1^2}{1 + \frac{\gamma-1}{2}M_2^2}\right]^{\gamma/(\gamma-1)}
+$$
+
+## Maximum turning: expansion to vacuum
+
+As M → ∞ both arctangents go to π/2:
+
+$$
+\nu_{max} = \frac{\pi}{2}\left(\sqrt{\frac{\gamma+1}{\gamma-1}} - 1\right) = 130.45° \quad (\gamma = 1.4)
+$$
+
+A sonic flow can be turned at most 130.45°, ending at p = 0, T = 0. A flow already at $M_1$ has used ν₁ of it, so it can turn only $\nu_{max} - \nu_1$ more. Beyond that the flow cannot follow the wall and a vacuum region would open (real gases stop being ideal long before).
+
+<Trap>
+
+The extra turning available is $\nu_{max} - \nu_1$, not $\nu_{max}$. A Mach 2 flow has already "spent" 26.38°, so it can turn 104.07° more (PS10 P1).
+
+</Trap>
+
+## Worked example: Mach 2 around a 10° corner (notes §13.1.2)
+
+$M_1 = 2$, $p_1 = 1$ atm, θ = 10°. Imagine the flow started sonic at a fictitious earlier corner and has already been turned 26.38°.
+
+1. <T>A6 @ M = 2.0: ν₁ = 26.38°, μ₁ = 30.0°</T> <CalcLink calc="pm" q="in=M&v=2">check</CalcLink>
+2. ν₂ = 26.38° + 10° = 36.38°, <T>A6 @ ν = 36.38°: M₂ = 2.385, μ₂ = 24.8°</T>
+3. <T>A2: p/p₀ = 0.1278 (M = 2), 0.0700 (M = 2.385)</T>, so $p_2/p_1 = 0.0700/0.1278 = 0.5477$: $p_2 = 0.548$ atm.
+
+The head ray sits at 30.0° to the incoming flow, the tail at 24.8° to the outgoing flow (14.8° above the original horizontal).
+
+<ExpansionFanSim initialM={2} initialTheta={10} />
+
+<Remember title="Expansion vs shock, side by side">
+
+| | Oblique shock (concave) | P-M fan (convex) |
+|---|---|---|
+| Waves | coalesce into one | spread into a fan |
+| Entropy | rises, $p_0$ falls | constant, $p_0$ constant |
+| M | falls | rises |
+| p, T, ρ | jump up | fall smoothly |
+| Tool | θ-β-M chart + A3 with $M\sin\sigma$ | A6 (ν) + A2 (p/p₀) |
+| Limit | δmax (detachment) | $\nu_{max} - \nu_1$ (vacuum) |
+
+</Remember>
+
+Small turns are nearly symmetric: for a weak compression of a few degrees, the oblique-shock entropy rise is third order in δ, so a compression corner can be treated as an "inverse" P-M turn ($\nu_2 = \nu_1 - \theta$). This is the basis of the method of characteristics in Ch. 15.
+
+<Examined>
+
+- [PS10](#/mech430/ps/ps10) P1: Mach 2 around 20° → $M_2 = 2.83$, $p_2/p_1 = 0.275$, maximum turn 104.07°.
+- Every shoulder of a diamond airfoil is a P-M fan: [PS10](#/mech430/ps/ps10) P2, [Final A](#/mech430/exam/final-a) P3, [Final B](#/mech430/exam/final-b) P4 (Ch. 14).
+- [Final A](#/mech430/exam/final-a) P2(d): an under-expanded Raptor exhausting to vacuum turns $\nu_{max} - \nu(4.82) = 130.45° - 75.20° = 55.25°$ at the lip.
+- MOC (Ch. 15) is P-M bookkeeping with ν ± θ: [PS10](#/mech430/ps/ps10) P3–P4.
+
+</Examined>
+
+## Check yourself
+
+1. Why can't an expansion fan turn into a shock? → μ decreases as M increases, so the waves diverge.
+2. M = 2, θ = 20°: $M_2$ and $p_2/p_1$? → ν₂ = 46.38°, $M_2 = 2.83$, $p_2/p_1 = 0.0352/0.1278 = 0.275$.
+3. Is $p_0$ conserved through the fan? Across a shock? → Fan yes (isentropic), shock no.
+4. How far can a Mach 3 flow (ν = 49.76°) be turned? → 130.45° − 49.76° = 80.69°.

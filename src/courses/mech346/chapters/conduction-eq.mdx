@@ -1,0 +1,202 @@
+<p className="eyebrow">Chapter 2 · The heat conduction equation · Midterm 1</p>
+
+# The heat conduction equation
+
+<div className="lede">
+
+Fourier's law gives the heat flux **if you know the temperature profile**. The conduction equation is how you *find* the temperature profile. It is nothing more than an energy balance on a thin slice of material, written as a differential equation, plus the boundary conditions that say what is happening at the surfaces. Midterm 1 asks you to do exactly this on a sphere, a cylinder and a composite wall with heat generation: write the equation, write the boundary conditions, integrate twice, and sketch the result.
+
+</div>
+
+<Idea title="The 30-second version">
+
+1. Take a thin slice of material of thickness $\Delta x$. Energy balance: (heat conducted in) $-$ (heat conducted out) $+$ (heat generated) $=$ (rate of energy storage).
+2. Let $\Delta x\to0$ and use Fourier's law. In one dimension, with constant $k$:
+$$\frac{d^2T}{dx^2}+\frac{\dot e_{gen}}{k}=\frac1\alpha\frac{\partial T}{\partial t}.$$
+3. The equation has **second derivative in space and first derivative in time**, so it needs **two boundary conditions per space direction** and **one initial condition**.
+4. Steady, no generation: $T$ is linear in a plane wall (and logarithmic in a cylinder, $1/r$ in a sphere). With generation, $T$ is a parabola, and the hottest point is where the slope is zero (the centre of a symmetric body).
+
+</Idea>
+
+## Why the equation takes this form
+
+Picture a long rod, insulated on its sides. Look at a slice between $x$ and $x+\Delta x$ with cross-section $A$. Energy balance over a time $\Delta t$:
+
+$$\dot Q_x-\dot Q_{x+\Delta x}+\dot E_{gen,\,element}=\frac{\Delta E_{element}}{\Delta t}.$$
+
+- The element's stored energy changes as its temperature does: $\Delta E=\rho c\,A\Delta x\,\Delta T$.
+- The generation is $\dot E_{gen}=\dot e_{gen}A\Delta x$, where $\dot e_{gen}$ [W/m³] is the **volumetric** generation (electric resistance heating, nuclear fission, chemical reaction, an exothermic cure).
+- Dividing by $A\Delta x$ and letting $\Delta x\to0$, then using $\dot Q=-kA\,\partial T/\partial x$:
+
+$$\frac{\partial}{\partial x}\!\left(k\frac{\partial T}{\partial x}\right)+\dot e_{gen}=\rho c\frac{\partial T}{\partial t}.$$
+
+Read it as a story: **(net heat conducted in per unit volume) + (generation) = (rate of storage)**. With constant $k$, divide by $k$ and use $\alpha=k/\rho c$ to reach the $\alpha$ form above.
+
+In three dimensions the second derivatives add up (rectangular coordinates):
+
+$$\frac{\partial^2T}{\partial x^2}+\frac{\partial^2T}{\partial y^2}+\frac{\partial^2T}{\partial z^2}+\frac{\dot e_{gen}}{k}=\frac1\alpha\frac{\partial T}{\partial t}.$$
+
+The same balance written in cylindrical and spherical coordinates (this is on the formula sheet) gives, for **one-dimensional radial** conduction,
+
+$$\frac1{r^n}\frac{\partial}{\partial r}\!\left(r^nk\frac{\partial T}{\partial r}\right)+\dot e_{gen}=\rho c\frac{\partial T}{\partial t},\qquad n=\begin{cases}0&\text{plane wall }(r\to x)\\1&\text{long cylinder}\\2&\text{sphere}\end{cases}$$
+
+The factor $r^n$ is the area growing with radius: heat spreads out over more area as it moves outward, so the profile cannot be a straight line.
+
+### Special cases you will use
+
+| Situation | Equation (constant $k$) |
+|---|---|
+| steady, no generation | $\dfrac{d}{dr}\!\left(r^n\dfrac{dT}{dr}\right)=0$ |
+| steady, with generation | $\dfrac1{r^n}\dfrac{d}{dr}\!\left(r^n\dfrac{dT}{dr}\right)=-\dfrac{\dot e_{gen}}{k}$ |
+| transient, no generation | $\dfrac1{r^n}\dfrac{\partial}{\partial r}\!\left(r^n\dfrac{\partial T}{\partial r}\right)=\dfrac1\alpha\dfrac{\partial T}{\partial t}$ |
+
+The **thermal diffusivity** $\alpha$ is the physical content of the transient equation: it says how fast a disturbance spreads. A large $\alpha$ evens out temperatures quickly (copper); a small one lets large gradients persist (wood, brick).
+
+<Trap title="Read the equation like a diagnosis (a standard MCQ)">
+
+Given $\dfrac{\partial}{\partial z}\!\left(\dfrac{\partial T}{\partial z}\right)+\dfrac{\dot e_{gen}}{k}=\dfrac1\alpha\dfrac{\partial T}{\partial t}$: only $z$ appears, so it is **one-dimensional**; the time derivative is there, so it is **transient**; $\dot e_{gen}$ is there, so heat **is generated**; $k$ is outside the derivative, so $k$ is **constant**. (Oct 2021 and Oct 2023, question 1(v).)
+
+</Trap>
+
+## Boundary and initial conditions
+
+The equation alone has infinitely many solutions; the conditions pick the one that matches your situation. You need
+
+- **two boundary conditions** for each space coordinate with a second derivative,
+- **one initial condition** if time appears.
+
+The surface conditions are all **surface energy balances** (Chapter 1: a surface stores nothing). For a surface at $x=0$ with the body to its right:
+
+| Condition | Statement |
+|---|---|
+| 1. specified temperature | $T(0,t)=T_s$ |
+| 2. specified heat flux | $-k\dfrac{\partial T}{\partial x}\Big\vert _{0}=q_0''$ |
+| 2a. insulated | $\dfrac{\partial T}{\partial x}\Big\vert _0=0$ |
+| 2b. thermal symmetry (mid-plane or centre) | $\dfrac{\partial T}{\partial x}\Big\vert _{mid}=0$ (same as insulated) |
+| 3. convection | $-k\dfrac{\partial T}{\partial x}\Big\vert _0=h\,[T_\infty-T(0,t)]$ |
+| 4. radiation | $-k\dfrac{\partial T}{\partial x}\Big\vert _0=\varepsilon\sigma[T_{surr}^4-T(0,t)^4]$ |
+| 5. interface of two solids | $T_A=T_B$ and $-k_A\dfrac{\partial T_A}{\partial x}=-k_B\dfrac{\partial T_B}{\partial x}$ |
+
+**How to get the sign right without memorising:** "conduction **leaving** the solid at the surface equals convection **leaving** the surface to the fluid". At the right face $x=L$ the heat leaves in $+x$, so $-k\,dT/dx\Big\vert _L=h(T_L-T_\infty)$; at the left face heat leaves in $-x$, so $+k\,dT/dx\Big\vert _0=h(T_0-T_\infty)$. The two look different only because of which way the axis points.
+
+<Trap title="Two traps in the conditions">
+
+At the **centre** of a cylinder or sphere $r=0$ the equation is singular; the physically correct condition is symmetry, $dT/dr=0$ at $r=0$, **never** "$T$ finite" shortcuts like $T(0)=0$. And when you use $x_1,x_2$ measured from the place where $dT/dx=0$ (Anthony's method in the Feb 2024 problem below) every coordinate must be measured from the **same** point.
+
+</Trap>
+
+## Solving a steady one-dimensional problem: the recipe
+
+1. Write the equation for the geometry (n = 0, 1, 2) and the generation.
+2. **Integrate twice.** You get two constants $C_1,C_2$.
+3. Apply the two boundary conditions to get the constants. At a surface with convection, find the surface temperature $T_s$ from an energy balance first if you can (see below); it makes the algebra short.
+4. Check: $T(r)$ at the surface agrees with the BC; the flux at the surface agrees with the convection law.
+5. Sketch $T(r)$ and $q''(r)$.
+
+### Heat generation in a solid (the exam favourite)
+
+Take a solid of "radius" $r_0$ (half-thickness $L$ for a wall), uniform generation $\dot e_{gen}$, convection to a fluid $(T_\infty,h)$ at the surface and symmetry at the centre. Integrate $\dfrac1{r^n}\dfrac d{dr}\!\left(r^n\dfrac{dT}{dr}\right)=-\dfrac{\dot e_{gen}}k$ once: $r^n\dfrac{dT}{dr}=-\dfrac{\dot e_{gen}r^{n+1}}{(n+1)k}+C_1$. The symmetry condition $dT/dr=0$ at $r=0$ kills $C_1$. Integrating again,
+
+$$\boxed{T(r)=T_s+\frac{\dot e_{gen}}{2(n+1)k}\left(r_0^2-r^2\right)}$$
+
+so the temperature difference between centre and surface is
+
+| Geometry | $T_0-T_s$ | $T_s-T_\infty$ (from an energy balance) |
+|---|---|---|
+| plane wall, thickness $2L$ | $\dfrac{\dot e_{gen}L^2}{2k}$ | $\dfrac{\dot e_{gen}L}{h}$ |
+| long cylinder, radius $r_0$ | $\dfrac{\dot e_{gen}r_0^2}{4k}$ | $\dfrac{\dot e_{gen}r_0}{2h}$ |
+| sphere, radius $r_0$ | $\dfrac{\dot e_{gen}r_0^2}{6k}$ | $\dfrac{\dot e_{gen}r_0}{3h}$ |
+
+**Where the surface-temperature column comes from** (the "shortcut" that makes the exam problems quick): in steady state *all* the heat generated in the volume leaves through the surface, $\dot e_{gen}V=hA_s(T_s-T_\infty)$, so $T_s=T_\infty+\dfrac{\dot e_{gen}V}{hA_s}$ and $V/A_s=L$, $r_0/2$, $r_0/3$ for the three geometries. Then $T_0=T_s+(T_0-T_s)$.
+
+*Physical picture:* the heat flux at radius $r$ is the generation inside that radius spread over the area there, $q''(r)=\dfrac{\dot e_{gen}r}{n+1}$: **zero at the centre, growing linearly to its maximum at the surface**. Then in the fluid the flux decays as the area grows (cylinder $\propto1/r$, sphere $\propto1/r^2$).
+
+### Worked example 1: the radioactive sphere (Midterm 1, Oct 2023, Q3)
+
+A homogeneous sphere of radioactive material, $r_0=0.04$ m, generates $\dot e_{gen}=3\times10^7$ W/m³ steadily. It is cooled by convection to $T_\infty=25$ °C with $h=4000$ W/m²K; $k=15$ W/m·K. (a) Write the equation and boundary conditions; (b) derive $T(r)$; (c) find the centre temperature; (d) sketch $q''(r)$ from 0 to ∞.
+
+**(a)** One-dimensional, steady, constant $k$, sphere:
+$$\frac1{r^2}\frac{d}{dr}\!\left(r^2\frac{dT}{dr}\right)+\frac{\dot e_{gen}}k=0.$$
+Boundary conditions: **symmetry** $\dfrac{dT}{dr}\Big\vert _{r=0}=0$ and **convection** $-k\dfrac{dT}{dr}\Big\vert _{r_0}=h\,(T(r_0)-T_\infty)$.
+
+**(b)** Multiply by $r^2$ and integrate: $r^2\dfrac{dT}{dr}=-\dfrac{\dot e_{gen}r^3}{3k}+C_1$. At $r=0$ the left side is finite and zero, so $C_1=0$. Divide by $r^2$ and integrate again:
+$$T(r)=-\frac{\dot e_{gen}r^2}{6k}+C_2.$$
+For $C_2$, use the surface energy balance: all the heat generated leaves by convection, $\dot e_{gen}\tfrac43\pi r_0^3=h\,4\pi r_0^2(T_s-T_\infty)$, so
+$$T_s=T_\infty+\frac{\dot e_{gen}r_0}{3h}=25+\frac{3\times10^7(0.04)}{3(4000)}=\mathbf{125\,°C}.$$
+With $T(r_0)=T_s$: $C_2=T_s+\dfrac{\dot e_{gen}r_0^2}{6k}$, hence $T(r)=T_s+\dfrac{\dot e_{gen}}{6k}(r_0^2-r^2)$.
+
+(Checking the other boundary condition directly: $-k\,dT/dr|_{r_0}=\dot e_{gen}r_0/3=4.0\times10^5$ W/m², and $h(T_s-T_\infty)=4000(100)=4.0\times10^5$ ✔.)
+
+**(c)** $T_0=T_s+\dfrac{\dot e_{gen}r_0^2}{6k}=125+\dfrac{3\times10^7(0.0016)}{6(15)}=125+533.3=\mathbf{658.3\,°C}$.
+
+**(d)** $q''(r)=-k\,dT/dr=\dfrac{\dot e_{gen}r}3$ grows **linearly** from 0 at the centre to $4\times10^5$ W/m² at $r_0$, then for $r>r_0$ falls as $1/r^2$ (fixed heat rate through a growing spherical area).
+
+*(Graded student copy: every step and number above agree with the student's work; the grader's concern was the sketch of $q''$: it rises linearly, then **drops**, it does not continue to rise.)*
+
+### Worked example 2: a nuclear fuel rod in a steel tube (Concordia/McGill midterm, Oct 2021, Q3)
+
+Fuel rod $r_1=4$ cm ($k_f=55$ W/m·K) with uniform generation, encased in a stainless tube out to $r_2=5$ cm ($k_{ss}=17.5$), exposed to fluid at 250 °C with $h=3000$ W/m²K. The tube must not exceed 300 °C. Find (a) the heat rate per unit length, (b) the tube outer-surface temperature, (c) the maximum fuel temperature, (d) sketch $q''(r)$.
+
+**Think.** Heat generated in the rod passes through the tube wall, then into the fluid. In the tube there is no generation, so the heat rate per unit length is the same at every radius: a **thermal circuit** of two resistances (tube conduction + outer convection). The hottest point in the tube is its **inner** surface ($r_1$), because heat flows outward: that is where $T=300$ °C.
+
+**(a)** Per metre of length: 
+$R_{tube}=\dfrac{\ln(r_2/r_1)}{2\pi k_{ss}}=\dfrac{\ln1.25}{2\pi(17.5)}=0.002029$ m·K/W, 
+$R_{conv}=\dfrac1{h\,2\pi r_2}=\dfrac1{3000(0.31416)}=0.001061$ m·K/W, 
+$$\dot Q'=\frac{300-250}{0.002029+0.001061}=\mathbf{16\,180\ W/m}.$$
+
+**(b)** $T_2=T_\infty+\dot Q'R_{conv}=250+16\,180(0.001061)=\mathbf{267.2\,°C}$ (check: $T_1-T_2=\dot Q'R_{tube}=32.8$ K ✔).
+
+**(c)** All the generation per unit length is $\dot Q'$: $\dot e_{gen}=\dfrac{\dot Q'}{\pi r_1^2}=\dfrac{16\,180}{\pi(0.04)^2}=3.22\times10^6$ W/m³. In the rod $T(r)=T_1+\dfrac{\dot e_{gen}}{4k_f}(r_1^2-r^2)$, so
+$$T_{max}=T_0=300+\frac{3.22\times10^6(0.04)^2}{4(55)}=\mathbf{323.4\,°C}.$$
+
+**(d)** Inside the rod $q''=\dot e_{gen}r/2$ rises linearly to $64\,400$ W/m² at $r_1$; across the tube $q''=\dot Q'/(2\pi r)$ falls: 51 500 W/m² at $r_2$. **The flux is continuous at the interface $r_1$** (the same heat crosses the same area), and the fall from 64 400 to 51 500 W/m² is gradual, simply because the heat spreads over a larger area while nothing is generated. Beyond $r_2$ the flux keeps falling as $1/r$.
+
+<ToolLink tool="resistance">Check the resistances in the network calculator</ToolLink>
+
+### Worked example 3: composite wall with generation in the middle layer (Midterm 1, Feb 19 2024, Q3)
+
+Three layers, A (30 mm, $k=25$), B (60 mm total, uniform generation, $k_B$ unknown), C (20 mm, $k=50$), no contact resistance, **both** outer faces exposed to fluid at 25 °C with $h=1000$ W/m²K. The highest temperature in A is 261 °C and the lowest in C is 158 °C. Find (a) the lowest temperature in A, (b) the highest temperature in C, (c) $\dot e_{gen}$ in B, (d) $k_B$.
+
+**Think.** In A and C there is no generation, so the heat flux is **constant** through each layer and the temperature is **linear**. The generation in B sends heat out **both** ways, so the temperature profile in B is a parabola peaking inside it. The highest temperature in A is at its face with B ($T_2=261$), the lowest at the outer face ($T_1$). In C the highest is at the face with B ($T_3$), the lowest at the outer face ($T_4=158$).
+
+**(a)** Left side: heat leaves through A then the convection film: $q''_L=\dfrac{T_2-T_\infty}{1/h+L_A/k_A}=\dfrac{261-25}{0.001+0.0012}=107\,273$ W/m². The lowest temperature in A is the outer face, $T_1=T_\infty+q''_L/h=25+107.3=\mathbf{132.3\,°C}$.
+
+**(b)** Right side: $q''_R=h(T_4-T_\infty)=1000(158-25)=133\,000$ W/m². Then $T_3=T_4+q''_RL_C/k_C=158+133\,000(0.02)/50=\mathbf{211.2\,°C}$.
+
+**(c)** Energy balance on B (steady): everything generated leaves through the two faces:
+$$\dot e_{gen}(2L_B)=q''_L+q''_R\;\Rightarrow\;\dot e_{gen}=\frac{107\,273+133\,000}{0.06}=\mathbf{4.00\times10^6\ W/m^3}.$$
+
+**(d)** In B, with $x$ measured from the left face, $T(x)=-\dfrac{\dot e_{gen}}{2k_B}x^2+c_1x+T_2$. The flux leaving the left face toward A is $q''_L=k_B\,dT/dx\Big\vert _0=k_Bc_1$, so $c_1=q''_L/k_B$. At the right face $T(0.06)=T_3$:
+$$211.2=261-\frac{4.0045\times10^6(0.06)^2}{2k_B}+\frac{107\,273(0.06)}{k_B}\;\Rightarrow\;k_B=\frac{7208.1-6436.4}{49.8}=\mathbf{15.5\ W/m\cdot K}.$$
+The hottest point is where $dT/dx=0$: $x_{max}=q''_L/\dot e_{gen}=26.8$ mm from the left face (a bit left of the middle, because more heat leaves to the left, where the wall is thinner and the film is closer).
+
+<Callout kind="note" title="About the regrade request">
+
+Every number in Anthony's attempt agrees with the recomputation above: $T_1=132.27$ °C, $T_3=211.2$ °C, the energy balance on B ($x_1$ and $x_2$ measured outward from the point where $dT/dx=0$, $\dot e_{gen}(x_1+x_2)=\dot Q''_L+\dot Q''_R$), and a three-constant solution $c_1,c_2,k$ using $T(0)=261$, $T(60\text{ mm})=211.2$ and $dT/dx=0$ at $x=26.78$ mm. The three-condition method is valid (it is just overdetermined by the energy balance); in the scan the red cross through the first answer is not explained. The point of the problem is the **reasoning order**: outer film and layer first, then energy balance, then the parabola.
+
+</Callout>
+
+## Variable thermal conductivity
+
+Real $k$ depends on temperature, roughly linearly: $k(T)=k_0\,[1+\beta(T-T_0)]$. For steady one-dimensional plane-wall conduction the heat rate is
+
+$$\dot Q=k_{avg}A\frac{T_1-T_2}{L},\qquad k_{avg}=k_0\left[1+\beta\left(\frac{T_1+T_2}2-T_0\right)\right],$$
+
+i.e. **use $k$ at the mean temperature** for a linear law. The temperature profile is no longer straight but is **curved toward the high-$k$ side**.
+
+*Example.* $k_0=20$ W/m·K at 300 K, $\beta=0.002$ K⁻¹, a wall 10 cm thick between 500 K and 300 K: $k_{avg}=20[1+0.002(100)]=24$, so $q''=24(200)/0.1=48\,000$ W/m², 20 % more than the constant-$k_0$ answer of 40 000. Ignoring the variation would have under-predicted the loss by a fifth.
+
+<Examined>
+
+- **Every MT1** has a generation question: Oct 2021 Q3 (fuel rod in a steel tube), Oct 2023 Q3 (radioactive sphere), Feb 2024 Q3 (composite wall with generation in the middle). Pattern: state the equation, write the BCs, solve, **find the maximum temperature**, sketch $T(r)$ and $q''(r)$.
+- The "select the wrong statement" item on reading the heat-conduction equation (above).
+- Assignment 2: see <Asg n="02">practice set</Asg>.
+
+</Examined>
+
+### Check yourself
+
+1. Why is $dT/dx=0$ the right condition at the mid-plane of a symmetric wall? *(Heat cannot cross the plane of symmetry, by symmetry: it is equivalent to an insulated surface.)*
+2. A long copper wire of radius 1 mm carries a current that generates $5\times10^7$ W/m³; $k=400$, $h=100$, $T_\infty=20$ °C. $T_0$? *($T_s=20+5\times10^7(0.001)/(2\cdot100)=270$ °C; $T_0-T_s=5\times10^7(10^{-6})/(1600)=0.03$ K: the wire is isothermal; the film does all the work.)*
+3. How many boundary and initial conditions does $\partial^2T/\partial x^2+\dot e/k=\alpha^{-1}\partial T/\partial t$ need? *(Two boundary, one initial.)*
+4. Why does the heat flux in a solid cylinder with generation vary linearly with $r$? *(The heat crossing radius $r$ is all the generation inside, $\propto r^2$, spread over an area $\propto r$.)*

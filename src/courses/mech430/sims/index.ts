@@ -1,0 +1,12 @@
+export { NozzleSim } from './NozzleSim';
+export { NozzlePipeSim } from './NozzlePipeSim';
+export { AreaMachSim, MassFluxSim, NormalShockSim, InfluenceTable } from './BasicSims';
+export { MachConeSim, CompressibilitySim, ConvergingNozzleSim, RocketThrustSim } from './EarlySims';
+export * from './simsA';
+export * from './simsB';
+export * from './simsC';
+export * from './simsD';
+export * from './simsE';
+export * from './simsF';
+export * from './simsG';
+export { FlowSection3D, interpField } from '../viz/FlowSection3D';

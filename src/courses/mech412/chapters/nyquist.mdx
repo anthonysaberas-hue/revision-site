@@ -1,0 +1,87 @@
+<p className="eyebrow">Chapter 21 · Lecture 23 · HW8-2024 Q3 · HW10 Q5</p>
+
+# Nyquist stability criterion
+
+<div className="lede">
+
+Routh needs the characteristic polynomial; Bode needs a minimum-phase loop. The **Nyquist criterion** needs neither: it decides stability from the frequency response alone by counting how many times a curve circles one special point, $-1$. It works for delays, for unstable open loops and for plants you only know from measurements.
+
+</div>
+
+<Callout kind="note" title="Where this chapter comes from">
+
+Anthony's own notes stop at Cauchy's theorem (review p. 94; pages 95–97 are blank). The examples below come from the lecture 23 deck headings and HW8-2024 Q3 / HW10 Q5, with every claim re-checked numerically.
+
+</Callout>
+
+<Idea title="The 30-second version">
+
+The closed-loop poles are the zeros of $F(s)=1+L(s)$. Map the whole right half-plane boundary (the *Nyquist contour*) through $L(s)$ and count how many times the image encircles $-1$:
+
+$$
+\boxed{Z=N+P}
+$$
+
+$N$ = clockwise encirclements of $-1$, $P$ = open-loop poles in the right half-plane, $Z$ = **closed-loop poles in the right half-plane**. Stable closed loop ⇔ $Z=0$. If the open loop is stable ($P=0$) you simply need **no** encirclement of $-1$.
+
+</Idea>
+
+## Why it works (the argument principle, in words)
+
+Walk once clockwise around a closed contour in the $s$-plane and watch $F(s)$: every zero of $F$ inside the contour makes the image wind once clockwise around the origin, every pole once counter-clockwise. So the image circles the origin $N=Z-P$ times (clockwise positive). Take the contour to be the whole right half-plane (up the imaginary axis, back along a huge semicircle). Then $Z$ = zeros of $F=1+L$ = closed-loop poles in the RHP, and $P$ = poles of $F$ = poles of $L$ in the RHP. Since $F=1+L$ the image of $F$ circling the origin is the image of $L$ circling $-1$.
+
+**Convention check:** some textbooks write $N=P-Z$ for counter-clockwise counts. Use one convention throughout: here $N$ is *clockwise* and $Z=N+P$.
+
+## Drawing the plot
+
+1. Evaluate $L(j\omega)$ for $\omega$ from $0^+$ to $\infty$ (the polar plot of Chapter 19). The mirror image ($-\omega$) is the **complex conjugate**.
+2. If $L$ has poles **on the imaginary axis** (an integrator at the origin), the contour must **indent** around them with a small semicircle, and the plot gets a **large arc**: $180^\circ$ clockwise for one integrator, $360^\circ$ for two ("assume the infinity arc is connected").
+3. Count clockwise turns around $-1$.
+
+<NyquistTool />
+
+## Examples
+
+### 1. $L=\dfrac{K}{s(s^2+s+6)}$ (HW8-2024 Q3a)
+
+$P=0$ (no RHP poles; the origin pole is handled by the indentation). For $K=1$ the curve does not circle $-1$: $N=0\Rightarrow Z=0$ **stable**. **Maximum $K$:** the curve crosses the real axis where $\operatorname{Im}L=0$, at $\omega^2=6$, with real part $u=-\dfrac K6$. Stability needs $-K/6>-1$: **$K<6$**. Check with Routh on $s^3+s^2+6s+K$: $K<6$, and at $K=6$ the roots are $\pm j\sqrt6$ and $-1$ ✔.
+
+### 2. $L=\dfrac{K(s+1)}{s^2(s^2+6)}$ (HW8-2024 Q3b): unstable for every $K$
+
+Two integrators (a $360^\circ$ arc) and a pair of poles at $\pm j\sqrt6$ (small indentations). The plot encircles $-1$ **twice clockwise**: $N=2$, $P=0$ ⇒ $Z=2$ (**unstable for all $K$**). Confirm with the characteristic polynomial $s^4+6s^2+Ks+K$: there is **no $s^3$ term**, so the Routh test fails for every $K$ (for $K=1$ the roots are $0.088\pm j2.42$ and $-0.088\pm j0.40$).
+
+<Trap title="The Dorf manual solves a different problem">
+
+HW10 Q5(b) is the same question, but the printed solution (Dorf P9.2) is for $L=\dfrac{K(s+1)}{s^2(s+6)}$ and concludes "stable for all $K$". Do not copy it for $s^2(s^2+6)$. The handwritten HW8-2024 solution correctly says unstable regardless of gain.
+
+</Trap>
+
+### 3. An unstable open loop: $L=\dfrac{K_1}{s(s-1)}$
+
+Here $P=1$ (the pole at $+1$). We need $Z=0=N+P\Rightarrow N=-1$: **one counter-clockwise encirclement** of $-1$. Adding derivative feedback, $\dfrac{K_1(1+K_2s)}{s(s-1)}$, supplies the extra phase that produces that encirclement for large enough $K_1$.
+
+### 4. Positive-phase systems and delays
+
+$L=\dfrac{K(s-2)}{(s+1)^2}$ (a RHP zero) starts at $-2K$ on the real axis: the curve begins on the *left* of the origin, so for $K\ge\tfrac12$ the point $-1$ is encircled and the closed loop is unstable although the open loop is stable.
+
+## Relative stability
+
+The distance from the curve to $-1$ is the margin: the gain margin $1/|L(j\omega_{pc})|$ and phase margin $180^\circ+\angle L(j\omega_{gc})$ (Chapter 19) are just two ways to read that distance. A curve that hugs $-1$ gives a lightly damped closed loop even if technically stable.
+
+## Compensator comparison on one plant (the lecture's recap)
+
+$G=\dfrac{K}{s(s+1)}$ with four methods: lead by root locus (poles at $-1\pm j\sqrt3$ need $+30^\circ$, $a=10$, compensator pole near $-37$), lag by root locus ($K_v=10$), lead by Bode and lag by Bode (Chapter 20). The *time-domain* methods (root locus) specify poles; the *frequency-domain* methods specify margins; they give compatible designs.
+
+<Examined>
+
+- <Hw n="8">HW8</Hw> Q3, <Hw n="10">HW10</Hw> Q5; no past paper in the archive asks it directly, so it is a prime candidate for a 2024 final problem: "sketch Nyquist, count $N,P,Z$, find $K_{max}$".
+- The final crib's rule: *$Z=N+P$; 1 CW encirclement ⇒ $N=1$; 1 CCW ⇒ $N=-1$; assume the infinity arc is connected.* To find the critical gain, multiply $L(j\omega)$ by its conjugate to separate real and imaginary parts, set $\operatorname{Im}=0$ for $\omega$ and $\operatorname{Re}=-1$ for $K$.
+
+</Examined>
+
+### Check yourself
+
+1. $P=2$, the plot circles $-1$ twice counter-clockwise. $Z$? *($N=-2$, $Z=N+P=0$: stable.)*
+2. Why does an integrator at the origin add a $180^\circ$ arc? *(The indentation around the pole maps to a large semicircle at infinity.)*
+3. $L=\dfrac{K}{(s+1)(s+2)(s+3)}$: critical gain? *(Real-axis crossing at $\omega=\sqrt{11}$ where $L=-K/60$, so $K_{cr}=60$.)*
+4. Routh and Nyquist disagree. Which do you trust? *(Neither: recheck. They must agree; use Routh as a check.)*

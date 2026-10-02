@@ -1,0 +1,169 @@
+<p className="eyebrow">Chapter 12</p>
+
+# Oblique shocks & reflections
+
+<p className="lede">Turn a supersonic flow into itself (a wedge, a ramp, a concave corner) and it answers with a straight shock that leans back at an angle σ. It is nothing new: a normal shock that someone slid sideways. Learn to split the velocity into its normal and tangential parts and every Chapter 7 table works again.</p>
+
+## An oblique shock is a normal shock plus a tangential velocity
+
+Take the stationary normal shock of Chapter 7 and run past it along its face at a speed $V_T$. In your new frame the gas arrives at an angle and leaves at a different angle, but nothing physical changed. That is an oblique shock.
+
+Write mass, momentum and energy for a thin control volume hugging the shock, with components normal (N) and tangential (T) to it:
+
+$$
+\rho_x V_{xN} = \rho_y V_{yN}, \qquad p_x + \rho_x V_{xN}^2 = p_y + \rho_y V_{yN}^2, \qquad V_{xT} = V_{yT}
+$$
+
+$$
+h_x + \tfrac12 V_{xN}^2 = h_y + \tfrac12 V_{yN}^2
+$$
+
+The tangential momentum equation says $V_T$ is unchanged, so the $V_T^2/2$ terms cancel out of the energy equation. What is left is **exactly the normal-shock system written with $V_N$**. In Anthony's lecture notes (Mar 26): *"energy is a scalar, not a vector: there are no n, t components"*, yet the tangential parts still drop out because they are equal on both sides.
+
+<ObliqueVelocityFigure />
+
+<Idea title="One sentence to remember">
+
+Use the normal-shock tables (A3) with $M_{xN} = M_x\sin\sigma$ in place of $M_x$. Everything that depends only on the normal motion ($p_y/p_x$, $T_y/T_x$, $\rho_y/\rho_x$, $M_{yN}$, $p_{0y}/p_{0x}$) comes straight out of the table.
+
+</Idea>
+
+## Working relations (equation sheet form)
+
+Normal components:
+
+$$
+M_{xN} = M_x \sin\sigma, \qquad M_{yN} = M_y \sin(\sigma - \delta)
+$$
+
+Downstream Mach number (you need δ to convert back):
+
+$$
+M_y = \frac{M_{yN}}{\sin(\sigma - \delta)}
+$$
+
+The σ–δ–M ("θ-β-M") relation, from the two velocity triangles sharing the same $V_T$ ($V_{xN} = V_T\tan\sigma$, $V_{yN} = V_T\tan(\sigma-\delta)$, and $V_{yN}/V_{xN} = \rho_x/\rho_y$):
+
+$$
+\tan\delta = \frac{\left(M_x^2\sin^2\sigma - 1\right)\cot\sigma}{\dfrac{\gamma+1}{2}M_x^2 - M_x^2\sin^2\sigma + 1}
+$$
+
+Pressure ratio, the one you can invert in closed form:
+
+$$
+\frac{p_y}{p_x} = \frac{2\gamma M_x^2\sin^2\sigma - (\gamma-1)}{\gamma+1}
+$$
+
+<Trap title="Two classic slips">
+
+- $M_y \ne M_{yN}$. The table gives the normal part; divide by $\sin(\sigma-\delta)$, **not** $\sin\sigma$.
+- Ratios that mix static and stagnation on the *same* side ($p_x/p_{0y}$, the pitot column) are **not** valid for an oblique shock: they ignore the kinetic energy of $V_T$. Only $p_{0y}/p_{0x}$ transfers, because $V_T$ adds the same energy on both sides. Get $p_{0x}$ from the full $M_x$ with A2. (This was Anthony's PS9 P2 mistake.)
+
+</Trap>
+
+## The σ–δ–M chart: weak, strong, and too much
+
+For a fixed $M_x$, sweep σ from the Mach angle to 90° and compute δ:
+
+- σ = μ = $\sin^{-1}(1/M_x)$ gives δ = 0: an infinitely weak wave, a **Mach line** (PS9 P1).
+- σ = 90° also gives δ = 0: the **normal shock**.
+- In between, δ rises to a maximum **δmax** and falls again. So every δ below δmax has two shock angles:
+  - the **weak** root (smaller σ, $M_y$ usually still supersonic): what nature picks in external flow, and what the course always uses;
+  - the **strong** root (steeper σ, $M_y$ always subsonic): only if something downstream holds a high back pressure.
+
+The shock angle at maximum deflection has a closed form:
+
+$$
+\sin^2\sigma_{\delta_{max}} = \frac{1}{\gamma M_x^2}\left[\frac{\gamma+1}{4}M_x^2 - 1 + \sqrt{(\gamma+1)\left(1 + \frac{\gamma-1}{2}M_x^2 + \frac{\gamma+1}{16}M_x^4\right)}\right]
+$$
+
+At $M_x = 3$: δmax = 34.1° at σ = 65.2°. The sonic point ($M_y = 1$) sits just below it, at δ = 34.0°, σ = 63.8°, so the weak branch is supersonic downstream except in a sliver near δmax. As $M_x \to \infty$, δmax tends to about 45.6° for γ = 1.4: **no straight shock stays attached to a wedge much blunter than 45°**.
+
+<Callout kind="note" title="Detachment and the bow shock">
+
+If the wedge asks for δ > δmax there is no straight attached solution. The shock jumps off the nose and stands upstream as a curved **bow shock**: normal (strong) right in front of the body, with a subsonic pocket behind it that re-accelerates around the shoulder, and bending back to a Mach wave far away. The notes don't analyse it further.
+
+</Callout>
+
+<ObliqueShockSim initialM={3} initialDelta={10} />
+
+Try it: at M = 3 push δ past 34°, then flip to the strong branch at δ = 10° and watch $M_2$ drop below 1 and $p_{02}/p_{01}$ collapse.
+
+## Worked example: Mach 3 over a 10° wedge (notes §12.2.1)
+
+$M_1 = 3$, $p_1 = 1$ atm, δ = 10°. Find σ, $M_2$, $p_2$.
+
+1. Chart: σ ≈ 28° (weak). Refine with tan δ: σ = 28° gives δ = 10.67°, σ = 27° gives 9.58°; interpolate to δ = 10°: **σ = 27.4°** (exact 27.38°). <CalcLink calc="oblique" q="M=3&in=delta&v=10&b=weak">check</CalcLink>
+2. $M_{1N} = 3\sin 27.4° = 1.38$.
+3. <T>A3 @ Mₓ = 1.38: M_y = 0.7483, p_y/pₓ = 2.055</T>, so $p_2 = 2.055$ atm.
+4. $M_2 = 0.7483/\sin(27.4° - 10°) = $ **2.50**.
+
+The flow is compressed and slowed but still supersonic, and $p_{02}/p_{01} = 0.963$: oblique shocks are far less lossy than a normal shock at the same Mach number (0.328 at M = 3). That is why supersonic inlets use ramps.
+
+## Reflection from a wall
+
+A wall above the wedge forces the flow, now tilted up by δ, back to horizontal. That needs a second, **reflected**, shock. The reflection is not mirror-like: the reflected shock is computed with the *new* upstream Mach number $M_2$ and the *same* deflection δ.
+
+**Regular reflection, M = 3, δ = 10° (notes §12.3.1).**
+
+1. Upstream of the reflected shock: $M_2 = 2.50$, $p_2 = 2.055$ atm, and it must turn the flow back by $\delta_2 = 10°$.
+2. Chart ≈ 32°; tan δ at 32° → 10.15°, at 31° → 9.09°; interpolate: **σ₂ = 31.86°**, measured from the region-2 flow direction (it makes 21.9° with the wall).
+3. $M_{2N} = 2.5\sin 31.86° = 1.32$, <T>A3 @ 1.32: M_y = 0.776, p_y/pₓ = 1.866</T>.
+4. $p_3 = 1.866 \times 2.055 = 3.83$ atm, $M_3 = 0.776/\sin(31.86° - 10°) = 2.08$.
+
+The second jump is weaker in pressure ratio because it starts from a slower flow, but pressures multiply: $p_3/p_1 = (p_3/p_2)(p_2/p_1)$.
+
+**When it fails: M = 3, δ = 30° (notes §12.3.2).** The incident shock is fine (σ = 52.0°, $M_2 = 1.41$, $p_2 = 6.36$ atm). But a Mach 1.41 flow can be turned at most 9.6° by any oblique shock. The wall asks for 30°. **There is no regular reflection.**
+
+## Mach reflection and shock polars
+
+What nature does instead is a three-shock pattern:
+
+- the **incident** shock does not reach the wall; it ends at a **triple point**;
+- a near-normal **Mach stem** (a strong oblique shock) runs from the triple point to the wall;
+- a **reflected** shock leaves the triple point;
+- a **slip line** trails from the triple point. It separates gas that went through two shocks from gas that went through the single strong stem: different velocity, entropy and temperature, but the **same pressure and the same flow direction**.
+
+Those two matching conditions, $p_3 = p_4$ and $\delta_2 - \delta_4 = \delta_3$, are solved on a **pressure–deflection shock polar**: plot $p/p_1$ against the flow deflection δ for every possible shock.
+
+- The free-stream polar serves both the incident shock and the Mach stem (both see $M_1$).
+- The reflected polar is drawn starting from state 2 (at δ = δ₁, $p_2/p_1$), turning the other way.
+- **Regular reflection** = the reflected polar crosses δ = 0.
+- **Mach reflection** = the reflected polar meets the free-stream polar on its strong branch. That is why Mach stems are always strong (subsonic behind them).
+
+For M = 3, δ₁ = 30° the intersection gives $p_3 = p_4 = 10.1$ atm, Mach stem σ = 81.4° with the flow behind it deflected δ₃ = 21.4°, reflected shock σ = 60.8° turning the flow back δ₄ = 8.6°, and $M_4 = 1.05$. (The notes print $M_3 = 0.859$ behind the stem; the relations give $M_3 \approx 0.55$ at σ = 81.4°, δ = 21.4°. The pressures and angles agree.) The polars fix the local state at the triple point, but **not** its height above the wall: that needs CFD.
+
+<ShockReflectionSim initialM={3} initialDelta={10} />
+
+Slide δ₁ from 10° to 30° and watch the reflected (red) polar lift off the δ = 0 axis.
+
+## Transition criteria: when does regular become Mach?
+
+For M = 3 the notes compare three proposals:
+
+| Criterion | Idea | δ₁ (σ) at M = 3 |
+|---|---|---|
+| Mechanical equilibrium (von Neumann) | the reflected polar hits δ = 0 exactly at the normal-shock point, so a Mach reflection with a normal stem becomes possible | 19.7° (37.4°) |
+| Sonic | the flow behind the reflected shock becomes sonic, so it can "feel" downstream | 21.3° (39.3°) |
+| Detachment | the reflected polar no longer reaches δ = 0, so regular reflection is impossible | 21.5° (39.5°) |
+
+Below von Neumann only regular reflection exists; above detachment only Mach reflection. In between both are possible and experiments show **hysteresis**, much like a supersonic inlet that can be started or unstarted at the same Mach number (Ch. 9). Below about M = 1.5 neither solution may exist: the "von Neumann paradox".
+
+Mach reflection is everywhere once you look: the triple-point tracks of detonation cells, blast waves off the ground (the Mach stem gives *higher* ground pressure farther from ground zero), shock diamonds in over-expanded plumes (Ch. 14).
+
+<Examined>
+
+- [PS9](#/mech430/ps/ps09): P1 (δ → 0 limit), P2 (corner: σ, $M_2$, $p_2$, $T_2$, $p_{02}$, δmax), P3 (inverse: pressure ratio → σ → δ), P4 (wedge + regular reflection).
+- Every airfoil problem starts with this chapter: [PS10](#/mech430/ps/ps10) P2, [Final A](#/mech430/exam/final-a) P3, [Final B](#/mech430/exam/final-b) P4.
+- [Final A](#/mech430/exam/final-a) P2(c): an over-expanded nozzle's lip shock is an oblique shock with $p_y/p_x = p_b/p_e$ (Ch. 14).
+- The typical move: chart for a first guess, then iterate tan δ (the handout asks for it). Exams read the chart; markers accept about half a degree, but lift is sensitive to it (Final A P3).
+
+</Examined>
+
+## Check yourself
+
+1. Why can you use the normal-shock table for an oblique shock? → Mass, normal momentum and energy only involve $V_N$; $V_T$ is unchanged and cancels.
+2. M = 2, δ = 10°: is the downstream flow supersonic? → Yes, weak root: σ = 39.3°, $M_2 = 1.64$.
+3. What happens at M = 2 if the corner is 25°? → δmax(2) = 23.0°, so the shock detaches into a bow shock.
+4. A Mach 4 flow passes an oblique shock with σ = 30°. $M_{xN}$? → 2.0, so <T>A3: p_y/pₓ = 4.5</T>, δ = 17.8°, $M_y = 0.5774/\sin 12.2° = 2.73$ (Anthony's Mar 26 notes).
+5. In a Mach reflection, what two things match across the slip line? → Pressure and flow direction (not velocity, not temperature).

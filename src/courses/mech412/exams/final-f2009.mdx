@@ -1,0 +1,430 @@
+<p className="eyebrow">Final examination · Fall 2009 (Dec 17, 2009) · open book · 6 × 10 marks</p>
+
+# Final, Fall 2009: impulse response, spring–damper state space, switched RC, motor frequency response, PD design, margins
+
+<div className="lede">
+
+Six equally weighted problems from the **older** version of the course (more modelling and time-domain, less root locus and Bode). **There is no official solution in the archive**: every answer below is the digest author's, derived step by step and verified numerically. P4–P6 are close to the flavour of the 2024 final (DC motor, PD design with a root locus, gain and phase margins), so they are the most useful practice here.
+
+</div>
+
+<Problem id="Final F2009 P1" title="Impulse response of two coupled equations (10 marks)" tags="cascade, partial fractions with a quadratic, undamped oscillator">
+
+<Statement>
+
+$\dot x_1+x_1=\delta(t)$; $\ddot x_2+6(x_2-x_1)=0$; all initial conditions zero. Find $x_2(t)$.
+
+</Statement>
+
+<Think>
+
+A cascade: $x_1$ is the response of a first-order lag to an impulse; $x_2$ is a spring–mass (stiffness 6, mass 1) **driven by $x_1$** through the spring. First find $x_1=e^{-t}$, then solve the oscillator driven by $e^{-t}$.
+
+</Think>
+
+<Steps>
+<Step title="1. First equation">
+
+$sX_1+X_1=1\Rightarrow X_1=\dfrac1{s+1}$ ($x_1=e^{-t}$ for $t\ge0$; the transform of $\delta(t)$ is 1).
+
+</Step>
+<Step title="2. Second equation">
+
+$s^2X_2+6X_2-6X_1=0\Rightarrow X_2=\dfrac{6}{(s+1)(s^2+6)}$.
+
+</Step>
+<Step title="3. Partial fractions">
+
+$\dfrac6{(s+1)(s^2+6)}=\dfrac A{s+1}+\dfrac{Bs+C}{s^2+6}$. Cover-up at $s=-1$: $A=\dfrac6{1+6}=\dfrac67$. Multiply out: $6=A(s^2+6)+(Bs+C)(s+1)$. $s^2$: $A+B=0\Rightarrow B=-\tfrac67$. $s^0$: $6A+C=6\Rightarrow C=6-\tfrac{36}7=\tfrac67$. Check $s^1$: $B+C=0$ ✔.
+
+</Step>
+<Step title="4. Invert (ω = √6)">
+
+$\dfrac67\dfrac1{s^2+6}=\dfrac67\dfrac1{\sqrt6}\dfrac{\sqrt6}{s^2+6}$, so
+$$x_2(t)=\frac67\Big[e^{-t}-\cos\sqrt6\,t+\frac1{\sqrt6}\sin\sqrt6\,t\Big],\quad t\ge0 .$$
+
+</Step>
+<Step title="5. Checks">
+
+$x_2(0)=\tfrac67(1-1)=0$ ✔; $\dot x_2(0)=\tfrac67[-1+1]=0$ ✔ (the impulse enters $x_1$ only). Final behaviour: an **undamped** oscillation at $\sqrt6=2.45$ rad/s that persists (no damping in the second equation).
+
+</Step>
+</Steps>
+
+<Answer>
+
+$x_2(t)=\tfrac67\big[e^{-t}-\cos\sqrt6t+\tfrac1{\sqrt6}\sin\sqrt6t\big]$.
+
+*Real-world:* a tuning fork (the undamped oscillator $x_2$) struck through a decaying coupling $x_1$: it keeps ringing.
+
+</Answer>
+
+<Traps>
+
+- Treating $\delta(t)$ as a unit step (its transform is 1).
+- Losing the sine term when separating $\dfrac{Bs+C}{s^2+6}$.
+
+</Traps>
+
+<Source>digest derivation (no official solution).</Source>
+
+<ToolLink tool="pfe">Check the partial fractions</ToolLink>
+
+</Problem>
+
+<Problem id="Final F2009 P2" title="State-space model of a spring–damper network; output = force at A (10 marks)" tags="massless points, displacements as states">
+
+<Statement>
+
+Two springs ($k_1=3$, $k_2=5$ N/m) and two dampers ($b_1=4$, $b_2=2$ N·s/m). Input $y(t)$ (displacement at the left end of spring $k_2$); $x_1$ (displacement of A), $x_2$ (displacement of B); state $x=[x_1;x_2]$; output = the force acting at point A. Find $A,B,C,D$. **Figure reading (assumption):** $y\to$ spring $k_2\to$ massless point A $\to[k_1\parallel b_1]\to$ massless point B $\to$ damper $b_2\to$ wall. If the figure is read differently the method is the same.
+
+</Statement>
+
+<Think>
+
+Massless points have no inertia, so the forces on each balance. Two balance equations in the two unknown velocities give the state equations; the output is a spring force.
+
+</Think>
+
+<Steps>
+<Step title="1. Balance at A">
+
+$k_2(y-x_1)=k_1(x_1-x_2)+b_1(\dot x_1-\dot x_2)$ (A).
+
+</Step>
+<Step title="2. Balance at B">
+
+$k_1(x_1-x_2)+b_1(\dot x_1-\dot x_2)=b_2\dot x_2$ (B).
+
+</Step>
+<Step title="3. Subtract (B) from (A)">
+
+$k_2(y-x_1)=b_2\dot x_2\Rightarrow\dot x_2=\dfrac{k_2}{b_2}(y-x_1)=2.5(y-x_1)$ (the force through $k_2$ is the same force the last damper finally carries).
+
+</Step>
+<Step title="4. Solve (A) for ẋ₁">
+
+$b_1\dot x_1=b_1\dot x_2+k_2(y-x_1)-k_1(x_1-x_2)\Rightarrow\dot x_1=\dot x_2+\dfrac{5(y-x_1)-3(x_1-x_2)}4=2.5(y-x_1)+1.25(y-x_1)-0.75(x_1-x_2)$:
+$$\dot x_1=3.75y-4.5x_1+0.75x_2 .$$
+
+</Step>
+<Step title="5. Output">
+
+The force at A is the force through the input spring: $F_A=k_2(y-x_1)=5y-5x_1$.
+
+</Step>
+<Step title="6. Matrices">
+
+$$A=\begin{bmatrix}-4.5&0.75\\-2.5&0\end{bmatrix},\ B=\begin{bmatrix}3.75\\2.5\end{bmatrix},\ C=[-5\ \ 0],\ D=5 .$$
+
+</Step>
+<Step title="7. Checks">
+
+DC ($\dot x=0$): $\dot x_2=0\Rightarrow x_1=y$; then $\dot x_1=0\Rightarrow3.75y-4.5y+0.75x_2=0\Rightarrow x_2=y$; static force $F_A=0$ ✔ (the right end is held only by a damper). Eigenvalues: $s^2+4.5s+1.875=0\Rightarrow-0.46,\,-4.04$ (stable, real).
+
+</Step>
+</Steps>
+
+<Answer>
+
+$A,B,C,D$ as above.
+
+*Real-world:* a series arrangement of a spring, a Kelvin–Voigt unit (spring ∥ damper) and a dashpot: a viscoelastic coupling or a seat cushion.
+
+</Answer>
+
+<Traps>
+
+- Giving the massless points inertia (they would then be second order).
+- The state vector is the **displacements**, not the velocities.
+
+</Traps>
+
+<Source>digest derivation (no official solution; figure reading assumed).</Source>
+
+<ToolLink tool="state-space">Check the model</ToolLink>
+
+</Problem>
+
+<Problem id="Final F2009 P3" title="Switched RC circuit: charge then discharge (10 marks)" tags="first-order, continuity of capacitor voltage">
+
+<Statement>
+
+Constant source $V$; the switch is at B initially (capacitor discharged, $v_C(0)=0$); at $t=0$ it moves to A ($V\to R\to C$); at $t=D$ it moves back to B ($C$ discharges through $R$ to ground). Find $v_C(t)$.
+
+</Statement>
+
+<Think>
+
+Charging: $v_C$ approaches $V$ like $1-e^{-t/RC}$. At $t=D$ whatever voltage it has reached becomes the **starting value** of a discharge $e^{-(t-D)/RC}$.
+
+</Think>
+
+<Steps>
+<Step title="1. Charging, 0 ≤ t < D">
+
+$RC\dot v_C+v_C=V$, $v_C(0)=0\Rightarrow v_C=V(1-e^{-t/RC})$.
+
+</Step>
+<Step title="2. Value at the switching instant">
+
+$v_C(D)=V(1-e^{-D/RC})$ (a capacitor voltage cannot jump).
+
+</Step>
+<Step title="3. Discharging, t ≥ D">
+
+The source is disconnected: $RC\dot v_C+v_C=0$ with initial value $v_C(D)$:
+$$v_C(t)=V(1-e^{-D/RC})\,e^{-(t-D)/RC}.$$
+
+</Step>
+<Step title="4. One expression">
+
+$v_C(t)=V(1-e^{-t/RC})[1(t)-1(t-D)]+V(1-e^{-D/RC})e^{-(t-D)/RC}1(t-D)$.
+
+</Step>
+<Step title="5. Checks">
+
+Continuous at $t=D$ ✔; $v_C(\infty)=0$ ✔; if $D\gg RC$ the capacitor reaches $V$ before the switch and then discharges from $V$.
+
+</Step>
+</Steps>
+
+<Answer>
+
+$v_C=V(1-e^{-t/RC})$ for $t<D$; $v_C=V(1-e^{-D/RC})e^{-(t-D)/RC}$ for $t\ge D$.
+
+*Real-world:* a camera-flash capacitor: charge for a time $D$, then dump it.
+
+</Answer>
+
+<Traps>
+
+- Restarting the charge formula at $t=D$ with zero initial voltage.
+- Writing $e^{-t/RC}$ instead of the shifted $e^{-(t-D)/RC}$.
+
+</Traps>
+
+<Source>digest derivation (no official solution).</Source>
+
+</Problem>
+
+<Problem id="Final F2009 P4" title="DC servomotor: steady-state response to a sinusoidal voltage (10 marks)" tags="frequency response, steady-state sinusoid">
+
+<Statement>
+
+$L\dfrac{di}{dt}+Ri+K_1\omega=v(t)$; $J\dfrac{d\omega}{dt}+B\omega-K_2i=0$. Find the steady-state response for $v=10\sin5t$ with $J=1$, $B=2$, $L=1$, $R=1$, $K_1=1$, $K_2=1$.
+
+</Statement>
+
+<Think>
+
+For a stable linear system the steady-state response to $V_0\sin\omega t$ is $V_0|G(j\omega)|\sin(\omega t+\angle G(j\omega))$: no transient formulas needed.
+
+</Think>
+
+<Steps>
+<Step title="1. Laplace (zero initial conditions)">
+
+$(Ls+R)I+K_1\Omega=V$ and $(Js+B)\Omega=K_2I$.
+
+</Step>
+<Step title="2. Eliminate I">
+
+$I=\dfrac{(Js+B)\Omega}{K_2}$, so $\Big[\dfrac{(Ls+R)(Js+B)}{K_2}+K_1\Big]\Omega=V$:
+$$\frac\Omega V=\frac{K_2}{(Ls+R)(Js+B)+K_1K_2}.$$
+
+</Step>
+<Step title="3. Numbers">
+
+$(s+1)(s+2)+1=s^2+3s+3$, so $G(s)=\dfrac1{s^2+3s+3}$ (poles $-1.5\pm j0.866$: stable, so a steady state exists).
+
+</Step>
+<Step title="4. Frequency response at 5 rad/s">
+
+$G(j5)=\dfrac1{3-25+15j}=\dfrac1{-22+15j}$. $|{\rm den}|=\sqrt{22^2+15^2}=\sqrt{709}=26.63\Rightarrow|G|=0.03756$; $\angle{\rm den}=180^\circ-34.29^\circ=145.71^\circ\Rightarrow\angle G=-145.7^\circ$.
+
+</Step>
+<Step title="5. Steady-state output">
+
+$$\omega_{ss}(t)=10\cdot0.03756\sin(5t-145.7^\circ)=0.3756\sin(5t-145.7^\circ)\ \text{rad/s}.$$
+
+</Step>
+<Step title="6. Check">
+
+The motor is a low-pass: at 5 rad/s (above the corner at about 1.7 rad/s) the gain has dropped to 0.0376 against a DC gain of $\tfrac13$ ($-19$ dB) ✔.
+
+</Step>
+</Steps>
+
+<Answer>
+
+$\omega_{ss}(t)=0.376\sin(5t-145.7^\circ)$ rad/s.
+
+*Real-world:* a motor driven by a 5 rad/s voltage wobble barely responds (0.38 rad/s peak speed) and lags by $146^\circ$.
+
+</Answer>
+
+<Traps>
+
+- Using the transient formulas instead of the frequency response.
+- Forgetting $K_2$ and the back-emf term $K_1K_2$ in the denominator constant.
+
+</Traps>
+
+<Source>digest derivation (no official solution).</Source>
+
+<ToolLink tool="bode">See the gain at 5 rad/s on the Bode tool</ToolLink>
+
+</Problem>
+
+<Problem id="Final F2009 P5" title="PD speed controller for the same motor: gains for 3 % error and ζ = 0.707; root locus (10 marks)" tags="PD design, closed-loop zero, break-in point">
+
+<Statement>
+
+The same motor ($J=1,B=2,L=1,R=1,K_1=K_2=1$), speed sensed by a perfect sensor and fed back; a PD controller $G_c=K_p(1+T_ds)$ in the forward path. The closed loop needs steady-state error below 3% to a unit step in desired speed and dominant poles with $\zeta=0.707$. (a) Find the proportional and derivative gains. (b) Sketch the root locus for variations in the proportional gain, keeping the derivative **time** $T_d$ unchanged.
+
+</Statement>
+
+<Think>
+
+The plant (speed per volt) is $G=\dfrac1{s^2+3s+3}$. With PD the closed-loop denominator is $s^2+(3+K_d)s+(3+K_p)$: $K_p$ sets the final error and $\omega_n$; $K_d$ sets the damping.
+
+</Think>
+
+<Steps>
+<Step title="(a) 1. Closed loop">
+
+$T=\dfrac{K_p+K_ds}{s^2+(3+K_d)s+(3+K_p)}$ with $K_d=K_pT_d$.
+
+</Step>
+<Step title="(a) 2. Steady-state error">
+
+$e_{ss}=1-T(0)=1-\dfrac{K_p}{3+K_p}=\dfrac3{3+K_p}<0.03\Rightarrow K_p>97$. Take $K_p=100$ ($e_{ss}=2.9\%$).
+
+</Step>
+<Step title="(a) 3. Damping">
+
+$\omega_n^2=3+K_p=103\Rightarrow\omega_n=10.15$ rad/s. $2\zeta\omega_n=3+K_d$ with $\zeta=0.7071$: $14.35=3+K_d\Rightarrow K_d=11.35$, so $T_d=K_d/K_p=0.1135$ s.
+
+</Step>
+<Step title="(a) 4. Check (and a warning)">
+
+Poles $-7.18\pm j7.18$ ($\zeta=0.707$ ✔). The closed loop has a **zero at $-K_p/K_d=-8.81$**, which raises the actual overshoot to **13.9%** (against 4.3% for a pure second-order system with $\zeta=0.707$): the poles meet the spec, but the response is livelier than $\zeta$ alone suggests.
+
+</Step>
+<Step title="(b) 1. Open loop">
+
+$L(s)=\dfrac{K_p(1+T_ds)}{s^2+3s+3}$: poles $-1.5\pm j0.866$, zero at $-1/T_d=-8.81$, $n-m=1$.
+
+</Step>
+<Step title="(b) 2. Real axis">
+
+The segment to the left of the zero ($s<-8.81$) is on the locus (one zero to its right).
+
+</Step>
+<Step title="(b) 3. Break-in point">
+
+$\dfrac d{ds}\dfrac{s^2+3s+3}{1+T_ds}=0\Rightarrow T_ds^2+2s+3-3T_d=0\Rightarrow s=-16.17$ or $-1.45$. Only $s=-16.17$ is on the locus (the gain there is $K_p=258$; at $-1.45$ the gain would be negative).
+
+</Step>
+<Step title="(b) 4. Shape">
+
+The two branches leave the complex poles, curve to the left, meet the real axis at $-16.2$ ($K_p\approx258$), then one branch goes to the zero at $-8.8$ and the other to $-\infty$ (asymptote $180^\circ$). The system is **stable for all $K_p>0$** (a second-order polynomial with positive coefficients); for $K_p>258$ both poles are real (overdamped).
+
+</Step>
+</Steps>
+
+<Answer>
+
+(a) $K_p=100$, $K_d=11.35$ ($T_d=0.1135$ s). (b) zero at $-8.81$, break-in at $-16.17$ ($K_p=258$), stable for all $K_p$.
+
+*Real-world:* motor speed control: proportional gain buys accuracy (3% error), derivative gain buys damping.
+
+</Answer>
+
+<Traps>
+
+- Using the voltage-to-speed transfer function **without** the back-emf term ($\dfrac1{s^2+3s+3}$ already contains it).
+- Keeping $T_d$ fixed means $K_d$ changes with $K_p$ (the zero stays at $-8.81$).
+
+</Traps>
+
+<Source>digest derivation (no official solution); step response and break-in point computed numerically.</Source>
+
+<ToolLink tool="root-locus">Plot the root locus</ToolLink>
+
+</Problem>
+
+<Problem id="Final F2009 P6" title="Gain margin and phase margin from a state-space model (10 marks)" tags="margins, ss2tf, Routh check">
+
+<Statement>
+
+A SISO plant in Matlab: $A=\begin{bmatrix}-4&-3&-0.75&0\\1&0&0&0\\0&1&0&0\\0&0&1&0\end{bmatrix}$, $B=[1;0;0;0]$, $C=[0\ 0\ 0.02\ 0.02]$, $D=0$; `ss2tf` returns numerator $[0\ 0\ 0\ 0.02\ 0.02]$ and denominator $[1\ 4\ 3\ 0.75\ 0]$; a Bode plot is shown. A proportional controller $K_p=5$ with a unity-gain sensor is used. Find the gain margin and phase margin of the closed-loop system.
+
+</Statement>
+
+<Think>
+
+Read the transfer function from the `ss2tf` output, multiply by 5 for the loop gain, and find the two frequencies: the **gain crossover** ($|L|=1$) for the phase margin and the **phase crossover** ($\angle L=-180^\circ$) for the gain margin. The given Bode plot is for the plant alone ($K_p=1$): shifting it up by $20\log5=14$ dB is the same as multiplying by 5.
+
+</Think>
+
+<Steps>
+<Step title="1. Transfer function">
+
+$G(s)=\dfrac{0.02s+0.02}{s^4+4s^3+3s^2+0.75s}=\dfrac{0.02(s+1)}{s(s^3+4s^2+3s+0.75)}$: type 1 (an integrator) with cubic poles at $-3.11$ and $-0.443\pm j0.211$.
+
+</Step>
+<Step title="2. Loop gain">
+
+$L(s)=5G(s)$.
+
+</Step>
+<Step title="3. Gain crossover and phase margin">
+
+$|L(j\omega)|=1$ at $\omega_{gc}=0.129$ rad/s; the phase there is $-111.96^\circ$: **$PM=180^\circ-111.96^\circ=68.0^\circ$**.
+
+</Step>
+<Step title="4. Phase crossover and gain margin">
+
+$\angle L=-180^\circ$ at $\omega_{pc}=0.707$ rad/s (found numerically; it equals $1/\sqrt2$), where $|L|=0.080$: **$GM=1/0.080=12.5=21.9$ dB**.
+
+</Step>
+<Step title="5. Check by Routh">
+
+Characteristic equation $s^4+4s^3+3s^2+(0.75+0.02K)s+0.02K=0$. The marginal gain is $K_{cr}=62.5$, so $GM=K_{cr}/K_p=62.5/5=12.5=21.9$ dB ✔.
+
+</Step>
+<Step title="6. Reading from the plot">
+
+At 0.129 rad/s the plant magnitude on the given Bode is about $-14$ dB (so $\times5=+14$ dB crosses 0 dB); the phase is about $-112^\circ$; at 0.707 rad/s the phase is $-180^\circ$.
+
+</Step>
+</Steps>
+
+<Answer>
+
+Phase margin $\approx68^\circ$, gain margin $\approx21.9$ dB (a factor 12.5).
+
+*Real-world:* a stable loop with comfortable margins: $K_p$ could be raised 12.5× before oscillation.
+
+</Answer>
+
+<Traps>
+
+- Using the plant's own crossover ($|G|=1$) rather than $K_p|G|=1$.
+- Mixing the margins: the PM is read at the **gain** crossover, the GM at the **phase** crossover.
+
+</Traps>
+
+<Source>digest derivation (no official solution); margins from the numerical frequency response and confirmed by the Routh critical gain.</Source>
+
+<ToolLink tool="bode">Check the margins in the Bode tool</ToolLink>
+
+</Problem>
+
+<Examined>
+
+Time-domain and state-space skills: <Ch slug="laplace">Chapter 2</Ch>, <Ch slug="state-space">Chapter 7</Ch>; PD design: <Ch slug="pid">Chapter 17</Ch>, <Ch slug="root-locus">Chapter 18</Ch>; margins: <Ch slug="bode-margins">Chapter 19</Ch>.
+
+</Examined>

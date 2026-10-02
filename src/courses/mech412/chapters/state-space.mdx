@@ -1,0 +1,176 @@
+<p className="eyebrow">Chapter 7 · Lecture 7–8 · HW4 · T04</p>
+
+# State space: methods 1 and 2, $\Phi(t)$, transfer matrix, diagonalisation
+
+<div className="lede">
+
+A transfer function only knows about input and output. **State space** keeps the whole inside story: a list of variables (the *state*) that, together with the future input, determines everything that happens next. It is the form computers integrate, the form that handles initial conditions, and the form MT1 asks about on every exam.
+
+</div>
+
+<Idea title="The 30-second version">
+
+Write the ODE as a *first-order matrix equation*: $\dot{\mathbf x}=A\mathbf x+B\,u$, $\;y=C\mathbf x+D\,u$. Then
+- **free response** $\mathbf x(t)=\Phi(t)\mathbf x(0)$ with $\Phi(t)=e^{At}=\mathcal L^{-1}\{(sI-A)^{-1}\}$;
+- **eigenvalues of $A$ = poles** of the system;
+- **transfer function** $G(s)=C(sI-A)^{-1}B+D$.
+
+The only hard part is *choosing the states* when the ODE contains derivatives of the input. Two recipes (Method 1 and Method 2) cover it.
+
+</Idea>
+
+## What is a state? (the picture)
+
+Think of a car. Knowing its **position alone** does not tell you where it will be in a second; you also need its **velocity**. Those two numbers are the state of a (frictionless) car. For a mass–spring–damper the state is (position, velocity): **two** states even though it has one mass. The number of states = the number of independent energy stores (mass, spring, ...) = the order of the ODE. Anthony's poll answers: state space works for *nonlinear* systems too; it handles multiple inputs/outputs; the state count is **not** the number of degrees of freedom; and the state variables are *not* unique.
+
+## The matrix exponential and the state-transition matrix
+
+Free response: $\dot{\mathbf x}=A\mathbf x$. Try a power series $\mathbf x=\mathbf b_0+\mathbf b_1t+\mathbf b_2t^2+\cdots$: then $\mathbf b_1=A\mathbf b_0$, $\mathbf b_2=\tfrac12A^2\mathbf b_0$, so
+
+$$
+\mathbf x(t)=e^{At}\mathbf x(0),\qquad e^{At}=\sum_k\frac{A^kt^k}{k!}=\Phi(t),\qquad \Phi(0)=I,\;\dot\Phi=A\Phi,\;\Phi^{-1}(t)=\Phi(-t).
+$$
+
+In the Laplace domain $sX-\mathbf x(0)=AX$, so $X=(sI-A)^{-1}\mathbf x(0)$ and
+
+$$
+\boxed{\Phi(t)=\mathcal L^{-1}\big\{(sI-A)^{-1}\big\}},\qquad (sI-A)^{-1}=\frac{\operatorname{adj}(sI-A)}{\det(sI-A)} .
+$$
+
+<Trap title="Φ(s) is not |sI−A|">
+
+$|sI-A|=s^n+\dots$ is the **characteristic polynomial** (a scalar). The state-transition matrix is the **inverse** $(sI-A)^{-1}$. Anthony's page 26 has this mix-up; his pages 8 and 24 are right. Also: $e^{At}$ is **not** the exponential of each entry.
+
+</Trap>
+
+**Forced response (convolution).** With an input,
+
+$$
+\mathbf x(t)=\Phi(t)\mathbf x(0)+\int_0^t\Phi(t-\tau)B\,u(\tau)\,d\tau,\qquad
+\text{unit step: }\mathbf x(t)=e^{At}\mathbf x(0)+A^{-1}\big(e^{At}-I\big)B .
+$$
+
+(*The step formula requires $A$ to be invertible, i.e. no pole at 0.*)
+
+### Worked example: the RLC network of T04 Q1
+
+$\dot{\mathbf x}=\begin{bmatrix}0&1\\-1.5&-5.2\end{bmatrix}\mathbf x+\begin{bmatrix}0\\1\end{bmatrix}u$, $\;y=[1\;0]\mathbf x$. (This is $V_o/V_i=\dfrac1{s^2+5.2s+1.5}$.)
+
+1. $sI-A=\begin{bmatrix}s&-1\\1.5&s+5.2\end{bmatrix}$, $\det=s^2+5.2s+1.5$.
+2. $(sI-A)^{-1}=\dfrac1{s^2+5.2s+1.5}\begin{bmatrix}s+5.2&1\\-1.5&s\end{bmatrix}$.
+3. Poles: $-0.3065$ and $-4.893$ (overdamped). Partial fractions entry by entry give
+ $\Phi_{11}(t)=1.067e^{-0.307t}-0.067e^{-4.89t}$, $\Phi_{12}(t)=0.218\big(e^{-0.307t}-e^{-4.89t}\big)$, $\Phi_{21}=-0.327(\ldots)$, $\Phi_{22}=1.067e^{-4.89t}-0.067e^{-0.307t}$.
+4. *Check:* $\Phi(0)=I$ ✔ and $\dot\Phi(0)=A$ ✔.
+
+<ToolLink tool="state-space">Compute Φ(t) for any A</ToolLink>
+
+### A shorter one (MT2 W2009 Q2): $\ddot x+2\dot x=0$
+
+$x_1=x$, $x_2=\dot x$: $A=\begin{bmatrix}0&1\\0&-2\end{bmatrix}$. $(sI-A)^{-1}=\begin{bmatrix}1/s&1/(s(s+2))\\0&1/(s+2)\end{bmatrix}$, so
+$\Phi(t)=\begin{bmatrix}1&\tfrac12(1-e^{-2t})\\0&e^{-2t}\end{bmatrix}$. *Physical:* a puck on honey: velocity decays with time constant $\tfrac12$; position creeps to $x_0+\dot x_0/2$.
+
+## Getting a state model from an ODE
+
+For $y^{(n)}+a_1y^{(n-1)}+\dots+a_ny=b_0u^{(n)}+\dots+b_nu$.
+
+**If there are no input derivatives** ($b_0=\dots=b_{n-1}=0$): $x_1=y,\,x_2=\dot y,\dots$ and the companion matrix
+
+$$
+A=\begin{bmatrix}0&1&0\\0&0&1\\-a_3&-a_2&-a_1\end{bmatrix},\quad B=\begin{bmatrix}0\\0\\1\end{bmatrix}\ (\text{times }b_n).
+$$
+
+**If the right side has $u'$ (input derivatives)** the obvious states do not work (the state equation would contain $\dot u$). Two recipes:
+
+### Method 1: remove the derivatives by shifting the states (β coefficients)
+
+$$
+\beta_0=b_0,\quad\beta_k=b_k-a_1\beta_{k-1}-\dots-a_k\beta_0,\qquad x_1=y-\beta_0u,\;x_2=\dot x_1-\beta_1u,\dots
+$$
+
+$$
+A=\text{same companion matrix},\quad B=\begin{bmatrix}\beta_1\\ \vdots\\ \beta_n\end{bmatrix},\quad C=[1\;0\cdots0],\quad D=\beta_0 .
+$$
+
+### Method 2: split the transfer function (block-diagram form)
+
+$\dfrac YU=\dfrac YZ\cdot\dfrac ZU$ with $\dfrac ZU=\dfrac1{s^n+a_1s^{n-1}+\dots+a_n}$ and $\dfrac YZ=b_0s^n+\dots+b_n$. States $x_1=z$, $x_2=\dot z,\dots$ and
+
+$$
+A=\text{companion},\quad B=\begin{bmatrix}0\\ \vdots\\1\end{bmatrix},\quad C=[\,b_n-a_nb_0\;\;\cdots\;\;b_1-a_1b_0\,],\quad D=b_0 .
+$$
+
+Method 2 is the controllable canonical form; it is exactly the three-integrator block diagram of Chapter 5. The states are *not* physical (you can't put a sensor on $z$).
+
+### Worked example (MT1 W2009 Q3): both methods
+
+$Y/U=\dfrac{10s+100}{s^3+10s^2+100s+600}$ i.e. $\dddot y+10\ddot y+100\dot y+600y=10\dot u+100u$: $a=(10,100,600)$, $b=(0,0,10,100)$.
+
+**Method 1.** $\beta_0=0$; $\beta_1=b_1-a_1\beta_0=0$; $\beta_2=b_2-a_1\beta_1-a_2\beta_0=10$; $\beta_3=b_3-a_1\beta_2-a_2\beta_1-a_3\beta_0=100-10\cdot10=0$. Then
+
+$$
+\dot{\mathbf x}=\begin{bmatrix}0&1&0\\0&0&1\\-600&-100&-10\end{bmatrix}\mathbf x+\begin{bmatrix}0\\10\\0\end{bmatrix}u,\qquad y=[1\;0\;0]\mathbf x .
+$$
+
+*Reading:* $x_1=y$, $x_2=\dot y$, $x_3=\ddot y-10u$ (the shift that removes $\dot u$). Check: `ss2tf` returns $(10s+100)/(s^3+10s^2+100s+600)$ ✔.
+
+**Method 2.** Same $A$, $B=[0\;0\;1]^T$, $C=[100\;10\;0]$, $D=0$.
+
+<Trap title="Don't ignore the input derivative (Ogata's 'Method 0')">
+
+Dropping $\dot u$ gives the right answer for a *ramp* input (whose derivative is the constant 1) and a **wrong** answer for a step (whose derivative is an impulse). Also note Ogata Ex 5-7's textbook solution has a wrong last row of $A$; the lecture caught it. Verify every realisation with $C(sI-A)^{-1}B+D$.
+
+</Trap>
+
+<StateSpaceTool />
+
+## Transfer function from state space
+
+$$
+G(s)=C(sI-A)^{-1}B+D=\frac{C\,\operatorname{adj}(sI-A)\,B}{\det(sI-A)}+D .
+$$
+
+The **denominator is $\det(sI-A)$**, so *eigenvalues of $A$ are the poles*. Example (T04 Q1): $G=\dfrac1{s^2+5.2s+1.5}$ for $A,B,C$ above.
+
+**A step response through state space** (MT2 W2010 Q2): $A=\begin{bmatrix}-1&-0.5\\1&0\end{bmatrix}$, $B=\begin{bmatrix}0.5\\0\end{bmatrix}$, $C=[1\;0]$, zero initial state, unit step.
+
+1. $\det(sI-A)=s^2+s+0.5$, poles $-0.5\pm0.5j$.
+2. $G=\dfrac{C\,\mathrm{adj}\,B}{\ldots}=\dfrac{0.5s}{s^2+s+0.5}$: a zero at $s=0$ (the output ignores constants).
+3. $y(t)=\mathcal L^{-1}\{G/s\}=\mathcal L^{-1}\dfrac{0.5}{(s+0.5)^2+0.5^2}=e^{-t/2}\sin\tfrac t2$.
+4. *Check:* $y(0)=0$ and $y(\infty)=0$ ✔ (a step produces a single swing, then silence: a high-pass system).
+
+## Non-uniqueness and diagonalisation
+
+Any invertible $P$ gives another valid state, $\mathbf x=P\hat{\mathbf x}$:
+
+$$
+\dot{\hat{\mathbf x}}=P^{-1}AP\,\hat{\mathbf x}+P^{-1}B\,u,\qquad y=CP\,\hat{\mathbf x}+D\,u .
+$$
+
+(Anthony's page writes $y=PC\hat x$ and "$PA^{-1}P$"; they should be $CP$ and $P^{-1}AP$.) The same transfer function results. Choose $P$ to make the equations **uncoupled**: if the eigenvalues $\lambda_i$ are distinct and $A$ is a companion matrix, the Vandermonde matrix
+
+$$
+P=\begin{bmatrix}1&1&\cdots\\ \lambda_1&\lambda_2&\cdots\\ \lambda_1^2&\lambda_2^2&\cdots\end{bmatrix}\quad\Rightarrow\quad P^{-1}AP=\operatorname{diag}(\lambda_1,\dots,\lambda_n).
+$$
+
+Each new state then obeys $\dot{\hat x}_i=\lambda_i\hat x_i+(\ldots)u$ on its own. *Repeated eigenvalues* give a Jordan block instead. Example: $A=\begin{bmatrix}0&1&0\\0&0&1\\-6&-11&-6\end{bmatrix}$ has $|\lambda I-A|=\lambda^3+6\lambda^2+11\lambda+6=(\lambda+1)(\lambda+2)(\lambda+3)$.
+
+## From a block diagram or a circuit
+
+- **Block diagram:** every integrator output is a state; the integrator's *input* is that state's derivative. (MT1 F2011 Q2: with three integrators the chain gives $A=\begin{bmatrix}0&1&0\\0&0&1\\-a_3&-a_2&-a_1\end{bmatrix}$, $C=[b_3\;b_2\;b_1]$ when the states are numbered from the last integrator.)
+- **Circuit:** capacitor voltages and inductor currents are the states (Chapters 8–10).
+- **Mechanical:** positions and velocities (Chapter 3), or spring deflections and velocities.
+
+<Examined>
+
+- $\text{MT1}$ every year: SS from an ODE with input derivatives (<Hw n="4">HW4</Hw> Q4, $\text{MT1 W2009 Q3}$), SS from a block diagram ($\text{F2011 Q2}$), ODE from SS plus initial condition response ($\text{F2011 Q1}$).
+- $\Phi(t)$ and step responses: <Hw n="4">HW4</Hw> Q2/Q5, $\text{MT2 W2009 Q2}$, $\text{W2010 Q2}$, $\text{F2009 P2}$.
+- The laser-printer belt-drive model ($x_1=r\theta-y$, $x_2=\dot y$, $x_3=\dot\theta$) is HW4 Q6 and reappears as MT1 W2019 Q2.
+
+</Examined>
+
+### Check yourself
+
+1. How many states for a mass–spring–damper? A two-mass system? *(Two; four.)*
+2. $G=\dfrac{2s+10}{s^2+2s+10}$: write Method 1 ($A,B,C,D$). *($\beta_0=0,\beta_1=2,\beta_2=10-4=6$: $A=\begin{bmatrix}0&1\\-10&-2\end{bmatrix}$, $B=[2\;6]^T$, $C=[1\;0]$.)*
+3. What is the eigenvalue condition for stability? *(All eigenvalues of $A$ in the open left half-plane.)*
+4. Why is $\Phi(0)=I$ obvious? *($\mathbf x(0)=\Phi(0)\mathbf x(0)$ for every $\mathbf x(0)$.)*

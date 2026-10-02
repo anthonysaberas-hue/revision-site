@@ -1,0 +1,139 @@
+<p className="eyebrow">Chapter 20 · Lecture 22 · HW8-2024 Q1 · HW10 Q2–Q3</p>
+
+# Lead, lag and lag–lead compensation
+
+<div className="lede">
+
+When a loop does not meet its specs, you rarely rebuild the plant: you add a small circuit in the loop that reshapes the frequency response. A **lead** adds phase where you need stability (and speed). A **lag** raises the low-frequency gain where you need accuracy. This chapter is the step-by-step Bode procedure that gets a design in about ten lines of arithmetic.
+
+</div>
+
+<Idea title="The 30-second version">
+
+- **Lead** $G_c=K_c\alpha\dfrac{Ts+1}{\alpha Ts+1}$, $0<\alpha<1$: positive phase hump of $\sin\varphi_m=\dfrac{1-\alpha}{1+\alpha}$ at $\omega_m=\dfrac1{T\sqrt\alpha}$. Speeds the response, increases bandwidth (and noise).
+- **Lag** $G_c=K_c\beta\dfrac{Ts+1}{\beta Ts+1}$, $\beta>1$: cuts the high-frequency gain so the **low-frequency gain (K_v) can be larger** without losing phase margin. Slower response.
+- **Lag–lead** does both. A PD is a lead, a PI is a lag.
+
+</Idea>
+
+<ToolLink tool="lead-lag">Use the designer to check every number below</ToolLink>
+
+## Real-life picture
+
+**Lead** is a driver who looks ahead: steering in response to *how fast the lane is curving*, not just where the car is (that is derivative action) — the car stops weaving. **Lag** is cruise control with a slow integral term: patient, removes the last 2 mph of droop, but sluggish.
+
+## Lead compensator
+
+$$
+G_c(s)=K_c\alpha\,\frac{Ts+1}{\alpha Ts+1}=K_c\,\frac{s+1/T}{s+1/(\alpha T)},\qquad0<\alpha<1,
+$$
+
+zero at $-1/T$ (closer to the origin), pole at $-1/(\alpha T)$. Maximum phase lead $\varphi_m$ at the geometric mean of the two corners:
+
+$$
+\sin\varphi_m=\frac{1-\alpha}{1+\alpha},\qquad \omega_m=\frac1{T\sqrt\alpha},\qquad \text{gain at }\omega_m:\ \frac1{\sqrt\alpha}\ (\text{i.e. }+20\log\tfrac1{\sqrt\alpha}\text{ dB}).
+$$
+
+($\alpha=0.05$ gives about $65^\circ$.)
+
+### The Bode lead procedure
+
+1. **Gain for the error spec:** $K$ from $K_v=\lim sKG$ (keep $K_c\alpha=K$ so the DC gain is unchanged: $K_c=K/\alpha$).
+2. **Margins of $KG$:** read the PM.
+3. **Lead needed:** $\varphi_m=PM_{target}-PM_{now}+5^\circ$ (safety, $5$–$12^\circ$).
+4. **$\alpha=\dfrac{1-\sin\varphi_m}{1+\sin\varphi_m}$.**
+5. **Place $\omega_m$:** the compensator gain at $\omega_m$ is $+20\log\tfrac1{\sqrt\alpha}$, so the new crossover is where the uncompensated gain is $-20\log\tfrac1{\sqrt\alpha}$. Read $\omega_m$ there.
+6. **Corners:** $1/T=\omega_m\sqrt\alpha$ (zero) and $1/(\alpha T)=\omega_m/\sqrt\alpha$ (pole).
+7. $G_c=\dfrac{K}{\alpha}\dfrac{s+1/T}{s+1/(\alpha T)}$. **Check the achieved PM**; iterate if short.
+
+### Worked example (Ogata Ex 11-6): $G=\dfrac4{s(s+2)}$, $K_v=20$, PM $=50^\circ$, GM $\ge10$ dB
+
+1. $K_v=\lim sKG=2K=20\Rightarrow K=10$, loop $\dfrac{40}{s(s+2)}$.
+2. Bode: $\omega_{gc}=6.17$ rad/s, **PM $=18^\circ$**, GM $=\infty$.
+3. $\varphi_m=50-18+5=\mathbf{37^\circ}$.
+4. $\alpha=\dfrac{1-\sin37^\circ}{1+\sin37^\circ}=0.248\approx0.24$.
+5. Gain at $\omega_m$: $1/\sqrt\alpha=2.04$ (+6.2 dB); the new crossover is where $|40/(j\omega(j\omega+2))|=0.49$ (−6.2 dB), i.e. $\omega_m\approx9$ rad/s.
+6. $1/T=9\sqrt{0.24}=4.4$, $\;1/(\alpha T)=9/\sqrt{0.24}=18.4$.
+7. $G_c=\dfrac{10}{0.24}\,\dfrac{s+4.4}{s+18.4}=41.7\,\dfrac{s+4.4}{s+18.4}$.
+8. **Check:** $K_v=19.97$ ✔, **PM $=50.5^\circ$** at $\omega_{gc}=8.88$ rad/s, GM $=\infty$ ✔.
+
+### A shortcut for the gain (HW8-2024 Q1a)
+
+Plant $\dfrac{40}{s(s+2)}$, crossover $10$ rad/s wanted, PM $=30^\circ$. At $10$ rad/s: $|G|=-8.1$ dB, $\angle G=-168.7^\circ$ (only $11.3^\circ$ of PM). $\varphi_m=30-11.3+5=23.7^\circ\Rightarrow\alpha=0.427$. Because the compensator gain at $\omega_m$ is $K_c\sqrt\alpha$, choose **$K_c=\dfrac1{\sqrt\alpha\,|G(j10)|}=3.90$** so the crossover lands *exactly* at 10: zero $10\sqrt\alpha=6.53$, pole $10/\sqrt\alpha=15.3$. Result: $G_c=3.90\dfrac{s+6.53}{s+15.3}$ gives PM $=35.0^\circ$ at $10.0$ rad/s. (The handwritten solution iterates through four steps and ends with $3.75(s+6.75)/(s+14.82)$: PM $33.3^\circ$.)
+
+**What lead does to the step response** ($\text{HW8-2024 Q1c}$): the open-loop plant has OS 61 %, $t_s=3.7$ s; with the lead OS 40–42 % and $t_s=1.0$ s — about 3.5× faster; the ramp error falls from 0.05 to 0.03 because $K_v$ rises to 34. A PM of $30$–$35^\circ$ still means $\approx40\,\%$ overshoot ($\zeta\approx0.3$): PM alone does not guarantee small overshoot.
+
+## Lag compensator
+
+$$
+G_c(s)=K_c\beta\,\frac{Ts+1}{\beta Ts+1}=K_c\,\frac{s+1/T}{s+1/(\beta T)},\qquad\beta>1,
+$$
+
+pole closer to the origin than the zero: a low-pass that **drops the gain** near the crossover while leaving the DC gain intact. Phase: a small lag *dip* at low frequency, kept well below the crossover.
+
+### The Bode lag procedure
+
+1. **$K$ from $K_v$**, then write the lag so that its **DC gain is $K$**: $G_c=K\dfrac{Ts+1}{\beta Ts+1}$ (equivalently $K_c\beta=K$, i.e. $K_c=K/\beta$). The lag then leaves $K_v$ unchanged.
+2. Bode of $KG$ (usually unstable or poorly damped).
+3. **Find** the frequency $\omega_c$ where $\angle KG=-180^\circ+PM_{target}+(5\text{–}12)^\circ$: that will be the *new crossover*.
+4. $\beta=|KG(j\omega_c)|$ (so that the lag brings the gain to 0 dB there).
+5. **Zero a decade below** $\omega_c$: $1/T=\omega_c/10$; pole at $1/(\beta T)$.
+6. Check the achieved margins.
+
+### Worked example (Ogata Ex 11-7): $G=\dfrac1{s(s+1)(0.5s+1)}$, $K_v=5$, PM $\ge40^\circ$, GM $\ge10$ dB
+
+1. $K_v=K=5$: loop $\dfrac5{s(s+1)(0.5s+1)}$.
+2. $\omega_{gc}=1.80$ rad/s with **PM $\approx-13^\circ$**: the loop is **unstable**. *(The textbook and Anthony's page say $-20^\circ$; the exact value is $-13^\circ$.)*
+3. A lag moves the crossover left. Target phase $-180+40+(5\text{ to }12)\approx-135^\circ$ ⇒ $\omega_c\approx0.5$ rad/s.
+4. Attenuation needed there: 20 dB ⇒ **$\beta=10$**.
+5. Zero at $0.1$ rad/s ($T=10$), pole at $0.01$ rad/s.
+6. $G_c=K\dfrac{Ts+1}{\beta Ts+1}=5\,\dfrac{10s+1}{100s+1}$ (this is $K_c=K/\beta=0.5$ in the form $K_c\beta\frac{Ts+1}{\beta Ts+1}$): a zero at $-0.1$, a pole at $-0.01$ and DC gain 5, so $K_v=5$.
+7. **Check:** PM $=41.6^\circ$, GM $=14.3$ dB, $\omega_{gc}=0.454$ rad/s (the textbook quotes 40° / 11 dB; the specs are met either way).
+
+*The cost:* the closed loop is now slow (a slow pole near $-0.01$ to $-0.3$ lingers): lag buys accuracy at the price of speed.
+
+## Lag–lead and PID
+
+$$
+G_c=K_c\,\frac{s+1/T_1}{s+\gamma/T_1}\cdot\frac{s+1/T_2}{s+1/(\beta T_2)},\quad\gamma,\beta>1,
+$$
+
+lag part for $\omega<\omega_1$, lead part for $\omega>\omega_1$, with $\omega_1=1/\sqrt{T_1T_2}$. PI $\approx$ lag and PD $\approx$ lead; a PID is a special lag–lead.
+
+**Worked example (HW10 Q3): $\dfrac{100}{s(s+5)(s+10)}$, $K_v=100$, GM $\ge10$ dB, PM $\ge40^\circ$.**
+
+1. The plant has $K_v=100/50=2$, so the loop needs an extra **gain 50**.
+2. With gain 50 and no compensator the loop is **unstable** (PM $-40.5^\circ$ at 15.9 rad/s).
+3. The Dorf compensator $\dfrac{(s+2.5)(s+0.9871)}{(s+36.54)(s+0.0675)}$ has a lead part (zero 2.5, pole 36.54) and a lag part (zero 0.987, pole 0.0675).
+4. **Printed as is it has $K_v=2$, PM $32.6^\circ$, GM 46 dB — it does not meet the spec.** Multiplied by the missing 50: $K_v=100$, **PM $41.8^\circ$ at 9.0 rad/s, GM $12.35$ dB** — exactly Dorf's quoted numbers.
+5. At 9 rad/s the lead contributes $+60.7^\circ$, the lag $-5.9^\circ$: net $+54.8^\circ$ to the plant's $-192.9^\circ$ gives $-138.1^\circ$ ⇒ PM $41.9^\circ$ ✔.
+
+## Which one when?
+
+| | Lead | Lag |
+|---|---|---|
+| fixes | speed, damping (phase margin) | steady-state accuracy |
+| bandwidth | ↑ | ↓ |
+| noise | amplified | reduced |
+| closed-loop | faster | slower, a slow pole |
+
+<Trap title="Frequent errors">
+
+- Forgetting that the compensator gain at $\omega_m$ is $K_c\sqrt\alpha$ (not 1): rescale $K_c$ so $|L(j\omega_m)|=1$, or iterate.
+- A lag *zero* too close to the crossover removes your phase margin: put it a decade below.
+- Trusting a printed answer: always compute the margins of the compensated loop (the AP10.9 compensator above fails as printed).
+
+</Trap>
+
+<Examined>
+
+- <Hw n="8">HW8</Hw> Q1 (iterative lead: final PM 33.3°), <Hw n="10">HW10</Hw> Q2 (lead $2.88(s+2.04)/(s+5.88)$ PM 30.4°; lag $\dfrac{1+1.48s}{1+11.08s}$ PM 28.9°, a hair short of 30°), HW10 Q3, Ogata 11-6/11-7 in the lecture. These are the strongest predictors of the final's lead/lag question.
+
+</Examined>
+
+### Check yourself
+
+1. Need $40^\circ$ of lead: $\alpha$? *($\alpha=\dfrac{1-\sin40}{1+\sin40}=0.217$.)*
+2. Lead zero at 4, pole at 16: $\omega_m$ and $\varphi_m$? *($8$ rad/s; $\sin\varphi_m=\tfrac35$, $\varphi_m=36.9^\circ$.)*
+3. A lag has $\beta=8$ and the plant gain at the desired crossover is 18 dB. Does it work? *(It needs $20\log\beta=18$ dB: $\beta\approx8$ ✔.)*
+4. Why is a PI called "lag"? *(Its phase is negative below the zero frequency.)*

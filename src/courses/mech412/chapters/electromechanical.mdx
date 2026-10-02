@@ -1,0 +1,112 @@
+<p className="eyebrow">Chapter 11 · Lecture 12 · T06 Q2 · T07 Q1</p>
+
+# DC motors, transducers, loudspeaker
+
+<div className="lede">
+
+A DC motor is two circuits glued together by one law of nature: current makes torque, and speed makes voltage. That single idea gives you the transfer function of every motor, voice coil and loudspeaker on the exams, and it explains why a motor spun by hand acts as a generator.
+
+</div>
+
+<Idea title="The 30-second version">
+
+- **Torque from current:** $T=K_T\,i_a$ (the field is constant).
+- **Back-EMF from speed:** $e_b=K_b\,\omega$. In SI units $K_T=K_b$ numerically.
+- Electrical side: $L_a\dot i_a+R_ai_a+K_b\omega=e_a$. Mechanical side: $J\dot\omega+B\omega=K_Ti_a-T_L$.
+- Eliminating the current: $\dfrac{\Omega}{E_a}=\dfrac{K_T}{(L_as+R_a)(Js+B)+K_TK_b}$. **The back-EMF term enters with a plus sign:** it acts like *extra damping*.
+
+</Idea>
+
+## A drill, a car window, a treadmill
+
+Press the trigger of a cordless drill (voltage). The motor accelerates, and as it speeds up its own back-EMF cancels more and more of the supply voltage, so the current falls and the speed levels off. Clamp the chuck (load torque) and the speed drops, the back-EMF drops, and the current surges: that is why a stalled motor burns out. Everything below is that story in equations.
+
+<DCMotor3D />
+
+Try: raise $L_a$ to see the electrical lag; switch on *tach feedback* and watch the speed track a square command; apply a load torque and see the speed dip (and the current rise).
+
+## Armature-controlled DC servomotor: the model
+
+Symbols: $R_a,L_a$ armature resistance and inductance, $i_a$ current, $e_a$ applied voltage, $e_b$ back-EMF, $J$ total inertia (rotor + load referred to the motor shaft), $B$ viscous friction, $K_T$ torque constant, $K_b$ back-EMF constant.
+
+$$
+\underbrace{L_a\dot i_a+R_ai_a+e_b=e_a}_{\text{electrical (KVL)}},\qquad
+\underbrace{J\ddot\theta+B\dot\theta=T-T_L=K_Ti_a-T_L}_{\text{mechanical (Newton)}},\qquad e_b=K_b\dot\theta .
+$$
+
+**Derivation of the transfer function (every step).**
+
+1. Laplace: $(L_as+R_a)I_a+K_b\,s\Theta=E_a$ and $(Js^2+Bs)\Theta=K_TI_a$.
+2. Eliminate $I_a=\dfrac{(Js^2+Bs)\Theta}{K_T}$.
+3. Substitute: $E_a=\Big[\dfrac{(L_as+R_a)(Js^2+Bs)}{K_T}+K_bs\Big]\Theta$.
+4. $$\boxed{\frac{\Theta}{E_a}=\frac{K_T}{s\big[L_aJs^2+(L_aB+R_aJ)s+R_aB+K_TK_b\big]}}$$
+ and for the speed $\Omega=s\Theta$ the factor $s$ cancels.
+5. **Neglect $L_a$** (the electrical time constant is much shorter than the mechanical one): $\dfrac{\Theta}{E_a}=\dfrac{K_m}{s(T_ms+1)}$ with
+ $K_m=\dfrac{K_T}{R_aB+K_TK_b}$ (motor gain) and $T_m=\dfrac{R_aJ}{R_aB+K_TK_b}$ (mechanical time constant). In speed it is a **first-order lag**; in position it is **type 1** (an integrator).
+
+<Trap title="The sign of the back-EMF term (an error in the official tutorial)">
+
+T07 Q1's official solution writes $\dfrac{\Omega}{E_i}=-\dfrac{K_tI_f}{(L_As+R_A)(Js+B)-K_bK_tI_f}$ and Anthony copied the same minus signs onto his MT2 crib sheet. That comes from defining the electromagnetic torque with the *opposite* sign ($\tau_L-\tau_m=\tau_e$ and $(Js+B)\Omega+\tau_e=0$). **Physically the denominator must carry $+K_bK_t$**: with a minus a motor with $K_bK_t>R_AB$ would be unstable, which no real motor is. The correct result is the boxed one above: back-EMF *subtracts* from the supply and the torque *adds* to the rotor.
+
+</Trap>
+
+**Limits you can check:** at DC ($s\to0$) the speed per volt is $\dfrac{K_T}{R_aB+K_TK_b}$. With no friction ($B\to0$) it becomes $1/K_b$: the no-load speed is $e_a/K_b$ (the constant-speed property of a DC motor).
+
+### Closing the loop (T07 Q1, MT2 W2011 Q3, W2012 Q3)
+
+With a position or tach sensor and proportional gain $K$ the closed loop is again second-order. For $J_m=0.01$, $b=0.001$, $K_e=K_t=0.02$, $R_a=10\,\Omega$ (MT2 W2011 Q3):
+
+1. Open loop: $\dfrac{\Theta}{V_a}=\dfrac{K_t/R_a}{J_ms^2+(b+K_tK_e/R_a)s}=\dfrac{0.2}{s^2+0.104s}$ (the motor's electrical back-EMF adds $4\times10^{-5}$ to the friction).
+2. Position servo $v_a=K(\theta_r-\theta_m)$: $\dfrac{\Theta_m}{\Theta_r}=\dfrac{0.2K}{s^2+0.104s+0.2K}$.
+3. $\omega_n^2=0.2K$, $2\zeta\omega_n=0.104\Rightarrow\zeta=\dfrac{0.052}{\sqrt{0.2K}}$.
+4. Overshoot $<20\,\%$ needs $\zeta>0.456$, so $\sqrt{0.2K}<0.114\Rightarrow K<0.065$ V/rad. (A tiny gain! The motor has almost no damping, so the loop must be soft.)
+
+**Speed loop with tachometer** ($\text{MT2 W2012 Q3}$: $K_m=10$, $J=1$, $R_a=1$, $K_b=0.1$, $K_t=1$): closed loop $\dfrac{\omega}{V}=\dfrac{10K_p}{s+1+10K_p}$; the steady-state error to a unit step $=\dfrac1{1+10K_p}<0.1\Rightarrow K_p>0.9$. How the closed loop changes if $R_a$ drifts is the *sensitivity* question of Chapter 14.
+
+## Example: motor limits (MT2 W2010 Q3, the tape-drive motor)
+
+Data: $J_r=2\times10^{-5}$, $J_l=4\times10^{-5}$ kg·m², $b_l=7\times10^{-5}$ N·m·s/rad, $R_a=0.6$ Ω, $L_a=2$ mH, $K=K_b=0.04$. Limits: 1.7 N·m, 6000 rpm, 40 A.
+
+1. **Transfer function** (as above): $\dfrac{\Theta}{E_a}=\dfrac{K}{s[L_aJs^2+(L_ab+R_aJ)s+R_ab+K^2]}$.
+2. **No load** ($J=J_r$, $b=0$): $4\times10^{-8}s^2+1.2\times10^{-5}s+1.6\times10^{-3}=0\Rightarrow s=-150\pm j132$ rad/s. Time constant 6.7 ms, oscillation period 47.6 ms: the envelope dies in about $4\tau=27$ ms, *before one period*, so you will not see oscillations.
+3. **With load** ($J=6\times10^{-5}$, $b=7\times10^{-5}$): roots $-245.4$ and $-55.8$: both real, **no oscillation**; the added inertia makes the motor overdamped and slower.
+4. **Largest step voltage:** from the step data (233 rpm per volt in steady state; peak current 1.35 A per volt):
+ - speed limit: $6000/233=25.8$ V;
+ - torque limit: $T=K\cdot1.35=0.054$ N·m per volt, so $1.7/0.054=31.5$ V;
+ - current limit: $40/1.35=29.6$ V.
+ The smallest governs: **$V_{max}=25.8$ V**, giving torque 1.39 N·m and peak current 34.8 A (both within limits).
+
+## Transducers: loudspeaker and voice coil
+
+A **moving-coil transducer** (loudspeaker, shaker, dynamic microphone) obeys the same two laws with $K_T=K_b=Bl$ (flux density × wire length): force $f=Bl\,i$, induced voltage $e=Bl\,\dot x$.
+
+**Voice coil (MT2 F2022 Q4).** Mass $m$ (spring $k$, damper $b$) driven through the coil ($R$, $L$):
+
+1. $(ms^2+bs+k)X=Bl\,I$ (force from current).
+2. $V=(Ls+R)I+Bl\,sX$ (back-EMF from velocity).
+3. Eliminate $I$: $V=\Big[\dfrac{(Ls+R)(ms^2+bs+k)}{Bl}+Bl\,s\Big]X$.
+4. $$\boxed{\frac{sX}{V}=\frac{Bl}{(Ls+R)\big(ms+b+\tfrac ks\big)+(Bl)^2}}$$
+5. Checks: $s\to0$ gives 0 (a spring holds the mass: no steady velocity ✔); with $k=0$ the DC gain is $\dfrac{Bl}{Rb+(Bl)^2}$, the same structure as the motor. The term $(Bl)^2$ is **electrical damping**: a speaker brakes its own cone (this is why it also works as a microphone).
+
+**Loudspeaker with a filter** (F2010 P3): source $V$ with series $R$, capacitor $C$ to ground at node A, voice coil $L$ with force $K_1i_2$ and induced voltage $K_2\dot x$:
+$V=Ri_1+v_A$, $i_1=C\dot v_A+i_2$, $v_A=L\dot i_2+K_2\dot x$, $m\ddot x+c\dot x+kx=K_1i_2$, giving the **fourth-order** $\dfrac XV=\dfrac{K_1}{(ms^2+cs+k)(RLCs^2+Ls+R)+K_1K_2\,s\,(RCs+1)}$ (DC gain $K_1/(kR)$).
+
+## The motor in the analogies
+
+The armature circuit is an *impedance*-type loop (voltage, current); the shaft is a *mobility*-type node (velocity, torque). Coupling them with a **gyrator $K_T$**, or, drawing both sides as mobility circuits, a **transformer $K_T:1$**. The rotor inertia $J$ is a capacitor (mobility) in parallel with $1/B$; the load (a valve, a flywheel) sits in parallel with them.
+
+**Representative problem (his "Lecture 12 rep prob"):** a motor between terminals A and B with a current-sensing resistor $R_S$: $V_A-V_B=I_AR_A+K_e\omega$, and with $R_S\ll R$ the node voltage $V_B\approx I_AR_S$.
+
+<Examined>
+
+- T06 Q2 (a shunt motor with *both* windings across the supply: $\omega_{eq}=\tfrac12$, linearised $\dot{\hat\omega}+2\hat\omega=1.5\hat e_i-\tau_L$, $t_s=2$ s), T07 Q1.
+- $\text{MT2 W2010 Q3}$, $\text{W2011 Q3}$, $\text{W2012 Q1b/Q3/Q4}$, $\text{W2019 make-up Q2}$ (robot gripper, $\zeta=0.065$!), $\text{F2022 Q4}$, $\text{F2009 P4–P5}$, $\text{F2010 P3}$.
+
+</Examined>
+
+### Check yourself
+
+1. Why is the back-EMF term in the denominator $+K_bK_t$? *(It subtracts voltage from the supply, so more speed means less current: extra damping.)*
+2. A motor with $B=0$: what is the no-load speed? *($e_a/K_b$.)*
+3. A voice coil has $R=8\,\Omega$, $Bl=10$ N/A, $b=1$, $k=0$. DC velocity per volt? *($\dfrac{Bl}{Rb+(Bl)^2}=\dfrac{10}{8+100}=0.0926$ m/s per V.)*
+4. Why does more load inertia remove oscillations in the tape drive? *(It makes the mechanical pole slow compared with the electrical one: the roots become real.)*

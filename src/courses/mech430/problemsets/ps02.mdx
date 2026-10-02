@@ -1,0 +1,723 @@
+<p className="eyebrow">Problem Set 2 · Winter 2025</p>
+
+# 1-D isentropic flow
+
+<p className="lede">Eleven problems on the toolbox of Chapter 5. Almost all of them are the same three moves: find M at the known station, compute the invariants T₀, p₀, A* there, and carry them to the new station. γ = 1.4 unless stated; table readings are Table A2 (nearest row).</p>
+
+<Remember title="The invariants recipe (Jan 27 lecture)">
+
+1. Find $M$ where you know the state ($V/\sqrt{\gamma RT}$, or $p/p_0$, or from $\dot m$).
+2. Compute $T_0$, $p_0$, $A^*$ there. They are constant along an isentropic duct.
+3. At the new station use the new $M$ / $p$ / $A$ with the same invariants. See [Chapter 5](#/mech430/ch/isentropic).
+
+</Remember>
+
+<Problem id="PS2 P1" title="Terminology: Mach, static, stagnation, sonic, choking" tags="definitions">
+
+<Statement>
+
+Define in one sentence: (a) Mach number, (b) static conditions, (c) stagnation (total) conditions, (d) sonic (critical) conditions, (e) choking.
+
+</Statement>
+
+<Think>
+
+Each is a *reference state* or a limit. The two words that matter: stagnation is reached **isentropically**, and choking is about **mass flow** not rising when the back pressure drops.
+
+</Think>
+
+<Plan>
+
+Define, then picture all three states (static, stagnation, sonic) on one bar chart.
+
+</Plan>
+
+<Steps>
+<Step title="1. Mach number, static">
+
+- **Mach number**: local flow speed divided by the local speed of sound, $M = V/c$.
+- **Static conditions**: the actual $p$, $T$, $\rho$ of the gas, as measured by an instrument moving with it.
+
+</Step>
+<Step title="2. Stagnation and sonic">
+
+- **Stagnation conditions**: the state the gas would reach if brought to rest **isentropically** ($T_0$, $p_0$, $\rho_0$). It exists at every point, whether or not the gas ever stops.
+- **Sonic (critical) conditions**: the state the gas would have if accelerated or decelerated isentropically to $M = 1$ ($T^*$, $p^*$, $A^*$).
+
+</Step>
+<Step title="3. Choking">
+
+The limiting condition where the **mass flow rate no longer increases** when the downstream pressure is lowered further, because the minimum area has reached $M = 1$.
+
+</Step>
+</Steps>
+
+<Answer>
+
+As above. The ratios that link the states: $T^*/T_0 = 0.8333$, $p^*/p_0 = 0.5283$, $\rho^*/\rho_0 = 0.6339$.
+
+</Answer>
+
+<StagnationRatiosSim initialM={1} />
+
+<Traps>
+
+- Anthony's stagnation definition omitted "isentropically"; his choking definition was about velocity. The official one is about $\dot m$, and that is the one to remember.
+- $A^*$ is a reference area: the throat that *would* pass the same $\dot m$ at M = 1.
+
+</Traps>
+
+<Source>official 2025 solution p. 1 · Anthony's PS02-mine p. 4</Source>
+
+</Problem>
+
+<Problem id="PS2 P2" title="Stagnation temperature at Mach 1 and Mach 5" tags="T₀/T, energy">
+
+<Statement>
+
+For PS1 P7's vehicles (Yeager at −57 °C, Green at 30 °C), compute the stagnation temperature (a) at M = 1 and (b) at M = 5.
+
+</Statement>
+
+<Think>
+
+One line: $T_0/T = 1 + 0.2M^2$. This comes from energy alone, so it holds on the nose even behind a bow shock.
+
+</Think>
+
+<Plan>
+
+$T$ in K → multiply by $T_0/T$.
+
+</Plan>
+
+<Steps>
+<Step title="1. M = 1">
+
+$T_0/T = 1.2$ (<T>A2 @ M = 1.0: T/T₀ = 0.8333</T>): Yeager $216 \times 1.2 = 259.2$ K; Green $303 \times 1.2 = 363.6$ K.
+
+</Step>
+<Step title="2. M = 5">
+
+$T_0/T = 1 + 0.2 \times 25 = 6$ (<T>A2 @ M = 5.0: T/T₀ = 0.1667</T>): Yeager $216 \times 6 = 1296$ K; Green $303 \times 6 = 1818$ K.
+
+</Step>
+</Steps>
+
+<Answer>
+
+- (a) 259.2 K (Yeager), 363.6 K (Green)
+- (b) 1296 K (Yeager), 1818 K (Green)
+
+</Answer>
+
+<NoseTemperatureFigure />
+
+<Traps>
+
+- Use kelvin.
+- $T_0$ grows with $M^2$: at Mach 5 the nose sees 6× the static temperature. Hence thermal protection on hypersonic vehicles.
+
+</Traps>
+
+<Source>official 2025 solution p. 2 · Anthony's PS02-mine p. 5</Source>
+
+</Problem>
+
+<Problem id="PS2 P3" title="Isentropic duct: 600 m/s, then 30 kPa downstream" tags="invariants, inverting p₀/p">
+
+<Statement>
+
+Air flows isentropically in a duct. At one section V = 600 m/s, T = 5 °C, p = 70 kPa. (a) Find M, T₀, p₀ there. (b) At another point p = 30 kPa: find M, T and V.
+
+</Statement>
+
+<Think>
+
+Textbook invariants problem. Station 1 is already supersonic; the lower downstream pressure means further supersonic expansion (a diverging duct).
+
+</Think>
+
+<Plan>
+
+$c_1$ → $M_1$ → $T_0$, $p_0$ → $p_0/p_2$ → $M_2$ → $T_2$ → $V_2$.
+
+</Plan>
+
+<Steps>
+<Step title="1. Mach number at station 1">
+
+$c_1 = \sqrt{1.4 \times 287.06 \times 278} = 334.2$ m/s, $M_1 = 600/334.2 = 1.795$.
+
+</Step>
+<Step title="2. Invariants">
+
+$T_0 = 278(1 + 0.2 \times 1.795^2) = 457.2$ K. $p_0 = 70 \times 1.6444^{3.5} = 399.2$ kPa. <T>A2 @ M = 1.80: p/p₀ = 0.1740, T/T₀ = 0.6068</T> gives 402 kPa and 458 K.
+
+</Step>
+<Step title="3. Mach number at station 2">
+
+$p_0/p_2 = 399.2/30 = 13.31$:
+
+$$
+M_2 = \sqrt{\frac{2}{\gamma-1}\left[\left(\frac{p_0}{p_2}\right)^{\frac{\gamma-1}{\gamma}} - 1\right]} = \sqrt{5\,(13.31^{0.2857} - 1)} = 2.34
+$$
+
+<T>A2 @ p/p₀ = 0.0752: M = 2.34</T> — <CalcLink calc="isentropic" q="in=p&v=0.0752">check</CalcLink>
+
+</Step>
+<Step title="4. T₂ and V₂">
+
+$T_2 = 457.2/(1 + 0.2 \times 2.34^2) = 218.2$ K; $V_2 = 2.34\sqrt{1.4 \times 287.06 \times 218.2} = 693$ m/s.
+
+</Step>
+</Steps>
+
+<Answer>
+
+- (a) $M_1 = 1.80$, $T_0 = 457$ K, $p_0 = 399$ kPa
+- (b) $M_2 = 2.34$, $T_2 = 218$ K, $V_2 = 693$ m/s
+
+</Answer>
+
+<InvariantsSim preset="ps2p3" />
+
+<Traps>
+
+- R = 287 vs 287.7 changes only the third digit (Anthony got 2.33 and 691 m/s).
+- Lower pressure downstream in a supersonic flow means a *diverging* duct.
+
+</Traps>
+
+<Source>official 2025 solution pp. 3–4 · Anthony's PS02-mine pp. 6–7</Source>
+
+</Problem>
+
+<Problem id="PS2 P4" title="CO₂ duct with γ = 1.3" tags="γ ≠ 1.4, no tables">
+
+<Statement>
+
+CO₂ (MW = 44, γ = 1.3) flows isentropically in a duct. At one point V = 200 m/s, T = 50 °C, p = 50 kPa. At another point p = 15 kPa. Find M and T there.
+
+</Statement>
+
+<Think>
+
+Same recipe, but **γ = 1.3: Table A2 is for γ = 1.4 and cannot be used**. Use the formulas with the exponent $\gamma/(\gamma-1) = 4.333$.
+
+</Think>
+
+<Plan>
+
+$R = 8314/44$ → $c_1$ → $M_1$ → $T_0$, $p_0$ → invert $p_0/p_2$ → $M_2$, $T_2$.
+
+</Plan>
+
+<Steps>
+<Step title="1. State 1">
+
+$R = 188.95$ J/kg·K; $c_1 = \sqrt{1.3 \times 188.95 \times 323} = 281.7$ m/s; $M_1 = 200/281.7 = 0.710$.
+
+</Step>
+<Step title="2. Invariants">
+
+$T_0 = 323(1 + 0.15 \times 0.710^2) = 347.4$ K; $p_0 = 50(1.0756)^{4.333} = 68.57$ kPa.
+
+</Step>
+<Step title="3. State 2">
+
+$$
+M_2 = \sqrt{\frac{2}{0.3}\left[\left(\frac{68.57}{15}\right)^{0.3/1.3} - 1\right]} = 1.674, \qquad T_2 = \frac{347.4}{1 + 0.15 \times 1.674^2} = 244.6\ \text{K}
+$$
+
+</Step>
+</Steps>
+
+<Answer>
+
+$M_2 = 1.67$, $T_2 = 245$ K (−28.5 °C).
+
+</Answer>
+
+<IsentropicDuct3D M1={0.71} M2={1.674} g={1.3} label1="1 · CO₂ · M = 0.71 · 50 kPa" label2="2 · M = 1.67 · 15 kPa" />
+
+<Traps>
+
+- The flow goes from M 0.71 to 1.67: there must be a throat in between. Check: $p_2/p_0 = 0.219$ is below the CO₂ critical ratio $(2/2.3)^{4.333} = 0.546$.
+- Using 3.5 as the exponent (γ = 1.4 habit) is the classic slip.
+
+</Traps>
+
+<Source>official 2025 solution p. 5 · Anthony's PS02-mine pp. 8–9</Source>
+
+</Problem>
+
+<Problem id="PS2 P5" title="N₂ tank through a converging nozzle" tags="converging nozzle, choking, Fliegner">
+
+<Statement>
+
+N₂ (MW 28, γ 1.4) in a large chamber at 450 K and 1.5 atm leaves through a converging nozzle with a 30 cm² outlet into 1 atm. Isentropic. Find (a) the exit velocity if $p_\text{exit}$ matches ambient, (b) the mass flow, (c) the maximum velocity and mass flow obtainable by lowering the ambient pressure.
+
+</Statement>
+
+<Think>
+
+**First check for choking**: $p_\text{amb}/p_0 = 0.667 > 0.528$, so not choked and $p_\text{exit} = p_\text{amb}$ (the latex balloon). For (c) the limit is $M = 1$ at the exit (the Bell Centre door).
+
+</Think>
+
+<Plan>
+
+(a) $p_0/p_e$ → $M_e$ → $T_e$ → $V_e$. (b) $\rho_e V_e A$. (c) Fliegner at M = 1, $T^* = 0.8333\,T_0$.
+
+</Plan>
+
+<Steps>
+<Step title="1. Exit Mach (a)">
+
+$p_0/p_e = 1.5$ ⇒ $M_e = \sqrt{5(1.5^{0.2857} - 1)} = 0.784$. <T>A2 @ M = 0.78: p/p₀ = 0.6690</T>
+
+</Step>
+<Step title="2. Exit velocity (a)">
+
+$T_e = 450/(1 + 0.2 \times 0.784^2) = 400.8$ K; $c_e = \sqrt{1.4 \times 296.9 \times 400.8} = 408.2$ m/s; $V_e = 0.784 \times 408.2 = 319.9$ m/s.
+
+</Step>
+<Step title="3. Mass flow (b)">
+
+$\rho_e = 101\,325/(296.9 \times 400.8) = 0.851$ kg/m³; $\dot m = 0.851 \times 319.9 \times 0.003 = 0.817$ kg/s.
+
+</Step>
+<Step title="4. Maximum (c)">
+
+Choked exit: $T^* = 450 \times 0.8333 = 375$ K, $V_\text{max} = \sqrt{1.4 \times 296.9 \times 375} = 394.8$ m/s.
+
+$$
+\dot m_\text{max} = A\frac{p_0}{\sqrt{T_0}}\sqrt{\frac{\gamma}{R}}\left(\frac{2}{\gamma+1}\right)^3 = 0.003 \times \frac{151\,988}{\sqrt{450}} \times 0.0687 \times 0.5787 = 0.854\ \text{kg/s}
+$$
+
+</Step>
+</Steps>
+
+<Answer>
+
+- (a) $V_e = 320$ m/s ($M_e = 0.784$)
+- (b) $\dot m = 0.817$ kg/s
+- (c) $V_\text{max} = 395$ m/s at M = 1; $\dot m_\text{max} = 0.854$ kg/s, reached once $p_\text{amb} < 0.528 \times 1.5 = 0.792$ atm.
+
+</Answer>
+
+<BellCentreSim initialPb={0.667} />
+
+<Traps>
+
+- A converging nozzle can never exceed M = 1, no matter how low the ambient pressure.
+- The gain from choking is small: 0.817 → 0.854 kg/s (+4.5%), even if the ambient went to vacuum.
+- Use the N₂ Fliegner constant (0.0397), not air's 0.0404.
+
+</Traps>
+
+<Source>official 2025 solution pp. 5–6 · Anthony's PS02-mine pp. 10–12</Source>
+
+</Problem>
+
+<Problem id="PS2 P6" title="Aircraft inlet: M 0.95 to 0.3" tags="subsonic diffuser, A/A*">
+
+<Statement>
+
+An aircraft flies at M = 0.95 where p = 30 kPa and T = −50 °C. The inlet isentropically slows the air to M = 0.3 for the engine. Find p and T at the engine and the area ratio (inlet entrance)/(engine entrance).
+
+</Statement>
+
+<Think>
+
+Subsonic diffuser: it must **diverge** to slow the flow. $T_0$, $p_0$, $A^*$ are constant; the area ratio is just a ratio of two $A/A^*$ readings.
+
+</Think>
+
+<Plan>
+
+Invariants at 1 → $T_2$, $p_2$ at M = 0.3 → $A_1/A_2 = (A/A^*)_1/(A/A^*)_2$.
+
+</Plan>
+
+<Steps>
+<Step title="1. Invariants">
+
+$T_0 = 223 \times 1.1805 = 263.3$ K; $p_0 = 30 \times 1.1805^{3.5} = 53.62$ kPa.
+
+</Step>
+<Step title="2. Engine face">
+
+$T_2 = 263.3/1.018 = 258.6$ K; $p_2 = 53.62 \times 0.9395 = 50.38$ kPa (<T>A2 @ M = 0.30: p/p₀ = 0.9395, T/T₀ = 0.9823</T>).
+
+</Step>
+<Step title="3. Area ratio">
+
+<T>A2 @ M = 0.95: A/A* = 1.0021</T>, <T>A2 @ M = 0.30: A/A* = 2.0351</T>:
+
+$$
+\frac{A_1}{A_2} = \frac{1.0021}{2.0351} = 0.492
+$$
+
+</Step>
+</Steps>
+
+<Answer>
+
+$p_\text{engine} = 50.4$ kPa, $T_\text{engine} = 258.6$ K, $A_1/A_2 = 0.492$ (the passage roughly doubles in area).
+
+</Answer>
+
+<IsentropicDuct3D M1={0.95} M2={0.3} label1="inlet entrance · M = 0.95" label2="engine face · M = 0.30" />
+
+<Traps>
+
+- Anthony "inverted" A/A* by flipping the exponent ($x^n \to x^{1/n}$) and got 0.523. Inverting gives $x^{-n}$. The safe route is the ratio of two table readings.
+- Near M = 1 the A/A* curve is flat (1.002 at M = 0.95): small area changes cause big Mach changes there.
+
+</Traps>
+
+<Source>official 2025 solution p. 7 · Anthony's PS02-mine pp. 13–15</Source>
+
+</Problem>
+
+<Problem id="PS2 P7" title="Conical diffuser: 70 to 85 kPa" tags="subsonic diffuser, diameter">
+
+<Statement>
+
+An isentropic conical diffuser has a 15 cm inlet diameter. At the inlet p = 70 kPa, T = 60 °C, V = 240 m/s. At the exit p = 85 kPa. Find (a) the exit temperature and velocity, (b) the exit diameter.
+
+</Statement>
+
+<Think>
+
+Subsonic diffuser again. Pressure rises, so M drops. For the diameter use the $A^*$ route: $A_2/A_1 = (A/A^*)_2/(A/A^*)_1$.
+
+</Think>
+
+<Plan>
+
+$M_1$ → $p_0$, $T_0$ → $M_2$ from $p_0/p_2$ → $T_2$, $V_2$ → area ratio → $D_2$.
+
+</Plan>
+
+<Steps>
+<Step title="1. Inlet">
+
+$c_1 = \sqrt{1.4 \times 287.7 \times 333.15} = 366.3$ m/s, $M_1 = 0.655$. $T_0 = 361.8$ K, $p_0 = 70 \times 1.0858^{3.5} = 93.39$ kPa.
+
+</Step>
+<Step title="2. Exit Mach and temperature">
+
+$p_0/p_2 = 93.39/85 = 1.0987$ ⇒ $M_2 = 0.369$. $T_2 = 361.8/(1 + 0.2 \times 0.369^2) = 352.2$ K.
+
+</Step>
+<Step title="3. Exit velocity">
+
+$V_2 = 0.369\sqrt{1.4 \times 287.7 \times 352.2} = 139.0$ m/s. Check by energy: $\sqrt{2 \times 1005 \times (361.8 - 352.2)} = 139$ m/s.
+
+</Step>
+<Step title="4. Diameter">
+
+$(A/A^*)_1 = 1.131$, $(A/A^*)_2 = 1.699$ (<T>A2 @ M = 0.65: 1.1356; M = 0.37: 1.6961</T>). $A_2/A_1 = 1.502$, so
+
+$$
+D_2 = 15\sqrt{1.502} = 18.4\ \text{cm}
+$$
+
+</Step>
+</Steps>
+
+<Answer>
+
+- (a) $T_2 = 352$ K (79 °C), $V_2 = 139$ m/s ($M_2 = 0.369$)
+- (b) $D_2 = 18.4$ cm
+
+</Answer>
+
+<DuctSetupFigure M1={0.655} M2={0.369} left={['1: 70 kPa, 60 °C', '240 m/s, D = 15 cm']} right={['2: 85 kPa', 'D₂ = 18.4 cm']} middle="subsonic diffuser: area up, velocity down, pressure up" caption="PS2 P7: the conical diffuser, coloured by local Mach number." />
+
+<Traps>
+
+- The official scan first had $T_2 = 371.5$ K, which is above $T_0$, which is impossible. Its red correction gives $T_2 = 352$ K and $D_2 = 18.38$ cm, but its corrected $V_2 = 150.4$ m/s is inconsistent with both. The consistent value is **139 m/s** (Anthony's 138.6 m/s was right).
+- Sanity check every answer: static T can never exceed $T_0$.
+
+</Traps>
+
+<Source>official 2025 solution pp. 8–9 (with red corrections) · Anthony's PS02-mine pp. 16–18</Source>
+
+</Problem>
+
+<Problem id="PS2 P8" title="Suck-down Mach 4 wind tunnel" tags="reservoir = atmosphere, A/A*, test conditions">
+
+<Statement>
+
+A "suck-down" tunnel draws atmospheric air (300 K, 101 kPa, 1.226 kg/m³) through a nozzle into an evacuated tank. (a) For M = 4 in the test section, find T, p, ρ there. (b) Find $A_\text{test}/A_\text{throat}$. (c) It should simulate flight at 10 000 m (26 kPa, −50 °C). What are the disadvantages, and how could you fix them?
+
+</Statement>
+
+<Think>
+
+The atmosphere is at rest, so **the atmosphere is the stagnation state**. Then it is one row of Table A2 at M = 4.
+
+</Think>
+
+<Plan>
+
+M = 4 row → static state; A/A* → area ratio (choked throat, $A^* = A_t$); compare with flight.
+
+</Plan>
+
+<Steps>
+<Step title="1. Test section (a)">
+
+<T>A2 @ M = 4.0: T/T₀ = 0.2381, p/p₀ = 0.006586, ρ/ρ₀ = 0.02766</T>
+
+$T = 300/4.2 = 71.4$ K; $p = 101/4.2^{3.5} = 0.665$ kPa; $\rho = 1.226/4.2^{2.5} = 0.0339$ kg/m³.
+
+</Step>
+<Step title="2. Area ratio (b)">
+
+$$
+\frac{A_\text{test}}{A_t} = \frac{1}{4}\left[\frac{2}{2.4}(4.2)\right]^3 = 10.72 \qquad \text{(A2: 10.719)}
+$$
+
+</Step>
+<Step title="3. Disadvantages (c)">
+
+The Mach number matches flight, but the static state does not: 0.665 kPa vs 26 kPa, 71 K vs 223 K (the air may even liquefy at 71 K). The tank also fills up, so run time is limited. To match M = 4 flight at 10 km, the reservoir must hold the **flight stagnation state**: $T_0 = 223 \times 4.2 = 937$ K and $p_0 = 26 \times 151.8 = 3.95$ MPa, i.e. a heated, pressurised blow-down tunnel.
+
+</Step>
+</Steps>
+
+<Answer>
+
+- (a) $T = 71.4$ K, $p = 0.665$ kPa, $\rho = 0.0339$ kg/m³
+- (b) $A_\text{test}/A_t = 10.72$
+- (c) Static p and T far too low; fix with a heated, pressurised supply at about 937 K and 3.95 MPa.
+
+</Answer>
+
+<IsentropicDuct3D M1={0.12} M2={4} wall="plain" label1="atmosphere (p₀, T₀) →" label2="test section · M = 4 → vacuum tank" />
+
+<Traps>
+
+- Matching Mach number alone is not flight simulation: you need the static state (or at least the Reynolds number) too.
+- Don't use $\rho = p/RT$ with the given 1.226 and 300 K; they are slightly inconsistent. Use the ratio.
+
+</Traps>
+
+<Source>official 2025 solution p. 10 · Anthony's PS02-mine pp. 19–20</Source>
+
+</Problem>
+
+<Problem id="PS2 P9" title="10 kg/s of air: find the shape and the downstream state" tags="M from ṁ, supersonic deceleration">
+
+<Statement>
+
+10 kg/s of air flows isentropically. At one section p = 2.0 atm, T = 650 °C, A = 50 cm². Downstream, M₂ = 1.2. (a) Sketch the shape (converging, diverging, …). (b) Find $A_2$, $p_2$, $T_2$.
+
+</Statement>
+
+<Think>
+
+You can't decide the shape until you know $M_1$, and the only route is $\dot m = \rho VA$. Then the area rule: supersonic deceleration needs a **converging** duct.
+
+</Think>
+
+<Plan>
+
+$\rho_1$ → $V_1$ → $M_1$ → invariants → state 2 and $A_2 = A^*(A/A^*)_2$.
+
+</Plan>
+
+<Steps>
+<Step title="1. M₁ from the mass flow">
+
+$\rho_1 = 202\,650/(287.7 \times 923.15) = 0.763$ kg/m³; $V_1 = 10/(0.763 \times 0.005) = 2621$ m/s; $c_1 = 609.8$ m/s; $M_1 = 4.30$.
+
+</Step>
+<Step title="2. Shape (a)">
+
+M goes 4.30 → 1.2: supersonic deceleration, so the passage **converges**.
+
+</Step>
+<Step title="3. Invariants">
+
+$T_0 = 923.15(1 + 0.2 \times 4.3^2) = 4334$ K; $p_0 = 2 \times 4.698^{3.5}$ atm = 45.45 MPa; <T>A2 @ M = 4.3: A/A* = 13.95</T> so $A^* = 50/13.95 = 3.59$ cm².
+
+</Step>
+<Step title="4. State 2">
+
+$T_2 = 4334/1.288 = 3365$ K; $p_2 = 45.45/1.288^{3.5} = 18.7$ MPa; <T>A2 @ M = 1.2: A/A* = 1.0304</T> so $A_2 = 3.59 \times 1.030 = 3.70$ cm².
+
+</Step>
+</Steps>
+
+<Answer>
+
+- (a) $M_1 = 4.3$ → converging duct
+- (b) $A_2 = 3.70$ cm², $p_2 = 18.7$ MPa, $T_2 = 3365$ K
+
+</Answer>
+
+<IsentropicDuct3D M1={4.3} M2={1.2} label1="1 · M = 4.3 · 50 cm²" label2="2 · M = 1.2 · 3.7 cm²" />
+
+<Traps>
+
+- The numbers are physically extreme (T₀ ≈ 4300 K, p₀ ≈ 450 atm): it is an exercise in the relations.
+- In supersonic flow a converging duct *slows* the gas, the opposite of subsonic intuition.
+
+</Traps>
+
+<Source>official 2025 solution pp. 11–12 · Anthony's PS02-mine pp. 21–23</Source>
+
+</Problem>
+
+<Problem id="PS2 P10" title="The hidden throat in PS1 P2 (and why it isn't isentropic)" tags="A*, entropy check">
+
+<Statement>
+
+In PS1 P2 (N₂, 12 m/s, 14 atm, 800 K, A₁ = 0.05 m² → 590 K, A₂ = 0.15 m²), what was the minimum area between the entrance and the exit?
+
+</Statement>
+
+<Think>
+
+Gas accelerated from 12 m/s to 680 m/s through a net-diverging device, so it must have passed a throat and gone supersonic. Isentropically, the throat is $A^*$, found at station 1. But check whether the flow really is isentropic: the problem gives more data than needed.
+
+</Think>
+
+<Plan>
+
+$M_1$ → $A_1/A^*$ → $A^*$. Then $\Delta s$ between 1 and 2.
+
+</Plan>
+
+<Steps>
+<Step title="1. M₁">
+
+$M_1 = 12/\sqrt{1.4 \times 296.9 \times 800} = 12/576.7 = 0.0208$.
+
+</Step>
+<Step title="2. A*">
+
+$A_1/A^* = 27.83$ (formula; off the table), so $A^* = 0.05/27.83 = 0.00180$ m² = 18 cm². Anthony's route via Fliegner gives the same: $\dot m = 3.58$ kg/s, $A^* = 1.80\times10^{-3}$ m².
+
+</Step>
+<Step title="3. Entropy check">
+
+With $c_p = 1100$: $V_2 = 679.8$ m/s, $p_2 = 0.0608$ atm, and
+
+$$
+\Delta s = 1100\ln\frac{590}{800} - 296.9\ln\frac{0.0608}{14} = -334 + 1615 = +1281\ \text{J/kg·K}
+$$
+
+Entropy rose: **not isentropic**.
+
+</Step>
+</Steps>
+
+<Answer>
+
+$A_\text{min} = A^* = 0.0018$ m² (18 cm²) if isentropic. Because $\Delta s = +1281$ J/kg·K, irreversibilities lower $p_0$ and **enlarge** $A^*$, so the real throat may be larger.
+
+</Answer>
+
+<DuctSetupFigure M1={0.0208} M2={1.373} left={['1: 0.05 m²', 'M = 0.021']} right={['2: 0.15 m²', 'M = 1.37']} middle="throat ≥ A* = 18 cm² (isentropic estimate)" caption="PS2 P10: the device must contain a converging–diverging passage. The isentropic picture gives a throat of 18 cm²; losses make the real one bigger." />
+
+<Traps>
+
+- The isentropic relations assume isentropic flow. "Over-constrained" data (you can get $M_2$ two ways) is a hint to check $\Delta s$.
+- $A^* \propto 1/p_0$ at fixed $\dot m$ and $T_0$: any loss of $p_0$ (shock, friction) grows $A^*$. This returns in Ch. 8.
+- Anthony did not discuss the entropy rise.
+
+</Traps>
+
+<Source>official 2025 solution pp. 13–14 · Anthony's PS02-mine pp. 24–25</Source>
+
+</Problem>
+
+<Problem id="PS2 P11" title="Derive A/A* from the velocity–area relation" tags="derivation, log differentiation">
+
+<Statement>
+
+Starting from $\frac{dV}{V} = \frac{1}{M^2-1}\frac{dA}{A}$, express $V$ in terms of $M$ (use $V = Mc$ and $dh + V\,dV = 0$) to get $\frac{dV}{V} = \frac{1}{1+\frac{\gamma-1}{2}M^2}\frac{dM}{M}$. Combine, integrate between $A^*$ ($M = 1$) and $A$ ($M$), and recover the $A/A^*$ relation.
+
+</Statement>
+
+<Think>
+
+A derivation: logarithmic differentiation ($d\ln x = dx/x$) turns products into sums, then a partial-fraction integral.
+
+</Think>
+
+<Plan>
+
+$dV/V$ in terms of $dM/M$ → $dA/A$ as a function of $M$ times $dM/M$ → integrate → exponentiate.
+
+</Plan>
+
+<Steps>
+<Step title="1. V = Mc, log-differentiate">
+
+$\frac{dV}{V} = \frac{dM}{M} + \frac{dc}{c}$ and $c = \sqrt{\gamma RT}$ gives $\frac{dc}{c} = \frac12\frac{dT}{T}$.
+
+</Step>
+<Step title="2. Energy">
+
+$c_p dT = -V dV$ ⇒ $\frac{dT}{T} = -\frac{V^2}{c_pT}\frac{dV}{V} = -(\gamma-1)M^2\frac{dV}{V}$ (using $V^2 = M^2\gamma RT$ and $c_p = \gamma R/(\gamma-1)$).
+
+</Step>
+<Step title="3. Isolate dV/V">
+
+$\frac{dV}{V} = \frac{dM}{M} - \frac{\gamma-1}{2}M^2\frac{dV}{V}$ ⇒ $\frac{dV}{V} = \frac{1}{1+\frac{\gamma-1}{2}M^2}\frac{dM}{M}$
+
+</Step>
+<Step title="4. Combine with the area rule">
+
+$$
+\frac{dA}{A} = \frac{M^2 - 1}{1 + \frac{\gamma-1}{2}M^2}\frac{dM}{M}
+$$
+
+</Step>
+<Step title="5. Partial fractions (k = (γ−1)/2)">
+
+$$
+\frac{M^2-1}{M(1+kM^2)} = -\frac{1}{M} + \frac{(1+k)M}{1+kM^2}
+\;\Rightarrow\;
+\int = -\ln M + \frac{1+k}{2k}\ln(1+kM^2), \qquad \frac{1+k}{2k} = \frac{\gamma+1}{2(\gamma-1)}
+$$
+
+</Step>
+<Step title="6. Limits A* (M = 1) to A (M)">
+
+$$
+\ln\frac{A}{A^*} = -\ln M + \frac{\gamma+1}{2(\gamma-1)}\ln\frac{1+kM^2}{1+k}
+\;\Rightarrow\;
+\frac{A}{A^*} = \frac{1}{M}\left[\frac{2}{\gamma+1}\left(1+\frac{\gamma-1}{2}M^2\right)\right]^{\frac{\gamma+1}{2(\gamma-1)}}
+$$
+
+</Step>
+</Steps>
+
+<Answer>
+
+$\frac{dM}{M} = \frac{1+\frac{\gamma-1}{2}M^2}{M^2-1}\frac{dA}{A}$, which integrates to the familiar $A/A^*$ relation.
+
+</Answer>
+
+<AreaMachSim />
+
+<Traps>
+
+- Higgins used Mathematica ("This is beyond my abilities…"); Anthony did it by hand. Partial fractions is all it takes.
+- Anthony's last line said $A^*/A = \dots$; the right side is $A/A^*$ (his step 8 was correct).
+- The sign of $M^2 - 1$ is the whole story: $dA = 0$ at $M = 1$, so sonic flow sits at a throat.
+
+</Traps>
+
+<Source>official 2025 solution pp. 15–18 (incl. Mathematica printout) · Anthony's PS02-mine pp. 26–31</Source>
+
+</Problem>

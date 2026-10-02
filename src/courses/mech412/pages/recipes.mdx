@@ -1,0 +1,181 @@
+<p className="eyebrow">Exam toolkit · what the 16 past papers actually test</p>
+
+# Exam recipes: the question templates that come back every year
+
+<div className="lede">
+
+Across 16 papers (about 65 question slots) the same questions return with new numbers. Each recipe below is a **short, ordered method** you can apply cold, with the past questions that use it so you can practise. The order of importance (from the pattern analysis): (1) analog circuits, (2) transfer functions of circuits, op-amps and motors, (3) state space, (4) time response and partial fractions, (5) linearising nonlinear circuits, (6) hydraulic and pneumatic servos, (7) steady-state error, sensitivity and Routh, (8) the control-design block (PID, root locus, Bode, lead/lag, Nyquist).
+
+</div>
+
+## Midterm 1 (Lectures 1–8): "four boxes every year"
+
+Each MT1 has **(A)** a transfer function or block diagram, **(B)** Laplace / partial fractions / an ODE response, **(C)** state space, **(D)** a time-response design or short questions. What decides it: speed on partial fractions and state space, and **no sign slips**.
+
+<Idea title="M1 · Block-diagram reduction">
+
+1. Series blocks multiply. 2. One loop: $\dfrac{\text{forward}}{1+\text{forward}\times\text{feedback}}$ (the junction **subtracts**). 3. Several loops or crossing paths: Mason, $T=\sum P_k\Delta_k/\Delta$, $\Delta=1-\sum\text{loops}+\sum\text{non-touching pairs}$; a loop's gain is the **product** around it. 4. Two inputs: superposition, and note **where** the disturbance enters. 5. Check: remove the feedback and you must recover the forward path.
+*Practise:* $\text{MT1 W2009 Q1}$, $\text{MT1 W2017 Q2}$, $\text{HW3 Q1}$.
+
+</Idea>
+
+<Idea title="M2 · Partial fractions and an inverse Laplace">
+
+1. Factor the denominator (try integer roots first: $\text{T1 Q2}$). 2. Real simple poles: **cover-up**. 3. Complex pair: $\dfrac{Bs+C}{s^2+\dots}$, match numerators, **check the $s^1$ coefficient**. 4. Repeated pole: coefficients by derivatives. 5. Complete the square $(s+a)^2+\omega^2$ and split the numerator as $(s+a)+\text{const}$; sine needs numerator $\omega$. 6. Check $f(0)$ with the IVT.
+*Practise:* $\text{MT1 W2009 Q2}$, $\text{MT1 F2007 Q1}$, $\text{Final F2009 P1}$, $\text{Final F2010 P6}$.
+
+</Idea>
+
+<Idea title="M3 · ODE with initial conditions">
+
+$(as^2+bs+c)Y=U+(as+b)y(0)+a\dot y(0)$ (write it every time). The initial state of a state model **is** $(y(0),\dot y(0))$.
+*Practise:* $\text{MT1 F2011 Q1}$, $\text{MT1 W2017 Q1}$, $\text{T1 Q3}$.
+
+</Idea>
+
+<Idea title="M4 · State space from an ODE with input derivatives, a diagram or a circuit">
+
+Method 2: $Z/U=1/\text{den}$, $Y=\text{num}\cdot Z$, $C=[b_n-a_nb_0\ \dots]$, $D=b_0$. Method 1: $\beta_k=b_k-\sum a_i\beta_{k-i}$ goes into $B$. From a three-integrator diagram: states are integrator outputs. From a circuit: one state per $C$ and $L$. From a massless node: force balance first, then eliminate. **Always convert back to a transfer function to check.**
+*Practise:* $\text{MT1 W2009 Q3}$, $\text{MT1 F2011 Q2}$, $\text{MT1 W2017 Q2}$, $\text{HW4}$.
+
+</Idea>
+
+<Idea title="M5 · State-transition matrix and transfer matrix">
+
+$\Phi(s)=(sI-A)^{-1}$ ($2\times2$: swap the diagonal, negate the off-diagonal, divide by $\det$), invert each entry (complete the square if complex), check $\Phi(0)=I$ and $\dot\Phi(0)=A$; $G=C\Phi B+D$; step response $A^{-1}(\Phi-I)B$.
+*Practise:* $\text{MT1 W2019 Q1}$, $\text{MT2 W2009 Q2}$, $\text{MT2 W2010 Q2}$, $\text{T4 Q1}$.
+
+</Idea>
+
+<Idea title="M6 · Mechanical transfer function with a massless node (Maxwell / Kelvin–Voigt)">
+
+A massless point cannot store energy: **sum the forces on it to zero**, with the spring force on the deflection $(u-y)$ and the damper force on the relative velocity. Then Laplace and eliminate. Checks: DC gain, high-frequency gain.
+*Practise:* $\text{MT1 W2009 Q3}$, $\text{MT1 F2011 Q3}$, $\text{Final F2009 P2}$.
+
+</Idea>
+
+<Idea title="M7 · Second-order specs, including an extra zero">
+
+$OS=100e^{-\pi\zeta/\sqrt{1-\zeta^2}}$, $t_p=\pi/\omega_d$, $t_s=4/(\zeta\omega_n)$, $t_r=(\pi-\beta)/\omega_d$ with $\beta=\cos^{-1}\zeta$. A zero near the poles **raises** overshoot (derivative kick): pick a zero far away, then **simulate**. A numerator can also create an undershoot with real poles (the notch of $\text{MT1 W2019 Q4}$).
+*Practise:* $\text{MT1 F2011 Q4}$, $\text{HW2 Q1}$, $\text{HW10 Q1}$.
+
+</Idea>
+
+## Midterm 2 (Lectures 9–16): "one analog-circuit question, always"
+
+Every MT2 has **Q1 = draw an equivalent circuit**, then three of: nonlinear circuit, DC motor/transducer, hydraulic servo or dashpot, op-amp, tank level with sensitivity.
+
+<Idea title="T1 · Analog circuit of a mechanical system (mobility and impedance)">
+
+1. **Force source first** (current source in mobility). 2. Nodes = absolute velocities of the masses, plus ground. 3. Mass: capacitor node-to-ground. Spring: inductor $1/k$. Dashpot: resistor $1/b$. 4. Wall elements go node-to-ground; elements between masses go **between the nodes**. 5. Impedance analog = the dual: series loops, $M\to L$, $k\to C=1/k$, dashpot $\to R$. 6. **Lever or pivot: transformer with the arm ratio; inertia about the pivot by the parallel-axis theorem**; $kL^2/16$ is a stiffness, the impedance capacitor is its **inverse**. 7. Count energy stores for the order.
+*Practise:* $\text{MT2 W2012 Q1a}$, $\text{W2011 Q1a}$, $\text{W2019 Q1a}$, $\text{F2022 Q1a}$, <Hw n="5">HW5</Hw>.
+
+</Idea>
+
+<Idea title="T2 · Cross-domain chains (mechanical, acoustic, hydraulic, pneumatic)">
+
+Same analog on both sides: **transformer** (ratio = area $S$ or $A_p$). Different analogs (motor, mobility to impedance): **gyrator**. Acoustic and fluid: pressure = potential, volume flow = flux. **Cavity = shunt capacitor to ground; neck or hose inertia = series inductor.** Convert mass flux to volume flux by $\rho$ ($\rho R$, $C/\rho$, $\rho M$). Velocity source: current in impedance, voltage in mobility.
+*Practise:* $\text{MT2 W2010 Q1}$, $\text{W2009 Q1}$, $\text{W2024 Q1b}$, <Hw n="6">HW6 Q1</Hw>, $\text{T7 Q3}$.
+
+</Idea>
+
+<Idea title="T3 · Liquid-level tanks (including interacting tanks)">
+
+Tank = capacitor $A$ (head) or $A/(\rho g)$ (pressure) to ground; valve = resistor $2H/Q$; draw arrows first: inflow minus outflow $=C\dot h$. Interacting two tanks: $\dfrac{Q_{out}}{Q_{in}}=\dfrac1{R_1C_1R_2C_2s^2+(R_1C_1+R_2C_2+R_2C_1)s+1}$ (the cross term $R_2C_1$ is the interaction). Slow pole sets the 2 % time.
+*Practise:* $\text{MT2 W2012 Q2}$, $\text{W2019 MU Q3}$, $\text{T8 Q1}$.
+
+</Idea>
+
+<Idea title="T4 · Nonlinear circuit: state equations, operating point, linearise, linearised circuit">
+
+1. States = capacitor voltages and inductor currents; KCL at nodes, KVL in loops. 2. **No Laplace or impedances before linearising.** 3. All derivatives zero gives the operating point (solve the cubic; check it is the only real root). 4. Taylor-expand only the nonlinear element: **incremental resistance $=1/(di/de)$, not the static ratio**. 5. Constant sources drop out of the incremental circuit. 6. Check the eigenvalues.
+*Practise:* $\text{MT2 W2024 Q3}$, $\text{F2022 Q3}$, $\text{MT1 W2017 Q3}$, $\text{T3}$, $\text{T4 Q2}$, $\text{T6 Q2}$.
+
+</Idea>
+
+<Idea title="T5 · Hydraulic dashpot or servo with a lever">
+
+Massless junction: $b(\dot y-\dot z)=kz$ gives $Z/Y=\dfrac{Ts}{Ts+1}$ (cylinder free, high-pass); a fixed cylinder gives $\dfrac1{Ts+1}$ (lag); $T=\dfrac{\rho RA^2}{k}$ (mass flux) or $RA^2/k$ (volume flux). Servo $y=\tfrac Ksx$; lever $x=\dfrac b{a+b}e-\dfrac a{a+b}z$; **high-gain limit: $Y/E\approx1/(\text{feedback path})$**: a lag in the feedback gives PD, a washout gives PI.
+*Practise:* $\text{MT2 W2019 Q2}$, $\text{F2022 Q1b, Q2}$, $\text{W2024 Q2}$, $\text{W2009 Q1}$, <Hw n="6">HW6 Q2</Hw>.
+
+</Idea>
+
+<Idea title="T6 · Pneumatic nozzle–flapper controller (P, I, D from air)">
+
+Lever geometry $\times$ amplifier gain $K$ $\times$ RC network; feedback bracket $\dfrac1{R_dCs+1}-\dfrac1{R_iCs+1}$ **subtracted**; $K\to\infty$ gives $K_p(1+\tfrac1{T_is}+T_ds)$ with $T_i\approx R_iC$, $T_d\approx R_dC$. Bellows compliance is $C+A^2/k$. The standard circuit has **no gain $K$**: add $p_c=Kx$ separately.
+*Practise:* <Hw n="6">HW6 Q3</Hw>, $\text{T8 Q2}$, $\text{MT2 W2012}$.
+
+</Idea>
+
+<Idea title="T7 · DC motor, voice coil, loudspeaker">
+
+KVL with $e_b=K_b\omega$ and Newton with $\tau=K_ti$: $\dfrac\Omega V=\dfrac{K_t}{(L_as+R_a)(Js+b)+K_bK_t}$: **the product $K_bK_t$ enters with a plus**. Close a loop (tachometer or position), match $\zeta$ or $e_{ss}$ for the gain, then sensitivity to $R_a$ or $b$: $S=-\dfrac{R_as}{R_as+1+10K_p}$-type (zero at DC, $-1$ at high frequency).
+*Practise:* $\text{MT2 W2010 Q3}$, $\text{W2011 Q3}$, $\text{W2012 Q3}$, $\text{F2022 Q4}$, $\text{W2019 MU Q2}$, $\text{Final F2010 P3}$.
+
+</Idea>
+
+<Idea title="T8 · Op-amp transfer functions">
+
+Ideal: $V^-=V^+$, no input current. **Anthony's rule: always take $i$ at nodes** (KCL at every node, virtual ground at the inverting input). Inverting: $-Z_2/Z_1$ with $Z_{parallel}=\dfrac{R}{RCs+1}$, $Z_{series}=R+\tfrac1{Cs}$. Recognise PID (series RC feedback, parallel RC input), lead/lag, buffer isolation, MFB band-pass, current amplifier ($I_a/V_{in}=-R/(R_{in}R_s)$).
+*Practise:* $\text{MT2 W2011 Q4}$, $\text{W2012 Q4}$, $\text{W2019 Q4}$, $\text{W2019 MU Q4}$, $\text{T4 Q3}$.
+
+</Idea>
+
+<Idea title="T9 · Steady-state error and sensitivity">
+
+$K_p=\lim G$, $K_v=\lim sG$, $K_a=\lim s^2G$; error $=A/K$; type decides which are finite. **Final-value theorem only after checking stability.** $S^T_K=S^T_GS^G_K$ with $S^T_G=\dfrac1{1+L}$; a disturbance entering after the controller leaves an offset $-A/(\text{loop DC gain})$ unless the controller has an integrator.
+*Practise:* $\text{MT2 W2011 Q2}$, $\text{W2019 Q3}$, $\text{W2024 Q4}$, <Hw n="7">HW7 Q3</Hw>.
+
+</Idea>
+
+## Final / MT3 (Lectures 17–23)
+
+No 2024-format final exists; the best predictors are HW7–HW10, HW8-2024 and the L20–L23 examples (see the <Ex id="mt3-practice">mock paper</Ex>).
+
+<Idea title="F1 · Routh">
+
+First-column sign changes = RHP roots. Parameter: demand every first-column entry positive. A zero in the first column: replace by $\varepsilon$. A whole zero row: auxiliary polynomial, differentiate, continue. Third order: all coefficients positive and $a_1a_2>a_0a_3$.
+*Practise:* <Hw n="7">HW7 Q1–Q2</Hw>, $\text{HW8-2019 Q1}$.
+
+</Idea>
+
+<Idea title="F2 · PID and Ziegler–Nichols">
+
+Method 1 (S-curve): $K_p=1.2T/L$, $T_i=2L$, $T_d=0.5L$. Method 2: $K_{cr}$ from Routh, $P_{cr}=2\pi/\omega$ from $j\omega$: $K_p=0.6K_{cr}$, $T_i=0.5P_{cr}$, $T_d=0.125P_{cr}$. **Z–N is a first cut (25–60 % overshoot), not a design.** Pole placement: match $(s+a)(s+b)(s^2+2\zeta\omega_ns+\omega_n^2)$ with **one stated free choice**.
+*Practise:* <Hw n="7">HW7 Q3–Q4</Hw>, <Hw n="9">HW9 Q1</Hw>, $\text{HW10 Q1}$.
+
+</Idea>
+
+<Idea title="F3 · Root locus">
+
+Ten steps: poles and zeros; real-axis segments (odd count to the right); $n$ branches; centroid $\sigma_a=(\sum p-\sum z)/(n-m)$; asymptote angles $(2k+1)180^\circ/(n-m)$; break points from $dK/ds=0$ **(reject $K<0$)**; gain from $|KG|=1$; departure angle; $j\omega$ crossing; $K$ for $\zeta$. Then verify dominance of the chosen pair (a slow real pole may rule).
+*Practise:* <Hw n="7">HW7 Q5</Hw>, <Hw n="9">HW9</Hw>, $\text{Final F2009 P5}$, $\text{F2010 P7}$.
+
+</Idea>
+
+<Idea title="F4 · Bode and margins">
+
+Factor into building blocks, list corners, add slopes ($\pm20$ dB/dec per pole/zero, $\pm40$ for a quadratic). PM at the **gain** crossover, GM at the **phase** crossover; $K_v$ from the low-frequency line (crosses 0 dB at $\omega=K_v$ for type 1).
+*Practise:* <Hw n="8">HW8 A2</Hw>, <Hw n="10">HW10 Q4</Hw>, $\text{Final F2009 P6}$.
+
+</Idea>
+
+<Idea title="F5 · Lead, lag, lag–lead">
+
+Lead: $\varphi_m=PM_{need}-PM_{now}+5^\circ$, $\alpha=\dfrac{1-\sin\varphi_m}{1+\sin\varphi_m}$, put $\omega_m$ where the plant gain is $-20\log(1/\sqrt\alpha)$, corners $\omega_m\sqrt\alpha$ and $\omega_m/\sqrt\alpha$, $K_c=K/\alpha$ (or the $K_c\sqrt\alpha$ shortcut). Lag: $K_c\beta=1$ keeps $K_v$; $\beta$ from the gain at the frequency where the plant phase is $-180^\circ+PM+5^\circ$; zero a decade below. Lead-lag with a $K_v$ spec: **include the loop gain** (HW10 Q3 needs 50). **Always verify the margins.**
+*Practise:* <Hw n="8">HW8 A1</Hw>, <Hw n="10">HW10 Q2–Q3</Hw>.
+
+</Idea>
+
+<Idea title="F6 · Nyquist">
+
+$Z=N+P$ ($N$ clockwise encirclements of $-1$; $P$ open-loop RHP poles). Poles on the $j\omega$ axis need indentations (add $180^\circ$ per integrator, clockwise). $K_{max}$ from the real-axis crossing; confirm with Routh. An unstable open loop needs a **counter-clockwise** encirclement.
+*Practise:* <Hw n="8">HW8 A3</Hw>, <Hw n="10">HW10 Q5</Hw>.
+
+</Idea>
+
+<Callout kind="note" title="Traps that recur">
+
+Signs (back emf plus, disturbance minus); units (rad/s vs Hz, $\rho$ in mass flux); static vs incremental resistance; final-value theorem on an unstable system; Z–N treated as a design; the missing loop gain for $K_v$; and trusting an official solution without a limit check (see the errata page).
+
+</Callout>

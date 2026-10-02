@@ -1,0 +1,436 @@
+<p className="eyebrow">Homework 7 · due Apr 3, 2024 · Lectures 17–20</p>
+
+# HW7: Routh, PI design, Ziegler–Nichols, root-locus gain
+
+<div className="lede">
+
+The stability-and-design homework: <Ch slug="routh">Chapter 16</Ch> (Routh), <Ch slug="pid">Chapter 17</Ch> (PID, Z–N), <Ch slug="root-locus">Chapter 18</Ch> (root locus). Q3 and Q5 are open-ended: you must **make a design choice and say so**, then verify with a step response. The official solution file has one real error (the PI acceleration error) and **no solution for Q5** (its "Problem V" is a sensitivity problem, not HW7 Q5). Every number below was recomputed.
+
+</div>
+
+<Problem id="HW7 Q1" title="Routh: how many roots in the right half-plane?" tags="Routh array, sign changes">
+
+<Statement>
+
+(a) $s^4+8s^3+32s^2+80s+100=0$; (b) $s^4+2s^3+7s^2-2s+8=0$. How many roots have positive real part?
+
+</Statement>
+
+<Think>
+
+Routh's array counts right-half-plane roots **without solving**: build the table from the coefficients, then count **sign changes in the first column**. Each sign change = one root in the RHP.
+
+</Think>
+
+<Steps>
+<Step title="(a) Build the first two rows">
+
+Row $s^4$: coefficients of $s^4,s^2,s^0$: $1,\;32,\;100$. Row $s^3$: coefficients of $s^3,s^1$: $8,\;80$.
+
+</Step>
+<Step title="(a) Each next entry = (last pivot × entry above-right − pivot above × entry right) ÷ last pivot">
+
+Row $s^2$: $\dfrac{8\cdot32-1\cdot80}{8}=\dfrac{176}{8}=22$ and $\dfrac{8\cdot100-1\cdot0}{8}=100$.
+
+Row $s^1$: $\dfrac{22\cdot80-8\cdot100}{22}=\dfrac{1760-800}{22}=\dfrac{480}{11}=43.6$.
+
+Row $s^0$: $100$.
+
+</Step>
+<Step title="(a) Read the first column">
+
+$1,\;8,\;22,\;43.6,\;100$: all positive, **no sign change, 0 roots in the RHP: stable.** Numeric check: the roots are $-1\pm3j$ and $-3\pm1j$ ✔.
+
+</Step>
+<Step title="(b) Build the table">
+
+Row $s^4$: $1,\;7,\;8$. Row $s^3$: $2,\;-2$ (then pad with 0). Row $s^2$: $\dfrac{2\cdot7-1\cdot(-2)}{2}=8$ and $\dfrac{2\cdot8-0}{2}=8$. Row $s^1$: $\dfrac{8\cdot(-2)-2\cdot8}{8}=\dfrac{-32}{8}=-4$. Row $s^0$: $8$.
+
+</Step>
+<Step title="(b) Read the first column">
+
+$1,\;2,\;8,\;-4,\;8$: signs $+,+,+,-,+$, **two sign changes (+ to −, then − to +), so 2 roots in the RHP.** Numeric check: roots $0.314\pm0.977j$ (RHP) and $-1.314\pm2.423j$ ✔.
+
+</Step>
+</Steps>
+
+<Answer>
+
+(a) 0 roots in the RHP (stable). (b) 2 roots in the RHP (unstable).
+
+*Real-world:* (a) is a well-damped fourth-order system; (b) is an oscillation growing like $e^{0.31t}$.
+
+</Answer>
+
+<Traps>
+
+- Missing coefficient: in (b) the third column of the $s^3$ row is padded with 0.
+- Count **sign changes** (both + to − and − to +), here two.
+
+</Traps>
+
+<Source>solution file, Anthony, Jad, typed classmate all ✔.</Source>
+
+</Problem>
+
+<Problem id="HW7 Q2" title="Range of k for stability of s⁵+5s⁴+10s³+10s²+5s+k" tags="Routh with a parameter">
+
+<Statement>
+
+Find all $k$ for which every root of $s^5+5s^4+10s^3+10s^2+5s+k=0$ lies in the open left half-plane.
+
+</Statement>
+
+<Think>
+
+Routh with a symbol in it: build the table, then demand that **every first-column entry is positive**, because any sign change means an unstable root. Each entry gives an inequality in $k$; the answer is their intersection.
+
+</Think>
+
+<Plan>
+
+Table: rows $s^5\ldots s^0$; entries that contain $k$ give the conditions.
+
+</Plan>
+
+<Steps>
+<Step title="1. First two rows">
+
+$s^5$: $1,\;10,\;5$. $s^4$: $5,\;10,\;k$.
+
+</Step>
+<Step title="2. Row s³">
+
+$\dfrac{5\cdot10-1\cdot10}{5}=8$ and $\dfrac{5\cdot5-1\cdot k}{5}=\dfrac{25-k}{5}$.
+
+</Step>
+<Step title="3. Row s²">
+
+$\dfrac{8\cdot10-5\cdot\frac{25-k}{5}}{8}=\dfrac{80-25+k}{8}=\dfrac{55+k}{8}$ and $\dfrac{8\cdot k-5\cdot0}{8}=k$.
+
+</Step>
+<Step title="4. Row s¹">
+
+$$\frac{\frac{55+k}{8}\cdot\frac{25-k}{5}-8k}{\frac{55+k}{8}}=\frac{(55+k)(25-k)-320k}{5(55+k)}=\frac{1375-30k-k^2-320k}{5(55+k)}=\frac{1375-350k-k^2}{5(55+k)}.$$
+
+(Multiply numerator and denominator by $40$ to clear the fractions: $(55+k)(25-k)=1375-30k-k^2$, and $8k\cdot40=320k$.)
+
+</Step>
+<Step title="5. Row s⁰">
+
+$k$.
+
+</Step>
+<Step title="6. Conditions">
+
+First column: $1,\;5,\;8,\;\dfrac{55+k}{8},\;\dfrac{1375-350k-k^2}{5(55+k)},\;k$. We need: $k>0$ (row $s^0$); $55+k>0$ (row $s^2$, automatic when $k>0$); and the $s^1$ entry $>0$. For $k>0$ the denominator is positive, so we need $1375-350k-k^2>0$, i.e. $k^2+350k-1375<0$, i.e. $k<-175+80\sqrt5=3.885$.
+
+</Step>
+<Step title="7. Numeric check">
+
+Largest real part of any root: $-0.006$ at $k=3.8$, $\approx0$ at $k=3.885$, $+0.001$ at $k=3.9$ ✔. At $k=3.885$ the roots include a pure imaginary pair (marginal stability).
+
+</Step>
+</Steps>
+
+<Answer>
+
+$0<k<-175+80\sqrt5\approx3.885$.
+
+*Real-world:* $k$ is a loop gain: up to about 3.9 the loop is stable; above it one pair of poles crosses into the RHP and the system oscillates with growing amplitude.
+
+</Answer>
+
+<Callout kind="warn" title="⚠ Anthony's arithmetic slip">
+
+His $s^1$ numerator reads $-k^2-350k+1325$; it should be $+1375$ ($25\cdot55=1375$). His final range "0 < k < 3.9" is right only because the slip is small (1325 would give 3.76). The solution file has the correct $K^2+350K-1375<0$ and the exact form $]0,\,-175+80\sqrt5[$.
+
+</Callout>
+
+<Traps>
+
+- A single mis-multiplied constant shifts the bound: recheck $(55+k)(25-k)=1375-30k-k^2$.
+- "Open left half-plane" excludes marginal stability, so the inequality is strict.
+
+</Traps>
+
+<Source>solution file ✔ (exact form); Anthony ✔ answer, slip noted; Jad 3.85, classmate 3.89.</Source>
+
+</Problem>
+
+<Problem id="HW7 Q3" title="PI controller on 1/[s(s+15)(s+25)] for ζ = 0.707; t_p, t_s; steady-state errors" tags="pole placement, dominant poles, error constants">
+
+<Statement>
+
+Unity feedback, controller $K_p+K_I/s$, plant $1/[s(s+15)(s+25)]$. Design the gains so the dominant roots have $\zeta=0.707$. Find the peak time and 2% settling time for a step input. Calculate the position, velocity and acceleration errors.
+
+</Statement>
+
+<Think>
+
+Think of the PI as "P gives speed, I removes steady-state error". Closing the loop gives a **fourth-order** characteristic polynomial; we want it to look like (slow real pole) × (fast real pole) × (a nice $\zeta=0.707$ pair). **Two unknowns ($K_p,K_I$) but only one requirement ($\zeta$)**: so we must add a design choice. Standard: put the PI zero close to the origin ($K_I/K_p$ small) so that it only removes the offset and barely touches the transient.
+
+</Think>
+
+<Plan>
+
+Closed-loop polynomial, then match $(s+a)(s+b)(s^2+2\zeta\omega_ns+\omega_n^2)$, choose $K_p=10K_I$, solve, then time-response estimates and error constants.
+
+</Plan>
+
+<Steps>
+<Step title="1. Closed loop">
+
+$G=\dfrac{K_ps+K_I}{s}\cdot\dfrac{1}{s(s+15)(s+25)}$. Since $s^2(s+15)(s+25)=s^2(s^2+40s+375)=s^4+40s^3+375s^2$:
+
+$$T(s)=\frac{K_ps+K_I}{s^4+40s^3+375s^2+K_ps+K_I}.$$
+
+</Step>
+<Step title="2. Match coefficients">
+
+$(s+a)(s+b)(s^2+2\zeta\omega_ns+\omega_n^2)$ gives, by powers of $s$:
+
+- $s^3$: $a+b+2\zeta\omega_n=40$
+- $s^2$: $\omega_n^2+2\zeta\omega_n(a+b)+ab=375$
+- $s^1$: $\omega_n^2(a+b)+2\zeta\omega_nab=K_p$
+- $s^0$: $\omega_n^2ab=K_I$
+
+Four equations, five unknowns ($a,b,\omega_n,K_p,K_I$): exactly the missing choice.
+
+</Step>
+<Step title="3. The design choice">
+
+Put the closed-loop PI zero at $-K_I/K_p=-0.1$ and let the slow pole $b\approx0.1$ sit right next to it (the pair almost **cancels**, so the transient is that of the remaining three poles). With $\zeta=0.707$, $2\zeta\omega_n=1.414\,\omega_n$.
+
+From $s^3$: $a=39.9-1.414\omega_n$. Put in $s^2$ with $b=0.1$:
+$$\omega_n^2+1.414\omega_n(40-1.414\omega_n)+0.1(39.9-1.414\omega_n)=375\;\Rightarrow\;-\omega_n^2+56.43\,\omega_n-371=0.$$
+$\omega_n=\dfrac{56.43-\sqrt{56.43^2-4\cdot371}}{2}=\dfrac{56.43-41.2}{2}\approx7.6$ rad/s (the other root, 48.8, would make $a<0$). Then $a\approx29.15$.
+
+</Step>
+<Step title="4. Gains">
+
+$K_I=\omega_n^2ab\approx172$ (with the exact $b=0.1023$) and $K_p=10K_I\approx1720$. Check by the $s^1$ equation: $57.8\cdot29.25+10.75\cdot2.98=1721$ ✔. **Closed-loop poles:** $-29.15,\;-5.37\pm j5.37,\;-0.102$ ✔ ($\zeta=5.37/7.6=0.707$).
+
+</Step>
+<Step title="5. Time response (dominant-pair estimate)">
+
+$\sigma=\zeta\omega_n=5.37$, $\omega_d=5.37$: $t_p=\pi/\omega_d=0.585$ s; $t_s(2\%)=4/\sigma=0.745$ s; $OS=100e^{-\pi}=4.3\%$.
+
+</Step>
+<Step title="6. Time response (actual simulation)">
+
+The pole at $-0.102$ and the third pole at $-29$ shift these slightly: **OS 6.4%, $t_p=0.63$ s, 2% settling 1.09 s.** The formulas are for a *pure* second-order system; always say they are estimates.
+
+</Step>
+<Step title="7. Steady-state errors">
+
+The loop is **type 2** (the plant integrator + the PI integrator). Use the error constants of $G(s)=\dfrac{K_ps+K_I}{s^2(s+15)(s+25)}$:
+
+- Position (step): $K_p^{err}=\infty\Rightarrow e_{ss}=0$.
+- Velocity (ramp): $K_v=\lim sG=\infty\Rightarrow e_{ss}=0$.
+- Acceleration (parabola $1/s^3$): $K_a=\lim s^2G=\dfrac{K_I}{15\cdot25}=\dfrac{K_I}{375}\Rightarrow e_{ss}=\dfrac1{K_a}=\dfrac{375}{K_I}=\dfrac{375}{172}=2.18$ (for the unit parabola $1/s^3$; for $r=\tfrac12t^2$ it is $1.09$).
+
+</Step>
+</Steps>
+
+<Answer>
+
+Design (one choice): $K_p\approx1720$, $K_I\approx172$ (PI zero at $-0.1$). $t_p\approx0.6$ s, $t_s\approx1.1$ s (dominant-pair formulas: 0.585 s, 0.745 s). $e_{position}=0$, $e_{velocity}=0$, $e_{acceleration}=375/K_I=2.18\neq0$.
+
+*Real-world:* a servo whose plant is an integrator with fast poles at 15 and 25 rad/s. The PI guarantees zero offset; the acceleration error of 2.18 means a constant-acceleration command is followed with a constant lag, like cruise control tracking a steady acceleration.
+
+</Answer>
+
+<Callout kind="warn" title="⚠ Official solution error: acceleration error is NOT zero">
+
+The solution file ends with "lim e = lim e_v = lim e_acc = 0". It defines $e_v=sE(s)$ and $e_{acc}=s^2E(s)$ for a **unit step** input; those are derivatives of the error signal, not the velocity and acceleration errors, and they vanish only because of the $s^2$ factor in $E$. With a parabola input a type-2 loop has a **finite, non-zero error** $375/K_I$. Jad's version repeats the same mistake; the typed classmate also says "= 0".
+
+</Callout>
+
+<Callout kind="warn" title="⚠ Other submissions">
+
+Typed classmate: assumed $\omega_n=0.1$ rad/s, giving $K_p=52.6$, $K_I=3.69$, 21% overshoot and $t_s=49$ s: a valid $\zeta$ but an absurdly slow system. Anthony: wrote the correct coefficient matching and stopped (no extra condition, no numbers, no errors).
+
+</Callout>
+
+<Traps>
+
+- The problem has a **free parameter**: state what you chose.
+- Dominant-pole formulas assume a clean second-order response; the PI zero and extra poles move the real numbers.
+- Only the parabola gives a finite non-zero error for a type-2 loop.
+
+</Traps>
+
+<Source>solution file: design ✔ (reproduced), errors ✘. Anthony partial. Digest simulation.</Source>
+
+</Problem>
+
+<Problem id="HW7 Q4" title="Paper machine e^{−2s}/(3s+1): Ziegler–Nichols PID, two methods" tags="Ziegler–Nichols, delay">
+
+<Statement>
+
+(a) Find the PID parameters with the Ziegler–Nichols **step-response** rules. (b) The system is marginally stable for $K_u=3.044$; find the PID parameters with the Z–N **ultimate-gain** rules.
+
+</Statement>
+
+<Think>
+
+Z–N is a recipe tuned for plants that look like "delay + lag": the step response is an S-curve. Method 1 reads two numbers off the S-curve (delay $L$ and lag $T$). Method 2 needs the gain $K_u$ at which the loop just oscillates and the period $P_u$ of that oscillation. The delay $e^{-2s}$ is not a polynomial, so Routh cannot find $K_u$: that is why it is given.
+
+</Think>
+
+<Steps>
+<Step title="(a) Step response">
+
+$Y=\dfrac{e^{-2s}}{s(3s+1)}=\Big(\dfrac1s-\dfrac1{s+1/3}\Big)e^{-2s}\Rightarrow y(t)=\big[1-e^{-(t-2)/3}\big]H(t-2)$.
+
+</Step>
+<Step title="(a) Tangent at the steepest point">
+
+The slope is greatest when the rise starts: $y'(2^+)=1/3$. Tangent $y=(t-2)/3$ reaches the final value 1 at $t=5$. So **$L=2$ s, $T=5-2=3$ s**.
+
+</Step>
+<Step title="(a) Z–N method 1 rules">
+
+$K_p=\dfrac{1.2T}{L}=1.8$, $T_i=2L=4$ s, $T_d=0.5L=1$ s. (Equivalent: $K_i=K_p/T_i=0.45$, $K_d=K_pT_d=1.8$.)
+
+</Step>
+<Step title="(b) The period (exact)">
+
+Oscillation at $K_u$ means the loop phase is $-180^\circ$ at $\omega_u$: $-2\omega-\tan^{-1}(3\omega)=-\pi$, so $\omega_u=0.9535$ rad/s and $P_u=2\pi/\omega_u=6.59$ s. The exact ultimate gain is $|1+3j\omega_u|=3.030$ (the given 3.044 is 0.5% higher: read from a plot).
+
+</Step>
+<Step title="(b) Z–N method 2 rules">
+
+$K_p=0.6K_u=0.6\cdot3.044=1.83$, $T_i=0.5P_u=3.29$ s, $T_d=0.125P_u=0.82$ s. (Reading $P_u\approx7$ s off the plot gives $T_i=3.5$, $T_d=0.875$: within 6%, accepted.)
+
+</Step>
+</Steps>
+
+<Answer>
+
+(a) $K_p=1.8$, $T_i=4$ s, $T_d=1$ s. (b) $K_p=1.83$, $T_i\approx3.3$–$3.5$ s, $T_d\approx0.82$–$0.875$ s (exact $P_u=6.59$ s).
+
+*Real-world:* basis-weight control on a paper machine: stock changes reach the sheet only after the 2 s transport lag, so gains must be modest ($K_p\approx1.8$ against $K_u=3.04$).
+
+</Answer>
+
+<Callout kind="note" title="Submissions">
+
+Anthony and Jad get (a) right. For (b) the typed classmate wrote "I do not know how to get $P_u$" and stopped at $K_p=1.8264$: the period must be read from the oscillating step response, or computed from the phase condition as in step (b).
+
+</Callout>
+
+<Traps>
+
+- A delay cannot go into Routh directly (not a polynomial).
+- $L$ is the *apparent* delay; here it is exactly 2 s.
+- $P_u$ is the period of the steady oscillation, not the peak time.
+
+</Traps>
+
+<Source>solution file ✔ ($P_u\approx7$ s); Anthony / Jad ✔; exact $P_u=6.59$ s by the digest.</Source>
+
+</Problem>
+
+<Problem id="HW7 Q5" title="Root locus: choose K for OS < 10 % and 2 % settling time < 4 s" tags="root locus, asymptotes, dominant poles">
+
+<Statement>
+
+Unity feedback; controller $K\dfrac{(s+2)^2}{(s+10)(s+20)}$; process $\dfrac{1}{s(s^2+3s+3.5)}$. Sketch the root locus and select $K$ so that the step response has $OS<10\%$ and $t_s(2\%)<4$ s.
+
+</Statement>
+
+<Think>
+
+Translate the specs to the $s$-plane first: $OS<10\%\Rightarrow\zeta\ge0.59$; $t_s<4$ s $\Rightarrow\sigma\ge4/4=1$. Then find where the locus lives and pick $K$ where the **slowest** poles are inside that region. **There is no official solution for Q5**; everything is the digest author's, numerically verified.
+
+</Think>
+
+<Plan>
+
+Poles and zeros, then real-axis segments, asymptotes, closed-loop polynomial, a table of poles against $K$, and the range of valid $K$.
+
+</Plan>
+
+<Steps>
+<Step title="1. Poles and zeros">
+
+Open-loop poles: $0$, $-1.5\pm j1.118$ (roots of $s^2+3s+3.5$), $-10$, $-20$. Zeros: a **double zero at $-2$**. So $n=5$, $m=2$, $n-m=3$ asymptotes.
+
+</Step>
+<Step title="2. Asymptotes">
+
+Angles $\pm60^\circ$ and $180^\circ$; centroid $\sigma_a=\dfrac{\sum p-\sum z}{n-m}=\dfrac{-33-(-4)}{3}=-9.67$.
+
+</Step>
+<Step title="3. Real-axis segments">
+
+Count real poles and zeros to the right (the double zero counts twice): $(-2,0)$: 1, odd, **on the locus**; $(-10,-2)$: 3, **on**; $(-20,-10)$: 4, not; $(-\infty,-20)$: 5, **on**.
+
+</Step>
+<Step title="4. Closed-loop polynomial">
+
+$s(s^2+3s+3.5)(s^2+30s+200)=s^5+33s^4+293.5s^3+705s^2+700s$; adding $K(s^2+4s+4)$:
+$$s^5+33s^4+293.5s^3+(705+K)s^2+(700+4K)s+4K=0.$$
+Note $(s+2)^2=s^2+4s+4$.
+
+</Step>
+<Step title="5. Closed-loop poles as K grows">
+
+| K | closed-loop poles | OS | $t_s$ (2%) |
+|---|---|---|---|
+| 100 | −0.53, −1.44 ± j1.39, −9.1, −20.4 | ≈ 0% | 7.0 s ✘ |
+| 200 | −0.88, −1.50 ± j1.74, −8.3, −20.8 | ≈ 0% | 3.91 s ✔ |
+| 300 | −1.07, −1.67 ± j2.09, −7.4, −21.2 | ≈ 0% | 3.09 s |
+| 460 | −1.24, −2.06 ± j2.71, −5.9, −21.7 | 7.3% | 2.50 s |
+| 520 | −1.28, −2.23 ± j2.96, −5.4, −21.9 | 9.9% | 2.34 s |
+| 600 | −1.32, −2.42 ± j3.40, −4.7, −22.1 | 13% ✘ | 2.15 s |
+
+</Step>
+<Step title="6. Reading the table">
+
+The very slow real pole near the origin (it starts at the open-loop pole $s=0$ and slides left toward the double zero at $-2$) sets the **settling time**; the complex pair sets the **overshoot**. Both specs hold for about **$194\le K\le523$** ($t_s=4$ s at $K=194$; $OS=10\%$ at $K=523$).
+
+</Step>
+<Step title="7. A good choice">
+
+$K\approx300$–$400$ ($OS\approx0$–$4.5\%$, $t_s\approx2.7$–$3.1$ s): comfortably inside the range.
+
+</Step>
+</Steps>
+
+<Answer>
+
+$194\lesssim K\lesssim523$; for example $K=300$ to $460$.
+
+*Real-world:* a lead-lag-style compensator on a plant with an integrator and a lightly damped mode ($-1.5\pm j1.1$): the controller zeros at $-2$ tame that sluggish pair while the controller poles at $-10,-20$ limit noise gain.
+
+</Answer>
+
+<Callout kind="warn" title="⚠ Classmate errors">
+
+Jad chose $K=460$ (✔ in the range; the digest simulation gives 7.3%, he quoted 9%). The typed classmate expanded $(s+2)^2$ wrongly (closed-loop $s$-coefficient $700+2K$ instead of $700+4K$), so his step response settled at $0.054$ instead of $1$ (a type-1 loop must give 1), and his $K=18.5$ fails $t_s$ (about 28 s). Anthony's page has only the statement.
+
+</Callout>
+
+<Traps>
+
+- Expanding the double zero: $(s+2)^2=s^2+4s+4$.
+- A slow real pole sets $t_s$ here, not the complex pair.
+- After choosing $K$, always simulate the step response; the zero at $-2$ changes the overshoot compared with a second-order estimate.
+- A type-1 loop has unit DC gain, so a final value $\neq1$ means an algebra error.
+
+</Traps>
+
+<Source>no official solution; digest computations ✔; Jad ✔; typed classmate ✘.</Source>
+
+<ToolLink tool="root-locus">Plot the root locus and drag K</ToolLink>
+
+</Problem>
+
+<Examined>
+
+Routh: $\text{MT3 practice}$, $\text{final F2009 Q4}$, $\text{final F2010}$. Z–N: $\text{final F2009}$. Root-locus gain selection: every MT3/final; PI design with errors: $\text{final F2010}$.
+
+</Examined>

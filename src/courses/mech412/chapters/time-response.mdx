@@ -1,0 +1,102 @@
+<p className="eyebrow">Chapter 4 · Lecture 4 · HW2 Q1</p>
+
+# 2nd-order specs, dominant poles, effect of zeros
+
+<div className="lede">
+
+A customer never says "I want poles at $-2\pm j3.6$". They say "no more than 20 % overshoot, settled within 2 seconds". This chapter is the dictionary between those *time-domain specs* and *pole locations in the $s$-plane*. Every design chapter (PID, root locus, lead/lag) starts here.
+
+</div>
+
+<Idea title="The 30-second version">
+
+For $G=\dfrac{\omega_n^2}{s^2+2\zeta\omega_ns+\omega_n^2}$ with a unit step: **overshoot depends only on $\zeta$**, **settling time only on $\sigma=\zeta\omega_n$**, **peak time only on $\omega_d$**. In the $s$-plane: *ζ = the angle of the pole from the negative real axis, σ = how far left it is, ω_d = how high it is.* A spec is a *region* in the plane; design = put the poles inside it.
+
+</Idea>
+
+## The five numbers read off a step response
+
+Apply a unit step to a stable 2nd-order system (think: switch a thermostat set-point, or step on a bathroom scale).
+
+| Spec | Meaning | Formula (underdamped) |
+|---|---|---|
+| **delay** $t_d$ | time to reach 50 % of final | no clean formula |
+| **rise time** $t_r$ | 0→100 % (underdamped) or 10→90 % (overdamped) | exact $\dfrac{\pi-\beta}{\omega_d}$, $\beta=\cos^{-1}\zeta$ (rule of thumb $\approx 1.8/\omega_n$ is for $\zeta\approx0.5$) |
+| **peak time** $t_p$ | first peak | $\dfrac\pi{\omega_d}$ |
+| **overshoot** OS | peak above final, as % | $100\,e^{-\pi\zeta/\sqrt{1-\zeta^2}}=100\,e^{-\pi\sigma/\omega_d}$ |
+| **settling time** $t_s$ | stays within 2 % (or 5 %) | $\dfrac4{\zeta\omega_n}=\dfrac4\sigma$ (5 %: $3/\sigma$) |
+
+with $\omega_d=\omega_n\sqrt{1-\zeta^2}$ (Anthony put a ⚠ on that one: **don't forget the square root**).
+
+<Trap title="Use the course's rise time">
+
+The slides and the review give $t_r\approx1.8/\omega_n$. The exam solutions (for example $\text{MT1 F2011 Q4}$) use the exact $t_r=(\pi-\beta)/\omega_d$. For $\zeta=0.5$ they agree to about 15 %; for other $\zeta$ they do not. Write the exact one and state which you used.
+
+</Trap>
+
+**Why the formulas look like that.** The step response is $1-\dfrac{1}{\sqrt{1-\zeta^2}}e^{-\sigma t}\sin(\omega_dt+\beta)$. The envelope is $e^{-\sigma t}$: reach 2 % when $\sigma t=\ln50\approx3.9\approx4$, hence $t_s=4/\sigma$. The first peak is where the sine turns over, $\omega_dt=\pi$, hence $t_p=\pi/\omega_d$; there the envelope has shrunk to $e^{-\sigma\pi/\omega_d}$, hence the overshoot.
+
+### Specs in the $s$-plane
+
+- **Settling time** $t_s<T_s\;\Leftrightarrow\;\sigma>4/T_s$: poles must lie to the **left of a vertical line**.
+- **Overshoot** $<M\,\%\;\Leftrightarrow\;\zeta>\zeta_{min}$, i.e. the angle $\theta=\cos^{-1}\zeta<\tan^{-1}\!\dfrac{\pi}{\ln(100/M)}$: poles lie **inside a cone** around the negative real axis.
+- **Speed** $\omega_n>\omega_{min}$: poles lie **outside a circle** of radius $\omega_{min}$.
+- Going backwards: $\zeta=\dfrac{-\ln(OS)}{\sqrt{\pi^2+\ln^2(OS)}}$ with OS as a **fraction** (0.163, not 16.3). Example: 20 % → $\zeta=0.456$, $\theta=62.9^\circ$.
+
+<SecondOrderTool />
+
+## Several poles: who dominates?
+
+A real system has many poles. The free response is a sum of terms, one per pole, and the ones that die slowest are what you see: **the dominant poles are the real pole(s) and the complex pair closest to the imaginary axis.** A pole at least about 5 times farther left than the dominant pair can usually be ignored. That is why the 2nd-order formulas still work for a 3rd-order system, and why they sometimes don't (next section).
+
+## What an extra pole or zero does (the lecture's Matlab demo)
+
+Three systems share the dominant pair $-2\pm j3.6$ and DC gain $0.765$:
+
+| System | Transfer function | OS | $t_s$ (2 %) | Lesson |
+|---|---|---|---|---|
+| sys1 | $\dfrac{13}{s^2+4s+17}$ | 17.5 % | 1.99 s | plain 2nd order |
+| sys2 | $\dfrac{52}{(s+4)(s^2+4s+17)}$ | 8.5 % | 1.61 s | an **extra real pole** slows the rise and **reduces** overshoot |
+| sys3 | $\dfrac{13(s+4)}{4(s^2+4s+17)}$ | 32.6 % | 1.83 s | an **extra LHP zero** speeds up the response and **increases** overshoot |
+
+*Physical reading.* A zero adds a **derivative-like kick** ($sX$ added to $X$): the system reacts to the *rate of change* of the input, so it is quicker and overshoots more. An extra pole is lag (an extra low-pass filter in series): it smooths and slows. A zero *near* the poles has the biggest effect.
+
+<PoleZeroSim />
+
+<Callout kind="note" title="Zero cancellation is not robust">
+
+You can cancel an unwanted pole with a zero at the same place; on paper it is exact. In practice the plant changes (wear, temperature) and the cancellation fails. The lecture warns about this; Chapter 18's compensator cancels a pole this way *and* verifies the result.
+
+</Callout>
+
+## Worked example: choosing $\tau,\omega_n,\zeta$ with a zero (MT1 F2011 Q4)
+
+The aircraft transfer function is $G(s)=\dfrac{\tau\omega_n^2(s+1/\tau)}{s^2+2\zeta\omega_ns+\omega_n^2}$. Requirements: overshoot 16.3 %, rise time 2.4 s. Charts (given on the exam) show step responses and overshoot versus $\alpha=1/(\tau\zeta\omega_n)$.
+
+1. **Damping from the overshoot.** For a plain 2nd-order system $16.3\,\%\Rightarrow\zeta=0.5$. So pick $\zeta=0.5$ and a zero far enough away to barely change this (large $\alpha$).
+2. **Rise time.** $\beta=\cos^{-1}0.5=60^\circ=\pi/3$. $t_r=\dfrac{\pi-\pi/3}{\omega_d}=\dfrac{2.094}{\omega_d}=2.4\Rightarrow\omega_d=0.87$ rad/s.
+3. **Natural frequency.** $\omega_n=\dfrac{\omega_d}{\sqrt{1-\zeta^2}}=\dfrac{0.87}{0.866}\approx1$ rad/s.
+4. **Zero.** Read from the chart: $\alpha=10$ keeps $M_p<0.16$. Then $\tau=\dfrac1{\alpha\zeta\omega_n}=\dfrac1{10\cdot0.5\cdot1}=0.2$ s: the zero is at $-1/\tau=-5$.
+5. **Answer:** $\omega_n=1$ rad/s, $\zeta=0.5$, $\tau=0.2$ s. Poles $-0.5\pm j0.866$, zero at $-5$.
+6. **Check (simulation):** $\alpha=10$ gives **16.7 %** overshoot, slightly above 16.3 %. With $\alpha=100$ (zero at $-50$) you get 16.31 % and a rise time of 2.40 s. **The official reading of the chart is a bit optimistic.**
+7. **If the zero moves closer to the poles** ($\tau$ larger, $\alpha$ smaller) the overshoot **increases** (α = 5 gives 18 %, α = 2 more than 25 %).
+
+<Trap title="Poles alone do not fix overshoot">
+
+In HW10 Q1 a PI controller puts a closed-loop zero at $-K_I/K_P=-2$ right next to poles at $-2.7\pm j2.0$ ($\zeta=0.8$ would give 1.5 % overshoot). The actual overshoot is **20 %**. Rule: whenever you choose poles for a $\zeta$, look at where the zeros are. And when it matters, **simulate**. In HW7 Q3 the dominant-pole formulas predicted 4.3 % and the real response had 6.4 %.
+
+</Trap>
+
+<Examined>
+
+- Spec ↔ ($\zeta,\omega_n$) conversions with an extra zero: $\text{MT1 F2011 Q4}$; the same idea in <Hw n="2">HW2</Hw> Q1 (the extra zero $z$ gives $M_p=\frac1z\sqrt{z^2-2\zeta\omega_nz+\omega_n^2}\,e^{-\sigma t_p}$).
+- Closed-loop design for $\zeta=0.707$ and a settling time: $\text{F2010 P4}$ (rocket attitude), $\text{F2009 P5}$, HW7 Q3, MT2 W2011 Q3c (largest gain for OS < 20 %).
+
+</Examined>
+
+### Check yourself
+
+1. $\zeta=0.5$, $\omega_n=1$. OS, $t_p$, $t_s$? *(16.3 %, $\pi/0.866=3.63$ s, $4/0.5=8$ s.)*
+2. A servo must have OS < 25 % and $t_s<1$ s. Describe the region. *($\zeta>0.404$, angle $<66.2^\circ$; $\sigma>4$.)*
+3. Why can a 3rd-order system with poles $-2\pm j3.6$ and $-40$ be treated as 2nd order? *(The real pole is 20 times farther left than the dominant pair.)*
+4. A zero is added at $-4$ to a plant with poles $-2\pm j3.6$. Faster or slower, more or less overshoot? *(Faster, more overshoot.)*

@@ -1,0 +1,53 @@
+<p className="eyebrow">Chapter 2</p>
+
+# Conservation laws for a control volume
+
+<p className="lede">The whole course runs on four ingredients: mass is conserved, force changes momentum, energy is conserved, and p = ρRT. Entropy tells us which answers are allowed.</p>
+
+<CVFigure />
+
+## The toolbox
+
+| Law | System form | Control-volume form |
+|---|---|---|
+| Mass | $m$ = const | $\dfrac{\partial}{\partial t}\displaystyle\int_{CV}\rho\,dV = -\oint \rho\,\mathbf V\cdot d\mathbf A$ |
+| Momentum | $\sum \mathbf F = \dfrac{d(m\mathbf V)}{dt}$ | $\sum \mathbf F = \dfrac{\partial}{\partial t}\displaystyle\int \rho \mathbf V\,dV + \oint \mathbf V(\rho\mathbf V\cdot d\mathbf A)$ |
+| Energy | $\Delta E = \delta Q + \delta W$ | $\dfrac{\partial}{\partial t}\displaystyle\int e_t\rho\,dV = \dot Q + \dot W_{CV} - \oint \left(h + \tfrac{V^2}{2}\right)\rho\mathbf V\cdot d\mathbf A$ |
+| State | $p = \rho R T$ | |
+| 2nd law | $\Delta s_{isolated}\ge 0$ | |
+
+<Idea title="Where does enthalpy come from?">
+
+When fluid is pushed into a control volume, the fluid behind it does work $p\,v$ per unit mass (the **flow work**). Bundle it with internal energy and you get $h = e + p v$. That's why the energy equation for flowing gas always contains $h$, not $e$ — and why stagnation *temperature* (from $h$) is the conserved quantity in adiabatic flow.
+
+</Idea>
+
+## Using a control volume to get forces
+
+The momentum equation is how you get **thrust** and **forces on walls** without knowing what happens inside. For steady flow with one inlet and one outlet:
+
+$$
+F_{x,\text{on fluid}} = \dot m (V_2 - V_1) + p_2 A_2 - p_1 A_1 \quad\text{(pressures as gauge relative to ambient if the outside is at } p_a)
+$$
+
+<Trap>
+
+Sign conventions kill marks here. Draw the CV, write the force **on the fluid**, then flip the sign for the force on the device. Use **gauge** pressures when the outside of the device sees atmospheric pressure — that's where the $(p_e - p_a)A_e$ term in rocket thrust comes from.
+
+</Trap>
+
+### Worked example — jet engine thrust (PS1 P3 style)
+
+An engine flies at 600 km/h (167 m/s) ingesting 50 kg/s of air; exhaust leaves at 450 m/s with $p_e = p_a$ and fuel adds 1 kg/s. Control volume around the engine, in the engine frame:
+
+$$
+F = \dot m_e V_e - \dot m_a V_a = 51(450) - 50(166.7) = 14.6\ \text{kN}
+$$
+
+The pressure term vanishes because $p_e = p_a$ — keep that in mind for rockets, where it usually doesn't.
+
+<Examined>
+
+Control-volume momentum appears inside bigger problems: rocket thrust (Ch. 6), the ramjet thrust in Final B P3, wall forces in Fanno ducts. Quiz 1 (no papers survive) covered this directly.
+
+</Examined>

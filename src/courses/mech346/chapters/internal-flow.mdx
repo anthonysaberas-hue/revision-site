@@ -1,0 +1,174 @@
+<p className="eyebrow">Chapter 8 · Internal forced convection · Final</p>
+
+# Internal forced convection
+
+<div className="lede">
+
+Flow **inside** a pipe or duct: water through a boiler tube, oil in a pipeline, air in a heating duct, coolant in a CPU cold plate. Two things change compared with the flat plate of Chapter 7. First, the boundary layer **cannot grow forever**: it fills the pipe, so after an entrance length the profile stops changing ("fully developed") and $h$ becomes constant. Second, there is no free-stream temperature to refer to: the fluid warms up as it moves, so we use the **mean (bulk) temperature** $T_m$, which changes along the tube. The whole chapter is three questions: *how fast is the fluid* (Re), *what is $h$* (Nu), and *how warm is it at the exit* ($T_e$).
+
+</div>
+
+<Idea title="The 30-second version">
+
+1. $Re_D=\dfrac{V_mD}{\nu}=\dfrac{4\dot m}{\pi D\mu}$; laminar below **2300**, turbulent above about **10 000** (transitional in between). For a non-circular duct $D\to D_h=4A_c/p$.
+2. **Fully developed laminar**, circular tube: $Nu=3.66$ (constant $T_s$) or $4.36$ (constant $q''_s$); independent of $Re$ and $Pr$. $f=64/Re$.
+3. **Turbulent**: Dittus–Boelter $Nu=0.023Re^{0.8}Pr^{n}$ ($n=0.4$ heating, $0.3$ cooling), or the better **Gnielinski** $Nu=\dfrac{(f/8)(Re-1000)Pr}{1+12.7\sqrt{f/8}\,(Pr^{2/3}-1)}$, $f=(0.79\ln Re-1.64)^{-2}$.
+4. Exit temperature, constant wall flux: $T_e=T_i+\dfrac{q''_sA_s}{\dot mc_p}$. Constant wall temperature: $T_e=T_s-(T_s-T_i)\exp\!\left(-\dfrac{hA_s}{\dot mc_p}\right)$.
+5. Pressure drop $\Delta P=f\dfrac LD\dfrac{\rho V_m^2}2$; pumping power $\dot W=\dot V\Delta P$ (divide by pump efficiency).
+
+</Idea>
+
+## Mean velocity and mean temperature
+
+Inside a tube the velocity varies from zero at the wall to a maximum at the centre, and so does temperature. We replace the profiles by two single numbers that conserve the right things.
+
+**Mean velocity** $V_m$: the uniform velocity that gives the same mass flow rate, $\dot m=\rho V_mA_c$, so $V_m=\dfrac{\dot m}{\rho A_c}=\dfrac{4\dot m}{\rho\pi D^2}$. For fully developed laminar flow in a circle the parabola has centre velocity $V_{max}=2V_m$.
+
+**Mean (bulk) temperature** $T_m$: the temperature that, multiplied by $\dot mc_p$, gives the actual energy flow, $\dot E=\dot mc_pT_m=\int\rho c_pVT\,dA_c$ ("the temperature you'd measure by collecting the fluid in a cup and stirring it"). Newton's law for internal flow uses it: $q''_s=h(T_s-T_m)$. It changes along the tube; $T_s$ may too.
+
+An **energy balance on the whole fluid stream** is the bridge between the heat rate and the temperature change, independent of any correlation:
+$$\dot Q=\dot mc_p(T_e-T_i).$$
+This is also used backwards: if the heat load is known, the temperature rise follows immediately.
+
+## Entrance regions and fully developed flow
+
+At the tube inlet the velocity is uniform; the boundary layer grows from the wall until it meets in the middle. The distance is the **hydrodynamic entry length** $L_h$; the temperature profile has its own **thermal entry length** $L_t$:
+
+| | Laminar | Turbulent |
+|---|---|---|
+| $L_h$ | $\approx0.05\,Re\,D$ | $\approx10D$ (roughly $10$–$60D$) |
+| $L_t$ | $\approx0.05\,Re\,Pr\,D$ | $\approx10D$ |
+
+In laminar flow the entry region can be very long (Re=2000 gives $L_h=100D$); with a high-$Pr$ oil, $L_t=0.05RePrD$ may exceed the whole pipe, so you **cannot** use the fully developed $Nu=3.66$. In turbulent flow the entry length is only about $10D$, short compared to practical tubes, so fully developed correlations are used throughout. $h$ is **highest at the inlet** (thin layer) and falls to its fully developed value.
+
+<Trap title="Is the tube long enough?">
+
+Always compare the tube length $L$ with the entry lengths. If $L\gg L_t$ (laminar) use 3.66/4.36. If $L\lesssim L_t$ the flow is "thermally developing" and the Hausen or Sieder–Tate formula (below) gives a larger $h$. Using 3.66 there **under-predicts** $h$ (conservative, but wrong).
+
+</Trap>
+
+## Laminar flow ($Re<2300$)
+
+**Fully developed, circular tube** ($L>L_t$): a purely geometric result (the energy equation with a parabolic profile):
+$$Nu=\frac{hD}k=3.66\ (T_s\text{ constant}),\qquad Nu=4.36\ (q''_s\text{ constant}),\qquad f=\frac{64}{Re}.$$
+$Nu$ does not depend on $Re$ or $Pr$: doubling the velocity does nothing to $h$ in laminar fully developed flow, because the layers do not mix. Larger $D$ means *smaller* $h=Nu\,k/D$. That is why micro-channels cool well: tiny $D$ means large $h$.
+
+**Non-circular ducts**: use $D_h=4A_c/p$ for $Re$, $Nu$ and $f$ (with $Nu=hD_h/k$), and look up $Nu$:
+
+| Cross-section | $Nu$ ($T_s$) | $Nu$ ($q''_s$) | $f\,Re$ |
+|---|---|---|---|
+| circle | 3.66 | 4.36 | 64.0 |
+| square ($a/b=1$) | 2.98 | 3.61 | 57 |
+| rectangle $a/b=2$ | 3.39 | 4.12 | 62 |
+| rectangle $a/b=4$ | 4.44 | 5.33 | 73 |
+| rectangle $a/b=8$ | 5.60 | 6.49 | 82 |
+| parallel plates ($a/b\to\infty$) | 7.54 | 8.23 | 96 |
+| equilateral triangle | 2.47 | 3.11 | 53 |
+
+**Developing laminar flow** (entry region, circular tube, constant $T_s$):
+
+- *Hausen* (thermally developing, $Pr>0.1$): $Nu=3.66+\dfrac{0.065\,Gz}{1+0.04\,Gz^{2/3}}$ with the **Graetz number** $Gz=\dfrac DLRe\,Pr$. For $Gz\to0$ (long tube) it tends to 3.66; for large $Gz$ it grows as $Gz^{1/3}$.
+- *Sieder–Tate* (simultaneously developing, liquids, $0.48<Pr<16\,700$): $Nu=1.86\left(\dfrac{Re\,Pr\,D}L\right)^{1/3}\left(\dfrac{\mu_b}{\mu_s}\right)^{0.14}$, with $\mu_s$ at the wall temperature (viscosity correction for strongly $T$-dependent oils).
+
+<LabLink lab="pipe">Pipe-flow lab: watch the temperature profile develop and $T_m(x)$ rise</LabLink>
+
+## Turbulent flow ($Re>10\,000$)
+
+Turbulent eddies mix the fluid, so $h$ becomes much larger than the laminar $3.66\,k/D$ and rises with $Re$. There is no exact solution; we use correlations.
+
+**Friction factor.** Smooth tube: Petukhov $f=(0.790\ln Re-1.64)^{-2}$ for $3000<Re<5\times10^6$. Rough tubes: the Colebrook equation or the Moody chart ($f=f(Re,\varepsilon/D)$); roughness raises $f$ strongly and $h$ only modestly.
+
+**Dittus–Boelter** (simple; $0.7\le Pr\le160$, $Re>10\,000$, $L/D>10$, errors up to $\pm25$ %):
+$$Nu=0.023\,Re^{0.8}Pr^{n},\quad n=0.4\text{ (fluid heated)},\ n=0.3\text{ (fluid cooled)}.$$
+The difference in $n$ reflects the change in thickness of the viscous layer.
+
+**Colburn** (the same idea without the $T$-dependence correction): $Nu=0.125f\,Re\,Pr^{1/3}$.
+
+**Gnielinski** (best; $0.5\le Pr\le2000$ and $3000<Re<5\times10^6$, error $\sim\pm10$ %): the formula in the box; valid into the transition zone, and it also handles rough tubes if $f$ comes from Moody/Colebrook. With the Petukhov $f$ it is the default whenever it is allowed. **Properties** for all of these are taken at the **bulk mean temperature** $T_b=(T_i+T_e)/2$ — the exit temperature is not known at the start, so guess, compute, update (one iteration is enough).
+
+**Liquid metals** ($Pr\ll1$): $Nu=4.82+0.0185Pe^{0.827}$ (const $q''$), $Nu=5.0+0.025Pe^{0.8}$ (const $T_s$), $Pe=RePr$.
+
+<Remember title="Which correlation, quickly">
+
+Laminar, $L\gg L_t$: 3.66 / 4.36. Laminar, short tube: Hausen. Turbulent, exam default: Dittus–Boelter if given on the sheet, Gnielinski if more accuracy is asked. Check $Re$ first, always.
+
+</Remember>
+
+## The temperature of the fluid along the tube
+
+The only energy input is the wall heat flux. A slice of length $dx$ of fluid ($\dot mc_p\,dT_m=q''_s\,p\,dx$ where $p=\pi D$) gives the two standard cases.
+
+**Constant wall heat flux** (electric heating, uniform solar load, nuclear fuel): the heat rate is *known*, $\dot Q=q''_sA_s$, so
+$$T_e=T_i+\frac{q''_sA_s}{\dot mc_p},\qquad T_m(x)=T_i+\frac{q''_sp}{\dot mc_p}x\ (\text{linear}),\qquad T_s(x)=T_m(x)+\frac{q''_s}h.$$
+The wall stays a **constant** $q''_s/h$ above the bulk temperature (fully developed), so the wall temperature also rises linearly. The hottest wall point is at the **exit**: $T_{s,max}=T_e+q''_s/h$. *(Design check: the maximum wall temperature must stay below the material or boiling limit.)*
+
+**Constant wall temperature** (condensing steam outside, a boiling bath): the temperature **difference** $T_s-T_m$ shrinks along the tube, so the heat rate drops; the equation $\dot mc_p\,dT_m=h(T_s-T_m)p\,dx$ integrates to an exponential approach:
+$$\boxed{T_e=T_s-(T_s-T_i)\exp\!\left(-\frac{hA_s}{\dot mc_p}\right)},\qquad\dot Q=hA_s\Delta T_{lm},\quad\Delta T_{lm}=\frac{T_i-T_e}{\ln\frac{T_s-T_e}{T_s-T_i}}.$$
+The exponent $NTU=hA_s/(\dot mc_p)$ (number of transfer units) says how many "time constants" long the tube is: $NTU=1$ closes 63 % of the gap to $T_s$, $NTU=3$ closes 95 %. The same formula appears again in the heat-exchanger chapter, where the "wall" is the other fluid.
+
+<Callout kind="note" title="Why the log-mean?">
+
+With $T_s$ constant, the driving difference at inlet is $\Delta T_i=T_s-T_i$ and at exit $\Delta T_e=T_s-T_e$; the average over the tube is **not** the arithmetic mean but the logarithmic mean $\dfrac{\Delta T_e-\Delta T_i}{\ln(\Delta T_e/\Delta T_i)}$, because the difference decays exponentially, not linearly. Using the arithmetic mean over-predicts $\dot Q$ when the two end differences are very different.
+
+</Callout>
+
+## Pressure drop and pumping power
+
+The pressure drop in a straight tube of length $L$ (both laminar and turbulent) is
+$$\Delta P=f\,\frac LD\,\frac{\rho V_m^2}2,\qquad\dot W_{pump}=\dot V\,\Delta P=\frac{\dot m\,\Delta P}{\rho},$$
+(divide by the pump efficiency for shaft power). $f=64/Re$ for laminar flow, Petukhov or Moody for turbulent. Minor losses (bends, valves) add $K_L\rho V^2/2$.
+
+**Trade-off:** raising velocity raises $h$ (as $V^{0.8}$ in turbulent flow) but pressure drop rises as $V^{1.8\text{ to }2}$ and pumping power as $V^{2.8\text{ to }3}$. There is an economic optimum: doubling the velocity gives about $2^{0.8}=1.74$ times the heat transfer coefficient, but costs $2^3=8$ times the pumping power. Heat-exchanger designers live in this trade-off.
+
+## Worked example 1: heating water in a hot tube (constant $T_s$)
+
+Water at 20 °C and $\dot m=0.08$ kg/s enters a smooth copper tube of $D=2$ cm and $L=5$ m whose surface is held at 80 °C by condensing steam. Find the exit temperature, the heat rate and the pressure drop.
+
+**Plan (backward).** I need $T_e$. For constant $T_s$ that is $T_e=T_s-(T_s-T_i)e^{-hA_s/\dot mc_p}$; I need $h$, so $Nu$, so $Re$ and $Pr$ at the *mean* water temperature, which depends on $T_e$ — iterate once.
+
+**Step 1: properties.** Guess $T_e=40$ °C first; after one pass the bulk temperature settles at $T_b\approx44$ °C. Water at 44 °C: $\rho=991$ kg/m³, $c_p=4179$ J/kgK, $k=0.634$ W/mK, $\mu=6.05\times10^{-4}$ Pa·s, $Pr=3.99$.
+
+**Step 2: Reynolds number.** $Re=\dfrac{4\dot m}{\pi D\mu}=\dfrac{4(0.08)}{\pi(0.02)(6.05\times10^{-4})}=8413$: turbulent (or at least in the Gnielinski range, since $Re>3000$). *(The entry length is $\approx10D=0.2$ m, only 4 % of the tube, so fully developed correlations are fine.)*
+
+**Step 3: friction factor and Nusselt number.** $f=(0.79\ln8413-1.64)^{-2}=0.0331$. Gnielinski:
+$$Nu=\frac{(f/8)(Re-1000)Pr}{1+12.7\sqrt{f/8}(Pr^{2/3}-1)}=\frac{0.004133(7413)(3.99)}{1+12.7(0.0643)(1.514)}=54.6.$$
+(Dittus–Boelter gives $0.023(8413)^{0.8}(3.99)^{0.4}=55.2$: the two agree to 1 %.) Then $h=Nu\,k/D=54.6(0.634)/0.02=\mathbf{1732\ W/m^2K}$.
+
+**Step 4: exit temperature.** $A_s=\pi DL=0.3142$ m²; $\dfrac{hA_s}{\dot mc_p}=\dfrac{1732(0.3142)}{0.08(4179)}=1.627$; $e^{-1.627}=0.1966$:
+$$T_e=80-(80-20)(0.1966)=\mathbf{68.2\ ^\circ C}.$$
+The bulk temperature is then $(20+68.2)/2=44.1$ °C, consistent with the property temperature used (good: the iteration converged).
+
+**Step 5: heat rate** (two ways, as a check): $\dot Q=\dot mc_p(T_e-T_i)=0.08(4179)(48.2)=16\,120$ W; $\Delta T_{lm}=\dfrac{(80-68.2)-(80-20)}{\ln(11.8/60)}=29.6$ K and $hA_s\Delta T_{lm}=1732(0.3142)(29.6)=16\,120$ W ✓.
+
+**Step 6: pressure drop.** $V_m=\dfrac{4\dot m}{\rho\pi D^2}=0.257$ m/s; $\Delta P=0.0331(250)\dfrac{991(0.257)^2}2=271$ Pa (about 0.03 m of water head); pumping power $=\dfrac{\dot m\Delta P}\rho=0.022$ W: tiny.
+
+<Examined>
+This pattern (find $Re$, check regime, $Nu$, $h$, $T_e$, $\dot Q$) is **the** internal-flow exam problem. Nov 2023 Midterm 2 Q3 ended in the same path with oil in a buried pipeline.
+</Examined>
+
+## Worked example 2: constant heat flux (electric heater)
+
+Water at 15 °C, $\dot m=0.05$ kg/s, flows in a $D=1.5$ cm, $L=3$ m tube with uniform wall flux $q''_s=20$ kW/m². Find $T_e$ and the maximum wall temperature.
+
+1. $A_s=\pi(0.015)(3)=0.1414$ m², so $\dot Q=20\,000(0.1414)=2827$ W. 
+2. $T_e=15+\dfrac{2827}{0.05(4180)}=15+13.5=\mathbf{28.5\ ^\circ C}$ (linear rise). Bulk mean $T_b=21.8$ °C: $\mu=9.6\times10^{-4}$, $k=0.60$, $Pr=6.6$ (approximate).
+3. $Re=\dfrac{4(0.05)}{\pi(0.015)(9.6\times10^{-4})}=4422$ turbulent (barely); Gnielinski with $f=0.0401$ gives $Nu=34.8$ (with $f=0.0401$), so $h=34.8(0.60)/0.015=1396$ W/m²K.
+4. Wall minus bulk: $q''_s/h=20\,000/1396=14.3$ K. At the exit the wall is at $28.5+14.3=\mathbf{42.9\ ^\circ C}$; at the inlet $29.3$ °C. 
+
+*Physical meaning: the wall is always about 14 K hotter than the water, wherever you are. Increase the flow and $h$ rises, narrowing the gap.*
+
+## Worked example 3: laminar flow in a thin tube (entry-length trap)
+
+Water at 20 °C flows at $\dot m=2$ g/s through a $D=1$ cm tube of $L=2$ m held at 60 °C. Is the flow developed?
+
+- $Re=\dfrac{4(0.002)}{\pi(0.01)(\mu)}$ with $\mu\approx6.9\times10^{-4}$ at the mean temperature (about 37 °C) gives $Re\approx369$: **laminar**.
+- Entry lengths: $L_h=0.05(369)(0.01)=0.18$ m; $L_t=0.05(369)(4.6)(0.01)=0.85$ m. The tube is $2$ m, so the thermal entry region is 43 % of the length: the "$3.66$" answer is too low.
+- Hausen: $Gz=\dfrac{0.01}2(369)(4.61)=8.50$; $Nu=3.66+\dfrac{0.065(8.50)}{1+0.04(8.50)^{2/3}}=4.13$, $h=4.13(0.62)/0.01=258$ W/m²K (14 % higher than the fully developed value).
+- $T_e=60-40e^{-258(0.0628)/(0.002)(4180)}=60-40e^{-1.94}=\mathbf{54.3\ ^\circ C}$ (water is nearly at wall temperature: a long thin tube is a great heater).
+
+## Check yourself
+
+1. Oil in a pipeline has $Re=800$ and $Pr=300$. Which entry length is much larger, and what should you do about the $Nu$? *(Thermal: $0.05RePrD=12\,000D$; use Hausen or Sieder–Tate for a short pipe.)*
+2. Why is a tiny channel such a good heat sink if $Nu$ is constant? *($h=Nu\,k/D$, so smaller $D$ gives larger $h$.)*
+3. A constant-flux tube has $T_i=20$ °C, $T_e=60$ °C; where is the wall hottest? *(At the exit.)*
+4. Double the water speed in a turbulent tube: change in $h$, $\Delta P$, pumping power? *($\times1.74$, $\times3.5$ to $4$, $\times7$ to $8$.)*

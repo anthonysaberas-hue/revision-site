@@ -1,0 +1,536 @@
+<p className="eyebrow">Problem Set 7 · Winter 2025</p>
+
+# Fanno flow
+
+<p className="lede">Seven problems on adiabatic flow with friction: a derivation, three single-pipe problems, three nozzle + pipe + shock problems, and a sign argument. Use Table A4 (and A2, A3) with γ = 1.4, nearest row with no interpolation, as the handout says. f is the Fanning factor. Theory: <NoteRef ch="fanno">Chapter 10</NoteRef>.</p>
+
+<Remember title="The two Fanno moves you will use everywhere">
+
+- **Subtract L\*** (only when $L \le L^*$): $(4fL^*/D)_2 = (4fL^*/D)_1 - 4fL/D$.
+- **p\* is the same on both sides of a normal shock in the duct** (same $\rho V$, same $T_0$). L\* is not: it jumps to the long subsonic value.
+
+</Remember>
+
+<Problem id="PS7 P1" title="Derive 4fL*/D_H(M)" tags="derivation, partial fractions">
+
+<Statement>
+
+Starting with the momentum equation for constant-area frictional flow,
+
+$$
+\frac{dM}{M} = \frac{\gamma M^2\left(1 + \frac{\gamma-1}{2}M^2\right)}{2(1 - M^2)}\,\frac{4f}{D_H}\,dx,
+$$
+
+integrate to find the channel length $L^*$ needed to bring a flow entering at Mach $M$ to sonic conditions at the exit:
+
+$$
+\frac{4fL^*}{D_H} = \frac{1 - M^2}{\gamma M^2} + \frac{\gamma+1}{2\gamma}\ln\frac{(\gamma+1)M^2}{2\left(1 + \frac{\gamma-1}{2}M^2\right)}.
+$$
+
+</Statement>
+
+<Think>
+
+A pure calculus problem: separate the variables, then integrate a rational function of $M$ by partial fractions. The physics is in the limits: start at the inlet Mach $M$ (where $x = 0$) and end at $M = 1$ (where $x = L^*$). This formula is Table A4's first column. It plays the role for friction that $A/A^*$ plays for area change.
+
+</Think>
+
+<Plan>
+
+Separate → partial fractions → integrate from $M$ to 1 (left side) and from 0 to $L^*$ (right side) → tidy the logs.
+
+<FannoFLPlot mark={[0.5, 3]} />
+
+</Plan>
+
+<Steps>
+<Step title="1. Separate the variables">
+
+Put all the $M$ dependence on the left (assume $f$ is constant along the pipe):
+
+$$
+\frac{2(1 - M^2)}{\gamma M^3\left(1 + \frac{\gamma-1}{2}M^2\right)}\,dM = \frac{4f}{D_H}\,dx
+$$
+
+</Step>
+<Step title="2. Partial fractions">
+
+Write the left side as $\dfrac{A}{\gamma M^3} + \dfrac{B}{\gamma M^2} + \dfrac{C}{\gamma M} + \dfrac{DM + E}{1 + \frac{\gamma-1}{2}M^2}$. Matching coefficients of the powers of $M$ gives
+
+$$
+A = 2,\quad B = 0,\quad C = -(\gamma+1),\quad D = \frac{\gamma^2 - 1}{2\gamma},\quad E = 0
+$$
+
+so the integrand is $\dfrac{2}{\gamma M^3} - \dfrac{\gamma+1}{\gamma M} + \dfrac{(\gamma^2-1)M}{2\gamma\left(1 + \frac{\gamma-1}{2}M^2\right)}$.
+
+</Step>
+<Step title="3. Integrate between the right limits">
+
+Integrate $M \to 1$ on the left and $0 \to L^*$ on the right. The last term integrates with $u = 1 + \frac{\gamma-1}{2}M^2$:
+
+$$
+\left[-\frac{1}{\gamma M^2}\right]_M^1 + \left[-\frac{\gamma+1}{\gamma}\ln M\right]_M^1 + \left[\frac{\gamma+1}{2\gamma}\ln\left(1 + \tfrac{\gamma-1}{2}M^2\right)\right]_M^1 = \frac{4fL^*}{D_H}
+$$
+
+</Step>
+<Step title="4. Evaluate and combine the logs">
+
+$$
+-\frac{1}{\gamma} + \frac{1}{\gamma M^2} + \frac{\gamma+1}{\gamma}\ln M + \frac{\gamma+1}{2\gamma}\ln\frac{(\gamma+1)/2}{1 + \frac{\gamma-1}{2}M^2} = \frac{4fL^*}{D_H}
+$$
+
+Combine $-\frac1\gamma + \frac{1}{\gamma M^2} = \frac{1 - M^2}{\gamma M^2}$, and write $\frac{\gamma+1}{\gamma}\ln M = \frac{\gamma+1}{2\gamma}\ln M^2$ so it merges into the second log:
+
+$$
+\boxed{\frac{4fL^*}{D_H} = \frac{1 - M^2}{\gamma M^2} + \frac{\gamma+1}{2\gamma}\ln\frac{(\gamma+1)M^2}{2\left(1 + \frac{\gamma-1}{2}M^2\right)}}
+$$
+
+Check: at $M = 0.5$ this gives 1.0691, matching <T>A4 @ M = 0.5: 4fL*/D = 1.0691</T> — <CalcLink calc="fanno" q="in=M&v=0.5">check</CalcLink>.
+
+</Step>
+</Steps>
+
+<Answer>
+
+- $\dfrac{4fL^*}{D_H} = \dfrac{1 - M^2}{\gamma M^2} + \dfrac{\gamma+1}{2\gamma}\ln\dfrac{(\gamma+1)M^2}{2\left(1 + \frac{\gamma-1}{2}M^2\right)}$. It is positive on both branches and zero at $M = 1$.
+- As $M \to \infty$ it tends to $-\frac1\gamma + \frac{\gamma+1}{2\gamma}\ln\frac{\gamma+1}{\gamma-1} = 0.8215$.
+
+</Answer>
+
+<Traps>
+
+- Get the limits the right way round: the inlet $M$ is the lower limit and 1 the upper. Flip them and you get a negative length.
+- Anthony decomposed an equivalent fraction, $A/M + B/M^2 + C/M^3 + (DM+E)/(2 + (\gamma-1)M^2)$, and got $A = (\gamma+1)/4$, $C = -1/2$, $D = -(\gamma^2-1)/4$. His middle lines have small sign slips, but the boxed result is correct.
+- Friction drives $M$ toward 1 on both branches, which is why the expression is positive for $M$ below and above 1.
+
+</Traps>
+
+<Source>official 2025 solution · Anthony's tablet solution PS07-mine</Source>
+
+</Problem>
+
+<Problem id="PS7 P2" title="Friction factor for choked flow in a 20 mm pipe" tags="Fanno, choked, L = L*">
+
+<Statement>
+
+Air flows down a 20 mm diameter pipe 0.8 m long. The inlet velocity is 200 m/s and the inlet temperature is 30 °C. Find the average friction factor $f$ if the flow is choked at the pipe exit.
+
+</Statement>
+
+<Think>
+
+"Choked at the exit" means $M_\text{exit} = 1$, so **the given length is $L^*$** for the inlet Mach number. Find $M_1$ from the speed of sound, read $4fL^*/D$, and solve for $f$. It's subsonic, so take the subsonic row.
+
+</Think>
+
+<Plan>
+
+$T_1$ → $c_1$ → $M_1$ → A4: $4fL^*/D$ → $f = (4fL^*/D)\cdot D/(4L)$.
+
+<FannoDuctSetupFigure friction Min={0.571} Mout={1} inlet="V₁ = 200 m/s | T₁ = 303 K" exit="choked: M = 1 | L = L* = 0.8 m" duct="D = 20 mm, f = ?" caption="A subsonic inlet; friction accelerates the flow to exactly M = 1 at the exit." />
+
+</Plan>
+
+<Steps>
+<Step title="1. Inlet Mach number">
+
+$T_1 = 30 + 273.15 = 303.15$ K. With the official $R = 8314/28.8$:
+
+$$
+c_1 = \sqrt{\gamma R T_1} = \sqrt{1.4 \times 288.7 \times 303.15} = 350.0\ \text{m/s}, \qquad M_1 = \frac{200}{350.0} = 0.571
+$$
+
+</Step>
+<Step title="2. Read L* for this inlet">
+
+<T>A4 @ M = 0.57: 4fL*/D ≈ 0.62</T> (exact at $M = 0.5714$: 0.6161) — <CalcLink calc="fanno" q="in=M&v=0.5714&b=sub">check</CalcLink>.
+
+</Step>
+<Step title="3. Solve for f">
+
+$L^* = L = 0.8$ m:
+
+$$
+f = \frac{4fL^*}{D}\cdot\frac{D}{4L^*} = 0.6161 \times \frac{0.02}{4 \times 0.8} = 0.00385
+$$
+
+</Step>
+</Steps>
+
+<Answer>
+
+- $f \approx 0.0038$–$0.00385$ (official 0.00385; Anthony 0.00383 using $T = 303$ K).
+
+</Answer>
+
+<Traps>
+
+- Convert °C to K before computing $c$.
+- "Choked at the exit" is the whole trick: $L = L^*$. Don't look for an extension.
+- Anthony and the official solution both used MW = 28.8. With $R = 287$ the answer barely changes ($M_1 = 0.573$).
+
+</Traps>
+
+<Source>official 2025 solution · Anthony's tablet solution PS07-mine</Source>
+
+</Problem>
+
+<Problem id="PS7 P3" title="Supersonic pipe from M = 3 to M = 1.5: length" tags="Fanno, supersonic, subtract L*">
+
+<Statement>
+
+Air enters an insulated pipe of diameter 7.5 cm at Mach 3.0. Friction lowers the Mach number to 1.5 at the pipe exit. With a mean friction factor of 0.002, find the pipe length.
+
+</Statement>
+
+<Think>
+
+Both ends lie on the same Fanno line. Each has its own distance to the (fictitious) sonic point, and the real pipe is the **difference** of the two distances. Use the supersonic rows.
+
+</Think>
+
+<Plan>
+
+$L = L_1^* - L_2^*$, with each $L^* = (4fL^*/D)\cdot D/(4f)$ and $D/(4f) = 0.075/0.008 = 9.375$ m.
+
+</Plan>
+
+<Steps>
+<Step title="1. Distance to sonic from the inlet">
+
+<T>A4 @ M = 3.0: 4fL*/D = 0.52216</T> — <CalcLink calc="fanno" q="in=M&v=3">check</CalcLink>. So $L_1^* = 0.52216 \times 9.375 = 4.895$ m.
+
+</Step>
+<Step title="2. Distance to sonic from the exit">
+
+<T>A4 @ M = 1.5: 4fL*/D = 0.13605</T>. So $L_2^* = 0.13605 \times 9.375 = 1.275$ m.
+
+</Step>
+<Step title="3. Subtract">
+
+$$
+L = L_1^* - L_2^* = 4.895 - 1.275 = 3.62\ \text{m} \qquad (4fL/D = 0.386)
+$$
+
+</Step>
+</Steps>
+
+<Answer>
+
+- $L \approx 3.62$ m (exact 3.620 m).
+
+</Answer>
+
+The sim below has the same pipe ($M_1 = 3$, $4fL/D = 0.386$). The exit lands at $M = 1.5$, and the dashed extension is the missing $L_2^*$:
+
+<FannoDuctSim M1={3} fL={0.386} pb={0.3} />
+
+<Traps>
+
+- Anthony's picture is the right one: draw the pipe, then dash it out to where $M = 1$. $L_1^*$ spans both pieces and $L_2^*$ only the dashed piece.
+- Stay on the supersonic branch for both readings.
+
+</Traps>
+
+<Source>official 2025 solution · Anthony's tablet solution PS07-mine</Source>
+
+</Problem>
+
+<Problem id="PS7 P4" title="Nozzle (A/A* = 3) + duct (L/D = 15): back pressure for a shock at the duct exit" tags="nozzle + Fanno, normal shock, p* constant">
+
+<Statement>
+
+Air flows from a large reservoir at 10 atm and 30 °C through a convergent–divergent nozzle into a constant-area duct. The nozzle exit-to-throat area ratio is 3.0, and the duct length-to-diameter ratio is 15. The nozzle flow is isentropic, the duct flow adiabatic, and the average duct friction factor 0.005. Find the back pressure for which a normal shock appears at the duct exit.
+
+</Statement>
+
+<Think>
+
+This is the "shock at the pipe exit" rung of the [exam template](#/mech430/ch/fanno). A shock at the exit means the flow is **supersonic all the way down the duct**. So: supersonic nozzle exit, check $L \le L^*$, subtract to get the exit state, then apply one normal shock. Since the flow is subsonic just after the shock, $p_b = p_y$.
+
+</Think>
+
+<Plan>
+
+Reservoir → A2 (sup) at $A/A^* = 3$ → ① → A4 run of $4fL/D = 4(0.005)(15) = 0.3$ → ② = x → A3 → y = $p_b$.
+
+<FannoDuctSetupFigure nozzle="cd" reservoir="p₀ = 10 atm | T₀ = 303 K" friction Min={2.64} Mout={0.68} shockAt={0.995} Mx={1.57} My={0.68} inlet="M₁ = 2.64" exit="shock at the exit" back="p_b = ?" duct="L/D = 15, f = 0.005" caption="A supersonic run down the whole duct, then a normal shock standing exactly at the exit plane." />
+
+</Plan>
+
+<Steps>
+<Step title="1. Supersonic nozzle exit">
+
+<T>A2 @ A/A* = 3.0 (sup): M₁ = 2.64, p/p₀ = 0.04711, T/T₀ = 0.41772</T> — <CalcLink calc="isentropic" q="in=A&v=3&b=sup">check</CalcLink>. So $p_1 = 0.4711$ atm and $T_1 = 126.6$ K (exact $M_1 = 2.637$).
+
+</Step>
+<Step title="2. Does the supersonic flow fit? (L vs L*)">
+
+<T>A4 @ M = 2.64: 4fL*/D = 0.46044, p/p* = 0.26818</T>, so $L_1^*/D = 0.46044/0.02 = 23.0$. That is longer than 15, so the flow **can** stay supersonic ✓. Also $p^* = 0.4711/0.26818 = 1.757$ atm.
+
+</Step>
+<Step title="3. Subtract L* to get the duct exit">
+
+$$
+\left(\frac{4fL^*}{D}\right)_2 = 0.46044 - 0.3 = 0.16044
+$$
+
+<T>A4 (sup) @ 4fL*/D = 0.16044: M₂ = 1.57, p/p* = 0.57104</T> — <CalcLink calc="fanno" q="in=fL&v=0.16044&b=sup">check</CalcLink>. So $p_2 = 0.57104 \times 1.757 = 1.003$ atm (exact $M_2 = 1.566$, $p_2 = 1.009$ atm).
+
+</Step>
+<Step title="4. Normal shock at the exit">
+
+$M_x = 1.57$: <T>A3 @ Mx = 1.57: My = 0.6777, py/px = 2.709</T> — <CalcLink calc="normal" q="in=Mx&v=1.57">check</CalcLink>.
+
+$$
+p_b = p_y = 2.709 \times 1.003 = 2.717\ \text{atm}
+$$
+
+</Step>
+</Steps>
+
+<Answer>
+
+- $p_b \approx 2.72$ atm (exact 2.718 atm). After the shock $M \approx 0.68$.
+- Along the way: $p_0$ falls from 10 to 4.09 atm, and $T$ rises from 127 to 203 K.
+
+</Answer>
+
+<TsPathFigure kind="fanno" segments={[[2.64, 1.57]]} shock={[1.57, 0.679]} dots={[{ M: 2.64, label: '1' }, { M: 1.57, label: '2x' }, { M: 0.679, label: '2y' }]} caption="The duct moves state 1 along the supersonic branch of the Fanno line toward M = 1. The shock jumps across to the subsonic branch of the same line (same p*)." />
+
+<NozzlePipeSim AR={3} fL={0.3} pb={0.2717} p0={10} />
+
+<Traps>
+
+- Check $L \le L^*$ **before** subtracting (15 < 23). Otherwise the supersonic flow couldn't reach the exit.
+- The shock *at the exit plane* is special: just downstream it is subsonic, so $p_\text{exit} = p_y = p_b$.
+- $p_0$ falls along the duct even though nothing "dramatic" happens: friction generates entropy.
+
+</Traps>
+
+<Source>official 2025 solution · Anthony's tablet solution PS07-mine</Source>
+
+</Problem>
+
+<Problem id="PS7 P5" title="M = 3 duct (L/D = 60) with p_exit = 50 kPa: exit Mach and shock location" tags="Fanno, shock in duct, iteration, p* invariance">
+
+<Statement>
+
+Air with stagnation pressure 300 kPa and stagnation temperature 30 °C enters a constant-area duct at Mach 3. The duct length-to-diameter ratio is 60. The flow is adiabatic and the average friction factor is 0.0025. If the pressure at the duct exit is 50 kPa, find the exit Mach number and the location of the shock down the duct (in diameters).
+
+</Statement>
+
+<Think>
+
+$4fL/D = 4(0.0025)(60) = 0.6$, but the supersonic $4fL^*/D$ at $M = 3$ is only 0.522. The pipe is **longer than L\***, so there must be a shock inside. Two separate questions:
+- **Exit Mach:** the exit is subsonic and $p_\text{exit} = 50$ kPa. Since **p\* is unchanged by the shock**, $p_\text{exit}/p^*$ gives $M_\text{exit}$ directly, without iterating.
+- **Shock location:** guess, march (supersonic run → shock → subsonic run), compare the exit pressure, and adjust.
+
+</Think>
+
+<Plan>
+
+$p_1$ and $p^*$ from the inlet → $M_\text{exit}$ from $50/p^*$ → iterate $x_s$ until $p_\text{exit} = 50$ kPa.
+
+<FannoDuctSetupFigure friction Min={3} Mout={0.77} shockAt={0.48} Mx={1.8} My={0.616} inlet="M₁ = 3 | p₀ = 300 kPa" exit="p_exit = 50 kPa" duct="L/D = 60, f = 0.0025 (L*/D = 52.2)" caption="L > L*: the shock patches the supersonic and subsonic runs so that the exit sits at 50 kPa." />
+
+</Plan>
+
+<Steps>
+<Step title="1. Inlet state and p*">
+
+<T>A2 @ M = 3: p/p₀ = 0.02722</T>, so $p_1 = 8.166$ kPa. <T>A4 @ M = 3: 4fL*/D = 0.52216, p/p* = 0.21822</T>, so $L_1^*/D = 52.2$, which is less than 60: **a shock is required.**
+
+$$
+p^* = \frac{8.166}{0.21822} = 37.42\ \text{kPa} \quad (\text{the same on both sides of the shock})
+$$
+
+</Step>
+<Step title="2. Exit Mach, directly (Anthony's shortcut)">
+
+$$
+\frac{p_\text{exit}}{p^*} = \frac{50}{37.42} = 1.336 \;\Rightarrow\; \text{A4 (sub): } M_\text{exit} \approx 0.78
+$$
+
+<CalcLink calc="fanno" q="in=p&v=1.336&b=sub">check</CalcLink> (exact 0.775). The official iteration lands at 0.77, consistent with this.
+
+</Step>
+<Step title="3. Iterate the shock position">
+
+For a shock at $x_s/D$: $(4fL^*/D)_x = 0.52216 - 0.01\,x_s/D$ → $M_x$ (A4 sup) → $M_y$ (A3) → $(4fL^*/D)_y$ → subtract the remaining $0.01(60 - x_s/D)$ → $M_2$ → $p_2 = p^*\,(p/p^*)_2$.
+
+| $x_s/D$ | $M_x$ | $M_y$ | $L_y^*/D$ | $M_2$ | $p_2$ table [kPa] | $p_2$ exact [kPa] |
+|---|---|---|---|---|---|---|
+| 20 | 2.06 | 0.5675 | 62.3 | 0.69 | 56.77 ✗ | 57.0 |
+| 25 | 1.89 | 0.5976 | 49.1 | 0.74 | 52.59 | 53.2 |
+| 28 | 1.80 | 0.616 | 43.0 | 0.77 | **50.33 ✓** | 50.8 |
+| 30 | 1.74 | 0.6305 | 38.4 | 0.79 | ≈ 49 | 49.1 |
+
+If $p_2$ is too high, move the shock downstream. That makes the shock weaker and leaves less subsonic length.
+
+</Step>
+</Steps>
+
+<Answer>
+
+- $M_\text{exit} \approx 0.77$–$0.78$ (exact 0.775), straight from $p_\text{exit}/p^* = 1.336$.
+- Shock at $x_s \approx 28D$ (official), or $\approx 30D$ (Anthony and the older-year solution). **Exact: 28.9D**, with $M_x = 1.77 \to M_y = 0.623$.
+
+</Answer>
+
+<FannoShockTrialsPlot />
+
+<FannoDuctSim M1={3} fL={0.6} pb={1.336} />
+
+<Traps>
+
+- **Conflict, 28D vs 30D.** The official solution says 28D (50.33 kPa). Anthony and the old solution say 30D (49–49.2 kPa). The exit pressure depends only weakly on the shock position, so with nearest-row tables both are defensible, and the exact answer 28.9D sits between them. Show the method and the bracketing.
+- **Use p\* for the exit Mach.** Many people iterate for $M_\text{exit}$ too, but you don't need to. That only works because the shock lies on the same Fanno line.
+- **Don't subtract L\* from L here** (60 > 52.2): Higgins's rule.
+- The subsonic $L^*$ after the shock is much longer than the supersonic one (22 → 62 diameters at the 20D guess). That is why the subsonic part can always finish the pipe.
+
+</Traps>
+
+<Source>official 2025 solution · Anthony's tablet solution PS07-mine · old-HW7 P3</Source>
+
+</Problem>
+
+<Problem id="PS7 P6" title="Pipe after an M = 2.25 nozzle: chamber pressure for a matched exit and for a shock at the exit" tags="Fanno, supersonic, back pressure">
+
+<Statement>
+
+Air flows steadily through a pipe of diameter 0.08 m and length 1.5 m. A convergent–divergent nozzle expands the air to Mach 2.25 and 40 kPa at the pipe inlet. The pipe discharges into a large chamber whose back pressure can be varied. With $f = 0.003$, find the chamber pressure if
+(a) there is no shock or expansion in the flow (the pipe exit matches the back pressure);
+(b) there is a normal shock at the exit plane of the pipe.
+
+</Statement>
+
+<Think>
+
+These are two rungs of the back-pressure ladder: "supersonic all the way, perfectly matched" and "shock at the exit". Both need the supersonic exit state, found with subtract-L\* (check $L \le L^*$ first).
+
+</Think>
+
+<Plan>
+
+A4 at $M_1$ → $L_1^*$, $p^*$ → $L_2^* = L_1^* - L$ → $M_2$, $p_2$ → (a) $p_b = p_2$; (b) A3: $p_b = p_2\,(p_y/p_x)$.
+
+</Plan>
+
+<Steps>
+<Step title="1. Inlet: L* and p*">
+
+<T>A4 @ M = 2.25: 4fL*/D = 0.37378, p/p* = 0.34319</T> — <CalcLink calc="fanno" q="in=M&v=2.25">check</CalcLink>.
+
+$$
+L_1^* = 0.37378 \times \frac{0.08}{4(0.003)} = 2.49\ \text{m} > 1.5\ \text{m}\ ✓, \qquad p^* = \frac{40}{0.34319} = 116.6\ \text{kPa}
+$$
+
+</Step>
+<Step title="2. Exit state">
+
+$L_2^* = 2.49 - 1.5 = 0.99$ m, so $4fL_2^*/D = 0.1488$. <T>A4 (sup) @ 4fL*/D = 0.1488: M₂ = 1.53, p/p* = 0.59089</T>. So $p_2 = 0.5909 \times 116.6 = 68.9$ kPa (exact $M_2 = 1.535$, $p_2 = 68.6$ kPa).
+
+</Step>
+<Step title="3. (a) Matched exit">
+
+No shock and no expansion means $p_b = p_2 = 68.7$ kPa.
+
+</Step>
+<Step title="4. (b) Shock at the exit">
+
+<T>A3 @ Mx = 1.53: My = 0.6907, py/px = 2.564</T>. So $p_b = p_y = 2.564 \times 68.7 = 176.3$ kPa (exact 177.1 kPa).
+
+</Step>
+</Steps>
+
+<Answer>
+
+- (a) $p_b \approx 68.7$ kPa.
+- (b) $p_b \approx 176$ kPa.
+
+</Answer>
+
+The sim has the same pipe behind an $A/A^* = 2.096$ nozzle ($p_0 = 462.5$ kPa). Slide $p_b$ between 68.6 and 177 kPa: nothing in the pipe changes.
+
+<NozzlePipeSim AR={2.0964} fL={0.225} pb={0.1483} p0={462.5} />
+
+<Traps>
+
+- Between (a) and (b) the pipe flow is unchanged and supersonic, and the jet adjusts outside through oblique shocks (over-expanded). Below 68.7 kPa, expansion fans form outside. Above 176 kPa, the shock moves into the pipe.
+- Anthony got 68.87 and 176.6 kPa. The tiny difference comes only from rounding $p/p^*$.
+
+</Traps>
+
+<Source>official 2025 solution · Anthony's tablet solution PS07-mine</Source>
+
+</Problem>
+
+<Problem id="PS7 P7" title="With friction, do dp and dV still have opposite signs?" tags="sign analysis, momentum, closure relations">
+
+<Statement>
+
+For steady inviscid flow, $dp + \rho V\,dV = 0$ ensures that changes in velocity and pressure are always inversely related. For steady frictional flow, the momentum equation becomes $dp + \rho V\,dV + \frac{4f}{D_H}\left(\tfrac12\rho V^2\right)dx = 0$, with three terms that might have different signs. Can we still say that changes in velocity and pressure are always inversely related? With friction, can both pressure and velocity increase? Can both decrease? Under what conditions?
+
+</Statement>
+
+<Think>
+
+A sign argument. Momentum alone has three terms, so it is not enough. The trap is to stop there. Bring in the **closure relations** for constant-area, adiabatic, perfect-gas flow (continuity, energy, state). They add a constraint the momentum equation doesn't show.
+
+</Think>
+
+<Plan>
+
+Take flow left to right, so $dx$, $V$, $\rho$, $p$ are positive and the friction term is **always positive**. Go case by case, then close with state + continuity + energy.
+
+</Plan>
+
+<Steps>
+<Step title="1. Both increase? (dp > 0, dV > 0)">
+
+Then all three terms are positive and can't sum to zero. **Impossible.** Friction can only oppose the motion. (An external push could do it, but friction can't.)
+
+</Step>
+<Step title="2. dp > 0">
+
+Then $\rho V\,dV = -dp - (\text{friction})$ is negative, so $dV$ is negative. This is the inverse relation, the same as inviscid flow.
+
+</Step>
+<Step title="3. Both decrease? Momentum alone says maybe">
+
+If $dp$ is negative, then $\rho V\,dV = -dp - (\text{friction})$. This could be negative if $0 > dp > -\frac{4f}{D_H}\frac{\rho V^2}{2}dx$. **Momentum alone does not rule it out.**
+
+</Step>
+<Step title="4. Close the system">
+
+State: $\dfrac{dp}{p} = \dfrac{d\rho}{\rho} + \dfrac{dT}{T}$. Continuity (constant area): $\dfrac{d\rho}{\rho} = -\dfrac{dV}{V}$. Energy (adiabatic): $c_p\,dT = -V\,dV$. Combining:
+
+$$
+\frac{dp}{p} = -\left[\frac{1}{V} + \frac{V}{c_p T}\right] dV, \qquad \text{with the bracket always positive}
+$$
+
+So **$dp$ and $dV$ always have opposite signs**, and case 3 is impossible.
+
+</Step>
+</Steps>
+
+<Answer>
+
+- **Yes.** For steady, adiabatic, constant-area flow of a perfect gas with friction, $p$ and $V$ always change in opposite directions.
+- Both increasing is impossible (from momentum alone). Both decreasing looks allowed by momentum, but continuity, energy and state exclude it. It could only happen with heat transfer or area change.
+
+</Answer>
+
+<FannoSignsFigure />
+
+<Traps>
+
+- **Anthony's mistake:** he concluded "No, we cannot make the statement". He correctly ruled out both increasing, but never tested both decreasing against the closure relations. The extra equations are what settle it.
+- Friction accelerates subsonic flow (p ↓, V ↑) and decelerates supersonic flow (p ↑, V ↓). In both cases the signs are opposite.
+
+</Traps>
+
+<Source>official 2025 solution · Anthony's tablet solution PS07-mine</Source>
+
+</Problem>

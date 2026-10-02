@@ -1,0 +1,136 @@
+<p className="eyebrow">Chapter 9 · Natural convection · Final</p>
+
+# Natural (free) convection
+
+<div className="lede">
+
+No fan, no pump, yet air still moves over a hot radiator, a coffee cup, a steam pipe and a laptop. The fluid next to a hot surface warms, becomes lighter, and **rises**; cooler fluid slides in to replace it. Gravity does the pumping, and the "pump" is the density difference. This chapter is the same four-step routine as before, with one change: the dimensionless group that decides the regime is the **Rayleigh number** $Ra$, which replaces $Re$.
+
+</div>
+
+<Idea title="The 30-second version">
+
+1. Film temperature $T_f=(T_s+T_\infty)/2$ (in kelvin for gases, since $\beta=1/T_f$ for an ideal gas).
+2. $Ra_L=\dfrac{g\beta\,\vert T_s-T_\infty\vert L_c^3}{\nu\alpha}=Gr_L\,Pr$ with $\beta=\dfrac1{T_f}$ (ideal gas), $L_c$ from the geometry.
+3. Find $Nu=f(Ra,Pr)$ from the table of correlations: vertical plate, horizontal plate (up or down), horizontal cylinder, sphere, enclosure.
+4. $h=Nu\,k/L_c$, then $\dot Q=hA_s(T_s-T_\infty)$, **plus radiation** (comparable in size for gases!).
+5. $Ra<10^9$: laminar boundary layer; $Ra>10^9$ (vertical plate): turbulent.
+
+</Idea>
+
+## The physical mechanism: buoyancy
+
+A fluid element that is warmer than its surroundings is less dense (for most fluids), so a net upward **buoyancy force** acts on it: $\rho g$ weighs the cold fluid, the warm one weighs less. The difference between the two drives a flow. The strength of the effect is the **volume expansion coefficient**
+$$\beta=-\frac1\rho\left(\frac{\partial\rho}{\partial T}\right)_P\approx-\frac1\rho\frac{\rho_\infty-\rho}{T_\infty-T},$$
+which for an **ideal gas** is simply $\beta=1/T$ (kelvin). For water $\beta\approx2\times10^{-4}$ K⁻¹ at 20 °C (much smaller than air's $3.4\times10^{-3}$), so water at the same $\Delta T$ is driven less per unit volume, but its much lower $\nu$ and $\alpha$ raise $Ra$ anyway.
+
+On a **vertical hot plate** the layer begins as laminar at the bottom (thin, $h$ large), thickens as it rises ($h\propto x^{-1/4}$, falling), and becomes turbulent above $Ra_x\approx10^9$ (where $h$ becomes roughly constant, $h\propto x^0$). Velocity is zero at the wall (no-slip) **and** zero far away; it peaks within the layer. That is a difference from forced convection, where the free-stream velocity is imposed.
+
+## The dimensionless numbers
+
+- **Grashof number** $Gr_L=\dfrac{g\beta(T_s-T_\infty)L_c^3}{\nu^2}$: buoyancy over viscous force (the natural-convection analogue of $Re^2$).
+- **Rayleigh number** $Ra_L=Gr_L\,Pr=\dfrac{g\beta(T_s-T_\infty)L_c^3}{\nu\alpha}$: the product that appears in all the correlations.
+- The **Gr/Re² test** for mixed convection: $Gr/Re^2\ll1$ (below about 0.1) means forced convection only; $\gg1$ (above about 10) means natural only; in between, both matter.
+
+$Ra\sim L_c^3\,\Delta T$: a thirty-fold change in size changes $Ra$ by $27\,000$, so small objects (wires, electronics) have small $Ra$ and thick laminar layers, and big walls have huge $Ra$ and turbulence.
+
+## Correlations (all with properties at $T_f$)
+
+| Geometry | $L_c$ | Correlation | Range |
+|---|---|---|---|
+| Vertical plate/cylinder (all $Ra$) | $L$ (height) | $Nu=\left\{0.825+\dfrac{0.387Ra^{1/6}}{[1+(0.492/Pr)^{9/16}]^{8/27}}\right\}^2$ | any $Ra$ |
+| Vertical plate, laminar | $L$ | $Nu=0.68+\dfrac{0.67Ra^{1/4}}{[1+(0.492/Pr)^{9/16}]^{4/9}}$ | $Ra<10^9$ |
+| Horizontal plate, hot face **up** (or cold face down) | $A_s/p$ | $Nu=0.54Ra^{1/4}$; $Nu=0.15Ra^{1/3}$ | $10^4$–$10^7$; $10^7$–$10^{11}$ |
+| Horizontal plate, hot face **down** (or cold face up) | $A_s/p$ | $Nu=0.27Ra^{1/4}$ | $10^5$–$10^{11}$ |
+| Horizontal cylinder | $D$ | $Nu=\left\{0.6+\dfrac{0.387Ra^{1/6}}{[1+(0.559/Pr)^{9/16}]^{8/27}}\right\}^2$ | $Ra\le10^{12}$ |
+| Sphere | $D$ | $Nu=2+\dfrac{0.589Ra^{1/4}}{[1+(0.469/Pr)^{9/16}]^{4/9}}$ | $Ra\le10^{11}$, $Pr\ge0.7$ |
+
+**Why "hot face up" is better:** the hot air rising from a plate facing up leaves freely; under a plate facing down it is trapped against the surface and has to slide sideways. So $h$ is higher (0.54 vs 0.27): in the worked example below, **up is twice as good**.
+
+**Inclined plates** (angle $\theta$ from the vertical, $0<\theta<60^\circ$): use the vertical plate equation with $g\to g\cos\theta$ in $Ra$.
+
+Older textbooks give simpler single-power forms $Nu=C\,Ra^n$ with a table of $C$ and $n$; the Churchill–Chu forms above are the more accurate versions. Use whichever the formula sheet provides.
+
+### Enclosures (the air gap in a window or a wall)
+
+In a gap of thickness $L$ between a hot and a cold surface, use $Ra_L$ with the **gap** as length and $\Delta T=T_1-T_2$. The result is an **effective conductivity** $k_{eff}=Nu\,k$, so $\dot Q=k_{eff}A\dfrac{T_1-T_2}L=Nu\cdot(\text{conduction value})$.
+
+- $Ra<1708$: no motion, pure conduction, $Nu=1$. (Stable layering: warm above cold.)
+- Horizontal gap heated from below (unstable): cells form; $Nu=0.195Ra^{1/4}$ ($10^4<Ra<4\times10^5$), $Nu=0.068Ra^{1/3}$ (above). Heated from above: stable, $Nu=1$.
+- **Vertical gap** (window): the air rises on the hot side and falls on the cold side. $Nu=0.42\,Ra^{1/4}Pr^{0.012}(H/L)^{-0.3}$ for $10<H/L<40$ and $10^4<Ra<10^7$; $Nu=0.046Ra^{1/3}$ for $10^6<Ra<10^9$ (aspect ratio $1$–$40$).
+- **Design insight:** widening the gap increases $Ra\propto L^3$, so the air starts to circulate, and beyond a point does not insulate more. A double-pane window gap of 1–2 cm is optimal for air. *(Argon has a lower conductivity than air, so an argon-filled gap insulates a little better.)*
+
+### Heat sinks and fin arrays (Elenbaas)
+
+For vertical parallel plates (a finned heat sink with natural convection), the boundary layers on neighbouring fins merge if the spacing is too small. The **optimum fin spacing** that maximizes the heat from the whole array is $S_{opt}\approx2.7\,L/Ra_L^{1/4}$ (Cengel's formula with $Ra$ based on $L$). Too wide: few fins. Too narrow: the layers choke the flow.
+
+<LabLink lab="plume">Natural-convection plume lab: see the buoyant layer and $h(x)$ on a heated plate</LabLink>
+<ToolLink tool="natural">Natural-convection calculator: choose the geometry and get $Ra$, $Nu$, $h$</ToolLink>
+
+## Natural convection plus radiation
+
+At room temperature, radiation and natural convection from the same surface are **comparable** ($h_{conv}\approx3$–$8$ W/m²K and $h_{rad}\approx5$–$7$ W/m²K for a body at $\varepsilon\approx0.9$). Whenever the surface has high emissivity and the surroundings are cool, the total heat loss is the sum of both:
+$$\dot Q=hA_s(T_s-T_\infty)+\varepsilon\sigma A_s(T_s^4-T_{surr}^4).$$
+Ignoring radiation underestimates a steam pipe's loss by a factor of two (see Example 2). A **low-emissivity** coating (bright foil, $\varepsilon\approx0.05$) kills the second term, which is how thermos flasks and double-glazed low-E windows work.
+
+<Trap title="Natural convection: the three most common errors">
+
+1. Using $\beta=1/T$ with $T$ in °C. Always kelvin.
+2. Wrong characteristic length: **vertical plate: height**; **cylinder: diameter**; **horizontal plate: $A_s/p$** (for a square of side $a$ that is $a/4$).
+3. Forgetting that the horizontal plate's **orientation** (hot face up vs down) changes the correlation.
+
+</Trap>
+
+## Worked example 1: a vertical wall of a hot oven
+
+A 2 m tall wall is at 40 °C in still 20 °C air. Find the convection coefficient and the heat flux.
+
+1. $T_f=30$ °C $=303.15$ K. Air: $k=0.0266$ W/mK, $\nu=1.605\times10^{-5}$ m²/s, $\alpha=2.27\times10^{-5}$, $Pr=0.707$, $\beta=1/303.15=3.30\times10^{-3}$ K⁻¹.
+2. $Ra=\dfrac{g\beta\Delta TL^3}{\nu\alpha}=\dfrac{9.81(3.30\times10^{-3})(20)(8)}{(1.605\times10^{-5})(2.27\times10^{-5})}=1.42\times10^{10}$. Greater than $10^9$: **turbulent**; use the all-$Ra$ equation.
+3. $Nu=\{0.825+0.387(1.42\times10^{10})^{1/6}/[1+(0.492/0.707)^{9/16}]^{8/27}\}^2=\mathbf{281.8}$.
+4. $h=Nu\,k/L=281.8(0.0266)/2=\mathbf{3.75\ W/m^2K}$, and $q''=3.75(20)=\mathbf{75\ W/m^2}$ (a 2 m wall of width 3 m loses 450 W by convection).
+
+*Physical check: still air would give $Nu=1$ ($h=0.013$). Free convection makes it 280 times better, but $h=3.75$ is still tiny compared with forced convection (10–100).*
+
+## Worked example 2: a bare steam pipe (convection plus radiation)
+
+A horizontal pipe of $D=10$ cm and surface temperature 100 °C is in room air at 20 °C; $\varepsilon=0.8$, walls at 20 °C. Heat loss per metre?
+
+1. $T_f=60$ °C: $k=0.0288$, $\nu=1.897\times10^{-5}$, $Pr=0.703$, $\beta=1/333.15$.
+2. $Ra_D=\dfrac{9.81(1/333.15)(80)(0.1)^3}{(1.897\times10^{-5})(2.697\times10^{-5})}=4.61\times10^6$.
+3. Churchill–Chu (cylinder): $Nu=22.5$; $h=22.5(0.0288)/0.1=\mathbf{6.47\ W/m^2K}$.
+4. Convection: $\dot Q'=hA'(\Delta T)=6.47(\pi\cdot0.1)(80)=163$ W/m.
+5. Radiation: $\dot Q'=0.8(5.67\times10^{-8})(\pi\cdot0.1)(373.15^4-293.15^4)=171$ W/m, $h_{rad}=6.8$ W/m²K.
+6. **Total $=334$ W/m.** Radiation is **51 %** of the loss: ignoring it halves the answer.
+
+*This is why steam pipes are insulated and wrapped in shiny foil: the foil cuts the radiation term.*
+
+## Worked example 3: hot plate, face up or face down
+
+A square plate $0.5\times0.5$ m at 80 °C sits in 20 °C air. Compare heat loss by natural convection from the **upper face** (hot face up) with the **lower face** (hot face down).
+
+1. $L_c=A_s/p=a^2/(4a)=0.125$ m. $T_f=50$ °C: $k=0.0281$, $\nu=1.797\times10^{-5}$, $\alpha=2.552\times10^{-5}$, $\beta=1/323.15$; $\Delta T=60$.
+2. $Ra=\dfrac{9.81(3.095\times10^{-3})(60)(0.125)^3}{(1.797\times10^{-5})(2.552\times10^{-5})}=7.76\times10^6$ (just below $10^7$).
+3. Face up: $Nu=0.54Ra^{1/4}=28.5$, $h=28.5(0.0281)/0.125=\mathbf{6.40}$ W/m²K, $\dot Q=6.40(0.25)(60)=\mathbf{96}$ W.
+4. Face down: $Nu=0.27Ra^{1/4}=14.2$, $h=\mathbf{3.20}$, $\dot Q=\mathbf{48}$ W. 
+
+*Face up loses twice as much heat: this is why a CPU board is cooled better lying flat with the heat sink on top than with it hanging underneath.*
+
+## Worked example 4: the air gap in a double-pane window
+
+Two panes $H=0.6$ m tall are $L=2$ cm apart, at 18 °C and 6 °C. $T_f=12$ °C: $k=0.0253$, $\nu=1.438\times10^{-5}$, $Pr=0.709$.
+
+1. $Ra_L=\dfrac{9.81(1/285.15)(12)(0.02)^3}{(1.438\times10^{-5})(2.029\times10^{-5})}=1.13\times10^4$ (above 1708: air does move). $H/L=30$.
+2. $Nu=0.42Ra^{1/4}Pr^{0.012}(H/L)^{-0.3}=0.42(10.31)(1.004)(0.360)=1.56$ (the circulation raises the heat flow 56 % above pure conduction).
+3. $q''=Nu\,\dfrac{k\Delta T}L=1.56\dfrac{0.0253(12)}{0.02}=\mathbf{23.6\ W/m^2}$ (conduction alone: 15.2 W/m²). Plus radiation across the gap (see Chapter 13): for glass with $\varepsilon=0.84$ that is far larger, about 46 W/m², hence low-E coatings.
+
+<Examined>
+Natural convection appears on the final as a plate/cylinder/enclosure problem, often with radiation. Only the vertical-plate and horizontal-plate/cylinder correlations are likely to be on the sheet; **know how to find $L_c$ and $\beta$**.
+</Examined>
+
+## Check yourself
+
+1. Ice water at 0 °C in a glass at 20 °C air: what is $\beta$ of air and the film temperature in kelvin? *($1/283.15$; $T_f=283.15$ K.)*
+2. A 10 cm sphere at 60 °C in 20 °C air: compute $Ra$ with $\nu=1.7\times10^{-5}$, $\alpha=2.4\times10^{-5}$. *($Ra=9.81(1/313)(40)(10^{-3})/(4.08\times10^{-10})=3.07\times10^6$.)*
+3. Why is $Nu=1$ for $Ra<1708$ in a horizontal gap heated from below? *(Viscosity suppresses the motion; heat crosses by conduction.)*
+4. Doubling the height of a vertical wall changes $h$ by what factor in the turbulent regime? *(About 1: $h\propto L^0$.)*

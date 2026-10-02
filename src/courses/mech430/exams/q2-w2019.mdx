@@ -1,0 +1,394 @@
+<p className="eyebrow">Quiz 2 · Winter 2019 · 80 min · closed book, tables provided</p>
+
+# Quiz 2, Winter 2019
+
+<p className="lede">Three problems: starting a supersonic diffuser (25 pts), rocket thrust at sea level vs space (25 pts), and the classic nozzle + Fanno pipe with a shock (50 pts). Class average 71.8 % (median 73 %, standard deviation 18.6 %). The quiz said: "You do not need to interpolate in the tables; just use nearest value."</p>
+
+<Callout kind="note" title="Before you start">
+
+**Topics tested**
+- Inlet starting: overspeeding, and opening the throat. See [Ch. 9 Pitot, inlets & wind tunnels](#/mech430/ch/inlets).
+- Rocket thrust and the pressure term. See [Ch. 6 Nozzles & rockets](#/mech430/ch/nozzles).
+- Nozzle + Fanno pipe with a normal shock, and a choked exit. See [Ch. 10 Fanno flow](#/mech430/ch/fanno) and [Ch. 8 Flow with shocks](#/mech430/ch/shocks-in-flow).
+
+**Recipes used:** R1 (rocket thrust ratios) and R2 (nozzle + Fanno pipe) on the [exam recipes page](#/mech430/page/recipes).
+
+**Tables:** A2 isentropic, A3 normal shock, A4 Fanno. γ = 1.4 throughout.
+
+</Callout>
+
+<Problem id="W2019 P1" title="Supersonic diffuser: swallowing the shock (25 pts)" tags="inlet starting, normal shock, A2, A3">
+
+<Statement>
+
+A converging-diverging diffuser is designed to decelerate air isentropically from a Mach number of 1.5 to a subsonic state after the throat.
+
+(a) If the throat area is fixed, to what Mach number must the flow be accelerated in order to swallow the shock?
+
+(b) If the throat area can be increased, what percent increase in throat area is required for the shock to be swallowed with Mach 1.5 flow entering the diffuser?
+
+</Statement>
+
+<Think>
+
+The words "diffuser", "designed for M = 1.5" and "swallow the shock" mean this is an **inlet-starting** problem ([Ch. 9](#/mech430/ch/inlets), recipe §1.6). There is one picture to keep in mind. On the edge of starting, the normal shock sits **exactly on the inlet lip**, and the subsonic flow behind it **just chokes at the throat**: $A^*_y = A_t$. Everything follows from that one identity.
+
+- (a) The geometry is fixed, so the area ratio is fixed. Find the free-stream Mach number that makes the post-shock flow fit through the throat.
+- (b) The Mach number is fixed. The stagnation-pressure loss across the shock grows $A^*$, so the throat must grow by $A^*_y/A^*_x = p_{0x}/p_{0y}$.
+
+</Think>
+
+<Plan>
+
+Design: $M = 1.5 \to A_{in}/A_t$ (A2). Then:
+- (a) $A_{in}/A^*_y = A_{in}/A_t$ → A2 **subsonic** → $M_y$ → A3 inverse → $M_x$.
+- (b) $M_x = 1.5$ → A3 → $p_{0y}/p_{0x}$ → $A_{t,new}/A_t = p_{0x}/p_{0y}$.
+
+Click through the four states of the diffuser below: design, overspeed, opened throat, and unstarted.
+
+<InletSection3D M={1.5} />
+
+</Plan>
+
+<Steps>
+<Step title="1. The design area ratio">
+
+Isentropic and shock-free, sonic at the throat, so the throat **is** $A^*$:
+
+$$
+\frac{A_{in}}{A_t} = \frac{A}{A^*}\bigg|_{M=1.5}
+$$
+
+<T>A2 @ M = 1.50: A/A* = 1.1762</T> (exact 1.17617) — <CalcLink calc="isentropic" q="in=M&v=1.5">check</CalcLink>
+
+As a fraction of the inlet, the throat is $1/1.1762 = 0.850\,A_{in}$ (Anthony's framing).
+
+</Step>
+<Step title="2. (a) Shock on the lip: the post-shock flow must just fit the throat">
+
+With the shock at the inlet, station $y$ is just behind it, and the subsonic flow chokes at the fixed throat, so $A^*_y = A_t$:
+
+$$
+\frac{A_{in}}{A^*_y} = \frac{A_{in}}{A_t} = 1.1762
+$$
+
+The flow behind a normal shock is subsonic, so read the **subsonic** branch:
+
+<T>A2 @ A/A* = 1.1766 (sub): M_y = 0.61</T> (exact 0.6104) — <CalcLink calc="isentropic" q="in=A&v=1.1762&b=sub">check</CalcLink>
+
+</Step>
+<Step title="3. (a) Which upstream Mach number gives that M_y?">
+
+Inverse lookup in the normal-shock table:
+
+<T>A3 @ M_y = 0.6099: Mₓ = 1.83</T> (exact 1.828) — <CalcLink calc="normal" q="in=My&v=0.61">check</CalcLink>
+
+So the flow must be **overspeeded to M = 1.83**. Once the shock has been swallowed, you can slow back down to M = 1.5 with the shock sitting at the throat, where it is weakest.
+
+</Step>
+<Step title="4. (b) Keep M = 1.5 and open the throat">
+
+The shock is still on the lip at $M_x = 1.5$. The new throat must pass the post-shock flow: $A_{t2} = A^*_y$. Because $A^*$ is inversely proportional to $p_0$ at fixed ṁ and $T_0$:
+
+$$
+\frac{A^*_x}{A^*_y} = \frac{p_{0y}}{p_{0x}}
+$$
+
+<T>A3 @ Mₓ = 1.50: p₀ᵧ/p₀ₓ = 0.9298, M_y = 0.7011</T> — <CalcLink calc="normal" q="in=Mx&v=1.5">check</CalcLink>
+
+</Step>
+<Step title="5. (b) The throat increase">
+
+Official route: $A_{in}/A_{t2} = (A_{in}/A^*_x)(A^*_x/A^*_y) = 1.1762 \times 0.9298 = 1.0936$, so
+
+$$
+\frac{A_{t2}}{A_t} = \frac{1.1762}{1.0936} = 1.0755
+$$
+
+Shortcut, with one lookup: $A_{t2}/A_t = A^*_y/A^*_x = p_{0x}/p_{0y} = 1/0.9298 = 1.0755$. The throat grows from 85.0 % to 91.4 % of the inlet area.
+
+</Step>
+</Steps>
+
+<Answer>
+
+- (a) Overspeed to $M_x = 1.83$.
+- (b) Increase the throat area by **7.55 %** ($A_{t2}/A_t = 1.0755$).
+
+</Answer>
+
+<InletStartMap M={1.5} />
+
+<Traps>
+
+- In (a) the identity is $A^*_y = A_t$, **not** $A^*_x$. The flow behind the shock is subsonic, so read A2 on the **subsonic** branch.
+- In (b) the free stream stays at 1.5. Only the loss of $p_0$ across the shock changes $A^*$.
+- Nearest table values are fine. The quiz says so.
+- **Exam-speed version (Anthony's minimum writing):** "(a) fixed area: M = 1.5 → A/A* = 1.1762 → $M_y$ = 0.61 → $M_x$ = 1.83. (b) M = 1.5 shock → $p_{0y}/p_{0x}$ = 0.9298 → $p_{0x}/p_{0y}$ = 1.0755, so the throat must increase by 7.55 %."
+
+</Traps>
+
+<Source>official W2019 solutions (TA, pp. 3–4) · Anthony's "Past midterm 2019" pp. 1–3 and both minimum-writing passes</Source>
+
+</Problem>
+
+<Problem id="W2019 P2" title="Rocket thrust: sea level vs space (25 pts)" tags="rocket, thrust, isentropic">
+
+<Statement>
+
+The supersonic nozzle of a rocket motor is designed to operate at optimal conditions at sea level ($p_{amb}$ = 101.3 kPa). The chamber pressure and temperature are 1000 kPa and 2000 K.
+
+(a) Determine the **ratio of thrust at sea level to the thrust in outer space** ($p_{amb} = 0$) if the area ratio of the nozzle is **fixed**. Assume the rocket exhaust gases behave as a perfect gas with γ = 1.4 and R = 300 J/kg·K.
+
+(b) Determine the ratio of **thrust at sea level** (with the same nozzle as part (a)) to **the thrust in outer space** ($p_{amb}$ = 0) if the **area ratio of the nozzle in space is infinite**.
+
+You may use the "Thrust from Rocket Nozzle" formula on the equation sheet.
+
+</Statement>
+
+<Think>
+
+A thrust **ratio** with no area given means: work **per unit mass flow** and let ṁ cancel (recipe R1). "Optimal at sea level" means **matched expansion**, $p_e = p_{amb}$, so the pressure term is zero at sea level.
+
+- With the same nozzle in space, the supersonic nozzle flow does not know about the outside, so $M_e$, $V_e$ and $p_e$ are unchanged. Only the pressure term $p_e A_e$ appears.
+- With an infinite area ratio, $p_e \to 0$, and $V_e \to V_{max} = \sqrt{2\gamma R T_0/(\gamma-1)}$. ṁ is unchanged: same chamber, same throat.
+
+</Think>
+
+<Plan>
+
+$$
+F = \dot m V_e + (p_e - p_{amb})A_e
+\quad\Rightarrow\quad
+\frac{F}{\dot m} = V_e + \frac{p_e - p_{amb}}{\rho_e V_e}
+$$
+
+$p_e = p_{amb}$ → $M_e$ → $T_e$ → $V_e$ → $p_e/(\rho_e V_e) = RT_e/V_e$ → two ratios.
+
+<RocketSection3D />
+
+</Plan>
+
+<Steps>
+<Step title="1. Exit Mach number for matched expansion">
+
+$p_0/p_e = 1000/101.3 = 9.872$:
+
+$$
+M_e = \sqrt{\frac{2}{\gamma-1}\left[\left(\frac{p_0}{p_e}\right)^{(\gamma-1)/\gamma} - 1\right]} = 2.149
+$$
+
+<T>A2 @ p/p₀ = 0.1013: M ≈ 2.15, A/A* ≈ 1.92</T> — <CalcLink calc="isentropic" q="in=p&v=0.1013">check</CalcLink>
+
+</Step>
+<Step title="2. Exit temperature and velocity">
+
+$$
+T_e = \frac{T_0}{1 + 0.2 M_e^2} = \frac{2000}{1.9236} = 1039.7\ \text{K}
+$$
+
+$$
+V_e = \sqrt{\frac{2\gamma}{\gamma-1} R T_0 \left[1 - \left(\frac{p_e}{p_0}\right)^{(\gamma-1)/\gamma}\right]} = M_e\sqrt{\gamma R T_e} = 1420.1\ \text{m/s}
+$$
+
+</Step>
+<Step title="3. (a) Thrust per unit mass flow, at sea level and in space">
+
+At sea level the pressure term is zero: $F_{sea}/\dot m = V_e = 1420.1$ m/s.
+
+In space, with the same nozzle, the pressure term is added. Anthony's trick avoids ever needing $A_e$:
+
+$$
+\frac{p_e}{\rho_e V_e} = \frac{R T_e}{V_e} = \frac{300 \times 1039.7}{1420.1} = 219.65\ \text{m/s}
+$$
+
+$$
+\frac{F_{sea}}{F_{space}} = \frac{1420.06}{1420.06 + 219.65} = 0.866
+$$
+
+The official solution works per unit $A_e$ instead: $\rho_e = 0.3248$ kg/m³, $\dot m/A_e = 461.2$ kg/(m²·s), $F_{sea}/A_e = 6.549\times10^5$ Pa, and $F_{space}/A_e = 6.549\times10^5 + 1.013\times10^5 = 7.562\times10^5$ Pa. The ratio is the same.
+
+</Step>
+<Step title="4. (b) Infinite area ratio">
+
+$p_e \to 0$, so the bracket in $V_e$ becomes 1:
+
+$$
+V_{max} = \sqrt{\frac{2\gamma}{\gamma-1}RT_0} = \sqrt{7 \times 300 \times 2000} = 2049.4\ \text{m/s}
+$$
+
+$$
+\frac{F_{sea}}{F_{space,\infty}} = \frac{1420.06}{2049.39} = 0.693
+$$
+
+</Step>
+</Steps>
+
+<Answer>
+
+- (a) $F_{sea}/F_{space} = 0.866$ (86.6 %).
+- (b) $F_{sea}/F_{space,\infty} = 0.693$ (69.3 %).
+
+</Answer>
+
+<RocketThrustSim />
+
+<Traps>
+
+- For the fixed nozzle, $p_e$ does **not** change in space. Only the $(p_e - p_{amb})A_e$ term changes.
+- For the infinite area ratio, ṁ is unchanged. Only $V_e \to V_{max}$.
+- $A_e$ is never given. Divide it out, or work per unit ṁ.
+- In the sim above, set $A_e/A_t$ to about 1.92 and read the "sea-level / vacuum thrust" line: 0.866.
+- **Exam-speed version:** "$V_e$ = 1420.06 → M = 2.15 → $T_e$ = 1039.72 → $RT/V$ = 219.65 → (a) 1420.06/(1420.06 + 219.65) = 0.866. (b) 1420.06/2049.39 = 0.693."
+
+</Traps>
+
+<Source>official W2019 solutions (TA, pp. 4–5) · Anthony's minimum-writing notes, both passes</Source>
+
+</Problem>
+
+<Problem id="W2019 P3" title="Nozzle + Fanno pipe: exit state and shock location (50 pts)" tags="Fanno, normal shock, choked exit, iteration">
+
+<Statement>
+
+A reservoir at 10 bar feeds air into a converging-diverging nozzle connected to a pipe 1.5 m long and 0.1 m in diameter. The pipe cross-sectional area is 5 times the nozzle throat area. The pipe exhausts into a tank maintained at 1 bar. The pipe has a friction coefficient f = 0.02. Neglect friction in the nozzle.
+
+(a) Find the Mach number and pressure at the exit of the pipe.
+
+(b) If a shock wave is present, determine its location.
+
+</Statement>
+
+<Think>
+
+A reservoir, a C-D nozzle, a pipe with friction and a back pressure: this is **recipe R2**, the most-examined problem in the course. Recognise it in 30 seconds and set up the hypothesis ladder:
+
+1. Subsonic after the throat? (It justifies choking.)
+2. Supersonic all the way? Compare $4fL/D$ with $4fL^*/D$.
+3. Shock at the pipe entrance? Compare $p_{exit}$ with $p_b$.
+4. Shock inside the pipe: iterate.
+
+The twist in this problem is at step 4. The back pressure (1 bar) is **below** the $p^*$ of the Fanno line (about 1.02 bar), so the exit **must be choked** and $p_{exit} \neq p_b$. You stop matching $p_b$ and instead look for the shock position where the pipe behind the shock is exactly $L^*$ long.
+
+</Think>
+
+<Plan>
+
+$4fL/D = 4(0.02)(1.5)/0.1 = 1.2$. Every guess is checked against this number.
+
+0 reservoir → t (M = 1) → ① pipe inlet ($A/A^* = 5$) → x | y (shock) → ② pipe exit.
+
+<NozzlePipeSim AR={5} fL={1.2} pb={0.1} p0={10} />
+
+</Plan>
+
+<Steps>
+<Step title="1. Friction length and the subsonic branch (does it choke?)">
+
+$4fL/D = 1.2$. Try subsonic after the throat:
+
+<T>A2 @ A/A* = 5 (sub): M = 0.12</T> (exact 0.117) and <T>A4 @ M = 0.12: 4fL*/D = 45.408</T> — <CalcLink calc="isentropic" q="in=A&v=5&b=sub">check</CalcLink>
+
+$45.408 - 1.2 = 44.2$, which is almost the same, so the Mach number barely changes along the pipe and $p_{exit} \approx p_{in} \approx 9.9$ bar ($p/p_0 = 0.99$). That is far above 1 bar. "So the flow must have shocked and gone supersonic." The throat is choked.
+
+</Step>
+<Step title="2. Supersonic all the way?">
+
+<T>A2 @ A/A* = 5 (sup): M = 3.2, p/p₀ = 0.02023 → p = 0.2023 bar</T> (exact M = 3.175) — <CalcLink calc="isentropic" q="in=A&v=5&b=sup">check</CalcLink>
+
+<T>A4 @ M = 3.0 (row the official used): 4fL*/D = 0.522</T> (exact at 3.175: 0.547) — <CalcLink calc="fanno" q="in=M&v=3.2">check</CalcLink>
+
+$0.522 < 1.2$: the pipe is longer than $L^*$, so supersonic flow cannot reach the exit. There must be a shock.
+
+</Step>
+<Step title="3. Try a shock at the pipe entrance">
+
+The nozzle-exit state is the $x$ state: $M_x = 3.2$, $p_x = 0.2023$ bar.
+
+<T>A3 @ Mₓ = 3.2: M_y = 0.4643, p_y/pₓ = 11.78</T> → $p_y = 2.383$ bar — <CalcLink calc="normal" q="in=Mx&v=3.2">check</CalcLink>
+
+<T>A4 @ M = 0.46: 4fL*/D = 1.4509, p/p* = 2.3326</T> → $p^* = 2.383/2.3326 = 1.02$ bar — <CalcLink calc="fanno" q="in=M&v=0.46">check</CalcLink>
+
+$1.4509 > 1.2$, so the flow fits. At the exit, $4fL^*/D = 1.4509 - 1.2 = 0.2509$:
+
+<T>A4 @ 4fL*/D = 0.2509 (sub): M = 0.68, p/p* = 1.5413</T> → $p_{exit} = 1.02 \times 1.5413 = 1.57$ bar — <CalcLink calc="fanno" q="in=fL&v=0.2509&b=sub">check</CalcLink>
+
+The exit is subsonic, so it would have to equal $p_b = 1$ bar. It doesn't. 1.57 bar is too high, so we are "sucking harder" and the shock moves downstream into the pipe.
+
+</Step>
+<Step title="4. The key observation: p_b is below p*">
+
+$p_b = 1$ bar is less than $p^* = 1.02$ bar. Any subsonic Fanno exit has $p \geq p^*$, so it can never equal 1 bar. **The exit must be choked**: $M_{exit} = 1$ and $p_{exit} = p^*$.
+
+The target is no longer $p_{exit} = p_b$. It is the shock position where **the pipe behind the shock is exactly $L^*$ long**:
+
+$$
+\frac{4fL^*}{D}\bigg|_{M_y} = 1.2 - \frac{4fx_s}{D}
+$$
+
+If the $L^*$ behind the shock is shorter than the pipe that remains, the shock is too far downstream. If it is longer, the shock is too far upstream.
+
+</Step>
+<Step title="5. Iterate the shock position (the official table)">
+
+At each guess, $4fL^*_x/D = 0.522 - \text{guess}$ → A4 supersonic → $M_x$ → A3 → $M_y$ → A4 → compare with the remaining $1.2 - \text{guess}$.
+
+| Guess $4fx_s/D$ | $0.522 -$ guess | $M_x$ (A4) | $M_y$ (A3) | $4fL^*/D$ at $M_y$ | Remaining | Verdict |
+|---|---|---|---|---|---|---|
+| 0.2 | 0.322 | 2.06 | 0.5675 | 0.635 | 1.0 | $L^*$ too short: move upstream |
+| 0.1 | 0.422 | 2.45 | 0.5179 | 0.917 | 1.1 | still too short |
+| 0.05 | 0.472 | 2.70 | 0.4956 | 1.06 | 1.15 | still too short |
+| 0.02 | 0.502 | 2.87 | 0.4833 | 1.245 (exact 1.214) | 1.18 | longer: the shock is upstream of this |
+
+So $0.02 < 4fx_s/D < 0.05$, which is $0.025\text{ m} < x_s < 0.063$ m. Higgins's red note: "we are finding $p^*$ doesn't change! AND it is very close to $p_{back}$."
+
+<ShockIterationPlot AR={5} fL={1.2} mode="fit" tableRef={0.522} xMax={0.25} guesses={[{ x: 0.2, label: '0.2' }, { x: 0.1, label: '0.1' }, { x: 0.05, label: '0.05' }, { x: 0.02, label: '0.02' }]} />
+
+</Step>
+<Step title="6. Why p* never changes: the exact answer is 1.057 bar">
+
+A normal shock in a Fanno duct joins two points on the **same Fanno line**: the same $\dot m/A$ and the same $T_0$. And $p^*$ depends only on those two:
+
+$$
+p^* = \rho^* V^* \frac{R T^*}{V^*} = \frac{\dot m}{A}\sqrt{\frac{R T^*}{\gamma}}, \qquad T^* = \frac{2T_0}{\gamma+1}
+$$
+
+So $p^*$ is the **same on both sides of the shock, wherever the shock sits**. With the choked throat, $\dot m/A_{pipe} = (\dot m/A_t)(A_t/A_{pipe})$, which gives a one-line result:
+
+$$
+p^* = 0.5283\,p_0\,\frac{A_t}{A_{pipe}} = 0.5283 \times 10 \times \frac{1}{5} = 1.057\ \text{bar}
+$$
+
+A choked exit therefore has $p_e = p^*_{sup} = 1.057$ bar regardless of where the shock is. The official 1.02 bar comes from table rounding: the M = 3.2 row is used for A/A* = 5 (exact 3.175), then the M = 0.46 row for $M_y$ = 0.4643.
+
+With exact values, the shock sits at $4fx_s/D = 0.068$, or $x_s = 0.085$ m, slightly downstream of the official bracket, because the official working used the M = 3.0 Fanno row (0.522) instead of 0.547. The plot below shows $p_{exit}$ falling from 1.554 bar (shock at the entrance) to $p^*$, where the exit chokes. The 1-bar target is never reached.
+
+<ShockIterationPlot AR={5} fL={1.2} p0={10} pb={1} unit="bar" lengthPerFL={1.25} xMax={0.15} guesses={[{ x: 0, label: 'entrance' }, { x: 0.025, label: '0.02' }]} />
+
+</Step>
+</Steps>
+
+<Answer>
+
+- (a) **$M_{exit} = 1$ (choked)** and **$p_{exit} \approx 1.02$ bar** (official). The exact value is $p^* = 1.057$ bar. The exit does **not** match $p_b = 1$ bar, and it doesn't have to.
+- (b) A normal shock just inside the pipe: $0.02 < 4fx_s/D < 0.05$, so **0.025 m < $x_s$ < 0.063 m** from the pipe entrance (official, table rows). Exact: $x_s \approx 0.085$ m with $M_x \approx 2.74$.
+
+</Answer>
+
+<Traps>
+
+- **Higgins's "WRONG" cartoon:** once you find $L^* < L$ on the supersonic branch, "there is nothing meaningful you can do with $L_{1-2} - L^*$". Computing $1.2 - 0.522 = 0.678$ and reading A4 is wrong. **Only** when the channel is shorter than $L^*$ can you use $L_2^* = L_1^* - L_{1-2}$.
+- Full marks required **both** $M_{exit} = 1$ and $p_{exit} = 1.02$ bar. The marking note: since $p_{back} = 1$ bar is less than $p^*$, the flow must be choked at the exit and does not match the back pressure.
+- Marking scheme: supersonic nozzle exit +10, $L^*$ and $p^*$ +10, "L > L*, so a shock" +10, shock at the entrance +10, one more trial (or the pure subsonic case) +5, conclusion +5.
+- **Official slips, corrected:**
+  - Step 3 writes "$M_{exit} = 0.2497$". That is the friction value, not the Mach number: $4fL^*/D = 0.2509$ is **M = 0.68**, and the 1.5413 they used is the M = 0.68 value of $p/p^*$. The 1.57 bar is right.
+  - Guess 0.2: the "$4fL^*/D = 0.32253$" written after $M_y = 0.5675$ is the **x-side** value (A4 at $M$ = 2.06). The correct value at $M_y = 0.5675$ is about **0.635**. The verdict is the same.
+  - Guess 0.02: the remaining pipe is $1.2 - 0.02 = 1.18$, not "1.198".
+- Never mix rows: one Mach number per state (Anthony's first attempt took $p/p^*$ from M = 1.84 and $p_y/p_x$ from M = 1.86).
+- **Exam-speed version:** "4fL/D = 1.2. A/A* = 5 → sub M = 0.12 → $p_{exit}$ ≈ 9.9 ⋙ 1 ⇒ choked, supersonic. → M = 3.2, p = 0.2023 → 4fL*/D = 0.522 < 1.2 ⇒ shock. Entrance: $M_y$ = 0.4643, $p_y$ = 2.383, p* = 1.02, 1.4509 − 1.2 = 0.2509 → M = 0.68 → $p_{exit}$ = 1.57 ≠ 1. **$p_b$ < p* ⇒ choked exit: find L*_y = L_remaining.** Trials 0.2, 0.1, 0.05, 0.02 → between 0.02 and 0.05. $M_{exit}$ = 1, $p_{exit}$ = 1.02 bar."
+
+</Traps>
+
+<Source>official W2019 solution pp. 6–8 (marking scheme) and Prof. Higgins's final comment p. 9 · Anthony's "Past midterm 2019" pp. 4–10 and both minimum-writing passes · exact values from lib/nozzlePipe.ts</Source>
+
+</Problem>

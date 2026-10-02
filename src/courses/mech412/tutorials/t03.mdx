@@ -1,0 +1,171 @@
+<p className="eyebrow">Tutorial 3 · Jan 2024 · Lecture 10 · reconstructed from Anthony's notes</p>
+
+# Tutorial 3: the nonlinear-circuit recipe (Method 1)
+
+<div className="lede">
+
+**There is no Tutorial 3 file in the course archive.** What survives is Anthony's own method page ("Tut 3 Q2": the nonlinear circuit), which his MT2 crib sheet leans on and which he flagged ⚠ as a weak spot. This page rebuilds that method and works two circuits with it: the representative problem from the Lecture-10 exercises (official solution, one typo corrected) and the example from Anthony's page, solved from scratch. Background: <Ch slug="linearization">Chapter 9</Ch> and <Ch slug="circuits-opamps">Chapter 8</Ch>.
+
+</div>
+
+<Callout kind="note" title="The recipe (Anthony's 'Method 1')">
+
+1. **States = energy variables**: capacitor voltages and inductor currents.
+2. **KCL at each node, KVL in each loop** to get $\dot e_C=\dots$ and $\dot i_L=\dots$ (nonlinear allowed). **Never use Laplace or impedances on a nonlinear circuit.**
+3. Split every variable into **steady part + small part**: $e_i=\bar e_i+\hat e_i$, $e_C=\bar e_C+\hat e_C$, $i_L=\bar\imath_L+\hat\imath_L$.
+4. **Operating point:** set every derivative to zero and solve for $\bar e,\bar\imath$.
+5. **Linearise:** $A=\partial f/\partial x\big|_{\bar x}$, $B=\partial f/\partial u\big|_{\bar u}$, so $\dot{\hat x}=A\hat x+B\hat u$.
+6. Check: eigenvalues of $A$ (stable?), and sense-check each entry.
+
+</Callout>
+
+<Problem id="T3 Q1" title="Nonlinear circuit with i₂ = e_c³/8: state equations, operating point, incremental model" tags="nonlinear circuit, Taylor, state space">
+
+<Statement>
+
+Source $e_i(t)$; a capacitor $C=2$ F in parallel with a nonlinear resistor $i_2=\tfrac18e_c^3$ forms one branch from the source to a node; from that node, $R=1\ \Omega$ in parallel with $L=3$ H go to ground. (a) State-variable equations with output $i_L$. (b) DC operating point for $e_i=2+\hat e_i$. (c) Linearised incremental state equations in $\hat e_c,\hat\imath_L,\hat e_i$.
+
+</Statement>
+
+<Think>
+
+Two energy storage elements, $C$ and $L$, so two states: $e_c$ and $i_L$. The nonlinear piece is a "cubic resistor": near an operating point it acts like an ordinary resistor whose conductance is the slope $\dfrac{d i_2}{de_c}=\dfrac38e_c^2$.
+
+</Think>
+
+<Steps>
+<Step title="1. Voltage across the R–L pair">
+
+KVL: the node voltage is $e_L=e_i-e_c$ (the source minus the drop across the capacitor branch).
+
+</Step>
+<Step title="2. KCL at the node">
+
+The current through the (C ∥ nonlinear resistor) branch must leave through $R$ and $L$: $C\dot e_c+\dfrac{e_c^3}{8}=i_L+\dfrac{e_L}{R}$. With $C=2$, $R=1$: $\;\dot e_c=\tfrac12\Big[e_i-e_c+i_L-\dfrac{e_c^3}{8}\Big]$.
+
+</Step>
+<Step title="3. Inductor">
+
+$\dfrac{di_L}{dt}=\dfrac{e_L}{L}=\dfrac{e_i-e_c}{3}$. These two equations are the state model; the output is $i_L$.
+
+</Step>
+<Step title="4. Operating point">
+
+All derivatives zero. From the inductor: $e_L=0\Rightarrow\bar e_c=\bar e_i=2$ V. From the node equation: $\bar\imath_L=\dfrac{\bar e_c^3}{8}=1$ A.
+
+</Step>
+<Step title="5. Linearise: partial derivatives at (2, 1)">
+
+$\dfrac{\partial\dot e_c}{\partial e_c}=\tfrac12\Big(-1-\dfrac{3\bar e_c^2}{8}\Big)=\tfrac12(-1-1.5)=-\dfrac54$, $\;\dfrac{\partial\dot e_c}{\partial i_L}=\dfrac12$, $\;\dfrac{\partial\dot e_c}{\partial e_i}=\dfrac12$; $\;\dfrac{\partial\dot\imath_L}{\partial e_c}=-\dfrac13$, $\;\dfrac{\partial\dot\imath_L}{\partial e_i}=+\dfrac13$.
+$$\begin{bmatrix}\dot{\hat e}_c\\\dot{\hat\imath}_L\end{bmatrix}=\begin{bmatrix}-5/4&1/2\\-1/3&0\end{bmatrix}\begin{bmatrix}\hat e_c\\\hat\imath_L\end{bmatrix}+\begin{bmatrix}1/2\\1/3\end{bmatrix}\hat e_i .$$
+
+</Step>
+<Step title="6. Check">
+
+Eigenvalues: $s^2+1.25s+\tfrac16=0\Rightarrow s=-0.15,\,-1.10$: stable, overdamped ✔. The nonlinear resistor became a small-signal conductance $\tfrac38\bar e_c^2=1.5$ S: with $C=2$ it contributes $-1.5/2=-0.75$ to the $-\tfrac54$ entry, and the series resistor $R$ the other $-\tfrac12$.
+
+</Step>
+</Steps>
+
+<Answer>
+
+$\dot e_c=\tfrac12[e_i-e_c+i_L-e_c^3/8]$, $\dot i_L=(e_i-e_c)/3$; operating point $(\bar e_c,\bar\imath_L)=(2,1)$; incremental model above.
+
+*Real-world:* a diode-like or saturating device in a filter: near the operating point it acts as a small resistor.
+
+</Answer>
+
+<Callout kind="warn" title="⚠ Typo in the official page">
+
+The printed input vector is $[\tfrac12;\ \tfrac12]$, but the official page's own equation just above, $\dfrac{d\hat\imath_L}{dt}=\tfrac13(\hat e_i-\hat e_c)$, gives $B=[\tfrac12;\ \tfrac13]$. Everything else ✔, including $e_c^3/8\approx1+\tfrac32\hat e_c$.
+
+</Callout>
+
+<Traps>
+
+- Choose the **energy** variables as states.
+- Linearise the element laws consistently; the incremental variables have zero steady state.
+- Never use impedances/Laplace before linearising.
+
+</Traps>
+
+<Source>Fall 2022 Lecture-10 representative problem, official solution ✔ (typo noted); this is the recipe of Anthony's "Tut 3 Q2" page.</Source>
+
+</Problem>
+
+<Problem id="T3 Q2" title="Anthony's example: node A with C = ½ F, L = ⅓ H, R = 2 Ω, C = ⅙ F, nonlinear i_o = e_o³/4, source 8 V" tags="3 states, equilibrium, linearisation">
+
+<Statement>
+
+A source $e_i$ (steady value 8 V) feeds a $1\ \Omega$ resistor to node A; node A has a capacitor $\tfrac12$ F to ground and continues through a $\tfrac13$ H inductor in series with a $2\ \Omega$ resistor to node $o$; node $o$ has a capacitor $\tfrac16$ F to ground and a nonlinear load $i_o=e_o^3/4$. Find the state equations, the operating point and the linearised model (three states: $e_A$, $e_o$, $i_L$).
+
+</Statement>
+
+<Think>
+
+Three energy stores, three states. Anthony's page gives the node equations; the operating point and linearisation are not on the surviving page, so they are derived here and checked numerically.
+
+</Think>
+
+<Steps>
+<Step title="1. KCL at node A">
+
+$\dfrac{e_A-e_i}{1}+\tfrac12\dot e_A+i_L=0\;\Rightarrow\;\dot e_A=2\,(-e_A+e_i-i_L)$.
+
+</Step>
+<Step title="2. KCL at node o">
+
+$-i_L+\tfrac16\dot e_o+i_o=0\;\Rightarrow\;\dot e_o=6\Big(i_L-\dfrac{e_o^3}{4}\Big)$.
+
+</Step>
+<Step title="3. KVL in the middle loop">
+
+$-e_A+\tfrac13\dfrac{di_L}{dt}+2i_L+e_o=0\;\Rightarrow\;\dot\imath_L=3\,(e_A-e_o-2i_L)$.
+
+</Step>
+<Step title="4. Operating point (all derivatives zero, e_i = 8)">
+
+From step 1: $\bar e_A=8-\bar\imath_L$. From step 3: $\bar e_o=\bar e_A-2\bar\imath_L=8-3\bar\imath_L$. From step 2: $\bar\imath_L=\bar e_o^3/4$. Combine: $\bar\imath_L=\dfrac{(8-3\bar\imath_L)^3}{4}$. Try $\bar\imath_L=2$: $\bar e_o=2$ and $2^3/4=2$ ✔. So $\bar\imath_L=2$ A, $\bar e_o=2$ V, $\bar e_A=6$ V (the only real solution).
+
+</Step>
+<Step title="5. Linearise">
+
+The only nonlinear term in $\dot e_o$ is $-\tfrac64e_o^3$: $\dfrac{\partial\dot e_o}{\partial e_o}=6\Big(-\dfrac{3\bar e_o^2}{4}\Big)=-4.5\,\bar e_o^2=-18$ at $\bar e_o=2$. So with state order $(e_A,e_o,i_L)$:
+$$\dot{\hat x}=\begin{bmatrix}-2&0&-2\\0&-18&6\\3&-3&-6\end{bmatrix}\hat x+\begin{bmatrix}2\\0\\0\end{bmatrix}\hat e_i .$$
+
+</Step>
+<Step title="6. Check">
+
+Eigenvalues $-3.68,\ -6,\ -16.3$: all negative, stable. The $-18$ is the nonlinear load seen as a small-signal conductance $\tfrac{3}{4}\bar e_o^2=3$ S acting on a $\tfrac16$ F capacitor ($3\times6=18$).
+
+</Step>
+</Steps>
+
+<Answer>
+
+State equations as in steps 1–3; operating point $(\bar e_A,\bar e_o,\bar\imath_L)=(6,2,2)$; linearised matrices as in step 5.
+
+</Answer>
+
+<Callout kind="note" title="Provenance">
+
+The node equations are read from Anthony's method page (his photo of the tutorial notes). The operating point, matrices and eigenvalues are the digest's own derivation (checked with sympy/numpy), because the page stops after the state equations.
+
+</Callout>
+
+<Traps>
+
+- The steady value $\bar\imath_L$ comes from solving a **cubic**; look for the integer solution but check there is no other real root (here there is not).
+- $\partial\dot e_o/\partial e_o$ must include the factor 6 from $1/C$.
+
+</Traps>
+
+<Source>Anthony's tablet method page (node equations); remainder derived and numerically checked.</Source>
+
+</Problem>
+
+<Examined>
+
+Nonlinear-circuit linearisation appears in every MT2: $\text{MT2 W2024 Q3}$, $\text{F2022 Q3}$, $\text{W2019}$; see also $\text{T4 Q2}$ and $\text{T6 Q2}$.
+
+</Examined>

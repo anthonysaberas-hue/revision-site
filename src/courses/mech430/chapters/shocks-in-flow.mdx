@@ -1,0 +1,219 @@
+<p className="eyebrow">Chapter 8</p>
+
+# Flow with shocks
+
+<p className="lede">A normal shock is a patch between two isentropic flows. Solve isentropically up to it, jump across with Table A3, then solve isentropically again with the new reference states. The same idea, after a change of frame, handles shocks that move.</p>
+
+## The method
+
+<Idea title="Three reference states, one rule each">
+
+- $T_0$: **constant everywhere** (adiabatic, including across the shock).
+- $p_0$: constant **until the shock**, then $p_{0y} = (p_{0y}/p_{0x})\,p_{0x}$.
+- $A^*$: constant until the shock, then $A^*_y = A^*_x/(p_{0y}/p_{0x})$ (it **grows**).
+
+Downstream of the shock the flow is subsonic, and in a diverging duct a subsonic flow can only decelerate: take the **subsonic** branch of A2 with $A/A^*_y$.
+
+</Idea>
+
+Name the stations before touching a table: reservoir → throat → x (just before) | y (just after) → exit.
+
+## Worked example: shock at a known position (notes §8.1.1)
+
+A C-D nozzle is fed by a reservoir at $p_0 = 1$ atm, $T_0 = 300$ K. The throat A is 1 m², the shock stands at B where the area is 2 m², and the exit C is 3 m². Find M, p and T at A, B and C.
+
+<ThreeAreaNozzleFigure />
+
+<Steps>
+<Step title="1. Reference states">
+
+A shock exists in the diverging part, so the flow there is supersonic, so it went sonic at the throat: $A^* = A_A = 1$ m². At A: $p_A = 0.5283$ atm, $T_A = 250$ K.
+
+</Step>
+<Step title="2. Isentropic up to the shock">
+
+$A_{B}/A^* = 2$, supersonic branch: <T>A2 @ A/A\* = 2.0 (sup): M = 2.20, p/p₀ = 0.0935, T/T₀ = 0.5081</T>. So $p_{Bx} = 0.0935$ atm, $T_{Bx} = 152$ K. <CalcLink calc="isentropic" q="in=A&v=2&b=sup">check</CalcLink>
+
+</Step>
+<Step title="3. Jump across the shock">
+
+<T>A3 @ Mₓ = 2.20: M_y = 0.5471, p_y/pₓ = 5.480, T_y/Tₓ = 1.857, p₀ᵧ/p₀ₓ = 0.6281</T>
+
+$p_y = 5.48 \times 0.0935 = 0.512$ atm, $T_y = 1.857 \times 152 = 282$ K, $p_{0y} = 0.628$ atm, and
+
+$$
+A^*_y = \frac{A^*_x}{p_{0y}/p_{0x}} = \frac{1}{0.628} = 1.59\ \text{m}^2
+$$
+
+Check: $T_{0y} = 282(1 + 0.2 \times 0.547^2) = 299$ K ≈ 300 K. ✓ <CalcLink calc="normal" q="in=Mx&v=2.2">check</CalcLink>
+
+</Step>
+<Step title="4. Isentropic again, with the NEW references">
+
+$A_C/A^*_y = 3/1.59 = 1.88$, subsonic: <T>A2 @ A/A\* = 1.88 (sub): M = 0.33, p/p₀ = 0.927, T/T₀ = 0.979</T>
+
+$p_C = 0.927 \times 0.628 = 0.58$ atm, $T_C = 0.979 \times 300 = 294$ K.
+
+</Step>
+</Steps>
+
+| | reservoir | A | Bx | By | C |
+|---|---|---|---|---|---|
+| M | 0 | 1 | 2.2 | 0.547 | 0.33 |
+| p (atm) | 1 | 0.53 | 0.094 | 0.51 | 0.58 |
+| T (K) | 300 | 250 | 152 | 282 | 294 |
+| p₀ (atm) | 1 | 1 | 1 | 0.63 | 0.63 |
+| A\* (m²) | 1 | 1 | 1 | 1.59 | 1.59 |
+
+The exit is subsonic, so the chamber must provide exactly $p_b = p_C = 0.58$ atm. Pressure **keeps rising after the shock** (0.51 → 0.58 atm): the subsonic flow is still diffusing.
+
+## Back-pressure regimes
+
+Fix the reservoir and the nozzle, then lower $p_b$. Three critical back pressures, all from A2 and A3 at the exit area ratio:
+
+| case | how to compute it | AR = 3 |
+|---|---|---|
+| $p_3$: choked, subsonic exit | A2 subsonic at $A_e/A_t$ → $p/p_0$ | $M_e = 0.20$, $p_3 = 0.97\,p_0$ |
+| $p_d$: design, supersonic exit | A2 supersonic at $A_e/A_t$ → $p/p_0$ | $M_e = 2.64$, $p_d = 0.047\,p_0$ |
+| $p_4$: normal shock at the exit plane | $p_d \times (p_y/p_x)$ at $M_x = M_e$ | $7.97 \times 0.047 = 0.374\,p_0$ |
+
+- $p_b \ge p_3$: subsonic throughout (choked only at $p_3$).
+- $p_3 \gt p_b \gt p_4$: **normal shock inside** the diverging section. Lower $p_b$ → the shock moves downstream and gets stronger.
+- $p_4 \gt p_b \gt p_d$: over-expanded, oblique shocks outside (Chapter 12).
+- $p_b = p_d$: design. $p_b \lt p_d$: under-expanded, expansion fans outside.
+
+<NozzleSim initialAR={3} initialPb={0.7} />
+
+Use the buttons to jump between regimes. A shock at the throat would just be a sound wave ($M = 1$): that limit is the $p_3$ case.
+
+## Worked example: find the shock from the back pressure (notes §8.2.1)
+
+Same nozzle (1 m² throat, 3 m² exit, $p_0 = 1$ atm), but now $p_b = 0.7$ atm is given. Is there a shock, and where?
+
+<Steps>
+<Step title="1. Easy case: sonic throat, subsonic after">
+
+<T>A2 @ A/A\* = 3.00 (sub): M = 0.20, p/p₀ = 0.97</T> → $p_3 = 0.97$ atm. $p_b = 0.7 \lt p_3$: the flow must go supersonic somewhere.
+
+</Step>
+<Step title="2. Design case: supersonic all the way">
+
+<T>A2 @ A/A\* = 3.00 (sup): M = 2.64, p/p₀ = 0.047</T> → $p_d = 0.047$ atm, far below 0.7. Not design.
+
+</Step>
+<Step title="3. Shock at the exit plane">
+
+<T>A3 @ Mₓ = 2.64: M_y = 0.501, p_y/pₓ = 7.97</T> → $p_4 = 7.97 \times 0.047 = 0.374$ atm. Since $p_3 = 0.97 \gt 0.7 \gt p_4 = 0.374$, **a normal shock is definitely in the diverging section.**
+
+</Step>
+<Step title="4. First guess: shock at A = 2 m²">
+
+That is the §8.1.1 calculation: $p_e = 0.58$ atm. Too **low**, so the shock is too strong: move it **upstream** (weaker shock, less $p_0$ loss, higher exit pressure).
+
+</Step>
+<Step title="5. Second guess: shock at A = 1.5 m²">
+
+<T>A2 @ A/A\* = 1.5 (sup): M = 1.85</T> → <T>A3 @ Mₓ = 1.85: p₀ᵧ/p₀ₓ = 0.790</T>
+
+$A_e/A^*_y = 3 \times 0.790 = 2.37$ → <T>A2 @ A/A\* = 2.37 (sub): M = 0.25, p/p₀ = 0.957</T> → $p_e = 0.957 \times 0.790 = 0.76$ atm. Slightly too **high**.
+
+</Step>
+<Step title="6. Interpolate">
+
+| $A_{shock}$ | $p_e$ |
+|---|---|
+| 2.0 m² | 0.58 atm |
+| 1.5 m² | 0.76 atm |
+
+$$
+A_{shock} \approx 1.5 + \frac{0.7 - 0.76}{0.58 - 0.76}(2.0 - 1.5) \approx 1.67\ \text{m}^2
+$$
+
+Good enough for engineering. Iterating to convergence (the lib solver) gives $A_s = 1.64$ m², $M_x = 1.96$, $M_e = 0.27$: the linear interpolation is within 2 %.
+
+</Step>
+</Steps>
+
+<Trap title="The exit pressure is not the pressure behind the shock">
+
+The condition is $p_e = p_b$ (subsonic exit), **not** $p_y = p_b$. After the shock the subsonic flow keeps diffusing and the pressure keeps rising. Anthony made exactly this mistake in [PS5 P3(c)](#/mech430/ps/ps05). Only when the shock sits **at** the exit is $p_y = p_e$ (the $p_4$ case).
+
+</Trap>
+
+<Remember title="Which way to move the shock">
+
+$p_e$ too low → shock too strong → move it **upstream** (smaller A). $p_e$ too high → move it **downstream**. Two guesses that bracket $p_b$, then interpolate linearly.
+
+</Remember>
+
+## Moving shocks
+
+The normal-shock relations hold **only in the frame where the shock is at rest**. A shock moving into still gas is made steady by adding $-V_s$ to every velocity. Static properties ($p, T, \rho$) don't care about the frame; velocities and Mach numbers do.
+
+Prime = lab frame (notes): $V_s'$ is the shock speed and $V_p'$ the gas (= piston) speed behind it.
+
+| | lab frame | shock frame |
+|---|---|---|
+| gas ahead | at rest | $V_x = V_s'$ toward the shock, $M_x = M_s$ |
+| shock | $V_s'$ | 0 |
+| gas behind | $V_p'$ | $V_y = V_s' - V_p'$ |
+
+### Notes §8.4.1: Mach 3 shock into still air
+
+Air at 1 atm, 300 K, $c_x = 348$ m/s, $M_s = 3$, so $V_s' = 1044$ m/s.
+
+<Steps>
+<Step title="1. Go to the shock frame">
+
+$V_x = 1044$ m/s, $M_x = 3$. <T>A3 @ Mₓ = 3.0: M_y = 0.4752, p_y/pₓ = 10.33, ρ_y/ρₓ = 3.857, T_y/Tₓ = 2.679</T>
+
+So $p_y = 10.33$ atm, $T_y = 804$ K, $c_y = 348\sqrt{2.679} = 569.6$ m/s, $V_y = 0.4752 \times 569.6 = 270.7$ m/s (or $V_x/3.857$).
+
+</Step>
+<Step title="2. Back to the lab">
+
+Add 1044 m/s: $V_p' = V_x - V_y = 1044 - 270.7 = 773.3$ m/s.
+
+</Step>
+<Step title="3. Surprise: supersonic behind a shock">
+
+$M_y' = V_p'/c_y = 773.3/569.6 = 1.357$. Behind a **moving** shock the gas can be supersonic in the lab. "Subsonic after a shock" is a shock-frame statement.
+
+</Step>
+</Steps>
+
+### The piston formula
+
+Writing $V_p'/c_x = M_s - M_y\sqrt{T_y/T_x}$ and simplifying gives a closed form (into **quiescent** gas only):
+
+$$
+\frac{V_p'}{c_x} = \frac{2}{\gamma+1}\left(\frac{M_s^2 - 1}{M_s}\right)
+\qquad\Longleftrightarrow\qquad
+M_s = \frac{\gamma+1}{4}\frac{V_p'}{c_x} + \sqrt{\left(\frac{\gamma+1}{4}\frac{V_p'}{c_x}\right)^2 + 1}
+$$
+
+$V_p'/c_x$ is **not** a Mach number (it uses the sound speed ahead). For a fast piston the shock runs $(\gamma+1)/2 = 1.2$ times faster than the piston. Check: $M_s = 3$ → $V_p'/c_x = (2/2.4)(8/3) = 2.222$ → $V_p' = 773.3$ m/s. ✓ <CalcLink calc="moving">moving-shock calculator</CalcLink>
+
+<MovingShockSim />
+
+<Trap title="Quiescent gas only">
+
+The piston formula assumes the gas ahead is at rest. If it is already moving (a reflected shock, a shock running into a flow), first change frame so that the gas ahead is still. More of this in [Chapter 16](#/mech430/ch/unsteady).
+
+</Trap>
+
+<Examined>
+
+- **Nozzle + shock with a given $p_b$** (bracket with $p_3$, $p_4$, then iterate on $A_s$): [PS5 P3](#/mech430/ps/ps05), and every nozzle + Fanno pipe question in [Q2 W2019](#/mech430/exam/q2-w2019), [Q2 W2023](#/mech430/exam/q2-w2023) and [Q2 W2024](#/mech430/exam/q2-w2024) uses the same ladder with a pipe added.
+- **"Back pressure for a shock at the exit"** = $p_4$ (PS5 P3(d)).
+- **Moving shocks / pistons**: [PS11](#/mech430/ps/ps11), [Final A](#/mech430/exam/final-a). The Shinkansen problem in [Chapter 9](#/mech430/ch/inlets) is the piston formula.
+
+</Examined>
+
+## Check yourself
+
+1. Across a shock in a nozzle, what happens to $A^*$? → It grows: $A^*_y = A^*_x/(p_{0y}/p_{0x})$.
+2. $p_b$ is between $p_3$ and $p_4$. Where is the shock and what is $p_e$? → In the diverging section; $p_e = p_b$ (subsonic exit).
+3. Your trial shock gives $p_e$ lower than $p_b$. Which way do you move it? → Upstream (weaker shock).
+4. A Mach 3 shock runs into still air. What is $p_2/p_1$, and is the gas behind it subsonic? → 10.33; in the lab it moves at $M' = 1.36$, supersonic.
+5. A piston moves at $V_p' = c_x$. Shock Mach? → $M_s = 0.6 + \sqrt{0.36 + 1} = 1.77$.

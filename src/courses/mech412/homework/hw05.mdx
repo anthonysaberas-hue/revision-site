@@ -1,0 +1,298 @@
+<p className="eyebrow">Homework 5 · due Feb 23, 2024 · Lectures 10–11</p>
+
+# HW5: maglev linearisation, circuit transfer functions, mobility and impedance analogs
+
+<div className="lede">
+
+The linearisation and analogy chapters in one assignment (<Ch slug="linearization">Chapter 9</Ch>, <Ch slug="circuits-opamps">Chapter 8</Ch>, <Ch slug="analogies">Chapter 10</Ch>). **There is no official solution for HW5**: every answer below is the digest author's, checked against the equations; Q5 also has an official solution in disguise (it is $\text{MT2 F2022 Q1a}$).
+
+</div>
+
+<Problem id="HW5 Q1" title="Magnetic levitation train: EOM, equilibrium, linearisation, transfer function" tags="Taylor series, unstable vs stable convention">
+
+<Statement>
+
+The levitation force is $F_L=k\,i^2/z^2$ ($z$ = air gap, $i$ = coil current), opposing the weight $mg$. (a) Derive the EOM. (b) Equilibrium $z_0,i_0$. (c) Linearise with $\Delta z=z-z_0$, $\Delta i=i-i_0$. (d) Transfer function.
+
+</Statement>
+
+<Think>
+
+Nonlinear, two variables. Newton for the car, find the equilibrium by setting $\ddot z=0$, then a **two-variable Taylor expansion** with the equilibrium relation used to eliminate $k,m$. The sign convention of $z$ decides stable vs unstable.
+
+</Think>
+
+<Steps>
+<Step title="1. EOM (gap measured upward, the T06 convention)">
+
+$m\ddot z=\dfrac{ki^2}{z^2}-mg$, i.e. $\ddot z=f(z,i)=\dfrac km\dfrac{i^2}{z^2}-g$.
+
+</Step>
+<Step title="2. Equilibrium">
+
+$\ddot z=0$: $\dfrac{ki_0^2}{z_0^2}=mg\Rightarrow i_0=z_0\sqrt{mg/k}$.
+
+</Step>
+<Step title="3. Partial derivatives">
+
+Using $\dfrac{ki_0^2}{mz_0^2}=g$: $\;\dfrac{\partial f}{\partial z}=-\dfrac{2ki_0^2}{mz_0^3}=-\dfrac{2g}{z_0}$, $\;\dfrac{\partial f}{\partial i}=\dfrac{2ki_0}{mz_0^2}=\dfrac{2g}{i_0}$.
+
+</Step>
+<Step title="4. Linear model and transfer function">
+
+$$\Delta\ddot z=-\frac{2g}{z_0}\Delta z+\frac{2g}{i_0}\Delta i,\qquad \frac{\Delta Z}{\Delta I}=\frac{2g/i_0}{s^2+2g/z_0}.$$
+
+Poles $\pm j\sqrt{2g/z_0}$ (44.3 rad/s for $z_0=10$ mm): an undamped oscillator.
+
+</Step>
+</Steps>
+
+<Answer>
+
+$m\ddot z=ki^2/z^2-mg$; $i_0=z_0\sqrt{mg/k}$; $\Delta\ddot z=-\tfrac{2g}{z_0}\Delta z+\tfrac{2g}{i_0}\Delta i$; $\dfrac{\Delta Z}{\Delta I}=\dfrac{2g/i_0}{s^2+2g/z_0}$.
+
+</Answer>
+
+<Callout kind="warn" title="⚠ Anthony measured z downward">
+
+His EOM $m\ddot z=mg-ki^2/z^2$ gives $\Delta Z/\Delta I=-\dfrac{2g/i_0}{s^2-2g/z_0}$, a real **right-half-plane pole** (unstable). His algebra after the first line is consistent, but the course convention (T06: *gap measured upward*; the force grows when the gap shrinks) gives the oscillator. State the convention first.
+
+</Callout>
+
+<Traps>
+
+- Use the equilibrium relation to eliminate $k$ and $m$ from the derivatives ($2g/z_0$ and $2g/i_0$).
+- The linear model has no damping: a real controller must add derivative action.
+
+</Traps>
+
+<Source>no official solution; T06-sol Q3 is the same problem (gap upward). Digest-author derivation, checked with unit constants.</Source>
+
+</Problem>
+
+<Problem id="HW5 Q2" title="Transfer functions of four circuits" tags="impedance method, op-amps, twin-T notch">
+
+<Statement>
+
+Find the transfer function of (a) a passive divider: $R_1\parallel C$ in series with the signal, $R_2$ to ground (output across $R_2$); (b) an inverting op-amp with $R_2$ in series with $(R_1\parallel C)$ at the input and $R_f$ in the feedback; (c) an inverting op-amp with $R_{in}$ at the input and $R_2$ in series with $(R_1\parallel C)$ in the feedback; (d) a twin-T network.
+
+</Statement>
+
+<Think>
+
+Use impedances $Z_R=R$, $Z_C=1/(Cs)$ and the divider / op-amp rule $-Z_f/Z_{in}$. For (d) there are two internal nodes: **KCL at every node**.
+
+</Think>
+
+<Steps>
+<Step title="(a) Divider">
+
+$Z_1=\dfrac{R_1}{1+R_1Cs}$: $\;\dfrac YU=\dfrac{R_2}{R_2+Z_1}=\dfrac{R_2(1+R_1Cs)}{R_1+R_2+R_1R_2Cs}=\dfrac{Cs+1/R_1}{Cs+1/R_1+1/R_2}$. DC gain $R_2/(R_1+R_2)$; high-frequency gain 1 (the capacitor bypasses $R_1$).
+
+</Step>
+<Step title="(b) Inverting, input impedance a series pair">
+
+$Z_{in}=R_2+\dfrac{R_1}{1+R_1Cs}$: $\;\dfrac{V_o}{V_{in}}=-\dfrac{R_f}{Z_{in}}=-\dfrac{R_f(1+R_1Cs)}{R_1+R_2+R_1R_2Cs}$.
+
+</Step>
+<Step title="(c) Inverting, feedback impedance a series pair">
+
+$Z_f=R_2+\dfrac{R_1}{1+R_1Cs}$: $\;\dfrac{V_o}{V_{in}}=-\dfrac{Z_f}{R_{in}}=-\dfrac{R_1+R_2+R_1R_2Cs}{R_{in}(1+R_1Cs)}$.
+
+</Step>
+<Step title="(d) Twin-T: nodal equations">
+
+With $a=RCs$ and $S=V_{in}+V_{out}$: low-pass T middle node $V_{a1}=\dfrac{S}{2(1+a)}$, high-pass T middle node $V_{a2}=\dfrac{aS}{2(1+a)}$; at the output $(V_{a1}-V_{out})+a(V_{a2}-V_{out})=0$. Result
+
+$$\frac{V_{out}}{V_{in}}=\frac{1+a^2}{1+4a+a^2}=\frac{R^2C^2s^2+1}{R^2C^2s^2+4RCs+1}:$$
+
+a **notch**: zeros at $\pm j/RC$, real poles at $(-2\pm\sqrt3)/RC$.
+
+</Step>
+</Steps>
+
+<Answer>
+
+(a)–(d) as above.
+
+</Answer>
+
+<Traps>
+
+- Anthony stopped before simplifying (d); the unsimplified form $\dfrac{C^2s^2+1/R^2}{\ldots}$ is equivalent.
+- Watch which element is at the *input* and which is in the *feedback* of the op-amp.
+
+</Traps>
+
+<Source>no official solution; Anthony's (a)–(c) match, (d) incomplete.</Source>
+
+</Problem>
+
+<Problem id="HW5 Q3" title="Mobility and impedance analogs of a two-mass network" tags="mobility, impedance, duality">
+
+<Statement>
+
+Mass $M_{M1}$ hangs from the ceiling by spring $C_{M1}$ and dashpot $R_{M1}$ in parallel; mass $M_{M2}$ hangs from $M_{M1}$ by $C_{M2}\parallel R_{M2}$ and *also* from the ceiling by a long spring $C_{M3}$ and long dashpot $R_{M3}$. A force $Fe^{i\omega t}$ acts on $M_{M2}$. Draw the mobility and impedance analogs.
+
+</Statement>
+
+<Think>
+
+Chapter 10 recipe: nodes = velocities of the two masses plus ground; start with the force source on node 2; wall elements go to ground; elements between the masses go between the nodes.
+
+</Think>
+
+<Steps>
+<Step title="1. Mobility circuit">
+
+Node 2 ($M_{M2}$): current source $F$, capacitor $M_{M2}$, inductor $C_{M3}$ and resistor $1/R_{M3}$ to ground; between node 2 and node 1: inductor $C_{M2}$ in parallel with resistor $1/R_{M2}$; node 1 ($M_{M1}$): capacitor $M_{M1}$, inductor $C_{M1}$, resistor $1/R_{M1}$ to ground.
+
+</Step>
+<Step title="2. Check by KCL">
+
+Node 1: $M_1\ddot x_1+R_{M1}\dot x_1+k_1x_1+R_{M2}(\dot x_1-\dot x_2)+k_2(x_1-x_2)=0$; node 2: $M_2\ddot x_2+R_{M2}(\dot x_2-\dot x_1)+k_2(x_2-x_1)+R_{M3}\dot x_2+k_3x_2=F$ ✔.
+
+</Step>
+<Step title="3. Impedance circuit (the dual)">
+
+Two meshes (current = velocity, force = voltage). Mesh 2: voltage source $F$ in series with inductor $M_{M2}$, capacitor $C_{M3}$, resistor $R_{M3}$. Mesh 1: inductor $M_{M1}$, capacitor $C_{M1}$, resistor $R_{M1}$. The meshes **share** a branch: capacitor $C_{M2}$ in series with resistor $R_{M2}$ (carrying the relative motion $\dot x_1-\dot x_2$).
+
+</Step>
+</Steps>
+
+<CircuitBoard source={{kind:'Is',label:'F e^{iωt}',sub:'force'}} sections={[{type:'shunt',stack:[{kind:'C',label:'M_M2'}],node:'u₂'},{type:'shunt',stack:[{kind:'L',label:'C_M3'}]},{type:'shunt',stack:[{kind:'R',label:'1/R_M3'}]},{type:'bridge',els:[{kind:'L',label:'C_M2'},{kind:'R',label:'1/R_M2'}]},{type:'shunt',stack:[{kind:'C',label:'M_M1'}],node:'u₁'},{type:'shunt',stack:[{kind:'L',label:'C_M1'}]},{type:'shunt',stack:[{kind:'R',label:'1/R_M1'}]}]} title="Mobility analog of Q3" caption="Wall elements to ground, elements between the masses between the two nodes; the force is a current source." />
+
+<Answer>
+
+The two circuits above (mobility drawn; impedance is its dual).
+
+</Answer>
+
+<Traps>
+
+- Elements to ground are parallel in the mobility analog but one *loop* in the impedance analog; the spring is an inductor $C_M$ in mobility but a capacitor $C_M$ in impedance; resistors are $1/R_M$ (mobility) and $R_M$ (impedance).
+
+</Traps>
+
+<Source>no official solution; Anthony's drawings match the dual structure.</Source>
+
+</Problem>
+
+<Problem id="HW5 Q4" title="Vertical device with a velocity source; effect of a rigid rod" tags="velocity source, rigid link">
+
+<Statement>
+
+A velocity source $U_0e^{i\omega t}$ drives spring $C_{M1}$, then bar $M_{M1}$; a cylinder (mass $M_{M2}$) contains a piston on a stem with friction $R_M$ and a spring $C_{M2}$. Neglect the fluid in the cavity. (a) Mobility analog. (b) Convert to the impedance analog. (c) A short, massless, infinitely rigid rod is attached between $M_1$ and $M_2$: how do the circuits change?
+
+</Statement>
+
+<Steps>
+<Step title="(a) Mobility">
+
+Voltage source $U_0e^{i\omega t}$ (a velocity source) in series with inductor $C_{M1}$ to node 1; capacitor $M_{M1}$ from node 1 to ground; between node 1 and node 2 the parallel pair inductor $C_{M2}$ and resistor $1/R_M$ (relative motion of piston and cylinder); capacitor $M_{M2}$ from node 2 to ground.
+
+</Step>
+<Step title="(b) Impedance (dual)">
+
+A velocity source becomes a **current** source: $U_0e^{i\omega t}$ in parallel with capacitor $C_{M1}$ (to ground); inductor $M_{M1}$ in series; then to ground two parallel branches: ($C_{M2}$ in series with $R_M$) and inductor $M_{M2}$.
+
+</Step>
+<Step title="(c) The rigid rod">
+
+It forces $v_1=v_2$. **Mobility:** the pair $C_{M2}\parallel1/R_M$ is short-circuited (no relative velocity); $M_{M1}$ and $M_{M2}$ end up in parallel at one node: a single mass $M_{M1}+M_{M2}$ hanging from $C_{M1}$. **Impedance:** the branch $C_{M2}$–$R_M$ carries no current and is removed; $M_{M1}$ and $M_{M2}$ are in series (equal velocity = equal current): total inductance $M_{M1}+M_{M2}$.
+
+</Step>
+</Steps>
+
+<Answer>
+
+As above. *Real-world:* a shaker pushing a mass through a spring with a tuned-damper absorber: once locked by a rigid rod, the absorber stops absorbing and the system is just one bigger mass.
+
+</Answer>
+
+<Traps>
+
+- A **velocity source is a voltage source in the mobility analog but a current source in the impedance analog.** Anthony drew a voltage source again in (b).
+- The rod removes the spring/damper pair, not the masses.
+
+</Traps>
+
+<Source>no official solution; Anthony ✔ except the source symbol in (b).</Source>
+
+</Problem>
+
+<Problem id="HW5 Q5" title="Lever with spring, damper and force: equivalent circuit with transformers" tags="lever, parallel axis, transformer 3:1">
+
+<Statement>
+
+A uniform bar (mass $m$, length $L$) pivots at $O$, a distance $L/4$ from its left end. A spring $k$ pulls the left end up (displacement $x$); at the right end a force $F(t)$ acts down and a dashpot $c$ to the ground. Leaving transformers in, draw a valid equivalent circuit; identify each element, the potential and the flux.
+
+</Statement>
+
+<Think>
+
+This is $\text{MT2 F2022 Q1a}$ (Chapter 10, Example 3). Rotation about a pin ⇒ moments; the lever arms $L/4$ and $3L/4$ give a **3 : 1** transformer.
+
+</Think>
+
+<Steps>
+<Step title="1. Kinematics">
+
+Left end up $x=\tfrac L4\theta$, right end down $y=\tfrac{3L}4\theta$, so $\dot y=3\dot x$.
+
+</Step>
+<Step title="2. Inertia about the pivot">
+
+$I_O=I_G+m\big(\tfrac L4\big)^2=\tfrac{mL^2}{12}+\tfrac{mL^2}{16}=\dfrac{7mL^2}{48}$.
+
+</Step>
+<Step title="3. Moments about O">
+
+$$\frac{7mL^2}{48}\ddot\theta+\frac{9cL^2}{16}\dot\theta+\frac{kL^2}{16}\theta=\frac{3L}4F .$$
+
+Referred to the right end (velocity $\dot y$): equivalent mass $7m/27$. Referred to the left end: $\tfrac{7m}3\ddot x+9c\dot x+kx=3F$.
+
+</Step>
+<Step title="4. Circuit with a transformer (mobility analog: potential = velocity, flux = force)">
+
+Node R (right end, potential $\dot y$): current source $F$, resistor $1/c$, capacitor $7m/27$ (the bar's inertia referred to the right end); an ideal transformer with voltage ratio $3:1$ ($\dot y:\dot x$) and force ratio $1:3$; node L (left end, potential $\dot x$): inductor $1/k$ to ground.
+
+</Step>
+<Step title="5. Rotational node instead">
+
+Potential $\dot\theta$, flux torque: current source $3FL/4$ in parallel with resistor $16/(9cL^2)$, capacitor $7mL^2/48$, inductor $16/(kL^2)$.
+
+</Step>
+</Steps>
+
+<CircuitBoard source={{kind:'Is',label:'F',sub:'force at the right end'}} sections={[{type:'shunt',stack:[{kind:'R',label:'1/c'}],node:'ẏ'},{type:'shunt',stack:[{kind:'C',label:'7m/27',sub:'bar inertia at the right end'}]},{type:'xfmr',ratio:'3 : 1'},{type:'shunt',stack:[{kind:'L',label:'1/k'}],node:'ẋ'}]} title="Mobility circuit with the lever as a 3:1 transformer" />
+
+<Answer>
+
+EOM $\tfrac7{48}mL^2\ddot\theta+\tfrac9{16}cL^2\dot\theta+\tfrac1{16}kL^2\theta=\tfrac34LF$; circuit as drawn; the **impedance** analog is the series dual with resistor $9cL^2/16$, inductor $7mL^2/48$ and the **compliance** $16/(kL^2)$ (not the stiffness).
+
+</Answer>
+
+<Callout kind="warn" title="⚠ Errors around this problem">
+
+- The official solution to the identical $\text{MT2 F2022 Q1a}$ labels the impedance capacitor "$kL^2/16$" (the rotational *stiffness*); the capacitor is the compliance $16/(kL^2)$. Its "alternative" EOM mixes coordinates; the correct left-end equation is $(m+16I_G/L^2)\ddot x+9c\dot x+kx=3F$.
+- **Anthony** lumped the bar into two point masses ($\tfrac34m$ and $\tfrac14m$) without deriving them from $I_O$: the true referred inertia is $7m/27=0.26m$, while his $M_1+M_2/9=0.78m$. He also drew the damper as "$1/c$" in the impedance analog (it is $c$ there). His transformer ratio 3 : 1 and the structure are right.
+
+</Callout>
+
+<Traps>
+
+- The bar's inertia is $I_G+md^2$ about $O$: not $mL^2/12$, not $mL^2/3$.
+- Potentials and fluxes scale oppositely through the transformer (velocity ×3, force ÷3). Referred to the right end, the spring's compliance becomes $9/k$.
+
+</Traps>
+
+<Source>no HW5 solution; the official $\text{MT2 F2022 Q1a}$ solution gives the EOM and mobility circuit (✔); Anthony's version as flagged.</Source>
+
+</Problem>
+
+<Examined>
+
+Analogy drawing is every MT2's Q1; nonlinear/linearised models: $\text{MT2 W2024 Q3}$, $\text{F2022 Q3}$; circuits: $\text{MT2 W2009 Q3}$, $\text{W2010 Q4}$.
+
+</Examined>

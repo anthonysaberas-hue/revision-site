@@ -1,0 +1,145 @@
+<p className="eyebrow">Chapter 3 · Steady heat conduction · Midterm 1</p>
+
+# Steady conduction: walls, cylinders, spheres and thermal resistance networks
+
+<div className="lede">
+
+When nothing changes with time and there is no heat generation, the heat rate through a body is the same everywhere along its path, and the whole problem becomes **Ohm's law for heat**: $\dot Q=\Delta T/R_{total}$. This chapter is about building $R_{total}$: one resistance for each conduction layer, each convection film, each radiation exchange and each imperfect contact, then adding them in series or in parallel. Once you can draw the circuit, Midterm 1, the first half of Midterm 2 question 3 and half of the final are routine.
+
+</div>
+
+<Idea title="The 30-second version">
+
+- **Plane wall:** $R_{wall}=\dfrac{L}{kA}$. **Convection film:** $R_{conv}=\dfrac1{hA}$. **Radiation:** $R_{rad}=\dfrac1{h_{rad}A}$.
+- **Cylinder (per length $L$):** $R_{cyl}=\dfrac{\ln(r_2/r_1)}{2\pi kL}$. **Sphere:** $R_{sph}=\dfrac{r_2-r_1}{4\pi kr_1r_2}$.
+- **Series** (same $\dot Q$): add resistances. **Parallel** (same $\Delta T$): add conductances.
+- $\dot Q=\dfrac{T_1-T_2}{R_{total}}$ and the temperature drop across any element is $\dot Q\times R_{element}$.
+- Thin insulation on a small pipe can **increase** the heat loss; the turning point is the **critical radius** $r_{cr}=k/h$ (cylinder), $2k/h$ (sphere).
+
+</Idea>
+
+## The plane wall and the thermal-resistance idea
+
+For steady one-dimensional conduction with constant $k$ and no generation, the conduction equation reduces to $d^2T/dx^2=0$: the temperature is **linear**, $T(x)=T_1-(T_1-T_2)x/L$. Fourier's law then gives
+
+$$\dot Q=kA\frac{T_1-T_2}{L}=\frac{T_1-T_2}{L/kA}\qquad\Longrightarrow\qquad R_{wall}=\frac{L}{kA}\ [\text{K/W}].$$
+
+Compare Ohm's law $I=\Delta V/R_e$: heat rate $\leftrightarrow$ current, temperature $\leftrightarrow$ voltage. Everything we know about circuits carries over. In particular the other two modes also fit, because both are "rate $=$ driving temperature difference $\times$ a coefficient":
+
+$$\dot Q_{conv}=\frac{T_s-T_\infty}{R_{conv}},\ R_{conv}=\frac1{hA_s};\qquad\dot Q_{rad}=\frac{T_s-T_{surr}}{R_{rad}},\ R_{rad}=\frac1{h_{rad}A_s}.$$
+
+**Physical meaning of each.** A resistance is large when the layer is thick ($L$), poorly conducting (small $k$), or when the surface is small or the flow gentle ($hA$ small). The biggest resistance in the chain controls the heat rate and takes the biggest share of $\Delta T$: a pane of glass in a window drops almost no temperature; the stagnant air gap carries nearly all of it.
+
+### The wall with convection on both faces
+
+Fluid at $T_{\infty1}$ with $h_1$ on the left, $T_{\infty2}$ with $h_2$ on the right:
+
+$$\dot Q=\frac{T_{\infty1}-T_{\infty2}}{R_{total}},\qquad R_{total}=\frac1{h_1A}+\frac L{kA}+\frac1{h_2A}.$$
+
+Temperatures at the interfaces follow by walking along the chain: $T_{s1}=T_{\infty1}-\dot Q/(h_1A)$, $T_{s2}=T_{s1}-\dot QR_{wall}$. This is the single most reused calculation in the course.
+
+### Radiation and convection in parallel: the combined coefficient
+
+A surface that loses heat to air at $T_\infty$ by convection **and** to walls at $T_{surr}$ by radiation has two parallel paths. If the air and the surroundings are at the same temperature the two coefficients simply add:
+
+$$h_{combined}=h_{conv}+h_{rad},\qquad h_{rad}=\varepsilon\sigma(T_s+T_{surr})(T_s^2+T_{surr}^2).$$
+
+$h_{rad}$ depends on $T_s$, so one assumes a surface temperature, computes $h_{rad}$, solves the network and **checks** the assumed $T_s$ (see 3-94 below). The textbook problem statements say "the heat transfer coefficient accounts for radiation" when they have done this for you.
+
+## Thermal contact resistance
+
+Two solids pressed together touch only at the peaks of their surface roughness; the gaps between are filled with a fluid (air) or vacuum that conducts badly. Heat is squeezed through the actual contact spots, so there is an extra temperature drop $\Delta T_{interface}$ at the joint:
+
+$$\dot Q=h_cA\,\Delta T_{interface},\qquad R_c=\frac1{h_cA}.$$
+
+$h_c$ is the **contact conductance** [W/m²K]. It **increases** with contact pressure (spots flatten), **decreases** with roughness, depends on the two materials and on the **fluid trapped in the gaps** (helium or grease fills better than air or vacuum), and on the interface temperature. It does **not** depend on any convection outside the joint (a standard exam MCQ: "Select the wrong statement: contact resistance depends on... (d) convection of heat transfer"). Its value is rarely larger than that of a thin film of air, so it matters only when the layers themselves have small resistance: for two thin metal plates it can dominate; for 7 mm of epoxy either side of a copper plate it is a rounding error.
+
+*Example (3-52).* A 1 mm copper plate between two 7 mm epoxy boards ($k=0.26$), $h_c=6000$ W/m²K at each of the two joints. Per m²: $R_c=1/6000=0.00017$, $R_{plate}=0.001/401=2.5\times10^{-6}$, $R_{epoxy}=0.007/0.26=0.02692$. Total with contacts $0.05418$ K/W; ignoring both contacts the error is $\dfrac{2(0.00017)}{0.05418}=0.63\%$: negligible.
+
+## Composite walls: layers in series, and 2-D patterns
+
+**Series.** Layers one behind the other carry the same $\dot Q$; add their resistances. A **window** is the classic: film $R_{in}$, glass, air gap, glass, film $R_{out}$. For the double pane of 3-25 ($3.6$ m² area, glass $k=0.78$, 3 mm each, 12 mm air $k=0.026$, $h_{in}=10$, $h_{out}=25$, 21 °C inside, $-5$ °C outside):
+
+| element | $R$ (K/W) |
+|---|---|
+| inside film $1/(10\cdot3.6)$ | 0.02778 |
+| glass $0.003/(0.78\cdot3.6)$, ×2 | 0.00107 each |
+| air gap $0.012/(0.026\cdot3.6)$ | 0.12821 |
+| outside film $1/(25\cdot3.6)$ | 0.01111 |
+| **total** | **0.16924** |
+
+$\dot Q=26/0.16924=154$ W. The air gap is 76 % of the resistance. *That is why double glazing works.*
+
+**Series and parallel together (2-D patterns).** A wall with studs, or a block with different materials side by side, is only **approximately** one-dimensional. The standard simplification: break the wall into layers perpendicular to the flow, and within a layer make parallel paths. The network is "series of parallel groups". Two classic assignment problems:
+
+- **3-73, stud wall** (sheetrock $k=0.17$, studs $k=0.11$, fibreglass between the studs $k=0.034$, one 0.65 m repeating section, 5 cm × 16 cm stud): $R_{stud}=0.16/(0.11\cdot0.05)=29.09$ K/W in parallel with $R_{fg}=0.16/(0.034\cdot0.60)=7.84$ K/W gives $R_{mid}=6.18$ K/W. Total $R=0.185+0.090+6.178+0.090+0.045=6.59$ K/W; $\dot Q=29/6.59=4.40$ W per section, 406 W over the whole $12\times5$ m wall. *Note how the studs (a thermal bridge) are a small fraction of the area but carry a fifth of the heat.*
+- **3-75, composite wall with sections A–F** (areas 0.12 m² per unit height, $T_1=300$, $T_2=100$ °C): $R_1=0.04$, the middle group $C\|B\|C$ gives $R_{mid1}=0.025$, the group $D\|E$ gives $R_{mid2}=0.034$, $R_7=0.25$. $\dot Q=200/0.349=572$ W per section, 191 kW overall; the interface temperature where B, D, E meet is $300-572(0.065)=263$ °C and the drop across F is $572(0.25)=143$ °C. (With unrounded resistances $\dot Q=574$ W; the textbook rounds $0.0625$ to $0.06$. Exam tolerance is generous; quote what the solution shows.)
+
+<Trap title="Series-parallel is an approximation; say which one you used">
+
+You can assume the faces of each layer are isothermal (resistances in parallel inside a layer, then series between layers), or assume the flow is in separate tubes (series inside each path, then parallel). The two give slightly different answers; the true answer lies between. State the assumption in the exam ("heat transfer is one-dimensional").
+
+</Trap>
+
+**Equivalent overall coefficient.** Often one writes $\dot Q=UA\,\Delta T$ with $U=\dfrac1{R_{total}A}$ [W/m²K]: the **overall heat transfer coefficient**. For a wall, $U=\left(\dfrac1{h_1}+\dfrac Lk+\dfrac1{h_2}\right)^{-1}$. In construction $R_{value}=1/U$ per unit area. For cylinders and spheres the area changes, so $U$ must be tied to a specific surface ($U_iA_i=U_oA_o=1/R_{total}$). Chapter 11 uses it for heat exchangers.
+
+<ToolLink tool="resistance">Build any series–parallel network and read $\dot Q$ and every interface temperature</ToolLink>
+
+## Cylinders and spheres
+
+**Temperature profile.** With no generation the equations are $\dfrac d{dr}\!\left(r\dfrac{dT}{dr}\right)=0$ (cylinder) and $\dfrac d{dr}\!\left(r^2\dfrac{dT}{dr}\right)=0$ (sphere), which integrate to
+
+$$T(r)=C_1\ln r+C_2\ \ (\text{cylinder}),\qquad T(r)=-\frac{C_1}{r}+C_2\ \ (\text{sphere}).$$
+
+The heat **rate** is constant in steady state; the heat **flux** falls with radius because the area grows. Applying $T(r_1)=T_1$, $T(r_2)=T_2$:
+
+$$\dot Q_{cyl}=2\pi kL\frac{T_1-T_2}{\ln(r_2/r_1)},\quad R_{cyl}=\frac{\ln(r_2/r_1)}{2\pi kL};\qquad\dot Q_{sph}=4\pi kr_1r_2\frac{T_1-T_2}{r_2-r_1},\quad R_{sph}=\frac{r_2-r_1}{4\pi kr_1r_2}.$$
+
+(Both are on the formula sheet.) **Multilayer cylinder with convection inside and outside:**
+
+$$R_{total}=\frac1{h_iA_i}+\frac{\ln(r_2/r_1)}{2\pi k_1L}+\frac{\ln(r_3/r_2)}{2\pi k_2L}+\frac1{h_oA_o},\quad A_i=2\pi r_1L,\ A_o=2\pi r_3L.$$
+
+*Example: steam pipe, 3-81.* A 5 cm (ID) steel pipe, $k=15$, wall to $r_2=2.75$ cm, 3 cm of glass wool ($k=0.038$) out to $r_3=5.75$ cm, steam at 280 °C ($h_i=80$), air at 5 °C ($h_o=22$), per metre: $R_i=0.0796$, $R_{pipe}=0.00101$, $R_{ins}=\dfrac{\ln(5.75/2.75)}{2\pi(0.038)}=3.089$, $R_o=0.1259$ K/W. Total 3.296 K/W, so $\dot Q'=275/3.296=83.4$ W/m. The temperature drops: across the steel pipe 0.08 K, across the insulation **257.6 K**. All the temperature difference is dropped in the insulation; that is its job.
+
+*Example: iced and cryogenic tanks (3-102).* A 3 m sphere of liquid nitrogen at $-196$ °C in air at 15 °C with a combined $h_o=35$: bare, $R_o=1/(hA)=0.00101$ K/W, $\dot Q=211/0.00101=208\,900$ W, evaporating 1.055 kg/s. With 5 cm of fibreglass ($k=0.035$): $R_{ins}=\dfrac{1.55-1.5}{4\pi(0.035)(1.55)(1.5)}=0.0489$ K/W, $\dot Q=4233$ W (0.0214 kg/s, 50× less). With 2 cm of **superinsulation** ($k=0.00005$): $R_{ins}=13.96$ K/W, $\dot Q=15.1$ W, 0.000076 kg/s.
+
+## Critical radius of insulation
+
+Putting insulation on a thin pipe adds conduction resistance, but it also **increases the outer surface area** and so lowers the convection resistance. For a cylinder of outer radius $r_1$ with insulation out to $r_2$:
+
+$$R_{total}(r_2)=\frac{\ln(r_2/r_1)}{2\pi kL}+\frac1{h\,2\pi r_2L}.$$
+
+Setting $dR/dr_2=0$: $\dfrac1{2\pi kLr_2}-\dfrac1{2\pi hLr_2^2}=0\Rightarrow\boxed{r_{cr,cyl}=\dfrac kh}$ (the second derivative is positive, so this is the **minimum** resistance, i.e. the **maximum heat loss**). For a sphere $r_{cr,sph}=2k/h$.
+
+- If $r_1<r_{cr}$, adding insulation **first increases** the heat loss until $r_2=r_{cr}$, and only after a larger radius does it fall back to the bare value.
+- If $r_1>r_{cr}$, every bit of insulation reduces the loss.
+
+*Numbers.* Wire of radius 1 mm at 70 °C in 20 °C air ($h=10$) with insulation $k=0.05$: $r_{cr}=0.05/10=5$ mm. Heat loss per metre: bare 3.14 W; $r_2=2$ mm: 4.92 W; **$r_2=5$ mm: 6.02 W (maximum)**; 10 mm: 5.60 W; 20 mm: 4.84 W; the loss only drops below the bare value beyond $r_2\approx14$ cm. That is exactly why electrical wire insulation (a few mm of plastic) *helps* cool the wire: for small radii and low $h$ the insulation is below the critical radius. And for ordinary pipes ($r_1\sim$ centimetres, $r_{cr}\sim$ millimetres) insulation always helps. (Assignment 3-106C: "Can the measurements be right? Yes, if the radius is below $r_{cr}$.")
+
+<LabLink lab="pipe">Insulated pipe lab: slide the insulation thickness past $r_{cr}$ and watch the heat loss peak</LabLink>
+
+## More worked examples (assignment 3)
+
+**Insulation thickness and payback (3-33).** An exposed furnace wall, 2 m × 1.5 m, at 110 °C in 32 °C air with $h=10$: bare $\dot Q=10(3)(78)=2340$ W. To cut the loss by 90 % the total resistance must be $78/234=0.333$ K/W; the convection film is $1/(10\cdot3)=0.0333$, so $L/(kA)=0.300$ and $L=0.3(0.038)(3)=3.4$ cm. Savings: $2106$ W for 8760 h/yr at 78 % furnace efficiency $=807$ therms/yr, USD 888/yr: a USD 250 insulation pays back in 0.28 years (3.4 months).
+
+**A jacket (3-67).** Five fabric layers (0.15 mm, $k=0.13$) separated by four 1.5 mm air gaps ($k=0.026$) on a 1.25 m² coat, 25 °C skin, 0 °C outside, $h_o=25$: $R=5(0.0009)+4(0.0462)+0.0320=0.2214$ K/W, $\dot Q=113$ W. Without the air gaps (one 0.75 mm layer) the loss is 685 W: **six times** more. A wool coat with the same resistance would be 8.3 mm thick. *The air gaps, not the fabric, do the insulating.*
+
+**Hot-water pipe in a basement (3-94).** 15 m of 4 cm ID cast-iron pipe ($k=52$, 2 mm wall), water at 90 °C ($h_i=120$), air and walls at 10 °C ($h_{conv}=15$, $\varepsilon=0.7$). Assume $T_s\approx80$ °C so $h_{rad}=\varepsilon\sigma(T_s^2+T_{surr}^2)(T_s+T_{surr})=5.17$ W/m²K and $h_{combined}=20.17$. Resistances: inner 0.00442, pipe 0.00003, outer 0.02287; total 0.02732 K/W; $\dot Q=80/0.02732=2928$ W. If the water may cool by only 3 K: $\dot m=2928/(4180\cdot3)=0.2335$ kg/s, $V=0.186$ m/s. **Check the assumption:** $T_s=90-2928(0.00445)=77.0$ °C: close to the assumed 80, so no iteration is needed.
+
+**A hot-water tank (3-91).** A 40 cm × 150 cm tank ($R_i=0.0106$, foam 3 cm, $k=0.03$: $R_{foam}=0.4943$, $R_o=0.0384$): $\dot Q=60.7$ W, USD 42.6/yr, 15 % of the heating bill. With a 3 cm fibreglass wrap ($k=0.035$) the loss drops to 36.2 W, saving 24.5 W; the USD 30 kit pays back in 638 days.
+
+<Examined>
+
+- **MT1 (Feb 2024, Q3)** is a composite-wall problem solved by resistances plus an energy balance (Chapter 2).
+- **MT2 (Nov 2022 and Nov 2023, Q3)**: a surface cooled by external flow, protected by an insulating layer or glass-fibre jacket: a resistance network with the **convection coefficient taken from Chapter 7**. Steps: draw the circuit, get $h$ from the correlation, then one energy balance between the known temperatures. (Nov 2022: 7.46 mm of insulation; Nov 2023: oil pipe with radioactive wall: $T_3$ from the external-flow circuit.)
+- The six MCQ at the start of every MT1 include "contact resistance does not depend on convection".
+- <Asg n="03">Assignment 3</Asg> (3-25, 3-30, 3-33, 3-52, 3-67, 3-73, 3-75, 3-81, 3-91, 3-94, 3-102, 3-127, 3-138, 3-142, 3-145).
+
+</Examined>
+
+### Check yourself
+
+1. A 2 cm plate ($k=0.5$) has 100 °C on one side and 20 °C on the other, 1 m² area. $\dot Q$? Flux? *($R=0.04$ K/W; $\dot Q=2000$ W; $q''=2000$ W/m².)*
+2. Why is the heat **rate** constant through a pipe wall but the **flux** is not? *(Rate conserved in steady state; the area $2\pi rL$ grows with $r$.)*
+3. A 5 mm pipe, insulation $k=0.04$, outside $h=8$. Does a thin layer help? *($r_{cr}=5$ mm: the pipe is exactly at $r_{cr}$, so a thin layer makes the loss slightly **worse** before it improves.)*
+4. Two resistors, $0.1$ and $0.4$ K/W, in parallel across 50 K. Total rate? *($R=0.08$, $\dot Q=625$ W.)*

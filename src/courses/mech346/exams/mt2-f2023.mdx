@@ -1,0 +1,208 @@
+<p className="eyebrow">Midterm 2 · November 14, 2023 · McGill MECH 346 · 80 min · closed book</p>
+
+# Midterm 2, November 2023
+
+<div className="lede">
+
+Q1 (4.5): lumped annealing of a 30 cm sphere; Q2 (4.5): one-term solution for a hemisphere on a table; Q3 (11): a radioactive cylindrical shell heating an oil pipeline and losing heat to the wind through glass-fiber insulation (internal flow + external flow + resistance network). The formula sheet provides the lumped formulas, the sphere/cylinder/plane-wall one-term formulas, the product rule for $Q/Q_{max}$, Table 4-2 and 4-3, the Hausen entry-region formula, the log-mean difference and the Churchill–Bernstein correlation. The source is a **graded student copy (16/20)**; this page records what the grading missed. Statements are paraphrased. Covers <Ch slug="transient">Ch 4</Ch>, <Ch slug="external-flow">Ch 7</Ch> and <Ch slug="internal-flow">Ch 8</Ch> (the Hausen formula appeared early on this paper).
+
+</div>
+
+<Problem id="Q1" title="Annealing a metal sphere (lumped system)" tags="Bi limit gives minimum k, L_c = D/6, time, total heat">
+
+<Statement>
+
+A metal sphere ($\rho=7833$ kg/m³, $c_p=0.465$ kJ/kgK), 30 cm in diameter, is annealed by heating to 900 °C in a furnace and cooling slowly to 100 °C in 35 °C ambient air with $h=75$ W/m²K. (a) What is the minimum $k$ for the sphere to be treated as a lumped system? (b) How long does the annealing take (s)? (c) What is the average heat transfer rate from the sphere to the air (W)?
+
+</Statement>
+
+<Think>
+
+The characteristic length of a sphere is $L_c=V/A_s=\dfrac{\frac43\pi r^3}{4\pi r^2}=\dfrac r3=\dfrac D6=0.05$ m. Part (a) asks the Biot limit backwards: $Bi=hL_c/k\le0.1$. The lumped solution then gives the time. Average rate = total heat / time.
+
+</Think>
+
+<Steps>
+<Step title="1. (a) Minimum $k$">
+
+$L_c=D/6=0.30/6=0.05$ m. $Bi=\dfrac{hL_c}k\le0.1\Rightarrow k\ge\dfrac{75(0.05)}{0.1}=37.5$ W/mK.
+
+</Step>
+<Step title="2. (b) Time">
+
+$b=\dfrac{hA_s}{\rho Vc_p}=\dfrac h{\rho c_pL_c}=\dfrac{75}{7833(465)(0.05)}=4.118\times10^{-4}$ s⁻¹. $\dfrac{T-T_\infty}{T_i-T_\infty}=\dfrac{100-35}{900-35}=0.07514$; $t=\dfrac{-\ln(0.07514)}{b}=\dfrac{2.5886}{4.118\times10^{-4}}=6285$ s ($=104.8$ min).
+
+</Step>
+<Step title="3. (c) Heat and average rate">
+
+$V=\tfrac43\pi(0.15)^3=0.014137$ m³. $Q=\rho Vc_p(T_i-T_f)=7833(0.014137)(465)(800)=4.119\times10^7$ J. $\dot Q_{avg}=\dfrac Q t=\dfrac{4.119\times10^7}{6285}=6554$ W.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**(a) $k\ge37.5$ W/mK; (b) $t=6285$ s (1 h 45 min); (c) $\dot Q_{avg}=6.55$ kW** (total heat 41.2 MJ).
+
+</Answer>
+
+<Callout kind="warn" title="⚠ The graded copy used the wrong length scale (3/4.5)">
+
+The student wrote $L_c=0.025$ m (half the correct $r/3=0.05$ m). That halves the Biot limit ($k_{min}=18.75$ instead of 37.5), makes $b$ twice too large (hence a time of 3143 s = 52.4 min, **half** the true time), and the heat $Q=25.7$ MJ and rate 8176 W are wrong too (the volume used does not match the 30 cm sphere: the correct $Q=41.2$ MJ). The grader marked part of it but the root cause is the missing factor 2 in $L_c$. **Rule: write $L_c=V/A_s$ with both formulas on the page, then substitute.**
+
+</Callout>
+
+<Source>Paper: Nov 14, 2023 Q1 (graded copy 3.0/4.5). Recomputed: $L_c=0.05$ m, $t=6285$ s, $\dot Q=6554$ W.</Source>
+
+</Problem>
+
+<Problem id="Q2" title="A brass hemisphere on a table (one-term sphere solution)" tags="one-term, hemisphere, insulated base, Q/Q_max">
+
+<Statement>
+
+A brass hemisphere of diameter 60 cm at a uniform 120 °C rests on a table (no heat transfer from its base) in 25 °C air with $h=6$ W/m²K. Using the one-term solution, find (a) the temperature at the top surface of the hemisphere 15 min after the start of cooling, (b) the temperature at the centre of the flat bottom surface after 15 min, (c) the total heat transferred in kJ. Brass: $k=2$ W/mK (as printed), $\alpha=33.9\times10^{-6}$ m²/s, $\rho=8530$ kg/m³, $c_p=0.380$ kJ/kgK.
+
+</Statement>
+
+<Think>
+
+An insulated flat base is a plane of symmetry: the hemisphere behaves exactly like **half of a full sphere** of the same radius $r_0=0.3$ m. So use the one-term sphere solution; the centre of the sphere is the centre of the base, and the apex of the dome is at $r=r_0$.
+
+</Think>
+
+<Steps>
+<Step title="1. Bi, coefficients, Fourier number">
+
+$Bi=\dfrac{hr_0}k=\dfrac{6(0.3)}2=0.9$. Table 4-2 (sphere): $\lambda_1=1.5044$, $A_1=1.2488$. $Fo=\dfrac{\alpha t}{r_0^2}=\dfrac{33.9\times10^{-6}(900)}{0.3^2}=0.339>0.2$ ✓.
+
+</Step>
+<Step title="2. Centre value">
+
+$\theta_0=A_1e^{-\lambda_1^2Fo}=1.2488\,e^{-(2.2632)(0.339)}=1.2488e^{-0.7672}=0.5798$.
+
+</Step>
+<Step title="3. (a) Top (apex, $r=r_0$)">
+
+$\theta(r_0)=\theta_0\dfrac{\sin\lambda_1}{\lambda_1}=0.5798(0.6632)=0.3845$; $T=25+0.3845(95)=61.5$ °C.
+
+</Step>
+<Step title="4. (b) Centre of the bottom face">
+
+$T=25+0.5798(95)=80.1$ °C.
+
+</Step>
+<Step title="5. (c) Total heat">
+
+$Q_{max}=\rho Vc_p(T_i-T_\infty)$ with the **hemisphere's** volume $V=\tfrac23\pi r_0^3=0.05655$ m³: $8530(0.05655)(380)(95)=17.41$ MJ. $\dfrac Q{Q_{max}}=1-3\theta_0\dfrac{\sin\lambda_1-\lambda_1\cos\lambda_1}{\lambda_1^3}=1-3(0.5798)(0.2637)=0.541$. $Q=0.541(17.41)=9.42$ MJ.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**(a) 61.5 °C; (b) 80.1 °C; (c) $Q=9.4$ MJ $=9420$ kJ.**
+
+</Answer>
+
+<Callout kind="warn" title="⚠ The graded copy's heat is more than the body's total heat content (4/4.5)">
+
+The temperatures (61.58 and 80.08 °C) are right. For (c) the student used $V=\tfrac46\pi(0.3)^3$ with the **full-sphere** radius mismatched, getting $Q_{max}=58.0$ MJ and $Q=31\,401$ kJ. Check: the heat the hemisphere can possibly release, $Q_{max}$, is $17.4$ MJ, so any answer above that is wrong. Sanity test: $Q<Q_{max}$ and $Q/Q_{max}$ between 0 and 1.
+
+</Callout>
+
+<Callout kind="note" title="A property inconsistency in the statement">
+
+$k=2$ W/mK and $\alpha=33.9\times10^{-6}$ m²/s do not satisfy $\alpha=k/(\rho c_p)$: that would require $k\approx110$ W/mK (real brass). With $k=110$, $Bi=0.016$ and the lumped model would apply, giving about 119 °C after 15 min (almost no cooling) instead of 61.5 °C. The exam clearly intends $k=2$ (so that the one-term solution is needed); always use the data as printed.
+
+</Callout>
+
+<Source>Paper: Nov 14, 2023 Q2 (graded copy 4.0/4.5). Recomputed: identical.</Source>
+
+</Problem>
+
+<Problem id="Q3" title="Radioactive shell between an oil pipeline and a glass-fiber jacket" tags="internal flow (Hausen), external flow (Churchill–Bernstein), exit temperature, resistance network, max generation">
+
+<Statement>
+
+A cylindrical shell of radioactive material (RM), radii $r_2=0.16$ m and $r_3=0.17$ m, length 20 m, generates heat at a constant rate $\dot e$. It heats oil flowing at 2 m/s in a pipeline of inner radius $r_1=0.15$ m (pipe wall $r_1$ to $r_2$, $k=40$ W/mK); the oil enters at 25 °C. The remaining heat goes outward through glass fiber ($k=0.05$ W/mK, from $r_3$ to $r_4=0.2$ m) into 25 °C air blowing across at 5 m/s. For safety, the outer surface of the glass fiber must not exceed 40 °C and the inner surface of the pipe must not exceed 100 °C. Find (a) the maximum $\dot e$ in kW/m³, (b) the temperature at $r_2$, (c) the temperature at $r_3$. Air (film temperature): $k=0.02808$ W/mK, $Pr=0.7202$, $\nu=1.896\times10^{-5}$ m²/s. Oil: $k=5$ W/mK (as printed), $Pr=10\,863$, $\rho=888.1$ kg/m³, $c_p=1880$ J/kgK, $\nu=9.429\times10^{-4}$ m²/s.
+
+</Statement>
+
+<Think>
+
+The RM sheds heat in **two directions**: inward through the pipe wall into the oil, and outward through the fiber into the air. Both safety limits are reached together at the maximum $\dot e$. So: (1) inner path: oil heated by a wall at 100 °C (constant surface temperature) gives $\dot Q_{oil}$; (2) outer path: fiber + air film with the surface at 40 °C gives $\dot Q_{air}$; (3) $\dot e\,V_{RM}=\dot Q_{oil}+\dot Q_{air}$; (4) $T_2$ and $T_3$ from the conduction resistances on each side.
+
+</Think>
+
+<Plan>
+
+Oil: $Re$, entry length, Hausen $Nu\to h_{oil}\to T_e\to\dot Q_{oil}$. Air: $Re$, Churchill–Bernstein $Nu\to h_{air}\to\dot Q_{air}$. $V_{RM}=\pi L(r_3^2-r_2^2)$. $T_2=100+\dot Q_{oil}R_{pipe}$; $T_3=40+\dot Q_{air}R_{fiber}$.
+
+</Plan>
+
+<Steps>
+<Step title="1. Oil side: regime and entry length">
+
+$Re_D=\dfrac{VD}\nu=\dfrac{2(0.3)}{9.429\times10^{-4}}=636<2300$: laminar. Thermal entry length $L_t=0.05Re\,Pr\,D=0.05(636)(10\,863)(0.3)=1.04\times10^5$ m $\gg20$ m: the flow is **thermally developing along the whole pipe**, so use the Hausen formula, not 3.66.
+
+</Step>
+<Step title="2. Hausen Nusselt number and $h_{oil}$">
+
+$Gz=\dfrac DLRe\,Pr=\dfrac{0.3}{20}(636.3)(10\,863)=1.037\times10^5$. $Nu=3.66+\dfrac{0.065\,Gz}{1+0.04\,Gz^{2/3}}=3.66+\dfrac{6740}{1+0.04(2.208\times10^3)}=79.15$. $h_{oil}=\dfrac{Nu\,k}D=\dfrac{79.15(5)}{0.3}=1319$ W/m²K.
+
+</Step>
+<Step title="3. Oil exit temperature and heat taken by the oil">
+
+$\dot m=\rho V\dfrac{\pi D^2}4=888.1(2)(0.07069)=125.55$ kg/s; $A_s=\pi DL=18.85$ m². $\dfrac{hA_s}{\dot mc_p}=\dfrac{1319(18.85)}{125.55(1880)}=0.1053$. With the wall at $T_s=100$ °C: $T_e=T_s-(T_s-T_i)e^{-0.1053}=100-75(0.9000)=32.5$ °C. $\dot Q_{oil}=\dot mc_p(T_e-T_i)=125.55(1880)(7.50)=1.770$ MW. (Check by LMTD: $\Delta T_{lm}=\dfrac{75-67.5}{\ln(75/67.5)}=71.2$ K; $hA_s\Delta T_{lm}=1319(18.85)(71.2)=1.770$ MW ✓.)
+
+</Step>
+<Step title="4. Air side">
+
+$D_4=0.4$ m: $Re=\dfrac{5(0.4)}{1.896\times10^{-5}}=105\,485$. Churchill–Bernstein: $Nu=0.3+\dfrac{0.62Re^{1/2}Pr^{1/3}}{[1+(0.4/Pr)^{2/3}]^{1/4}}\left[1+\left(\dfrac{Re}{282\,000}\right)^{5/8}\right]^{4/5}=224.5$. $h_{air}=\dfrac{224.5(0.02808)}{0.4}=15.76$ W/m²K. $A_4=\pi(0.4)(20)=25.13$ m². $\dot Q_{air}=h_{air}A_4(40-25)=15.76(25.13)(15)=5941$ W.
+
+</Step>
+<Step title="5. (a) Maximum generation rate">
+
+$V_{RM}=\pi L(r_3^2-r_2^2)=\pi(20)(0.0289-0.0256)=0.2073$ m³. $\dot e=\dfrac{\dot Q_{oil}+\dot Q_{air}}{V_{RM}}=\dfrac{1.770\times10^6+5941}{0.2073}=8.57\times10^6$ W/m³ $=8570$ kW/m³.
+
+</Step>
+<Step title="6. (b) Temperature at $r_2$">
+
+$R_{pipe}=\dfrac{\ln(r_2/r_1)}{2\pi k L}=\dfrac{\ln(0.16/0.15)}{2\pi(40)(20)}=1.284\times10^{-5}$ K/W. $T_2=T_1+\dot Q_{oil}R_{pipe}=100+1.770\times10^6(1.284\times10^{-5})=122.7$ °C.
+
+</Step>
+<Step title="7. (c) Temperature at $r_3$">
+
+$R_{fiber}=\dfrac{\ln(r_4/r_3)}{2\pi k L}=\dfrac{\ln(0.2/0.17)}{2\pi(0.05)(20)}=0.02587$ K/W. $T_3=T_4+\dot Q_{air}R_{fiber}=40+5941(0.02587)=193.7$ °C.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**(a) $\dot e_{max}\approx8.57\times10^6$ W/m³ (8570 kW/m³); (b) $T_2=122.7$ °C; (c) $T_3=193.7$ °C.** (The oil takes 99.7 % of the heat: the glass fiber works as a very good insulator.)
+
+</Answer>
+
+<Callout kind="warn" title="⚠ Two errors on the graded copy (9/11)">
+
+(1) The volume of the RM shell was written as $V=2\pi L(r_3-r_2)=1.257$ m³. A cylindrical shell's volume is $\pi L(r_3^2-r_2^2)=2\pi\bar rL\,\Delta r=0.2073$ m³ with the **mean radius** $\bar r=0.165$ m: the copy's expression omitted $\bar r$ and so overestimated $V$ six-fold. (2) The generation was set equal to the oil heat alone ($\dot Q_{oil}/V=1.4\times10^6$ W/m³); the heat leaving **outward** (5.9 kW) must be added: $\dot e=(\dot Q_{oil}+\dot Q_{air})/V$. The grader's note "concept is right" refers to the method. The two heat rates the copy found (1.76 MW and 5941 W) agree with the recomputation, so $T_2$ and $T_3$ follow correctly from them; only (a) is affected by the volume. The oil quantities ($Re=636$, $L_t=1.04\times10^5$ m, $Nu=79.15$, $h=1319$, $T_e=32.5$ °C) and air quantities ($Re=105\,485$, $h=15.76$) match as well.
+</Callout>
+
+<Callout kind="note" title="A property oddity">
+
+An oil conductivity of 5 W/mK is far above real oil (about 0.15 W/mK); with $Pr=10\,863$ and the given $\nu$ the numbers are internally consistent with $k=5$ ($h=1319$ requires it). Use the printed value.
+
+</Callout>
+
+<Traps>
+
+- Do not use the fully developed $Nu=3.66$ here: $L_t\gg L$.
+- Both safety limits are active **simultaneously** at the maximum $\dot e$; $\dot Q_{oil}$ follows from the 100 °C wall, $\dot Q_{air}$ from the 40 °C outer surface.
+- $T_2$ and $T_3$ are found from the **two separate** resistance paths, not from one series chain.
+
+</Traps>
+
+<Source>Paper: Nov 14, 2023 Q3 (graded copy 9.0/11). Recomputed: $h_{oil}=1319$, $T_e=32.5$ °C, $\dot Q_{oil}=1.770$ MW, $h_{air}=15.76$, $\dot Q_{air}=5941$ W, $\dot e=8.57\times10^6$ W/m³.</Source>
+
+</Problem>

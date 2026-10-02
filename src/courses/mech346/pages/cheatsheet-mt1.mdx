@@ -1,0 +1,63 @@
+<p className="eyebrow">Exam toolkit · Midterm 1 · Ch 1–3 and fins</p>
+
+# Cheat sheet: Midterm 1
+
+<div className="lede">
+
+Everything needed for Midterm 1, in the order of the paper: Q1 conceptual (six "select the **wrong** statement" items), Q2 a **fin**, Q3 **conduction with heat generation** (derive $T(r)$, apply the boundary conditions, centre temperature, sketch). The exam is closed book with an instructor formula sheet (the three laws, the 1-D conduction formulas, the fin formulas), so this page is the **method**, with the formulas you must still recognise. See <Ch slug="intro">Ch 1</Ch>, <Ch slug="conduction-eq">Ch 2</Ch>, <Ch slug="steady-conduction">Ch 3</Ch>, <Ch slug="fins">fins</Ch>.
+
+</div>
+
+## 1 · The three laws and the energy balance
+
+- Fourier: $\dot Q_{cond}=-kA\dfrac{dT}{dx}$. Newton: $\dot Q_{conv}=hA_s(T_s-T_\infty)$. Stefan–Boltzmann: $\dot Q_{rad}=\varepsilon\sigma A_s(T_s^4-T_{surr}^4)$, **kelvin**.
+- Steady, no generation: heat in = heat out. Generation: $\dot E_{gen}=\dot eV$. Transient: $\dot E_{in}-\dot E_{out}+\dot E_{gen}=\dfrac{dE}{dt}$.
+- Radiation as a convection-like term: $h_{rad}=\varepsilon\sigma(T_s^2+T_{surr}^2)(T_s+T_{surr})$ (about 5–6 W/m²K near room temperature, $\varepsilon\approx0.9$); parallel to convection: add the coefficients.
+- Radiation needs **no medium**. Convection depends on the **fluid**, not the solid's $k$. Contact resistance: roughness, materials, interface pressure and temperature, trapped fluid (not convection).
+
+## 2 · The conduction equation (Ch 2)
+
+- General: $\nabla\cdot(k\nabla T)+\dot e=\rho c_p\dfrac{\partial T}{\partial t}$. Constant $k$: $\nabla^2T+\dfrac{\dot e}k=\dfrac1\alpha\dfrac{\partial T}{\partial t}$, $\alpha=\dfrac k{\rho c_p}$.
+- 1-D steady: plane wall $\dfrac{d^2T}{dx^2}+\dfrac{\dot e}k=0$; cylinder $\dfrac1r\dfrac d{dr}\left(r\dfrac{dT}{dr}\right)+\dfrac{\dot e}k=0$; sphere $\dfrac1{r^2}\dfrac d{dr}\left(r^2\dfrac{dT}{dr}\right)+\dfrac{\dot e}k=0$.
+- **Boundary conditions:** fixed $T$; fixed flux $-k\,dT/dx=q''$; **insulated/symmetric** $dT/dx=0$; **convection** $-k\dfrac{dT}{dx}\Big\vert_s=h(T_s-T_\infty)$; radiation.
+- **Generation, centre-to-surface rise** (uniform $\dot e$): plane wall (half-thickness $L$) $\dfrac{\dot eL^2}{2k}$; long cylinder $\dfrac{\dot er_0^2}{4k}$; sphere $\dfrac{\dot er_0^2}{6k}$.
+- **Surface temperature by energy balance:** $T_s=T_\infty+\dfrac{\dot eV}{hA_s}$ = $T_\infty+\dfrac{\dot eL}h$ (wall), $+\dfrac{\dot er_0}{2h}$ (cylinder), $+\dfrac{\dot er_0}{3h}$ (sphere).
+- **Method for Q3:** ODE → integrate twice → two BCs ($C_1=0$ from symmetry; convection or fixed $T$ at the surface) → $T(r)$ → centre → heat rate $=\dot eV$ (inside) and constant outside. Sphere $T(r)=T_s+\dfrac{\dot e(r_0^2-r^2)}{6k}$.
+- Heat **flux** sketch: wall $q''=\dot ex$ (linear), cylinder $\dot er/2$, sphere $\dot er/3$ inside; outside no generation: $q''\propto1/r$ (cylinder), $1/r^2$ (sphere). The heat **rate** $\dot Q(r)\propto r^3$ (sphere) up to $r_0$, then constant.
+- Variable $k=k_0(1+\beta T)$: use $k$ at the mean temperature.
+
+## 3 · Resistance networks (Ch 3)
+
+| Element | $R$ |
+|---|---|
+| plane wall | $\dfrac L{kA}$ |
+| cylinder | $\dfrac{\ln(r_2/r_1)}{2\pi kL}$ |
+| sphere | $\dfrac{r_2-r_1}{4\pi kr_1r_2}$ |
+| convection | $\dfrac1{hA}$ |
+| radiation | $\dfrac1{h_{rad}A}$ |
+| contact | $\dfrac{R''_c}A=\dfrac1{h_cA}$ |
+
+Series: add. Parallel: $\dfrac1R=\sum\dfrac1{R_i}$. $\dot Q=\dfrac{\Delta T_{total}}{R_{tot}}$; interface temperature $T_i=T_{start}\mp\dot Q\,R_{partial}$. **Draw the circuit first.** Composite wall with layers and parallel paths (studs): series–parallel, 1-D approximation.
+
+- **Critical radius** of insulation (cylinder) $r_{cr}=k_{ins}/h_o$; sphere $2k_{ins}/h_o$. If $r_{outer}<r_{cr}$, insulation **increases** the loss; the maximum loss is at $r_{cr}$.
+- Large $T$-drop $\Leftrightarrow$ large $R$: the layer with the largest resistance takes the largest share of $\Delta T$.
+
+## 4 · Fins (adiabatic tip unless stated)
+
+- $m=\sqrt{\dfrac{hp}{kA_c}}$ (thin rectangular fin: $\sqrt{2h/kt}$; pin: $\sqrt{4h/kD}$). $p$=perimeter, $A_c$=cross-section.
+- $\theta(x)/\theta_b=\dfrac{\cosh m(L-x)}{\cosh mL}$; **tip** $=1/\cosh mL$.
+- $\dot Q_{ad}=\sqrt{hpkA_c}\,\theta_b\tanh(mL)$; $\dot Q_\infty=\sqrt{hpkA_c}\,\theta_b$ (need $mL\gtrsim3$); convective tip: use the **corrected length** $L_c=L+\dfrac{A_c}p$ ($t/2$ for a plate, $D/4$ for a pin).
+- **Efficiency** $\eta=\dfrac{\dot Q_{fin}}{hA_{fin}\theta_b}=\dfrac{\tanh(mL_c)}{mL_c}$; **effectiveness** $\varepsilon=\dfrac{\dot Q_{fin}}{hA_c\theta_b}=\eta\dfrac{A_{fin}}{A_c}$; worth it if $\varepsilon>2$.
+- Array: $\dot Q=\eta h A_{fin}\theta_b+hA_{unfinned}\theta_b$. Error of the infinite-fin formula $=\dfrac1{\tanh mL}-1$.
+- Fins help most when $h$ is **small** (gas side) and $k$ is large.
+
+## 5 · The Midterm-1 checklist
+
+1. Q1: for each "wrong" item, test each option against the physics (see the October 2021 and 2023 papers); if two look false pick the physically *impossible* one.
+2. Q2: $p$, $A_c$, $m$, $mL_c$, then $\dot Q$, $\eta$, $\varepsilon$, error %. The last answer $\approx1\,\%$ if $mL>2.5$.
+3. Q3: ODE, BCs, energy balance for $T_s$, $T(r)$, centre value, check units ($\dot e$ in W/m³).
+4. Units: kelvin for radiation; cm to m; W/m·K.
+
+<Examined>
+Papers: <Ex id="mt1-f2021">Oct 2021</Ex>, <Ex id="mt1-f2023">Oct 2023</Ex>, <Ex id="mt1-w2024">Feb 2024 (Q3)</Ex>. Assignments: <Asg n="01">1</Asg>, <Asg n="02">2</Asg>, <Asg n="03">3</Asg>, <Asg n="03b">3b</Asg>.
+</Examined>

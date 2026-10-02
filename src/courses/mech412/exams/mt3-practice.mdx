@@ -1,0 +1,429 @@
+<p className="eyebrow">Midterm 3 / final practice · built from Lectures 17–23 and HW7–HW10 · 20 + 25 + 20 + 15 + 10 + 10 = 100 marks</p>
+
+# Midterm 3 practice paper (a mock, with full solutions)
+
+<div className="lede">
+
+**This is not a real past paper.** No 2024-format final exists in the archive (the 2024 final was "MT3 = four problems on Lectures 17–23 plus two review problems"), so this page assembles one from the most reliable material: the Lecture 17–23 examples, <Hw n="7">HW7</Hw>–<Hw n="10">HW10</Hw> and the patterns of the earlier finals. Problems 1–3 deliberately use **one plant**, $G=\dfrac{K}{s(s+1)(s+5)}$, so you see how Routh, root locus, Bode margins and Ziegler–Nichols all tell the same story. Every number was recomputed. Try each problem **before** opening the steps: about 25 minutes per large problem.
+
+</div>
+
+<Problem id="MT3 practice P1" title="Routh, error constants and margins on G = K/[s(s+1)(s+5)] (20 marks)" tags="Routh range, K_v, accuracy vs stability, margins">
+
+<Statement>
+
+Unity negative feedback around $G(s)=\dfrac{K}{s(s+1)(s+5)}$, $K>0$. (a) Find the range of $K$ for stability (Routh). (b) Find the velocity constant and the steady-state error for a unit ramp as a function of $K$; what $K$ is needed for $e_{ss}\le0.2$? (c) For $K=10$ and for the $K$ from (b), find the gain and phase margins and the step overshoot. (d) Comment: can a pure gain meet both accuracy and a decent stability margin?
+
+</Statement>
+
+<Think>
+
+Three questions about the same loop: **how far** can $K$ go (Routh), **how accurate** must it be ($K_v$), and **how comfortable** is the stability (margins). The punchline of the course is that these pull in opposite directions, which is why compensators exist.
+
+</Think>
+
+<Steps>
+<Step title="(a) 1. Characteristic polynomial">
+
+$s(s+1)(s+5)+K=s^3+6s^2+5s+K=0$.
+
+</Step>
+<Step title="(a) 2. Routh array">
+
+$s^3$: $1,\ 5$. $s^2$: $6,\ K$. $s^1$: $\dfrac{6\cdot5-1\cdot K}{6}=\dfrac{30-K}6$. $s^0$: $K$.
+
+</Step>
+<Step title="(a) 3. Conditions">
+
+First column $1,\ 6,\ \dfrac{30-K}6,\ K$ all positive: $K<30$ and $K>0$. **Stable for $0<K<30$.** At $K=30$ the $s^1$ row vanishes: auxiliary equation $6s^2+30=0\Rightarrow s=\pm j\sqrt5$; the closed-loop roots are $-6,\ \pm j\sqrt5$ ✔.
+
+</Step>
+<Step title="(b) 1. Velocity constant and ramp error">
+
+Type 1: $K_v=\lim_{s\to0}sG=\dfrac K{1\cdot5}=\dfrac K5$, so for a unit ramp $e_{ss}=\dfrac1{K_v}=\dfrac5K$.
+
+</Step>
+<Step title="(b) 2. Requirement">
+
+$e_{ss}\le0.2\Rightarrow K\ge25$. Combined with (a): $25\le K<30$.
+
+</Step>
+<Step title="(c) 1. K = 10 (e_ss = 0.5)">
+
+Gain crossover $\omega_{gc}=1.23$ rad/s, **$PM=25.4^\circ$**; phase crossover $\omega_{pc}=\sqrt5=2.236$ rad/s, **$GM=9.5$ dB** (factor $30/10=3$). Closed-loop poles $-5.42,\ -0.291\pm j1.327$ ($\zeta=0.21$): step overshoot **48.6%**.
+
+</Step>
+<Step title="(c) 2. K = 25 (e_ss = 0.2)">
+
+$\omega_{gc}=2.04$ rad/s, **$PM=3.9^\circ$**, $GM=20\log(30/25)=1.58$ dB; poles $-5.87,\ -0.063\pm j2.06$ (almost on the axis); overshoot **85.6%**.
+
+</Step>
+<Step title="(d) The moral">
+
+To get a ramp error of 0.2 with a pure gain you must run at $K=25$, which is **at the edge of instability** (PM about 4°, GM 1.6 dB): useless. To get decent margins ($K\approx5$: $PM=43^\circ$, $GM=15.6$ dB, overshoot 25%) the ramp error is 1.0. **Accuracy and stability margin cannot both be had with a gain alone**: this is exactly what lag compensation (more $K_v$ at low frequency) and lead compensation (more phase near crossover) fix.
+
+</Step>
+</Steps>
+
+<Answer>
+
+(a) $0<K<30$; (b) $K_v=K/5$, $e_{ss}=5/K$, $K\ge25$; (c) $K=10$: $PM=25.4^\circ$, $GM=9.5$ dB, OS 48.6%; $K=25$: $PM=3.9^\circ$, $GM=1.6$ dB, OS 85.6%; (d) no: a compensator is needed.
+
+*Real-world:* a position servo whose designer wants to track a moving target tightly: turning up the gain makes it hunt; the controller design problem is to get the accuracy without the hunting.
+
+</Answer>
+
+<Traps>
+
+- Using the final-value theorem for the ramp error only after the loop is stable (here $K<30$).
+- PM is read at the **gain** crossover, GM at the **phase** crossover.
+- Do not forget the integrator when counting the system type.
+
+</Traps>
+
+<Source>Lecture 17–18, 21 examples (Anthony's $K/[s(s+1)(s+5)]$ loop): $K=10$: $\omega_{gc}=1.23$, $PM=25.4^\circ$, $GM=9.5$ dB; $K_{cr}=30$.</Source>
+
+<ToolLink tool="routh">Check the Routh array</ToolLink>
+
+</Problem>
+
+<Problem id="MT3 practice P2" title="Root locus and Ziegler–Nichols on the same plant (25 marks)" tags="asymptotes, break-away, ζ = 0.5, Z–N PID overshoot">
+
+<Statement>
+
+For the loop of P1: (a) sketch the root locus for $K>0$: poles, asymptotes, real-axis segments, break-away point, $j\omega$ crossing. (b) Find $K$ for a dominant pair with $\zeta=0.5$ and check dominance. (c) Use Ziegler–Nichols method 2 to get PID gains from the root-locus information, and find the closed-loop poles and overshoot. (d) Is Z–N a design to a spec?
+
+</Statement>
+
+<Think>
+
+Use the ten-step recipe of <Ch slug="root-locus">Chapter 18</Ch>: poles/zeros, segments, asymptotes, break points from $dK/ds=0$ (reject points with $K<0$), $j\omega$ crossing from Routh, then pick a point on a line of constant $\zeta$ and verify that the other pole is far to the left.
+
+</Think>
+
+<Steps>
+<Step title="(a) 1. Poles, zeros, segments">
+
+$n=3$ poles ($0,-1,-5$), no finite zeros. Real-axis points with an odd number of poles to the right: $(-1,0)$ and $(-\infty,-5)$ are **on** the locus; $(-5,-1)$ is **not**.
+
+</Step>
+<Step title="(a) 2. Asymptotes">
+
+$n-m=3$: angles $\pm60^\circ,\ 180^\circ$; centroid $\sigma_a=\dfrac{(0-1-5)-0}{3}=-2$.
+
+</Step>
+<Step title="(a) 3. Break-away">
+
+$K=-s(s+1)(s+5)=-(s^3+6s^2+5s)$; $\dfrac{dK}{ds}=0\Rightarrow3s^2+12s+5=0\Rightarrow s=-0.4725$ or $-3.528$. At $-0.4725$: $K=1.128>0$ ✔ (on the locus). At $-3.528$: $K=-13.1<0$: **reject** (it is on the part of the axis that is not on the locus).
+
+</Step>
+<Step title="(a) 4. jω crossing">
+
+From P1: $K=30$, $\omega=\sqrt5=2.236$ rad/s (the roots at $K=30$ are $-6,\pm j2.236$).
+
+</Step>
+<Step title="(a) 5. Sketch">
+
+Two branches leave 0 and $-1$, meet at $-0.47$ ($K=1.13$) and leave the axis, curve right, cross the imaginary axis at $\pm j2.24$ ($K=30$) and go off along $\pm60^\circ$; the branch from $-5$ goes left along the negative real axis.
+
+</Step>
+<Step title="(b) 1. ζ = 0.5 line">
+
+$\theta=\cos^{-1}0.5=60^\circ$ from the negative real axis. Solving numerically for the point on the locus with $\zeta=0.5$: $K=3.59$, with closed-loop poles $-0.417\pm j0.722$ and $-5.17$.
+
+</Step>
+<Step title="(b) 2. Dominance and check">
+
+The real pole $-5.17$ is about 12 times farther left than the pair's real part $0.417$, so the pair dominates ✔ (sum of roots $=-6$ ✔: $-0.417\cdot2-5.17=-6.0$). Simulated step overshoot: **16.1%** (second-order estimate at $\zeta=0.5$: 16.3%) with $t_p=4.6$ s: slow, because $\sigma=0.417$ is small.
+
+</Step>
+<Step title="(c) 1. Z–N method 2">
+
+$K_{cr}=30$, $P_{cr}=\dfrac{2\pi}{\sqrt5}=2.81$ s. PID: $K_p=0.6K_{cr}=18$, $T_i=0.5P_{cr}=1.40$ s, $T_d=0.125P_{cr}=0.351$ s ($K_i=12.8$, $K_d=6.32$). Equivalent form $G_c=6.32\dfrac{(s+1.42)^2}{s}$ (double zero at $-4/P_{cr}=-1.42$).
+
+</Step>
+<Step title="(c) 2. Closed loop">
+
+Closed-loop poles $-4.13,\ -1.12,\ -0.374\pm j1.62$: the slow lightly damped pair ($\zeta=0.23$) gives a step overshoot of **about 62%**.
+
+</Step>
+<Step title="(d) Is Z–N a design?">
+
+No: it is a **first cut**. It ignores your specs and typically leaves 25–60% overshoot; you then retune by root locus or Bode to meet the real requirement (the same lesson as <Hw n="9">HW9 Q1</Hw>, where Z–N gave 59%).
+
+</Step>
+</Steps>
+
+<Answer>
+
+(a) segments $(-1,0)$ and $(-\infty,-5)$; asymptotes $\pm60^\circ,180^\circ$ from $-2$; break-away $-0.4725$ ($K=1.13$); crossing $\pm j\sqrt5$ at $K=30$. (b) $K=3.59$, poles $-0.417\pm j0.722,\ -5.17$, OS 16%. (c) $K_p=18$, $T_i=1.40$, $T_d=0.351$: OS about 62%. (d) No.
+
+*Real-world:* Z–N is the "autotune" button on a temperature controller: it runs exactly the $K_{cr}/P_{cr}$ experiment and gives you a starting point, not a finished design.
+
+</Answer>
+
+<Callout kind="warn" title="⚠ Transcription slips in the lecture notes">
+
+Anthony's page writes the double zero as "$(s+1.49)$" and the gain as "6.39"; the correct values are $(s+1.42)^2$ and $K_d=6.32$ (zeros at $-4/P_{cr}$).
+
+</Callout>
+
+<Traps>
+
+- Rejecting break points with $K<0$ (here $-3.528$).
+- Always check that the chosen pair is **dominant** (the third pole at $-5.17$ is far left: good; contrast with the second solution of the L20 tachometer example).
+- Z–N is not a design to a specification.
+
+</Traps>
+
+<Source>Lecture 19–20 examples (the $K/[s(s+1)(s+5)]$ Z–N exercise and the root-locus rules); HW9 Q1, Q3; numbers recomputed.</Source>
+
+<ToolLink tool="root-locus">Plot the locus and drag K to 3.59</ToolLink>
+
+</Problem>
+
+<Problem id="MT3 practice P3" title="Lead compensator by Bode: 4/[s(s+2)], K_v = 20, PM = 50°, GM ≥ 10 dB (20 marks)" tags="lead design, K_c√α, margin check">
+
+<Statement>
+
+Plant $G=\dfrac{4}{s(s+2)}$, unity feedback. Design a lead compensator so that $K_v=20$ s⁻¹, $PM\ge50^\circ$ and $GM\ge10$ dB (Ogata Ex 11-6).
+
+</Statement>
+
+<Think>
+
+**Step 1:** the gain from $K_v$. **Step 2:** read the margin of the gain-adjusted loop. **Step 3:** required lead = target PM − current PM + safety. **Step 4:** $\alpha$ from $\sin\varphi_m$. **Step 5:** put $\omega_m$ at the frequency where the uncompensated loop has gain $-20\log(1/\sqrt\alpha)$, so the new crossover is at $\omega_m$. **Step 6:** corners $1/T=\omega_m\sqrt\alpha$, $1/(\alpha T)=\omega_m/\sqrt\alpha$. Then **verify**.
+
+</Think>
+
+<Steps>
+<Step title="1. Gain from K_v">
+
+$K_v=\lim sG_cG=\lim\dfrac{4K}{s+2}=2K=20\Rightarrow K=10$: loop $\dfrac{40}{s(s+2)}$.
+
+</Step>
+<Step title="2. Margin of the gain-adjusted loop">
+
+$\omega_{gc}=6.17$ rad/s, $PM=18^\circ$, $GM=\infty$ (the phase never reaches $-180^\circ$).
+
+</Step>
+<Step title="3. Lead needed">
+
+$50^\circ-18^\circ=32^\circ$, plus a $5^\circ$ safety margin: $\varphi_m=38^\circ$.
+
+</Step>
+<Step title="4. α">
+
+$\alpha=\dfrac{1-\sin38^\circ}{1+\sin38^\circ}=\dfrac{1-0.6157}{1.6157}=0.238\approx0.24$.
+
+</Step>
+<Step title="5. Where to put ω_m">
+
+The compensator gain at $\omega_m$ is $1/\sqrt\alpha=2.04$ ($+6.2$ dB), so the uncompensated loop must be at $-6.2$ dB there: $|40/(j\omega(j\omega+2))|=0.49$ at $\omega\approx9$ rad/s. So $\omega_m=9$ rad/s.
+
+</Step>
+<Step title="6. Corners">
+
+$\dfrac1T=\omega_m\sqrt\alpha=9\sqrt{0.24}=4.4$ (zero), $\dfrac1{\alpha T}=\dfrac{\omega_m}{\sqrt\alpha}=18.4$ (pole). With $K_c=K/\alpha=10/0.24$ (so the DC gain of the compensator stays $K$ and $K_v$ is unchanged):
+$$G_c(s)=41.7\,\frac{s+4.4}{s+18.4}.$$
+
+</Step>
+<Step title="7. Verify (always)">
+
+$K_v=\dfrac{41.7\cdot4.4}{18.4}\cdot\dfrac42=19.9\approx20$ ✔; $\omega_{gc}=8.88$ rad/s; **$PM=50.6^\circ$** ✔; $GM=\infty$ ✔. Closed-loop poles $-6.96\pm j8.05$, $-6.47$: overshoot about 22%.
+
+</Step>
+<Step title="8. Why K_c = K/α">
+
+Choosing $K_c\alpha=K$ keeps the DC gain, hence $K_v$; the price is the high-frequency gain $K_c=K/\alpha$ (here 41.7: noise amplification, the cost of lead).
+
+</Step>
+</Steps>
+
+<Answer>
+
+$G_c(s)=41.7\dfrac{s+4.4}{s+18.4}$: $K_v=20$, $PM=50.6^\circ$, $GM=\infty$.
+
+*Real-world:* a lead is a driver looking ahead: it reacts to how fast the error is changing, stopping the car weaving; the cost is amplified noise.
+
+</Answer>
+
+<Callout kind="note" title="Shortcut (K_c√α)">
+
+The compensator gain at $\omega_m$ is $K_c\sqrt\alpha$ (not 1). Choosing $K_c=1/(\sqrt\alpha\,|G(j\omega_m)|)$ puts the crossover at $\omega_m$ in one go (see the closed-form lead of <Hw n="8">HW8 A1</Hw>).
+
+</Callout>
+
+<Traps>
+
+- Not accounting for the shift of the crossover frequency (hence the iterative designs in textbooks).
+- Forgetting to scale $K_c$ so that $K_v$ is preserved.
+- Never skip the verification step.
+
+</Traps>
+
+<Source>Lecture 22 (Ogata Ex 11-6): $G_c=41.7(s+4.4)/(s+18.4)$, $K_v=19.97$, $PM=50.5^\circ$, $\omega_{gc}=8.88$ rad/s; verified.</Source>
+
+<ToolLink tool="lead-lag">Reproduce the design in the lead/lag tool</ToolLink>
+
+</Problem>
+
+<Problem id="MT3 practice P4" title="Nyquist: critical gain and an unstable open loop (15 marks)" tags="Z = N + P, indentation, K_max">
+
+<Statement>
+
+(a) For $L=\dfrac{K}{s(s^2+s+6)}$ decide closed-loop stability by the Nyquist criterion and find the largest $K$ from the real-axis crossing. (b) For $L=\dfrac{K}{s-1}$ (one open-loop pole in the right half-plane) find the values of $K$ for which the closed loop is stable.
+
+</Statement>
+
+<Think>
+
+$Z=N+P$: $P$ = open-loop RHP poles, $N$ = clockwise encirclements of $-1$, $Z$ = closed-loop RHP poles. Poles on the $j\omega$ axis need indentations. For (b), with $P=1$ you need **one counter-clockwise** encirclement ($N=-1$).
+
+</Think>
+
+<Steps>
+<Step title="(a) 1. Counting">
+
+$P=0$ (the origin pole is handled by the indentation). For $K=1$ the curve makes no encirclement of $-1$: $N=0\Rightarrow Z=0$, stable.
+
+</Step>
+<Step title="(a) 2. Real-axis crossing">
+
+$L(j\omega)=\dfrac{K}{j\omega(6-\omega^2+j\omega)}$; the imaginary part vanishes at $\omega^2=6$, where $u=-\dfrac{6K}{36}=-\dfrac K6$.
+
+</Step>
+<Step title="(a) 3. K_max">
+
+Stable while $-K/6>-1\Rightarrow K<6$. Check with Routh on $s^3+s^2+6s+K$: stable iff $K<6$ ✔; at $K=6$ the poles are $\pm j\sqrt6$ and $-1$.
+
+</Step>
+<Step title="(b) 1. Direct check">
+
+Closed loop: $s-1+K=0\Rightarrow s=1-K$: stable iff $K>1$.
+
+</Step>
+<Step title="(b) 2. Nyquist reading">
+
+$L(j\omega)=\dfrac{K}{-1+j\omega}$: at $\omega=0$, $L=-K$; as $\omega\to\infty$, $L\to0$; the plot is a circle through $-K$ and the origin. For $K>1$ the circle encloses $-1$ **once counter-clockwise** ($N=-1$), so $Z=N+P=-1+1=0$ ✔ stable. For $K<1$ it does not enclose $-1$: $N=0$, $Z=1$, unstable.
+
+</Step>
+</Steps>
+
+<Answer>
+
+(a) stable for $0<K<6$, $K_{max}=6$; (b) stable for $K>1$ (a *minimum* gain, as for any unstable plant).
+
+*Real-world:* (b) is the inverted pendulum in one line: too little feedback and it falls; enough gain and it is held.
+
+</Answer>
+
+<Traps>
+
+- With $P=1$ you need a **counter-clockwise** encirclement.
+- Poles on the $j\omega$ axis need indentations; confirm with Routh when a polynomial is available.
+
+</Traps>
+
+<Source><Hw n="8">HW8 A3(a)</Hw> and Lecture 23 ($K/(s-1)$-type example); verified by Routh and the closed-loop root.</Source>
+
+<ToolLink tool="nyquist">Draw both plots</ToolLink>
+
+</Problem>
+
+<Problem id="MT3 practice P5" title="Review: op-amp network recognised as a PID (10 marks)" tags="−Z₂/Z₁, PID gains, units">
+
+<Statement>
+
+Inverting op-amp: input $C_1=1\ \mu$F in parallel with $R_1=10$ kΩ; feedback $R_2=20$ kΩ in series with $C_2=10\ \mu$F. Find the transfer function, show it is a PID and give $K_p,K_i,K_d$.
+
+</Statement>
+
+<Think>
+
+Same as $\text{T4 Q3}$ and $\text{MT2 W2011 Q4}$: $V_o/V_i=-Z_2/Z_1$ with $Z_1=R_1\parallel C_1$ and $Z_2=R_2+1/(C_2s)$.
+
+</Think>
+
+<Steps>
+<Step title="1. Transfer function">
+
+$\dfrac{V_o}{V_i}=-\dfrac{(R_1C_1s+1)(R_2C_2s+1)}{R_1C_2s}$ with $R_1C_1=0.01$ s, $R_2C_2=0.2$ s, $R_1C_2=0.1$ s: $-\dfrac{(0.01s+1)(0.2s+1)}{0.1s}$.
+
+</Step>
+<Step title="2. Split into P, I, D">
+
+$-\dfrac{0.002s^2+0.21s+1}{0.1s}=-\Big[0.02\,s+2.1+\dfrac{10}{s}\Big]$.
+
+</Step>
+<Step title="3. Gains">
+
+$K_p=-\Big(\dfrac{C_1}{C_2}+\dfrac{R_2}{R_1}\Big)=-(0.1+2)=-2.1$; $K_i=-\dfrac1{R_1C_2}=-10$ s⁻¹; $K_d=-R_2C_1=-0.02$ s. All negative (inverting stage): follow it with an inverting stage to make them positive.
+
+</Step>
+</Steps>
+
+<Answer>
+
+$-\Big[0.02s+2.1+\dfrac{10}s\Big]$: $K_p=-2.1$, $K_i=-10$ s⁻¹, $K_d=-0.02$ s ($T_i=K_p/K_i=0.21$ s, $T_d=K_d/K_p=0.0095$ s).
+
+</Answer>
+
+<Traps>
+
+- The input impedance is the **parallel** pair $R_1\parallel C_1$.
+- $K_p$ depends on both ratios; $K_i$ only on $R_1C_2$; $K_d$ only on $R_2C_1$.
+
+</Traps>
+
+<Source>review of $\text{T4 Q3}$ / $\text{MT2 W2011 Q4}$ with new numbers (checked).</Source>
+
+</Problem>
+
+<Problem id="MT3 practice P6" title="Review: DC motor with tachometer feedback, error and sensitivity (10 marks)" tags="back emf, e_ss, S^T_{R_a}">
+
+<Statement>
+
+Motor with $K_m=10$ N·m/A, $J=1$ kg·m², $R_a=1\ \Omega$, $K_b=0.1$ V·s/rad, tachometer gain $K_t=1$, controller gain $K_p$. (a) Closed-loop $\omega/V$. (b) $K_p$ so that the error to a unit step is at most 0.1. (c) For $K_p=2$: the error, and the sensitivity of the closed loop to $R_a$ at low and high frequency.
+
+</Statement>
+
+<Think>
+
+This is the structure of $\text{MT2 W2012 Q3}$: the back emf makes the motor a first-order lag; the tachometer loop sets the DC gain; sensitivity to $R_a$ is zero at DC only when the loop gain is large.
+
+</Think>
+
+<Steps>
+<Step title="(a) Closed loop">
+
+$T=\dfrac{K_mK_p}{R_aJs+K_mK_b+K_mK_pK_t}=\dfrac{10K_p}{s+1+10K_p}$.
+
+</Step>
+<Step title="(b) Error">
+
+$e_{ss}=1-T(0)=\dfrac1{1+10K_p}\le0.1\Rightarrow K_p\ge0.9$.
+
+</Step>
+<Step title="(c) K_p = 2">
+
+$e_{ss}=\dfrac1{21}=0.048$ (4.8%). Sensitivity $S^T_{R_a}=-\dfrac{R_as}{R_as+1+10K_p}=-\dfrac{s}{s+21}$: at low frequency $S\approx-s/21\to0$; at high frequency $S\to-1$ whatever $K_p$.
+
+</Step>
+</Steps>
+
+<Answer>
+
+(a) $\dfrac{10K_p}{s+1+10K_p}$; (b) $K_p\ge0.9$; (c) $e_{ss}=4.8\%$, $S=-\dfrac s{s+21}$.
+
+</Answer>
+
+<Source>review of $\text{MT2 W2012 Q3}$ (numbers recomputed).</Source>
+
+</Problem>
+
+<Examined>
+
+How this mock lines up with the topics: P1 and P4 (Lectures 17–18, 21, 23), P2 (Lectures 19–20), P3 (Lecture 22), P5 and P6 (review of Blocks 2). Study the errata page for the traps that the official solutions themselves fall into: the missing gain 50 in $\text{HW10 Q3}$, the PI acceleration error in $\text{HW7 Q3}$, the lag margins quoted too optimistically.
+
+</Examined>

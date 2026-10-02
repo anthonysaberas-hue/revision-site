@@ -1,0 +1,62 @@
+<p className="eyebrow">Exam toolkit · Final · Ch 8, 9, 11, 12, 13 (plus the whole course)</p>
+
+# Cheat sheet: Final
+
+<div className="lede">
+
+The Final (three hours, six problems) adds **internal flow, natural convection, heat exchangers and radiation** to everything in the two midterm sheets (<Ch slug="intro">Ch 1–3</Ch>, <Ch slug="transient">4–7</Ch>), and one problem is taken from the assignments. This page covers the new chapters; the earlier formulas are on the <Ex id="mt1-f2021">Midterm 1</Ex> and Midterm 2 sheets of this toolkit. The weighting is on how to **pick** the right correlation.
+
+</div>
+
+## 1 · Internal flow (Ch 8)
+
+- $Re=\dfrac{4\dot m}{\pi D\mu}$; laminar $<2300$, turbulent $>10\,000$. Non-circular: $D_h=4A_c/p$.
+- Entry lengths: laminar $L_h\approx0.05ReD$, $L_t\approx0.05RePrD$; turbulent $\approx10D$. If $L<L_t$ (laminar): **Hausen** $Nu=3.66+\dfrac{0.065(D/L)RePr}{1+0.04[(D/L)RePr]^{2/3}}$, else $3.66$ ($T_s$) or $4.36$ ($q''_s$). $f=64/Re$.
+- Turbulent: Dittus–Boelter $Nu=0.023Re^{0.8}Pr^n$ ($n=0.4$ heating, $0.3$ cooling); Gnielinski $Nu=\dfrac{(f/8)(Re-1000)Pr}{1+12.7\sqrt{f/8}(Pr^{2/3}-1)}$, $f=(0.79\ln Re-1.64)^{-2}$ ($3000<Re<5\times10^6$).
+- $h=Nu\,k/D$; properties at the **bulk mean** temperature $(T_i+T_e)/2$.
+- **Constant $q''_s$:** $T_e=T_i+\dfrac{q''_sA_s}{\dot mc_p}$; wall $T_s=T_m+q''_s/h$ (hottest at the exit).
+- **Constant $T_s$:** $T_e=T_s-(T_s-T_i)\exp\!\left(-\dfrac{hA_s}{\dot mc_p}\right)$; $\dot Q=hA_s\Delta T_{lm}$, $\Delta T_{lm}=\dfrac{T_i-T_e}{\ln[(T_s-T_e)/(T_s-T_i)]}$ (written as $\dfrac{(T_s-T_i)-(T_s-T_e)}{\ln(\cdots)}$). Also $\dot Q=\dot mc_p(T_e-T_i)$ always.
+- $\Delta P=f\dfrac LD\dfrac{\rho V_m^2}2$; pump power $\dot V\Delta P$.
+
+## 2 · Natural convection (Ch 9)
+
+- $\beta=1/T_f$ (gas, **kelvin**); $Ra_L=\dfrac{g\beta\Delta TL_c^3}{\nu\alpha}$; $Gr/Re^2$ test: $<0.1$ forced, $>10$ natural, in between mixed ($Nu^3=Nu_f^3\pm Nu_n^3$).
+- Vertical plate (all $Ra$): $Nu=\left\{0.825+\dfrac{0.387Ra^{1/6}}{[1+(0.492/Pr)^{9/16}]^{8/27}}\right\}^2$; laminar ($Ra<10^9$): $0.68+\dfrac{0.67Ra^{1/4}}{[1+(0.492/Pr)^{9/16}]^{4/9}}$.
+- Horizontal plate, $L_c=A/p$: hot **up** $0.54Ra^{1/4}$ ($10^4$–$10^7$), $0.15Ra^{1/3}$ ($10^7$–$10^{11}$); hot **down** $0.27Ra^{1/4}$.
+- Horizontal cylinder ($D$): $\{0.6+0.387Ra^{1/6}/[1+(0.559/Pr)^{9/16}]^{8/27}\}^2$. Sphere: $2+0.589Ra^{1/4}/[1+(0.469/Pr)^{9/16}]^{4/9}$.
+- Enclosures: $k_{eff}=Nu\,k$, $L$ = gap, $Ra<1708$: $Nu=1$. Vertical $Nu=0.42Ra^{1/4}Pr^{0.012}(H/L)^{-0.3}$.
+- **Always add radiation** $\varepsilon\sigma A(T_s^4-T_{surr}^4)$ for air.
+
+## 3 · Heat exchangers (Ch 11)
+
+- $\dot Q=C_h\Delta T_h=C_c\Delta T_c$, $C=\dot mc_p$; $\dot Q=UAF\Delta T_{lm}$; $\Delta T_{lm}=\dfrac{\Delta T_1-\Delta T_2}{\ln(\Delta T_1/\Delta T_2)}$.
+- Counter: $\Delta T_1=T_{h,i}-T_{c,o}$, $\Delta T_2=T_{h,o}-T_{c,i}$. Parallel: $\Delta T_1=T_{h,i}-T_{c,i}$, $\Delta T_2=T_{h,o}-T_{c,o}$.
+- $\varepsilon=\dfrac{\dot Q}{C_{min}(T_{h,i}-T_{c,i})}$, $NTU=\dfrac{UA}{C_{min}}$, $C_r=\dfrac{C_{min}}{C_{max}}$.
+- Counter $\varepsilon=\dfrac{1-e^{-NTU(1-C_r)}}{1-C_re^{-NTU(1-C_r)}}$ ($C_r=1$: $\dfrac{NTU}{1+NTU}$). Parallel $\varepsilon=\dfrac{1-e^{-NTU(1+C_r)}}{1+C_r}$. $C_r=0$: $1-e^{-NTU}$.
+- **Use LMTD** when all four temperatures are known; **use $\varepsilon$–NTU** when an outlet is unknown or the unit is given.
+- $\dfrac1{UA}=\sum R$ including fouling; the smaller $h$ dominates.
+
+## 4 · Radiation fundamentals (Ch 12)
+
+- $E_b=\sigma T^4$; Wien $\lambda_{max}T=2897.8$ µm·K; band: $E_{b,\lambda_1\to\lambda_2}=[f(\lambda_2T)-f(\lambda_1T)]\sigma T^4$ ($f$ tabulated vs $\lambda T$).
+- $\alpha+\rho+\tau=1$; Kirchhoff $\varepsilon_\lambda=\alpha_\lambda$ (gray: $\varepsilon=\alpha$); small body in a large enclosure: $\dot Q=\varepsilon\sigma A(T_s^4-T_{surr}^4)$. Solar $\alpha_s\neq$ infrared $\varepsilon$.
+
+## 5 · Radiation exchange (Ch 13)
+
+- View factors: reciprocity $A_iF_{ij}=A_jF_{ji}$; summation $\sum_jF_{ij}=1$; $F_{ii}=0$ if flat/convex; symmetry; superposition. Triangle duct: $F_{12}=\dfrac{L_1+L_2-L_3}{2L_1}$. Coaxial disks and parallel/perpendicular rectangles: charts.
+- Network: $R_i=\dfrac{1-\varepsilon_i}{\varepsilon_iA_i}$ (black: 0), $R_{ij}=\dfrac1{A_iF_{ij}}$, potentials $E_{b,i}=\sigma T_i^4$, nodes $J_i$.
+- Two surfaces: $\dot Q_{12}=\dfrac{\sigma(T_1^4-T_2^4)}{R_1+R_{12}+R_2}$. Parallel plates $\dfrac{A\sigma(T_1^4-T_2^4)}{1/\varepsilon_1+1/\varepsilon_2-1}$. Concentric cylinders/spheres: $\dfrac{A_1\sigma(T_1^4-T_2^4)}{1/\varepsilon_1+\frac{1-\varepsilon_2}{\varepsilon_2}\frac{A_1}{A_2}}$.
+- **Reradiating surface:** $\dot Q=0$, $J=E_b$; adds a parallel path $R_{13}+R_{23}$ between 1 and 2.
+- **Shields:** add $N(1/\varepsilon_{s1}+1/\varepsilon_{s2}-1)$ to the denominator; shield temperature from the flux balance.
+
+## 6 · The Final checklist
+
+1. For each problem write: **what is given, what is asked, which chapter.**
+2. Regime first: $Re$ (internal, external), $Ra$ (natural), $Bi$ (transient), $NTU$ (HX).
+3. Say the assumption and its check (entry length, $Bi$, $Fo>0.2$, $Ra<10^9$, mean temperature for properties).
+4. Combine modes: convection + radiation in parallel; series chains; energy balance at a surface.
+5. Sanity-check the number: $\varepsilon<1$, $T_e$ between $T_i$ and $T_s$, $Q<Q_{max}$, flux direction.
+
+<Examined>
+Papers: <Ex id="final-mock-a">Final A</Ex>, <Ex id="final-mock-b">Final B</Ex>. Assignments: <Asg n="08">8</Asg>, <Asg n="09">9</Asg>, <Asg n="11">11</Asg>, <Asg n="12">12</Asg>. Tools: <ToolLink tool="internal">internal flow</ToolLink>, <ToolLink tool="hx">heat exchanger</ToolLink>, <ToolLink tool="radiation">radiation</ToolLink>.
+</Examined>

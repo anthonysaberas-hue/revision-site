@@ -1,0 +1,65 @@
+<p className="eyebrow">Chapter 3</p>
+
+# 1-D steady flow equations
+
+<p className="lede">Assume properties are uniform across each section and nothing changes in time. The three conservation laws collapse to three one-liners — plus their differential versions, which tell us how area, friction and heat steer the flow.</p>
+
+<Idea title="Steady ≠ uniform">
+
+**Steady**: nothing changes in time at a fixed point. **Uniform**: nothing changes across a section. 1-D flow assumes *both* (properties vary only along x). A nozzle flow is steady but not uniform along x.
+
+</Idea>
+
+## Integral forms (between stations 1 and 2)
+
+**Mass**
+
+$$
+\rho_1 V_1 A_1 = \rho_2 V_2 A_2 = \dot m
+$$
+
+**Momentum** (x-direction)
+
+$$
+F_{x,\text{wall}} = A_2\left(p_2 + \rho_2 V_2^2\right) - A_1\left(p_1 + \rho_1 V_1^2\right)
+$$
+
+For a constant-area, frictionless duct: $p_1 + \rho_1 V_1^2 = p_2 + \rho_2 V_2^2$. This is used for **every shock and every Rayleigh problem**.
+
+<Trap title="It is NOT Bernoulli">
+
+$p + \rho V^2 =$ const looks like Bernoulli ($p + \tfrac12 \rho V^2$) but it's a momentum balance and it holds across shocks (irreversible). Bernoulli doesn't.
+
+</Trap>
+
+**Energy**
+
+$$
+q + w = \left(h_2 + \tfrac{V_2^2}{2}\right) - \left(h_1 + \tfrac{V_1^2}{2}\right)
+\qquad\Rightarrow\qquad
+h + \tfrac{V^2}{2} = h_0 = \text{const (adiabatic, no work)}
+$$
+
+## Differential forms (along a smooth duct)
+
+$$
+\frac{d\rho}{\rho} + \frac{dV}{V} + \frac{dA}{A} = 0
+\qquad
+\frac{dp}{\rho} + V\,dV = 0 \ \ (\text{inviscid})
+\qquad
+dh + V\,dV = dq
+$$
+
+<Remember title="Integral vs differential">
+
+| | Integral | Differential |
+|---|---|---|
+| Use for | jumps: shocks, whole devices | smooth changes: nozzles, ducts |
+| Across a shock? | ✅ yes | ❌ no — derivatives don't exist there |
+| Gives | ratios between two stations | *trends*: which way M, p, T move |
+
+</Remember>
+
+Combining the differential forms with $c^2 = dp/d\rho$ (Chapter 4) produces the famous area–velocity relation of Chapter 5 and the "influence table" below — a preview of where the course is going:
+
+<InfluenceTable />

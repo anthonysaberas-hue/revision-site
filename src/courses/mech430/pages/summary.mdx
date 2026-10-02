@@ -1,0 +1,98 @@
+<p className="eyebrow">MECH 430 in one page</p>
+
+# The whole course on one page
+
+<p className="lede">If you read only this, you should be able to rebuild the course. Seven ideas, one decision tree, a dozen numbers, eight exam templates.</p>
+
+<NozzleSim initialAR={3} initialPb={0.7} />
+
+## The 7 ideas everything else follows from
+
+1. **Information travels at the speed of sound, $c=\sqrt{\gamma R T}$.** When the flow is faster than $c$ ($M>1$), downstream can't talk to upstream. That one fact explains choking, shocks, and why a supersonic exit "can't feel" the back pressure.
+2. **Energy: $h + V^2/2 = c_pT_0$ is constant in adiabatic flow.** Speed is bought with temperature. $T_0$ never changes unless heat is added or removed (Rayleigh).
+3. **Losses show up as a drop in $p_0$.** Shocks and friction create entropy, $\Delta s = -R\ln(p_{02}/p_{01})$, so $p_0$ falls. In isentropic flow $p_0$, $T_0$ and $A^*$ are **invariants**: compute them once, reuse them everywhere.
+4. **Area change flips sign at $M=1$:** $\dfrac{dV}{V}=\dfrac{1}{M^2-1}\dfrac{dA}{A}$. Subsonic flow speeds up in a converging duct; supersonic flow speeds up in a diverging duct. So you need a **throat** to go supersonic, and $M=1$ can only happen there.
+5. **Choking.** Mass flux per area peaks at $M=1$, so a throat passes at most $\dot m = 0.0404\,\dfrac{p_0A^*}{\sqrt{T_0}}$ (air, SI). Once choked, lowering $p_b$ doesn't pull more mass: the Bell Centre doors are already at full throughput.
+6. **Friction and heating both drive $M\to1$, from either side** (like a converging duct). Push past the limit and the flow chokes: subsonic flow lowers $\dot m$, supersonic flow puts a shock in.
+7. **Supersonic flow turns through waves.** Turning into itself gives an oblique **shock** ($p$ up, $p_0$ lost). Turning away gives a Prandtl–Meyer **fan** ($p$ down, isentropic). A supersonic stream doesn't sense a pressure mismatch until it meets a wave.
+
+<InfluenceTable />
+
+## The decision tree for any duct problem
+
+1. **Name the stations** (0 reservoir, t throat, x|y across a shock, e exit) and the three invariants $T_0$, $p_0$, $A^*$.
+2. **Is it choked?** A converging nozzle chokes if $p_b \le 0.528\,p_0$. A C-D nozzle chokes if $p_b \le p_3$ (the subsonic-exit, sonic-throat solution). If choked, $\dot m$ comes from the throat, and $M_t=1$.
+3. **Subsonic exit ⇒ $p_e = p_b$** (the latex balloon). **Supersonic exit ⇒ $p_e$ is whatever the nozzle gives**, and waves outside fix the mismatch.
+4. **Where is the shock?** Guess its position, cross it with Table A3 ($T_0$ constant, new $p_{0y}$ and $A^*_y = A^*_x/(p_{0y}/p_{0x})$), carry on to the exit, compare with $p_b$, and iterate.
+5. **Pipe after the nozzle? (Fanno)** Use $\frac{4fL}{D}=\left(\frac{4fL^*}{D}\right)_1-\left(\frac{4fL^*}{D}\right)_2$. If $L>L^*$ the flow chokes. **You can't subtract $L^*$ from $L$ when $L>L^*$** (Higgins's favourite trap).
+6. **Heat added? (Rayleigh)** Use $q = c_p(T_{02}-T_{01})$. If $q > q^* = c_p(T_0^*-T_{01})$, the duct thermally chokes.
+
+## Numbers worth memorising (γ = 1.4)
+
+| | | | |
+|---|---|---|---|
+| $p^*/p_0$ | **0.5283** | $T^*/T_0$ | **0.8333** |
+| $\rho^*/\rho_0$ | 0.6339 | Fliegner $\dot m\sqrt{T_0}/(p_0A^*)$ | **0.0404** (air) |
+| normal shock $M_y$ as $M_x\to\infty$ | 0.378 | max density ratio | **6** |
+| $\nu_{max}$ (P-M) | **130.45°** | $\delta_{max}$ at $M=3$ | 34.1° |
+| Fanno supersonic $4fL^*/D$ limit | **0.8215** | Rayleigh $T_{max}$ at | $M = 1/\sqrt\gamma = 0.845$ |
+| unsteady escape speed | $2c_0/(\gamma-1) = 5c_0$ | steady $V_{max}$ | $\sqrt{2c_pT_0} = 2.24c_0$ |
+| Bernoulli is fine below | $M \approx 0.3$ (2% error) | fixed inlet can't start above | $M\approx 1.98$ |
+
+## The core equations (γ-general)
+
+$$
+\frac{T_0}{T}=1+\frac{\gamma-1}{2}M^2,\qquad \frac{p_0}{p}=\left(\frac{T_0}{T}\right)^{\frac{\gamma}{\gamma-1}},\qquad
+\frac{A}{A^*}=\frac1M\left[\frac{2}{\gamma+1}\left(1+\frac{\gamma-1}{2}M^2\right)\right]^{\frac{\gamma+1}{2(\gamma-1)}}
+$$
+
+$$
+M_y^2=\frac{2+(\gamma-1)M_x^2}{2\gamma M_x^2-(\gamma-1)},\qquad \frac{p_y}{p_x}=\frac{2\gamma M_x^2-(\gamma-1)}{\gamma+1},\qquad \frac{p_{0y}}{p_{0x}}=\frac{A^*_x}{A^*_y}
+$$
+
+$$
+F = \dot m V_e + A_e(p_e-p_a),\qquad V_e=\sqrt{\frac{2\gamma}{\gamma-1}RT_0\left[1-\left(\frac{p_e}{p_0}\right)^{\frac{\gamma-1}{\gamma}}\right]}
+$$
+
+$$
+M_{n1}=M_1\sin\sigma,\quad M_2=\frac{M_{n2}}{\sin(\sigma-\delta)},\qquad \nu_2=\nu_1+\theta,\qquad C_\pm:\ \nu\mp\theta=\text{const}
+$$
+
+$$
+\frac{V_p'}{c_x}=\frac{2}{\gamma+1}\,\frac{M_s^2-1}{M_s},\qquad J_\pm=u\pm\frac{2c}{\gamma-1}\ \text{constant along}\ \frac{dx}{dt}=u\pm c
+$$
+
+The full list is on the [formula cheat sheet](#/mech430/page/cheatsheet); every table is a [calculator](#/mech430/calc/isentropic).
+
+## The 8 exam templates (what Higgins actually asks)
+
+| # | Template | Seen in | The move that unlocks it |
+|---|---|---|---|
+| 1 | **Nozzle + Fanno pipe + back pressure** (50–70 pts) | every Quiz 2 | Is supersonic flow possible ($L\le L^*$)? If not, the shock is in the nozzle or pipe; iterate its position until $p_e=p_b$, or until the exit chokes. In a Fanno pipe $p^*$ is unchanged across the shock. |
+| 2 | **Inlet / diffuser starting** | W2019, W2023, Final B | Design: $A_{in}/A_t = A/A^*(M_d)$. Start: the shock at the lip must be swallowed, so $A_{in}/A_t = A/A^*(M_y)$ gives $M_y$, then $M_x$. Spillage $=p_{0y}/p_{0x}$. |
+| 3 | **Rayleigh duct / thermal choking** | W2024, ramjet, detonation | $T_0^*$ from Table A5 at $M_1$; compare $q$ with $q^*$. |
+| 4 | **Rocket thrust / Isp** | W2019, Final A | Optimum when $p_e = p_a$; in vacuum add $A_ep_e$; an infinite nozzle gives $V_{max}$. |
+| 5 | **Shock-expansion airfoil** | Finals A & B | For each face, shock (σ from δ) or fan (ν + θ) → face pressures → lift and drag. |
+| 6 | **Method-of-characteristics table** | Finals A & B | $\nu=\tfrac12(C_I+C_{II})$ and $\theta=\tfrac12(C_I-C_{II})$ at each point; at a wall, set θ to the wall angle. |
+| 7 | **Combined engine (ramjet)** | Final B, project | Inlet (isentropic) → normal shock → Rayleigh combustor → nozzle → CV thrust. |
+| 8 | **Piston / shock tube** | Final A, PS11 | Pushed piston: shock from $V_p'$. Pulled piston: fan with $u+2c/(\gamma-1)$ constant. |
+
+Full step-by-step versions: [recipes](#/mech430/page/recipes) · [Quiz 2 W2019](#/mech430/exam/q2-w2019) · [W2023](#/mech430/exam/q2-w2023) · [F2023](#/mech430/exam/q2-f2023) · [W2024](#/mech430/exam/q2-w2024) · [Final A](#/mech430/exam/final-a) · [Final B](#/mech430/exam/final-b)
+
+## Five traps that cost the most marks
+
+<Trap>
+
+1. **Subtracting $L^*$ when $L > L^*$.** The flow can't be supersonic all the way. Look for the shock, or accept that the exit chokes.
+2. **Forcing $p_e = p_b$ on a choked or supersonic exit.** Only a subsonic exit must match.
+3. **Using $p_0$ from before the shock downstream of it.** $p_0$ and $A^*$ reset across the shock. $T_0$ doesn't.
+4. **Entering Table A3 with the full Mach number on an oblique shock.** Use $M_n = M\sin\sigma$, and $M_2 = M_{n2}/\sin(\sigma-\delta)$.
+5. **Wrong gas constant.** Always $R = 8314/MW$. Exams use MW = 28, 28.9, 30, 25 or 17.
+
+</Trap>
+
+<Remember title="If you only have 10 minutes before an exam">
+
+Reread ideas 1–7, run the decision tree once on [NozzlePipeSim](#/mech430/calc/nozzle-pipe), and skim the templates table.
+
+</Remember>

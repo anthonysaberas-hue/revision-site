@@ -1,0 +1,204 @@
+<p className="eyebrow">Chapter 5</p>
+
+# Isentropic flow
+
+<p className="lede">No friction, no heat, no shocks: only area change. That is enough to accelerate gas past the speed of sound, provided the duct has the right shape. This chapter gives the toolbox used in every later chapter: stagnation and sonic reference states, the A/A* relation with its two branches, choking, and the "invariants" way of solving any isentropic duct.</p>
+
+## Effect of area change: dV/V = (dA/A)/(M² − 1)
+
+Combine the three differential equations of Chapter 3 for a smooth, adiabatic, frictionless duct:
+
+$$
+\frac{d\rho}{\rho} + \frac{dV}{V} + \frac{dA}{A} = 0, \qquad dp + \rho V\,dV = 0, \qquad c^2 = \frac{dp}{d\rho}
+$$
+
+<Steps label="🪜 Derivation">
+<Step title="1. Turn the pressure change into a density change">
+
+Isentropic: $dp = c^2 d\rho$. Put it in momentum: $c^2 d\rho = -\rho V\,dV$, so
+
+$$
+\frac{d\rho}{\rho} = -\frac{V^2}{c^2}\frac{dV}{V} = -M^2\frac{dV}{V}
+$$
+
+This line is the heart of compressibility: a 1% speed-up costs $M^2$ % of density. At M = 0.3 that is 0.09%; at M = 2 it is 4%.
+
+</Step>
+<Step title="2. Put it into continuity">
+
+$$
+-M^2\frac{dV}{V} + \frac{dV}{V} + \frac{dA}{A} = 0 \;\Rightarrow\; \boxed{\frac{dV}{V} = \frac{1}{M^2 - 1}\,\frac{dA}{A}}
+$$
+
+</Step>
+<Step title="3. And for pressure">
+
+$$
+\frac{dp}{\rho V^2} = \frac{1}{1 - M^2}\,\frac{dA}{A}
+$$
+
+</Step>
+</Steps>
+
+<VelocityAreaFigure />
+
+| | Converging ($dA < 0$) | Diverging ($dA > 0$) |
+|---|---|---|
+| **Subsonic** $M < 1$ | $V$ ↑, $p$ ↓: **nozzle** | $V$ ↓, $p$ ↑: **diffuser** |
+| **Supersonic** $M > 1$ | $V$ ↓, $p$ ↑: **diffuser** | $V$ ↑, $p$ ↓: **nozzle** |
+
+**Why supersonic flow speeds up in a diverging duct.** Mass flux is $\rho V$. Subsonic: speeding up costs little density, so to pass the same $\dot m$ at higher $V$ you need *less* area. Supersonic: density falls faster than $V$ rises, so the same $\dot m$ needs *more* area to accelerate.
+
+**At M = 1**: the right-hand side blows up unless $dA = 0$. Sonic flow can only occur where the area is stationary, and (Anthony's Jan 27 sketches) only at a **minimum**: at a bulge the flow would go the wrong way on both sides. So to go from subsonic to supersonic you need a **converging–diverging** duct with $M = 1$ exactly at the throat.
+
+<AreaVelocitySim />
+
+## Stagnation conditions
+
+The **stagnation state** ($T_0$, $p_0$, $\rho_0$) is what the gas would have if brought to rest *isentropically*. It exists at every point of the flow, whether or not the gas ever stops there. From energy, $c_p T_0 = c_p T + V^2/2$; dividing by $c_pT$ and using $V^2 = M^2\gamma R T$, $c_p = \gamma R/(\gamma-1)$:
+
+$$
+\frac{T_0}{T} = 1 + \frac{\gamma - 1}{2}M^2, \qquad
+\frac{p_0}{p} = \left(1 + \frac{\gamma - 1}{2}M^2\right)^{\frac{\gamma}{\gamma - 1}}, \qquad
+\frac{\rho_0}{\rho} = \left(1 + \frac{\gamma - 1}{2}M^2\right)^{\frac{1}{\gamma - 1}}
+$$
+
+<Remember title="What each one needs">
+
+- $T_0$ = const needs only **adiabatic** (energy). It survives shocks and friction.
+- $p_0$, $\rho_0$ = const need **isentropic**. A shock or friction lowers $p_0$ (entropy: $s_2 - s_1 = -R\ln(p_{02}/p_{01})$).
+- Static $p$ and $T$ are frame-independent; $p_0$ and $T_0$ depend on who is watching (PS3 P3: balloon vs airliner).
+
+</Remember>
+
+**Notes' worked example (§5.2.1).** A reservoir at 500 K and 5 atm feeds a duct. At point 1, M = 0.75; at point 2, M = 2.0.
+
+- $T_1 = 500/(1 + 0.2 \times 0.75^2) = 500/1.1125 = 449$ K. $T_2 = 500/1.8 = 278$ K. <T>A2 @ M = 2.0: T/T₀ = 0.5556</T>
+- $p_1 = 5/1.1125^{3.5} = 3.44$ atm. $p_2 = 5/1.8^{3.5} = 0.639$ atm. <T>A2 @ M = 2.0: p/p₀ = 0.1278</T>
+- The static temperature drops 50 °C just accelerating to M 0.75: thermal energy becomes kinetic energy, while $T_0$ stays 500 K.
+
+## Sonic (critical) conditions
+
+Put $M = 1$ in the stagnation ratios. For γ = 1.4:
+
+$$
+\frac{T^*}{T_0} = \frac{2}{\gamma+1} = 0.8333, \qquad
+\frac{p^*}{p_0} = \left(\frac{2}{\gamma+1}\right)^{\frac{\gamma}{\gamma-1}} = 0.5283, \qquad
+\frac{\rho^*}{\rho_0} = \left(\frac{2}{\gamma+1}\right)^{\frac{1}{\gamma-1}} = 0.6339
+$$
+
+For the 500 K, 5 atm reservoir: $T^* = 417$ K and $p^* = 2.64$ atm. (Anthony's Feb 5 notes wrote $2/(\gamma-1)$ in these formulas; the numbers he wrote, 0.5283 and 0.8333, are the correct $2/(\gamma+1)$ ones.)
+
+<StagnationRatiosSim />
+
+<Trap title="0.5283 is the number to remember">
+
+A reservoir that is at least $1/0.5283 = 1.89$ times the back pressure **chokes** its exit. A bicycle tyre at 3–4 atm venting to 1 atm chokes; so does a SCUBA tank, and an evacuated sample bottle.
+
+</Trap>
+
+## Mass flux and choking
+
+Write $\dot m/A = \rho V = \frac{p}{RT}M\sqrt{\gamma R T}$ and replace $p$, $T$ by the stagnation values (Anthony's Jan 27 derivation):
+
+$$
+\frac{\dot m}{A} = \frac{p_0}{\sqrt{T_0}}\sqrt{\frac{\gamma}{R}}\;\frac{M}{\left(1 + \frac{\gamma - 1}{2}M^2\right)^{\frac{\gamma + 1}{2(\gamma - 1)}}}
+$$
+
+<MassFluxSim />
+
+This peaks at $M = 1$. Below M = 1, speeding up wins over the density drop; above it, density drops faster than V grows. At M = 1 you get **Fliegner's formula**, the maximum mass flow through an area $A^*$:
+
+$$
+\dot m_\text{max} = A^*\frac{p_0}{\sqrt{T_0}}\sqrt{\frac{\gamma}{R}}\left(\frac{2}{\gamma+1}\right)^{\frac{\gamma+1}{2(\gamma-1)}}
+\;\;\xrightarrow{\text{air, SI}}\;\; \dot m = 0.0404\,\frac{A^* p_0}{\sqrt{T_0}}
+$$
+
+The constant depends on the gas: 0.0404 for air (R = 287), 0.0397 for N₂ (R = 297).
+
+<Idea title="Choking: the Bell Centre exit">
+
+Higgins' picture: a crowded room (the arena) emptying through a door. If the concourse outside is packed, it limits how fast people get out. Clear the concourse and the flow increases, **until the doorway itself is at full throughput**. After that, emptying the concourse further changes nothing: the door is choked.
+
+For gas: once the throat is sonic, pressure signals from downstream travel at $c$ relative to gas that is itself moving at $c$, so they can never get upstream. Lowering the back pressure cannot be "heard" by the reservoir, and $\dot m$ is frozen at Fliegner's value. Note that choking fixes **M = 1 at the throat**, not $\dot m$ in absolute terms: raising $p_0$ still raises $\dot m$ in proportion (PS3 P4).
+
+</Idea>
+
+A steady isentropic flow **cannot pass through an area smaller than $A^*$** (Anthony's highlighted Jan 27 statement): $A^*$ is the smallest area the given $\dot m$, $p_0$, $T_0$ can squeeze through.
+
+## The area–Mach relation A/A*
+
+Continuity between any section and the (real or imaginary) sonic section, $\rho V A = \rho^* c^* A^*$, gives
+
+$$
+\frac{A}{A^*} = \frac{1}{M}\left[\frac{2}{\gamma + 1}\left(1 + \frac{\gamma - 1}{2}M^2\right)\right]^{\frac{\gamma + 1}{2(\gamma - 1)}}
+$$
+
+(PS2 P11 gets the same result by integrating $dV/V = dA/A/(M^2-1)$.) $A^*$ is a **reference area**: the throat area that *would* pass the same $\dot m$ at M = 1. The flow need not ever reach it.
+
+<AreaMachSim />
+
+<Trap title="Two answers for every A/A* > 1">
+
+Each area ratio has a **subsonic** and a **supersonic** root (A/A* = 2.009 → M = 0.304 or 2.202). The table gives both. The problem must tell you which branch: "the flow went through a throat", "supersonic exit", "first critical", or a pressure condition. If it doesn't, list both, as the notes do.
+
+</Trap>
+
+## Solving any isentropic duct: the invariants method
+
+<InvariantsFigure />
+
+Along an isentropic duct three things never change: **$T_0$** (adiabatic), **$p_0$** (isentropic) and **$A^*$** (fixed $\dot m$, $p_0$, $T_0$ means one sonic area). So every problem is:
+
+1. At the station you know, find $M$ (from $V/c$, from $p/p_0$, or from $\dot m$).
+2. Compute the invariants there: $T_0$, $p_0$, $A^* = A/(A/A^*)$.
+3. At the new station, use the new $M$ (or the new $A/A^*$, or $p/p_0$) with the same invariants.
+
+**Notes' example (§5.5.1).** Station 1: $M_1 = 0.5$, $p_1 = 0.843$ atm, $A_1 = 1$ m². Find station 2 where $M_2 = 0.8$.
+
+- Invariants: $p_0 = 0.843 \times 1.05^{3.5} = 1.00$ atm. <T>A2 @ M = 0.5: A/A* = 1.3398</T> so $A^* = 1/1.340 = 0.746$ m².
+- Station 2: $p_2 = 1.00/1.128^{3.5} = 0.656$ atm. <T>A2 @ M = 0.8: A/A* = 1.0382</T> so $A_2 = 0.746 \times 1.038 = 0.774$ m².
+- A station 3 with $A_3 = 1.5$ m² has $A_3/A^* = 2.009$: **subsonic** M₃ = 0.304, p₃ = 0.938 atm, or **supersonic** M₃ = 2.202, p₃ = 0.0932 atm (only if a 0.746 m² throat sits between 2 and 3).
+
+**Anthony's Jan 27 example.** Air at 700 m/s, 300 K, 1 bar enters an isentropic channel with $A_1 = 1$ m². Downstream M = 3. Find $A_2$, $p_2$, $T_2$.
+
+- $c_1 = \sqrt{1.4 \times 287.7 \times 300} = 347.6$ m/s, so $M_1 = 700/347.6 = 2.014$.
+- $T_0 = 300(1 + 0.2 \times 2.014^2) = 543$ K; $p_0 = 1 \times 1.811^{3.5} = 7.99$ bar.
+- $A_1/A^* = 1.707$ (exact at 2.014; <T>A2 @ M = 2.0: A/A* = 1.6875</T>), so $A^* = 0.586$ m².
+- $T_2 = 543/2.8 = 194$ K; $p_2 = 7.99/2.8^{3.5} = 0.218$ bar; <T>A2 @ M = 3.0: A/A* = 4.2346</T> so **$A_2 = 0.586 \times 4.235 = 2.48$ m²**; $V_2 = 3\sqrt{1.4 \times 287.7 \times 194} = 839$ m/s.
+
+<Callout kind="note" title="A correction to the lecture notes">
+
+Anthony's handwritten notes have $A_1/A^* = 1.6375$, which gives $A^* = 0.6106$ m² and $A_2 = 2.58$ m². The formula gives 1.707 at M = 2.014 (1.702 even at M = 2.01), so the correct answer is **$A_2 = 2.48$ m²**, about 4% smaller. Everything else in the notes (T₀ ≈ 542 K, T₂ = 193 K, p₂ = 0.216 bar, V₂ = 836 m/s) agrees to rounding. Tick the box in the sim to see the effect of the slip.
+
+</Callout>
+
+<InvariantsSim />
+
+## Compressibility: when does Bernoulli fail?
+
+Expand $p_0/p = (1 + \frac{\gamma-1}{2}M^2)^{\gamma/(\gamma-1)}$ for small $M$ with the binomial series and use $\frac12\rho V^2 = \frac{\gamma}{2}pM^2$:
+
+$$
+\frac{p_0 - p}{\tfrac12\rho V^2} = 1 + \frac{M^2}{4} + \frac{2-\gamma}{24}M^4 + \dots
+$$
+
+The "1" is Bernoulli. The first correction is $M^2/4$: **2.3% at M = 0.3**, which is where the rule "incompressible below M = 0.3" comes from. PS3 P1 makes it concrete: at 50 m/s Bernoulli and the exact result agree to 0.5%; at 250 m/s (M = 0.76) they differ by 12%; at 500 m/s Bernoulli predicts $p_0 - p$ larger than $p_0$ itself, a negative absolute pressure.
+
+<CompressibilitySim />
+
+<Examined>
+
+- **PS2** is entirely this chapter: invariants (P3, P4, P9), converging nozzle choking (P5), diffusers (P6, P7), the suck-down tunnel (P8), the hidden throat (P10), and deriving A/A* (P11). See [PS2](#/mech430/ps/ps02).
+- **PS3** P1 (Bernoulli), P3 (frames, p*), P4 (two roots of A/A* = 5). See [PS3](#/mech430/ps/ps03).
+- Every exam uses Table A2 in step 1: a reservoir → throat (M = 1, A* = A_t) → exit (A/A*, supersonic root) chain before shocks, Fanno or Rayleigh take over. Read the nearest row, no interpolation.
+
+</Examined>
+
+## Check yourself
+
+1. Supersonic air enters a converging duct. Does it speed up or slow down? → Slows down ($dA < 0$, $M > 1$ ⇒ $dV < 0$).
+2. What is $p^*/p_0$ for air, and what does it mean physically? → 0.5283: the pressure at a sonic throat; a reservoir needs $p_0 > 1.89\,p_b$ to choke.
+3. A choked nozzle's reservoir pressure is doubled at fixed $T_0$. What happens to $\dot m$? → It doubles ($\dot m \propto p_0$); it just no longer depends on the back pressure.
+4. $A/A^* = 1.5$: what are the two Mach numbers? → <T>A2: M = 0.43 (sub) or 1.85 (sup)</T>
+5. Which invariant survives a shock? → Only $T_0$. $p_0$ drops and $A^*$ grows.

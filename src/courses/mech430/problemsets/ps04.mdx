@@ -1,0 +1,253 @@
+<p className="eyebrow">Problem Set 4 · Winter 2025</p>
+
+# Rocket nozzles
+
+<p className="lede">Three problems that are the template for the rocket question on Quiz 2 and the final: prove that matched expansion is a maximum, derive the general rocket nozzle equation, and compare a sea-level nozzle in space with an infinite one.</p>
+
+<Remember title="The equation of this set">
+
+$$
+F_\text{thrust} = \dot m\sqrt{\frac{2\gamma}{\gamma - 1}RT_0\left[1 - \left(\frac{p_e}{p_0}\right)^{\frac{\gamma - 1}{\gamma}}\right]} + A_e(p_e - p_\text{amb})
+$$
+
+Per unit mass flow, with $A_ep_e/\dot m = RT_e/V_e$: $\;F/\dot m = V_e + \frac{RT_e}{V_e}\left(1 - \frac{p_\text{amb}}{p_e}\right)$. See [Chapter 6](#/mech430/ch/nozzles).
+
+</Remember>
+
+<Problem id="PS4 P1" title="Show that p_exit = p_amb is a maximum of thrust" tags="optimisation, second derivative">
+
+<Statement>
+
+In lecture we showed that the thrust of an isentropic nozzle has an extremum when the exit pressure equals the back pressure, by setting $dF/dA_e = 0$. Show that this extremum is a **maximum**.
+
+</Statement>
+
+<Think>
+
+A derivation with a second-derivative test. The tools: Euler ($dp + \rho V\,dV = 0$) to kill two terms, and the velocity–area rule to get the sign of $dp_e/dA_e$. $\dot m$ is fixed by the choked throat.
+
+</Think>
+
+<Plan>
+
+$dF/dA_e$ → simplify to $p_e - p_\text{amb}$ → differentiate again → sign from $dV/V = dA/A/(M^2-1)$.
+
+</Plan>
+
+<Steps>
+<Step title="1. First derivative">
+
+$$
+\frac{dF}{dA_e} = \dot m\frac{dV_e}{dA_e} + A_e\frac{dp_e}{dA_e} + (p_e - p_\text{amb})
+$$
+
+</Step>
+<Step title="2. Euler removes the first two terms">
+
+With $\dot m = \rho_eV_eA_e$: the first two terms are $A_e\left(\rho_eV_e\frac{dV_e}{dA_e} + \frac{dp_e}{dA_e}\right) = 0$ because $dp + \rho V\,dV = 0$. So $\frac{dF}{dA_e} = p_e - p_\text{amb}$, zero at $p_e = p_\text{amb}$.
+
+</Step>
+<Step title="3. Second derivative">
+
+$$
+\frac{d^2F}{dA_e^2} = \frac{dp_e}{dA_e}
+$$
+
+</Step>
+<Step title="4. Its sign">
+
+$dp = -\rho V\,dV$ and $\frac{dV}{V} = \frac{1}{M^2-1}\frac{dA}{A}$ give
+
+$$
+\frac{dp_e}{dA_e} = -\frac{1}{M_e^2 - 1}\,\frac{\rho_eV_e^2}{A_e} < 0 \quad \text{for } M_e > 1
+$$
+
+</Step>
+</Steps>
+
+<Answer>
+
+$d^2F/dA_e^2 = -\rho_eV_e^2/[(M_e^2-1)A_e] < 0$ for a supersonic exit, so $p_e = p_\text{amb}$ is a **maximum** of thrust.
+
+</Answer>
+
+<ThrustHumpFigure />
+
+<Traps>
+
+- Physically: under-expanded ($p_e > p_\text{amb}$), a longer nozzle still gains; over-expanded ($p_e < p_\text{amb}$), the exit area feels a net suction. Either way you lose.
+- The sign argument needs $M_e > 1$, true for any rocket nozzle past its throat.
+
+</Traps>
+
+<Source>official 2025 solution p. 1 · Anthony's PS04-mine pp. 1–2</Source>
+
+</Problem>
+
+<Problem id="PS4 P2" title="Derive the rocket thrust equation; NASA slide; vacuum limit" tags="control volume, energy, V_max">
+
+<Statement>
+
+From control-volume momentum and isentropic flow, derive
+
+$$
+F = \dot m\sqrt{\frac{2\gamma}{\gamma - 1}RT_0\left[1 - \left(\frac{p_e}{p_0}\right)^{\frac{\gamma - 1}{\gamma}}\right]} + A_e(p_e - p_\text{amb})
+$$
+
+(a) Is it consistent with the NASA "Rocket Thrust Summary" slide (where $p_0$ denotes *free-stream* pressure)? (b) Find the thrust for complete expansion to vacuum. Is it consistent with PS3 P5?
+
+</Statement>
+
+<Think>
+
+Two pieces: momentum gives $F = \dot mV_e + A_e(p_e - p_\text{amb})$; energy plus the isentropic $T$–$p$ relation turn $V_e$ into chamber conditions. Watch the notation trap on the slide.
+
+</Think>
+
+<Plan>
+
+CV around the rocket → momentum → energy for $V_e$ → isentropic substitution → limits.
+
+</Plan>
+
+<RocketCVFigure />
+
+<Steps>
+<Step title="1. Momentum">
+
+Nothing enters in x; only $\dot mV_e$ leaves. Forces on the CV: $-F$ from the stand, $p_\text{amb}$ everywhere except the exit plane where $p_e$ acts, net $(p_\text{amb} - p_e)A_e$:
+
+$$
+-F + (p_\text{amb} - p_e)A_e = -\dot mV_e \;\Rightarrow\; F = \dot mV_e + A_e(p_e - p_\text{amb})
+$$
+
+(signs: x along the jet; the thrust points the other way).
+
+</Step>
+<Step title="2. Energy">
+
+$c_pT_0 = c_pT_e + V_e^2/2$ ⇒ $V_e = \sqrt{2c_pT_0(1 - T_e/T_0)}$, and $c_p = \gamma R/(\gamma-1)$.
+
+</Step>
+<Step title="3. Isentropic">
+
+$T_e/T_0 = (p_e/p_0)^{(\gamma-1)/\gamma}$ ⇒ the boxed equation.
+
+</Step>
+<Step title="4. (a) NASA slide">
+
+NASA: $F = \dot mV_e + (p_e - p_0)A_e$ with their $p_0$ = ambient, and $V_e = M_e\sqrt{\gamma RT_e}$. Using $T_t/T_e = 1 + \frac{\gamma-1}{2}M_e^2$: $M_e^2\gamma RT_e = \frac{2\gamma}{\gamma-1}R(T_t - T_e)$, which is our $V_e^2$. Their $\dot m$ is Fliegner. **Consistent.**
+
+</Step>
+<Step title="5. (b) Vacuum limit">
+
+$p_e \to 0$ (and $p_\text{amb} = 0$): the pressure term vanishes and
+
+$$
+F = \dot m\sqrt{\frac{2\gamma}{\gamma-1}RT_0} = \dot m\sqrt{\frac{2}{\gamma-1}}\,c_0 = \dot mV_\text{max}
+$$
+
+exactly PS3 P5's maximum velocity.
+
+</Step>
+</Steps>
+
+<Answer>
+
+- $F = \dot m\sqrt{\frac{2\gamma}{\gamma-1}RT_0[1 - (p_e/p_0)^{(\gamma-1)/\gamma}]} + A_e(p_e - p_\text{amb})$
+- (a) Consistent with NASA's $F = \dot mV_e + (p_e - p_0)A_e$ once their $p_0$ is read as ambient and their $p_t$, $T_t$ as our $p_0$, $T_0$.
+- (b) $F = \dot m\sqrt{2/(\gamma-1)}\,c_0 = \dot mV_\text{max}$: consistent with PS3 P5.
+
+</Answer>
+
+<Traps>
+
+- Notation: subscript 0 is stagnation in this course, but free-stream on the NASA slide.
+- $p_e \to 0$ needs $A_e/A^* \to \infty$: a theoretical limit only.
+- The official solution only says "see §6.3.2 of the notes" and skips (a); the derivation above follows Anthony's and the notes.
+
+</Traps>
+
+<Source>official 2025 solution p. 2 · Anthony's PS04-mine pp. 3–4 · notes §6.3</Source>
+
+</Problem>
+
+<Problem id="PS4 P3" title="Sea-level nozzle in space, and vs an infinite nozzle" tags="fixed nozzle, pressure thrust, V_max">
+
+<Statement>
+
+A rocket nozzle is optimised for sea level (101.3 kPa). Chamber: 2.0 MPa, 1500 K; γ = 1.4, R = 0.3 kJ/kg·K. (a) Ratio of sea-level thrust to space thrust ($p_\text{amb} = 0$) for this fixed nozzle. (b) Ratio of the space thrust in (a) to the maximum space thrust (infinite expansion ratio).
+
+</Statement>
+
+<Think>
+
+The exam template (Quiz 2 W2019 P2 is the same problem with other numbers). For a **fixed** nozzle, $\dot m$, $M_e$, $p_e$, $V_e$ don't change with altitude; only $p_\text{amb}$ in the pressure term does. No areas are given, so work **per unit mass flow**.
+
+</Think>
+
+<Plan>
+
+$p_e = p_\text{amb,SL}$ → $M_e$, $T_e$, $V_e$ → $F/\dot m$ at sea level ($= V_e$) and in space ($V_e + RT_e/V_e$) → $V_\text{max}$.
+
+</Plan>
+
+<Steps>
+<Step title="1. Exit state">
+
+The official solution uses $p_e = 100$ kPa: $p_e/p_0 = 0.05$ ⇒ <T>A2 @ p/p₀ = 0.0501: M = 2.60, T/T₀ = 0.4252</T>. $T_e = 637.8$ K.
+
+</Step>
+<Step title="2. Sea level (pressure term zero)">
+
+$$
+\frac{F_\text{SL}}{\dot m} = V_e = \sqrt{7 \times 300 \times 1500\left[1 - 0.05^{0.2857}\right]} = 1345.9\ \text{m/s}
+$$
+
+</Step>
+<Step title="3. Space (p_amb = 0)">
+
+$\frac{A_ep_e}{\dot m} = \frac{p_e}{\rho_eV_e} = \frac{RT_e}{V_e} = \frac{300 \times 637.8}{1345.9} = 142.2$ m/s, so $F_\text{space}/\dot m = 1488.1$ m/s.
+
+</Step>
+<Step title="4. (a) Ratio">
+
+$$
+\frac{F_\text{SL}}{F_\text{space}} = \frac{1345.9}{1488.1} = 0.904
+$$
+
+</Step>
+<Step title="5. (b) Infinite nozzle">
+
+$V_\text{max} = \sqrt{7 \times 300 \times 1500} = 1774.8$ m/s, so $F_\text{space}/F_\text{max} = 1488.1/1774.8 = 0.838$.
+
+</Step>
+</Steps>
+
+<Answer>
+
+- (a) $F_\text{SL}/F_\text{space} = 0.904$: the same rocket gives about 10% more thrust in space.
+- (b) $F_\text{space}/F_\text{max} = 0.838$: the sea-level nozzle gets only 84% of what an infinite nozzle would.
+- With $p_e = 101.3$ kPa: $M_e = 2.59$, ratios 0.904 and 0.838 (third digit only).
+
+</Answer>
+
+<RocketBreakdownSim preset="ps4p3" />
+
+<Traps>
+
+- Don't recompute $M_e$ or $V_e$ for space: the nozzle is fixed and flows full, so the exit state is unchanged.
+- Shortcut: $A_ep_e/\dot m = RT_e/V_e$ avoids needing any area.
+- Anthony worked per unit exit area ($\dot m/A_e = 707.9$ kg/m²s; the check gives 705.7) and got 0.90 and 0.837: same ratios.
+
+</Traps>
+
+<Source>official 2025 solution pp. 3–4 · Anthony's PS04-mine pp. 5–6</Source>
+
+</Problem>
+
+<Examined>
+
+The rocket problem on [Quiz 2 W2019 (P2)](#/mech430/exam/q2-w2019) is PS4 P3 with $p_0 = 1000$ kPa and $T_0 = 2000$ K; [Final A (P2)](#/mech430/exam/final-a) is also a rocket problem. Pick the "Quiz 2 W2019" preset in the sim above to see it.
+
+</Examined>

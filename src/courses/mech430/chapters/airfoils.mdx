@@ -1,0 +1,149 @@
+<p className="eyebrow">Chapter 14</p>
+
+# Plumes & diamond airfoils
+
+<p className="lede">Two places where oblique shocks and Prandtl–Meyer fans do real work. A rocket nozzle that doesn't match the ambient pressure makes them at its lip, which is where shock diamonds come from. A thin supersonic wing is just a set of corners, so adding up the pressure on its faces gives its lift and drag.</p>
+
+## Over- and under-expanded nozzle plumes
+
+Back to the converging–diverging nozzle of Chapters 6 and 8. With the throat choked and the diverging section fully supersonic, the exit pressure is fixed at the design value $p_e$. If the back pressure $p_b$ is different, but not different enough to push a normal shock inside, the mismatch is fixed **outside**, at the lip:
+
+| Back pressure | Name | What happens at the lip |
+|---|---|---|
+| $p_b > p_e$ (up to the normal-shock-at-exit value) | over-expanded | an **oblique shock** turns the jet *inward*; its strength makes $p_y = p_b$ |
+| $p_b = p_e$ | perfectly expanded | no waves |
+| $p_b < p_e$ | under-expanded | a **P-M fan** turns the jet *outward* until $p = p_b$ |
+
+A sea-level-optimised rocket at altitude is under-expanded: the plume balloons outward (Saturn I photos in the notes show turning near 90°). The sideways velocity gives no thrust, which is why the ideal nozzle matches the ambient pressure (Ch. 6). A vacuum-optimised nozzle tested at sea level is over-expanded.
+
+**Shock diamonds.** The two lip shocks meet on the axis (in an axisymmetric jet they focus into a small Mach reflection, Ch. 12). They reflect off the jet boundary, a constant-pressure surface, as **expansions**; those reflect back as compressions, which steepen into shocks, and the cell repeats for tens of diameters. Explore it in the [3-D rocket engine lab](#/mech430/lab/engine).
+
+<PlumeRegimeSim initialMe={3} initialRatio={1.6} />
+
+### Worked example: Raptor at sea level and in space (Final A P2(c), (d))
+
+$p_0 = 30$ MPa, γ = 1.4, nozzle designed for $p_e = 70$ kPa, so $M_e = 4.822$ (from $p_0/p_e$ with A2).
+
+**(c) Sea level, $p_b = 100$ kPa: over-expanded.**
+
+1. The lip shock must raise the pressure from 70 to 100 kPa: $p_y/p_x = 1.4286$.
+2. <T>A3 @ p_y/pₓ = 1.4286: Mₓ = 1.17, M_y = 0.862</T> (exact 1.1693). This is the **normal** component.
+3. $\sin\sigma = 1.17/4.822$ → **σ = 14.04°**.
+4. tan δ formula with M = 4.822, σ = 14.04° → **δ = 3.06°** inward.
+
+**(d) Vacuum, $p_b = 0$: under-expanded.** Expanding to p = 0 means M → ∞, so the lip fan turns the flow by $\nu_{max} - \nu(4.822) = 130.45° - 75.20° =$ **55.25° outward**.
+
+## Shock-expansion theory for a diamond airfoil
+
+A symmetric diamond (double wedge) has chord c, half-angle ε (each face 10° to the chord in all the course problems) and sits at angle of attack α. Each face is a straight wall, so the flow over it is uniform, and each corner is a wave we already know:
+
+- **Nose, upper face:** the face is inclined $\varepsilon - \alpha$ to the stream. If positive, an oblique shock with δ = ε − α. If negative (α > ε), it turns **away** from the flow: a P-M expansion by α − ε. If zero, no wave.
+- **Nose, lower face:** inclined $\varepsilon + \alpha$, nearly always a shock.
+- **Shoulders (mid-chord):** each surface turns away by the full included angle **2ε**, whatever α is: a P-M fan from the front-face state.
+- **Trailing edge:** shocks or fans bring the two streams to a common pressure and direction. They do not affect the face pressures.
+
+Then integrate. Per unit span, each face has length $\ell = (c/2)/\cos\varepsilon$ and its force $p\,\ell$ acts along the face normal. A face inclined φ to the stream contributes $p\ell\sin\varphi$ to drag (positive on a front face, negative on a rear face) and $p\ell\cos\varphi$ to lift (pushing down on top faces, up on bottom faces). With faces 1 = upper front, 2 = upper rear, 3 = lower front, 4 = lower rear:
+
+$$
+D' = \ell\left[(p_1 - p_4)\sin(\varepsilon - \alpha) + (p_3 - p_2)\sin(\varepsilon + \alpha)\right]
+$$
+
+$$
+L' = \ell\left[(p_4 - p_1)\cos(\varepsilon - \alpha) + (p_3 - p_2)\cos(\varepsilon + \alpha)\right]
+$$
+
+At α = 0 this collapses to $D' = (p_{front} - p_{rear})\,c\tan\varepsilon$ and L = 0: pure **wave drag**, which exists even with no lift and no viscosity, a purely supersonic effect.
+
+Coefficients use the compressible dynamic pressure, so you never need ρ or T:
+
+$$
+q_\infty = \tfrac12\rho_\infty V_\infty^2 = \tfrac12\gamma p_\infty M_\infty^2, \qquad C_L = \frac{L'}{q_\infty c}, \qquad C_D = \frac{D'}{q_\infty c}
+$$
+
+<Trap title="Bookkeeping traps">
+
+- "Don't forget the cos" (Anthony's redo of PS10): the face length is $0.5c/\cos\varepsilon$, the hypotenuse, not $0.5c$.
+- $p_0$ is constant through a fan but **not** across a shock: the rear-face pressure is $p_{front}\,(p/p_0)_{M_{rear}}/(p/p_0)_{M_{front}}$, using the front-face Mach number.
+- Lift is very sensitive to the upper-front pressure, so read the chart carefully or iterate tan δ.
+- kPa × m = kN per metre of span. A question in N/m wants 19 110, not 19.11.
+
+</Trap>
+
+<DiamondAirfoilSim initialM={1.8} initialEps={10} initialAlpha={5} />
+
+Slide α above ε: the upper-front shock turns into an expansion fan and the sim handles it. Push the lower face past δmax and the theory breaks down: the nose shock detaches.
+
+### Worked example: Final A P3 (M∞ = 2, ε = 10°, α = 5°, p∞ = 100 kPa, c = 1 m)
+
+<DiamondRegionsFigure M={2} eps={10} alpha={5} />
+
+<Trap title="The exam statement swaps lift and drag">
+
+Final A writes "lift is the force parallel to the original flow direction and drag is the force perpendicular". That is backwards. The standard definitions are used here: **lift ⊥ to the stream, drag ∥**. If you meet this wording on an exam, state which definition you use.
+
+</Trap>
+
+**Face 1, upper front: shock, δ = 10° − 5° = 5°.** The chart for M = 2, δ = 5° gives **σ = 34.3°**. The student's reading of 35° is a common misread, and it costs about 13% of the lift. $M_{1N} = 2\sin 34.3° = 1.127$, <T>A3 @ 1.13: p_y/pₓ = 1.315, M_y = 0.891</T>, so $p_1 = 131.5$ kPa and $M_1 = 0.891/\sin 29.3° = 1.821$.
+
+**Face 2, upper rear: fan of 20°.** <T>A6: ν(1.821) = 21.33°</T> → ν = 41.33° → <T>M = 2.597</T>. $p_2 = 131.5 \times 0.05035/0.1685 = 39.3$ kPa.
+
+**Face 3, lower front: shock, δ = 15°.** σ = 45.3°, $M_N = 1.423$, <T>A3: p_y/pₓ = 2.196, M_y = 0.730</T>, so $p_3 = 219.5$ kPa and $M_3 = 1.446$.
+
+**Face 4, lower rear: fan of 20°.** <T>A6: ν(1.446) = 10.32°</T> → 30.32° → <T>M = 2.146</T>. $p_4 = 219.5 \times 0.1018/0.2944 = 75.9$ kPa.
+
+**Forces** with ℓ = 0.5/cos 10° = 0.5077 m:
+
+$$
+D' = 0.5077\left[(131.5 - 75.9)\sin 5° + (219.5 - 39.3)\sin 15°\right] = 26.1 \text{ kN}
+$$
+
+$$
+L' = 0.5077\left[(75.9 - 131.5)\cos 5° + (219.5 - 39.3)\cos 15°\right] = 60.2 \text{ kN}
+$$
+
+With $q_\infty = \frac12(1.4)(100)(2^2) = 280$ kPa: $C_L = 0.215$, $C_D = 0.093$, L/D = 2.3. The student's hand solution (σ = 35°) gave about L = 53 kN and D = 25.5 kN.
+
+### PS10 P2 at a glance (M∞ = 1.8, ε = 10°)
+
+| | α = 0° | α = 5° |
+|---|---|---|
+| $p_1, p_2, p_3, p_4$ (kPa) | 165.6, 57.2, 165.6, 57.2 | 129.5, 42.0, 213.8, 77.2 |
+| D′ (kN/m) | 19.1 | 24.9 |
+| L′ (kN/m) | 0 | 57.8 |
+| $C_D$, $C_L$ | 0.084, 0 | 0.110, 0.255 |
+
+The official α = 5° solution misreads A6 ($\nu = 35.45°$ → $M_2 = 2.31$; it should be 2.35), giving $p_2 = 44.7$ kPa and D = 24.3, L = 55.6 kN/m. Anthony's exam-revision redo got $M_2 = 2.35$, $p_2 = 42$ kPa, D = 24.7 kN/m, L = 56.8 kN/m. The full worked solution is on the [PS10 page](#/mech430/ps/ps10).
+
+## Linear (Ackeret) theory as a check
+
+For thin surfaces at small angles every wave is weak, and the pressure on a surface inclined θ to the stream (positive into the flow) is
+
+$$
+C_p = \frac{p - p_\infty}{q_\infty} = \frac{2\theta}{\sqrt{M_\infty^2 - 1}}
+$$
+
+For the diamond this gives
+
+$$
+C_L = \frac{4\alpha}{\sqrt{M_\infty^2-1}}, \qquad C_D = \frac{4\left(\alpha^2 + \varepsilon^2\right)}{\sqrt{M_\infty^2-1}} \quad (\text{angles in rad})
+$$
+
+For Final A P3: $C_L = 0.202$ and $C_D = 0.088$, against 0.215 and 0.093 from shock-expansion theory. That is within 6%, so it is a fast sanity check of the sign and size of your answer. The drag splits into a part due to lift (α²) and a thickness part (ε²).
+
+<Examined>
+
+- [PS10](#/mech430/ps/ps10) P2: diamond at α = 0 and 5° (drag, lift, $C_L$, $C_D$).
+- [Final A](#/mech430/exam/final-a) P3: the worked example above, worth 20 points. Watch the swapped lift/drag wording.
+- [Final B](#/mech430/exam/final-b) P4: a single-wedge airfoil (photo of the statement missing); same face-by-face recipe, with a 40° expansion on the upper surface.
+- [Final A](#/mech430/exam/final-a) P2(c)–(d): lip shock and lip fan of an off-design nozzle.
+- Recipe: list the four face inclinations relative to the stream → shock or fan for each front face → 2ε fan at each shoulder → four pressures → ℓ = (c/2)/cos ε → L, D → divide by ½γp∞M∞²c.
+
+</Examined>
+
+## Check yourself
+
+1. Why does a diamond at α = 0 have drag in inviscid flow? → Front faces sit at high pressure behind shocks, rear faces at low pressure after fans: wave drag.
+2. At α = 12° on a 10° diamond, what is on the upper-front face? → A 2° expansion fan, not a shock.
+3. Over-expanded nozzle: does the lip shock turn the jet in or out? → In. Under-expanded → fan turns it out.
+4. What sets the size of each shoulder fan? → The included angle 2ε, independent of α.
+5. $q_\infty$ for M = 1.8, p = 100 kPa? → ½(1.4)(100)(3.24) = 226.8 kPa.

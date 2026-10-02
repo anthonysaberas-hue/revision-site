@@ -1,0 +1,316 @@
+<p className="eyebrow">Midterm 2 · Winter 2010 (Mar 18, 2010) · 25 + 25 + 30 + 20 = 100 marks</p>
+
+# Midterm 2, Winter 2010: a chain of media, a state-space step response, a DC servomotor, multiple choice
+
+<div className="lede">
+
+**Read this first:** the "solutions" file for this paper is **not an instructor's key**. It is a *graded student's answer booklet* (red check marks, one red "Erratum" label, **Q1(a) marked 3/25**). So Q1 below is a full derivation from the Lecture-13/15 rules, and Q2–Q4 were re-derived and compared with the student's marked work. The paper is the best "chain of media" question in the archive: **skin → air → water → piston**, with transformers at every change of medium.
+
+</div>
+
+<Problem id="MT2 W2010 Q1" title="Soft-tissue stiffness device: mechanical–acoustic–hydraulic–mechanical chain, impedance analog (25 marks)" tags="transformers at every medium change, shunt capacitors, force generator">
+
+<Statement>
+
+A device measures the stiffness of superficial tissue by suction. The tissue is a spring–mass–damper (mass $M_t$, compliance $C_t$, damping $R_t$); the skin displacement $x$ is measured with a laser. A vacuum pipe (acoustic mass $M_A$, area $A_t$) connects to a cavity of acoustic compliance $C_A$. The bottom of the cavity is filled with hydraulic fluid (density $\rho_f$) flowing through a hose to a cylinder with a valve of flow resistance $R_f$; the fluid's inertia is one fluid-mass parameter $M_f$, the fluid capacitance in the cavity is $C_f$. The cylinder piston (mass $M_p$, area $A_p$) moves horizontally ($y$) with a spring of compliance $C_p$ and a dashpot $R_p$, driven by a constant force generator $f_0$. (a) Draw the **impedance analog** of the whole system with transformers. (b) Why a force generator rather than a velocity generator? Hint: one transformer from the tissue mechanics to the acoustic system, a unit transformer from acoustic to hydraulic, one final transformer to the cylinder mechanics.
+
+</Statement>
+
+<Think>
+
+Follow the energy path left to right: **skin → air → water → piston**. Each time the medium changes, a transformer converts (force, velocity) into (pressure, volume flow) by the area: $p=F/A$, $U=Av$. Inside each region use that region's standard elements: masses and inertances are inductors, compliances are capacitors, resistances are resistors.
+
+</Think>
+
+<Plan>
+
+Rules (impedance analog): mechanical: potential = force, flux = velocity (mass → inductor, spring → capacitor $C=1/k$, damper → resistor). Acoustic and fluid: potential = pressure, flux = volume flow (acoustic mass → inductor, compliance → **shunt** capacitor to ground, resistance → resistor).
+
+</Plan>
+
+<Steps>
+<Step title="(a) 1. Tissue (mechanical impedance)">
+
+One series loop carrying the velocity $\dot x$: inductor $M_t$, capacitor $C_t$, resistor $R_t$.
+
+</Step>
+<Step title="(a) 2. Transformer A_t : 1">
+
+Mechanical impedance to acoustic impedance: the force on the skin $F=A_tp$ and the volume flow $U=A_t\dot x$.
+
+</Step>
+<Step title="(a) 3. Acoustic part">
+
+The vacuum pipe is a series inductor $M_A$; the cavity is a **shunt** capacitor $C_A$ to ground (the cavity pressure is the node between them).
+
+</Step>
+<Step title="(a) 4. Unit transformer 1 : 1">
+
+Acoustic to hydraulic: the same volume flow and pressure continue into the fluid; it is a change of medium only, as the hint says.
+
+</Step>
+<Step title="(a) 5. Hydraulic part">
+
+The fluid column in the cavity is a shunt capacitor $C_f/\rho_f$ (the $\rho_f$ turns mass flow into volume flow), then the series hose elements: inductor $\rho_fM_f$ and resistor $\rho_fR_f$ (valve and hose). Conversions: $R_A=\rho R_f$, $M_A=\rho M_f$, $C_A=C_f/\rho$.
+
+</Step>
+<Step title="(a) 6. Transformer 1 : A_p">
+
+Hydraulic pressure/flow to mechanical force/velocity of the cylinder piston: $F_p=A_p\Delta P$, $\dot y=U/A_p$.
+
+</Step>
+<Step title="(a) 7. Cylinder mechanics">
+
+A series loop with inductor $M_p$, resistor $R_p$, capacitor $C_p$ carrying the piston velocity $\dot y$, and the **force generator $f_0$ as a voltage source** (impedance analog: force = voltage).
+
+</Step>
+<Step title="(a) 8. Count check">
+
+Energy stores $M_t,C_t,M_A,C_A,C_f,M_f,M_p,C_p$: an **8th-order** system.
+
+</Step>
+<Step title="(b) Force vs velocity generator">
+
+An ideal **velocity generator** imposes its motion whatever the load: if the skin is stiff or the device jams it would produce arbitrarily large forces and **hurt the subject**. An ideal **force generator** limits the force by construction (and a constant suction force is exactly what a vacuum cup applies).
+
+</Step>
+</Steps>
+
+<CircuitBoard source={{kind:'Vs',label:'f₀',sub:'force generator'}} sections={[{type:'series',el:{kind:'L',label:'M_p',sub:'piston'}},{type:'series',el:{kind:'R',label:'R_p'}},{type:'series',el:{kind:'C',label:'C_p',sub:'piston spring'}},{type:'xfmr',ratio:'A_p : 1'},{type:'series',el:{kind:'L',label:'ρ_fM_f',sub:'hose inertia'}},{type:'series',el:{kind:'R',label:'ρ_fR_f',sub:'valve'}},{type:'shunt',stack:[{kind:'C',label:'C_f/ρ_f',sub:'fluid compliance'}],node:'P_f'}]} title="Part 1: cylinder mechanics, then the fluid line (continues below)" caption="Impedance analog from the force generator (cylinder side): piston loop, transformer A_p : 1 into the fluid, hose inertia and valve in series, fluid compliance as a shunt capacitor." ground={true} />
+
+<CircuitBoard close sections={[{type:'wire',node:'P_f'},{type:'xfmr',ratio:'1 : 1'},{type:'shunt',stack:[{kind:'C',label:'C_A',sub:'cavity'}],node:'P_cav'},{type:'series',el:{kind:'L',label:'M_A',sub:'vacuum pipe'}},{type:'xfmr',ratio:'1 : A_t'},{type:'series',el:{kind:'L',label:'M_t',sub:'tissue mass'}},{type:'series',el:{kind:'R',label:'R_t'}},{type:'series',el:{kind:'C',label:'C_t',sub:'tissue compliance'}}]} title="Part 2: air cavity, then the tissue loop" caption="Continuing from the node P_f: unit transformer into the acoustic part (shunt cavity C_A, series pipe M_A), transformer 1 : A_t into the tissue's series loop M_t, R_t, C_t. Compliances are shunt capacitors to ground; inertias and resistances are series elements." />
+
+<Answer>
+
+The chain above (transformers $A_p:1$, $1:1$, $1:A_t$ read from the piston side; $A_t:1$, $1:1$, $1:A_p$ from the tissue side); 8th order.
+
+*Real-world:* a tissue-stiffness probe (a skin elastometer): the suction cup converts tissue motion to air flow; an oil-filled line transmits it to a piston where force and velocity are measured.
+
+</Answer>
+
+<Callout kind="warn" title="⚠ The only worked answer in the file is wrong">
+
+The graded student drew four boxes (mechanical → acoustical → "water tank level system" → mechanical) with the transformers mostly missing; the grader wrote "Erratum 3/25". The fluid section was drawn as a level system (a capacitor in *series* with the resistor/inductor in a loop) rather than the hose elements in series with a **shunt** capacitor to ground, and the transformers were missing. Part (b) was marked correct.
+
+</Callout>
+
+<Traps>
+
+- Forgetting the transformers (the whole point of the question).
+- Putting a capacitor in **series** with the hose: a compliance is always a shunt element.
+- Using $R_f$ instead of $\rho R_f$ when the circuit is in volume flow.
+
+</Traps>
+
+<Source>no instructor's key (the file is a graded student's attempt); this is the digest's derivation following the L13/L15 rules and the pattern of $\text{MT2 W2009 Q1}$ and $\text{T7 Q3}$.</Source>
+
+</Problem>
+
+<Problem id="MT2 W2010 Q2" title="Time-domain response of a second-order state-space model to a step (25 marks)" tags="Φ(t), A⁻¹(Φ − I)B, high-pass response">
+
+<Statement>
+
+$\dot x=\begin{bmatrix}-1&-0.5\\1&0\end{bmatrix}x+\begin{bmatrix}0.5\\0\end{bmatrix}u$, $y=[1\ \ 0]x$; $u$ a unit step at $t=0$, $x(0)=0$. Obtain $y(t)$. (Textbook problem A-8-12.)
+
+</Statement>
+
+<Think>
+
+Two routes: Laplace ($Y=G(s)/s$ with $G=C(sI-A)^{-1}B$) or the matrix exponential. The matrix route also gives the state $x_2$. Since $A$ is invertible, the step response is $x(t)=A^{-1}(\Phi(t)-I)B$ (not $\Phi(t)B$ alone, which is the impulse response).
+
+</Think>
+
+<Steps>
+<Step title="1. Resolvent">
+
+$sI-A=\begin{bmatrix}s+1&0.5\\-1&s\end{bmatrix}$, $\det=s^2+s+0.5$, so $(sI-A)^{-1}=\dfrac1{s^2+s+0.5}\begin{bmatrix}s&-0.5\\1&s+1\end{bmatrix}$. Poles $-0.5\pm0.5j$ ($\omega_n=0.707$, $\zeta=0.707$).
+
+</Step>
+<Step title="2. Transition matrix">
+
+$s^2+s+0.5=(s+0.5)^2+0.5^2$:
+$$\Phi(t)=e^{-t/2}\begin{bmatrix}\cos\tfrac t2-\sin\tfrac t2&-\sin\tfrac t2\2\sin\tfrac t2&\cos\tfrac t2+\sin\tfrac t2\end{bmatrix},\quad\Phi(0)=I.$$
+Check: $\Phi(0)=I$ ✔.
+
+</Step>
+<Step title="3. Step response">
+
+$A^{-1}=\begin{bmatrix}0&1\\-2&-2\end{bmatrix}$ ($\det A=0.5$). $\Phi(t)B-B=\begin{bmatrix}0.5e^{-t/2}(\cos\tfrac t2-\sin\tfrac t2)-0.5\\e^{-t/2}\sin\tfrac t2\end{bmatrix}$. Multiply by $A^{-1}$:
+$$x_1=e^{-t/2}\sin\tfrac t2,\qquad x_2=1-e^{-t/2}\Big(\cos\tfrac t2+\sin\tfrac t2\Big).$$
+
+</Step>
+<Step title="4. Output">
+
+$$y(t)=x_1(t)=e^{-t/2}\sin\frac t2 .$$
+
+</Step>
+<Step title="5. Checks">
+
+$y(0)=0$ ✔. Final value 0: $G(s)=C(sI-A)^{-1}B=\dfrac{0.5s}{s^2+s+0.5}=\dfrac{s}{2s^2+2s+1}$ has a **zero at $s=0$** (a high-pass), so a step produces a decaying pulse. Peak where $\tan\tfrac t2=1$, i.e. $t=\pi/2$: $y=e^{-\pi/4}\sin\tfrac\pi4=0.322$ ✔ (simulation agrees to machine precision).
+
+</Step>
+</Steps>
+
+<Answer>
+
+$y(t)=e^{-t/2}\sin\dfrac t2$; $x_2\to1$ while the output state returns to 0.
+
+*Real-world:* a band-pass-like system: it responds to *changes* in the input, not constants; a step gives one swing and dies away.
+
+</Answer>
+
+<Traps>
+
+- $e^{At}B$ alone is the **impulse** response; the step response is $A^{-1}(e^{At}-I)B$.
+- The second state tends to 1 while the output state returns to 0.
+
+</Traps>
+
+<Source>the student's marked solution ✔ (final $y$ correct, confirmed symbolically).</Source>
+
+<ToolLink tool="state-space">Check it in the state-space tool</ToolLink>
+
+</Problem>
+
+<Problem id="MT2 W2010 Q3" title="DC servomotor (tape drive): transfer function, roots without and with load, limits (30 marks)" tags="armature motor, characteristic roots, torque/speed/current limits">
+
+<Statement>
+
+Rotor $J_r=2\times10^{-5}$ kg·m², $b_r$ negligible, load $J_l=4\times10^{-5}$, $b_l=7\times10^{-5}$ N·m/(rad/s), $R_a=0.6\ \Omega$, $L_a=2\times10^{-3}$ H, $K_b=K=0.04$. Manufacturer limits: torque 1.7 N·m, speed 6000 rpm, current 40 A. (a) Transfer function armature voltage $e_a$ to load-shaft position $\theta$. (b) Characteristic roots without load; free response and oscillation. (c) Characteristic roots with load; effect of the added inertia. (d) A unit-step voltage gives a peak current of 1.35 A and a steady speed of 233 rpm: find the largest step voltage that does not exceed the torque, speed and current limits.
+
+</Statement>
+
+<Think>
+
+Same two-circuits-plus-coupling as <Ch slug="electromechanical">Chapter 11</Ch>: back emf $E_b=K_bs\Theta$, torque $T=KI_a$. For (d) each limit gives a maximum voltage; the **smallest** one governs.
+
+</Think>
+
+<Steps>
+<Step title="(a) 1. Electrical loop and mechanics">
+
+$E_a=(L_as+R_a)I_a+E_b$ with $E_b=K_bs\Theta$; $(Js^2+bs)\Theta=KI_a$ with $J=J_r+J_l$, $b=b_l$.
+
+</Step>
+<Step title="(a) 2. Eliminate I_a">
+
+$E_a=\Big[\dfrac{(L_as+R_a)(Js^2+bs)}{K}+K_bs\Big]\Theta$, so
+$$\frac{\Theta}{E_a}=\frac{K}{s\big[L_aJs^2+(L_ab+R_aJ)s+(R_ab+KK_b)\big]}.$$
+An integrator (position = $\int$speed) times a second-order lag in the speed.
+
+</Step>
+<Step title="(b) No load (J = J_r = 2×10⁻⁵, b = 0)">
+
+$L_aJs^2+R_aJs+K^2=0\Rightarrow4\times10^{-8}s^2+1.2\times10^{-5}s+1.6\times10^{-3}=0\Rightarrow s=-150\pm j132.3$ rad/s.
+
+</Step>
+<Step title="(b) Reading the roots">
+
+Damped frequency 132 rad/s $=21.1$ Hz (period 47.6 ms); $\omega_n=200$ rad/s, $\zeta=0.75$. Time constant $\tau=1/150=6.67$ ms. The envelope decays in about $4\tau=27$ ms, **shorter than one period**, so the oscillation is barely visible (at most a small overshoot): "it will not be observed because it dies out faster than the period" ✔.
+
+</Step>
+<Step title="(c) With load (J = 6×10⁻⁵, b = 7×10⁻⁵)">
+
+$L_aJ=1.2\times10^{-7}$; $L_ab+R_aJ=1.4\times10^{-7}+3.6\times10^{-5}=3.614\times10^{-5}$; $R_ab+K^2=4.2\times10^{-5}+1.6\times10^{-3}=1.642\times10^{-3}$. Roots $s=-245.4$ and $-55.8$ rad/s (the student's $-247,-54$ use rounded coefficients). Both real: **no oscillation**; time constants 4.1 ms and 17.9 ms (dominant 18 ms: decay in about 72 ms). The added inertia makes the system overdamped and slower.
+
+</Step>
+<Step title="(d) 1. Speed limit">
+
+233 rpm per volt in steady state $\Rightarrow$ for 6000 rpm: $V_{max}=6000/233=25.8$ V.
+
+</Step>
+<Step title="(d) 2. Torque limit">
+
+Peak current per volt 1.35 A, so peak torque per volt $=K\cdot1.35=0.054$ N·m $\Rightarrow V_{max}=1.7/0.054=31.5$ V.
+
+</Step>
+<Step title="(d) 3. Current limit">
+
+$40/1.35=29.6$ V.
+
+</Step>
+<Step title="(d) 4. The governing limit">
+
+The smallest is the speed limit: **$V_{max}=25.8$ V**, giving torque $0.054\cdot25.8=1.39$ N·m ($<1.7$ ✔) and peak current $1.35\cdot25.8=34.8$ A ($<40$ ✔).
+
+</Step>
+</Steps>
+
+<Answer>
+
+(a) $\dfrac{\Theta}{E_a}=\dfrac{K}{s[L_aJs^2+(L_ab+R_aJ)s+R_ab+KK_b]}$; (b) $s=-150\pm j132$ (21 Hz, not visible); (c) $s=-245,\,-55.8$ (overdamped); (d) $V_{max}=25.8$ V.
+
+*Real-world:* tape drives, printers, robot joints: a small armature inertia gives a fast, slightly oscillatory motor; bolting a load on makes it slower but smoother.
+
+</Answer>
+
+<Callout kind="note" title="Arithmetic slip in the student's sheet">
+
+The student's page prints a peak current of 34.05 A; the correct product is $1.35\times25.8=34.8$ A. His torque 1.41 N·m uses the rounded 31 V ratio; the exact value is 1.39 N·m. Neither changes the conclusion.
+
+</Callout>
+
+<Traps>
+
+- Using $J=J_r$ only in (c), or forgetting $b_l$.
+- The "peak current at 1 V" is **higher** than the steady current (the peak occurs at start-up when the back emf is zero: $V/R_a=1.67$ A is an upper bound).
+
+</Traps>
+
+<Source>the student's marked solution ✔ in structure and final values (marks: 15 for (a), 5 each for (b), (c), (d)); numbers recomputed.</Source>
+
+<LabLink lab="dc-motor">Play with the DC-motor lab</LabLink>
+
+</Problem>
+
+<Problem id="MT2 W2010 Q4" title="Multiple-choice questions (20 marks)" tags="dividers, op-amp impedance, tank balances">
+
+<Statement>
+
+Four multiple-choice questions (the student's circled answers: a, a, c, b).
+
+</Statement>
+
+<Steps>
+<Step title="1. C₁ in series, R ∥ C₂ to ground">
+
+$\dfrac{E_o}{E_i}=\dfrac{Z_2}{Z_1+Z_2}$ with $Z_1=\dfrac1{C_1s}$, $Z_2=\dfrac{R}{RC_2s+1}$ $\Rightarrow\dfrac{RC_1s}{R(C_1+C_2)s+1}$: answer **(a)**. (A capacitive divider at high frequency, $C_1/(C_1+C_2)$; zero at DC.)
+
+</Step>
+<Step title="2. Op-amp with Z₁ = R₁ ∥ C₁ at the input and Z₂ = R₂ ∥ C₂ in the feedback">
+
+$\dfrac{E_o}{E_i}=-\dfrac{Z_2}{Z_1}=-\dfrac{R_2}{R_1}\dfrac{R_1C_1s+1}{R_2C_2s+1}$: answer **(a)** (check: DC gain $-R_2/R_1$ ✔).
+
+</Step>
+<Step title="3. Liquid-level system: tank 1">
+
+(The inflow $q$ enters tank 2; $q_1$ flows from tank 2 back to tank 1; tank 1 has no other outlet.) $C_1\dot h_1=q_1$: answer **(c)**.
+
+</Step>
+<Step title="4. Liquid-level system: tank 2">
+
+Inflow $q$, outflow to tank 1 is $q_1$, outflow to the outside is $q_2$: $C_2\dot h_2=q-q_1-q_2$: answer **(b)**.
+
+</Step>
+<Step title="Rule for tank questions">
+
+Net inflow = rate of change of stored volume; **draw the arrows first**.
+
+</Step>
+</Steps>
+
+<Answer>
+
+(1) a, (2) a, (3) c, (4) b.
+
+</Answer>
+
+<Source>the student's circled answers ✔ (re-derived).</Source>
+
+</Problem>
+
+<Examined>
+
+Chain-of-media circuits: $\text{MT2 W2009 Q1}$, $\text{T7 Q3}$, <Ch slug="acoustic-pneumatic">Chapter 12</Ch>; $\Phi(t)$ and step response: <Ch slug="state-space">Chapter 7</Ch>; DC motor: <Ch slug="electromechanical">Chapter 11</Ch>; tank balances: <Ch slug="hydraulic-thermal">Chapter 13</Ch>.
+
+</Examined>

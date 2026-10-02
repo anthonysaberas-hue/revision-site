@@ -1,0 +1,223 @@
+<p className="eyebrow">Exam toolkit · printable</p>
+
+# Formula cheat sheet
+
+<p className="lede">Every key equation of MECH 430 on one page, in the form of Higgins' official equation sheet (pages 3–5 of the printed tables) plus the unsteady-flow relations. Print it (Ctrl/Cmd + P): it reflows to three dense columns. γ = 1.4 values are given where they save time.</p>
+
+<CheatSheet>
+
+<CheatBlock title="Which table when">
+
+<WhichTableChart />
+
+</CheatBlock>
+
+<CheatBlock title="Constants & thermodynamics">
+
+$\Re = 8314$ J/kmol·K, $R = \Re/MW$ (air: 28.9 → 287.7; 28 → 297)
+
+$p = \rho RT$, $h = c_pT$, $e = c_vT$, $c_p = \dfrac{\gamma R}{\gamma-1}$, $c_v = \dfrac{R}{\gamma-1}$
+
+$$
+\frac{p_1}{p_2} = \left(\frac{\rho_1}{\rho_2}\right)^\gamma = \left(\frac{T_1}{T_2}\right)^{\frac{\gamma}{\gamma-1}}
+\qquad s_2 - s_1 = c_p\ln\frac{T_2}{T_1} - R\ln\frac{p_2}{p_1}
+$$
+
+</CheatBlock>
+
+<CheatBlock title="Integral conservation laws (CV)">
+
+$$
+\frac{\partial}{\partial t}\int_{CV}\rho\,dV + \int_{CS}\rho\vec V\cdot d\vec A = 0
+$$
+
+$$
+\sum\vec F = \frac{\partial}{\partial t}\int_{CV}\rho\vec V\,dV + \int_{CS}\vec V(\rho\vec V\cdot d\vec A)
+$$
+
+$$
+\frac{\partial}{\partial t}\int_{CV}e\rho\,dV = \dot Q + \dot W + \int_{CS}\left(h + \tfrac{V^2}{2}\right)(\rho\vec V\cdot d\vec A)
+$$
+
+</CheatBlock>
+
+<CheatBlock title="1-D steady flow">
+
+$\rho_1V_1A_1 = \rho_2V_2A_2$, $\;F_{wall} = (p_2 + \rho_2V_2^2)A_2 - (p_1 + \rho_1V_1^2)A_1$, $\;h_1 + \tfrac{V_1^2}{2} = h_2 + \tfrac{V_2^2}{2}$
+
+Differential: $\dfrac{dA}{A} + \dfrac{dV}{V} + \dfrac{d\rho}{\rho} = 0$, $\;\dfrac{dp}{\rho} + V\,dV = 0$, $\;dh + V\,dV = 0$
+
+Area–velocity: $\dfrac{dA}{A} = (M^2 - 1)\dfrac{dV}{V}$ (throat at M = 1)
+
+</CheatBlock>
+
+<CheatBlock title="Speed of sound & Mach">
+
+$c = \sqrt{(\partial p/\partial\rho)_s} = \sqrt{\gamma RT}$, $\;M = V/c$, $\;\mu = \sin^{-1}(1/M)$
+
+</CheatBlock>
+
+<CheatBlock title="Stagnation (isentropic, A-2)">
+
+$$
+\frac{T_0}{T} = 1 + \frac{\gamma-1}{2}M^2,\quad \frac{p_0}{p} = \left(\frac{T_0}{T}\right)^{\frac{\gamma}{\gamma-1}},\quad \frac{\rho_0}{\rho} = \left(\frac{T_0}{T}\right)^{\frac{1}{\gamma-1}}
+$$
+
+$$
+\frac{A}{A^*} = \frac{1}{M}\left[\frac{2}{\gamma+1}\left(1 + \frac{\gamma-1}{2}M^2\right)\right]^{\frac{\gamma+1}{2(\gamma-1)}}
+$$
+
+Sonic (γ = 1.4): $T^*/T_0 = 0.8333$, $p^*/p_0 = 0.5283$, $\rho^*/\rho_0 = 0.6339$, $V_{max} = \sqrt{2c_pT_0}$
+
+</CheatBlock>
+
+<CheatBlock title="Mass flux">
+
+$$
+\frac{\dot m}{A} = \frac{p_0}{\sqrt{T_0}}\sqrt{\frac{\gamma}{R}}\;\frac{M}{\left(1 + \frac{\gamma-1}{2}M^2\right)^{\frac{\gamma+1}{2(\gamma-1)}}}
+$$
+
+Choked (γ = 1.4): $\dot m = A^*\dfrac{p_0}{\sqrt{T_0}}\sqrt{\dfrac{\gamma}{R}}\,\dfrac{1}{1.2^3}$; air: $\dot m = 0.0404\,A^*p_0/\sqrt{T_0}$
+
+</CheatBlock>
+
+<CheatBlock title="Rocket nozzle">
+
+$$
+F = \dot m\sqrt{\frac{2\gamma}{\gamma-1}RT_0\left[1 - \left(\frac{p_e}{p_0}\right)^{\frac{\gamma-1}{\gamma}}\right]} + (p_e - p_{amb})A_e
+$$
+
+Max thrust at $p_e = p_{amb}$; $I_{sp} = F/\dot m$; vacuum, infinite nozzle: $V = \sqrt{2\gamma RT_0/(\gamma-1)}$
+
+</CheatBlock>
+
+<CheatBlock title="Normal shock (A-3), x → y">
+
+$$
+M_y^2 = \frac{2 + (\gamma-1)M_x^2}{2\gamma M_x^2 - (\gamma-1)},\qquad \frac{p_y}{p_x} = \frac{2\gamma M_x^2 - (\gamma-1)}{\gamma+1}
+$$
+
+$$
+\frac{\rho_y}{\rho_x} = \frac{V_x}{V_y} = \frac{(\gamma+1)M_x^2}{2 + (\gamma-1)M_x^2},\qquad \frac{T_y}{T_x} = \frac{[2\gamma M_x^2 - (\gamma-1)][2 + (\gamma-1)M_x^2]}{(\gamma+1)^2M_x^2}
+$$
+
+$$
+\frac{p_{0y}}{p_{0x}} = \frac{A^*_x}{A^*_y} = \left[\frac{2\gamma M_x^2 - (\gamma-1)}{\gamma+1}\right]^{\frac{-1}{\gamma-1}}\left[\frac{(\gamma+1)M_x^2}{2 + (\gamma-1)M_x^2}\right]^{\frac{\gamma}{\gamma-1}},\quad \frac{s_y - s_x}{R} = -\ln\frac{p_{0y}}{p_{0x}}
+$$
+
+$T_{0y} = T_{0x}$. Inlet start: $A_{in}/A_t = (A/A^*)(M_y)$; unstarted $\dot m$ ratio $= p_{0y}/p_{0x}$.
+
+</CheatBlock>
+
+<CheatBlock title="Moving shock into quiescent gas">
+
+$$
+\frac{V_p'}{c_x} = \frac{2}{\gamma+1}\left(\frac{M_s^2 - 1}{M_s}\right),\qquad W = M_sc_x
+$$
+
+Use A-3 at $M_x = M_s$ in the shock frame. Lab-frame gas behind: $u = V_p'$; supersonic in the lab if $M_s > 2.068$ (air).
+
+</CheatBlock>
+
+<CheatBlock title="Fanno (A-4): friction, constant A">
+
+$dp + \dfrac{4f}{D_H}\dfrac{\rho V^2}{2}dx + \dfrac{\rho V^2}{2}\dfrac{dV^2}{V^2} = 0$
+
+$$
+\frac{4fL^*}{D_H} = \frac{1 - M^2}{\gamma M^2} + \frac{\gamma+1}{2\gamma}\ln\frac{(\gamma+1)M^2}{2\left(1 + \frac{\gamma-1}{2}M^2\right)}
+$$
+
+$$
+\frac{p}{p^*} = \frac{1}{M}\sqrt{\frac{\gamma+1}{2 + (\gamma-1)M^2}},\quad \frac{T}{T^*} = \frac{\gamma+1}{2 + (\gamma-1)M^2},\quad \frac{\rho}{\rho^*} = \frac{V^*}{V} = \frac{1}{M}\sqrt{\frac{2 + (\gamma-1)M^2}{\gamma+1}}
+$$
+
+$$
+\frac{p_0}{p_0^*} = \frac{1}{M}\left[\frac{2 + (\gamma-1)M^2}{\gamma+1}\right]^{\frac{\gamma+1}{2(\gamma-1)}}
+$$
+
+$T_0$ const. $4fL_2^*/D = 4fL_1^*/D - 4fL/D$ only if $L \le L_1^*$. Supersonic limit $4fL^*/D \to 0.8215$.
+
+</CheatBlock>
+
+<CheatBlock title="Rayleigh (A-5): heat, constant A">
+
+$q_{1-2} = h_{02} - h_{01} = c_p(T_{02} - T_{01})$
+
+$$
+\frac{p_2}{p_1} = \frac{1 + \gamma M_1^2}{1 + \gamma M_2^2},\qquad \frac{T_2}{T_1} = \frac{M_2^2(1 + \gamma M_1^2)^2}{M_1^2(1 + \gamma M_2^2)^2}
+$$
+
+$$
+\frac{T}{T^*} = \frac{(1+\gamma)^2M^2}{(1 + \gamma M^2)^2},\quad \frac{p}{p^*} = \frac{1+\gamma}{1 + \gamma M^2},\quad \frac{V}{V^*} = \frac{\rho^*}{\rho} = \frac{(\gamma+1)M^2}{1 + \gamma M^2}
+$$
+
+$$
+\frac{T_0}{T_0^*} = \frac{2(\gamma+1)M^2\left(1 + \frac{\gamma-1}{2}M^2\right)}{(1 + \gamma M^2)^2},\qquad \frac{p_0}{p_0^*} = \frac{\gamma+1}{1 + \gamma M^2}\left[\frac{2\left(1 + \frac{\gamma-1}{2}M^2\right)}{\gamma+1}\right]^{\frac{\gamma}{\gamma-1}}
+$$
+
+Max heat: $\Delta q^* = c_p(T_0^* - T_{01})$; $\dfrac{q_{max}}{c_pT_1} = \dfrac{(M_1^2-1)^2}{2(\gamma+1)M_1^2}$ (CJ detonation).
+
+</CheatBlock>
+
+<CheatBlock title="Oblique shock">
+
+$$
+\tan\delta = \frac{(M_x^2\sin^2\sigma - 1)\cot\sigma}{\frac{\gamma+1}{2}M_x^2 - M_x^2\sin^2\sigma + 1}
+$$
+
+$M_{xN} = M_x\sin\sigma$ → A-3 → $M_{yN}$, $p_y/p_x$, $T_y/T_x$, $p_{0y}/p_{0x}$; $\;M_y = \dfrac{M_{yN}}{\sin(\sigma - \delta)}$
+
+Weak branch unless told otherwise; $\delta > \delta_{max}$ ⇒ detached bow shock.
+
+</CheatBlock>
+
+<CheatBlock title="Prandtl–Meyer (A-6)">
+
+$$
+\nu = \sqrt{\frac{\gamma+1}{\gamma-1}}\tan^{-1}\sqrt{\frac{\gamma-1}{\gamma+1}(M^2-1)} - \tan^{-1}\sqrt{M^2-1}
+$$
+
+$\nu_2 - \nu_1 = \delta$ (expansion); $p_0$ const ⇒ $p_2 = p_1\dfrac{(p/p_0)_2}{(p/p_0)_1}$; $\nu_{max} = 130.45^\circ$ (γ = 1.4)
+
+</CheatBlock>
+
+<CheatBlock title="Method of characteristics (2-D irrotational)">
+
+Right-running $C_I$ (direction θ − μ): $C_I = \nu + \theta$ = const. Left-running $C_{II}$ (θ + μ): $C_{II} = \nu - \theta$ = const.
+
+Intersection: $\theta = \dfrac{C_I - C_{II}}{2}$, $\;\nu = \dfrac{C_I + C_{II}}{2}$. Wall: θ = θ_wall; upper ν = $C_{II}$ + θ, lower ν = $C_I$ − θ.
+
+</CheatBlock>
+
+<CheatBlock title="Unsteady 1-D (pistons, shock tubes)">
+
+Riemann invariants along $dx/dt = u \pm c$: $\;J^\pm = u \pm \dfrac{2c}{\gamma-1}$ = const
+
+Centred expansion (gas pulled to speed $|u|$): $\dfrac{c}{c_4} = 1 - \dfrac{\gamma-1}{2}\dfrac{|u|}{c_4}$, $\;\dfrac{p}{p_4} = \left(\dfrac{c}{c_4}\right)^{\frac{2\gamma}{\gamma-1}}$; escape speed $2c_4/(\gamma-1)$
+
+Shock tube:
+
+$$
+\frac{p_4}{p_1} = \frac{p_2}{p_1}\left\{1 - \frac{(\gamma_4-1)(c_1/c_4)(p_2/p_1 - 1)}{\sqrt{2\gamma_1\left[2\gamma_1 + (\gamma_1+1)(p_2/p_1 - 1)\right]}}\right\}^{\frac{-2\gamma_4}{\gamma_4-1}}
+$$
+
+Contact: $u_2 = u_3$, $p_2 = p_3$. Fan head $-c_4$, tail $u_3 - c_3$.
+
+</CheatBlock>
+
+<CheatBlock title="Handy γ = 1.4 numbers">
+
+| | |
+|---|---|
+| A2 M = 2 | p/p₀ 0.1278, T/T₀ 0.5556, A/A\* 1.6875 |
+| A2 M = 3 | p/p₀ 0.02722, A/A\* 4.2346 |
+| A3 Mₓ = 2 | M_y 0.5774, p_y/pₓ 4.5, p₀y/p₀ₓ 0.7209 |
+| A3 Mₓ = 3 | M_y 0.4752, p_y/pₓ 10.33, p₀y/p₀ₓ 0.3283 |
+| A6 | ν(2) 26.38°, ν(3) 49.76° |
+| A4 | 4fL\*/D(0.12) 45.41, (3) 0.522 |
+
+</CheatBlock>
+
+</CheatSheet>
+
+<p className="no-print">Templates and step-by-step decision procedures: [exam recipes](#/mech430/page/recipes). Calculators replace the tables: [calculators](#/mech430/calc).</p>

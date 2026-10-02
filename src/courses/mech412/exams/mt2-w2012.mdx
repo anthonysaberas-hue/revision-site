@@ -1,0 +1,357 @@
+<p className="eyebrow">Midterm 2 · Winter 2012 (Mar 22, 2012) · 4 × 25 = 100 marks</p>
+
+# Midterm 2, Winter 2012: two carts and a motor-driven valve, interacting tanks, tachometer feedback, op-amp current amplifier
+
+<div className="lede">
+
+A balanced MT2. Q1a is "the same as the example from Lecture 10" (two carts), Q1b a DC motor driving a valve (focus on the motor), Q2 two coupled tanks with a Matlab step, Q3 a **tachometer-feedback motor with a sensitivity question** (the same pattern as the 2024 Q4), Q4 an op-amp **current amplifier** solved by Anthony's rule "always take $i$ at nodes". The official solution is correct throughout; one handwriting ambiguity in Q4(b) is resolved below. Some pages carried blue/red teacher hints, kept where useful.
+
+</div>
+
+<Problem id="MT2 W2012 Q1a" title="Two carts, force input: mobility and impedance analogs (15 marks)" tags="mobility analog, force source first">
+
+<Statement>
+
+Cart 1 (mass $M_1$, position $p$) is pulled by the force $u$; it is connected to cart 2 (mass $M_2$, position $q$) by a spring $k_1$ and a dashpot $b_1$ **in parallel**; cart 2 is connected to the left wall by a spring $k_2$ and a dashpot $b_2$ in parallel. Neglect wheel friction. Draw the equivalent circuits.
+
+</Statement>
+
+<Think>
+
+**Mobility analog:** nodes are the cart velocities $\dot p$, $\dot q$; masses are capacitors to ground, springs inductors $1/k$, dashpots resistors $1/b$, the force a **current source**. **Impedance analog:** the dual: masses inductors in series loops, springs capacitors $1/k$, dashpots resistors $b$, the force a voltage source.
+
+</Think>
+
+<Steps>
+<Step title="1. Nodes">
+
+$\dot p$ (cart 1), $\dot q$ (cart 2), ground (the walls).
+
+</Step>
+<Step title="2. Force source first (crib rule)">
+
+A current source $u$ into node $\dot p$.
+
+</Step>
+<Step title="3. Masses">
+
+Capacitors $M_1$ (node $\dot p$ to ground) and $M_2$ (node $\dot q$ to ground).
+
+</Step>
+<Step title="4. Elements between the carts">
+
+Spring $C_1=1/k_1$ (an inductor) and dashpot $r_1=1/b_1$ (a resistor), **in parallel**, between $\dot p$ and $\dot q$.
+
+</Step>
+<Step title="5. Elements from cart 2 to the wall">
+
+$C_2=1/k_2$ (inductor) and $r_2=1/b_2$ (resistor) from node $\dot q$ to ground.
+
+</Step>
+<Step title="6. Count and impedance analog">
+
+$M_1,M_2,k_1,k_2$: 4 states. The impedance analog has the voltage source $u$; the current $\dot p$ flows through $M_1$; after the node, $\dot q$ flows through $M_2$ and then through the $C_2$–$R_2$ branch to ground, while the $C_1$–$R_1$ branch carries the difference $\dot p-\dot q$.
+
+</Step>
+</Steps>
+
+<CircuitBoard source={{kind:'Is',label:'u',sub:'force'}} sections={[{type:'shunt',stack:[{kind:'C',label:'M₁'}],node:'ṗ'},{type:'bridge',els:[{kind:'L',label:'C₁ = 1/k₁'},{kind:'R',label:'r₁ = 1/b₁'}]},{type:'shunt',stack:[{kind:'C',label:'M₂'}],node:'q̇'},{type:'shunt',stack:[{kind:'L',label:'C₂ = 1/k₂'}]},{type:'shunt',stack:[{kind:'R',label:'r₂ = 1/b₂'}]}]} title="Mobility analog of the two carts" caption="Elements between the carts go between the two velocity nodes (parallel pair C₁, r₁); elements to the wall go to ground." />
+
+<Answer>
+
+The circuit above (labels: 1–2 marks each, circuit 3).
+
+</Answer>
+
+<Traps>
+
+- Putting the spring and dashpot between the carts **in series** (they are parallel).
+- Putting the wall elements between nodes instead of to ground.
+
+</Traps>
+
+<Source>official ✔ ("same as the example from Lecture 10").</Source>
+
+</Problem>
+
+<Problem id="MT2 W2012 Q1b" title="DC motor driving a valve: equivalent circuit of the motor (10 marks)" tags="transformer vs gyrator, back emf">
+
+<Statement>
+
+An amplifier ($K_a=50$) drives a DC motor (armature $R_a$, $L_a$; rotor $J_m$ with damping $b$; $K_t=K_b$); the motor turns a valve that regulates flow from a reservoir into a lower tank. Draw the equivalent circuit **of the motor** (teacher's note "focus on motor": $\tau=K_ti_a$, $e_b=K_b\dot\theta$).
+
+</Statement>
+
+<Think>
+
+Electrical series loop on the left, the coupling in the middle, the mechanical node on the right. **Rule of Lecture 13:** the coupling is a **transformer** when both sides use the analogs that map voltage to velocity (electrical impedance to mechanical mobility); it is a **gyrator** if the mechanical side is drawn in the impedance analogy (different analogs).
+
+</Think>
+
+<Steps>
+<Step title="1. Electrical side">
+
+Source $v_a\to R_a\to L_a$ (series loop carrying $i_a$); the back emf $e_b=K_b\dot\theta$ is what the coupling feeds back.
+
+</Step>
+<Step title="2. Coupling">
+
+A **transformer $K_m:1$** (mobility analogy: voltage $\leftrightarrow$ velocity, current $\leftrightarrow$ torque), or a **gyrator $K_m$** if the mechanical side is in the impedance analogy.
+
+</Step>
+<Step title="3. Mechanical side (mobility)">
+
+The rotor inertia $J_m$ is a capacitor to ground at the node $\dot\theta$; the damping $1/b$ a resistor in parallel; the **valve** (load) is a further element in parallel (it adds a torque the motor must overcome).
+
+</Step>
+<Step title="4. Check">
+
+With the transformer $K_m:1$ the torque constant and the back-emf constant are the same number ($K_t=K_b$): power balance ✔.
+
+</Step>
+</Steps>
+
+<CircuitBoard source={{kind:'Vs',label:'v_a',sub:'amplifier output'}} sections={[{type:'series',el:{kind:'R',label:'R_a'}},{type:'series',el:{kind:'L',label:'L_a'}},{type:'xfmr',ratio:'K_m : 1',gyrator:false},{type:'shunt',stack:[{kind:'C',label:'J_m',sub:'rotor inertia'}],node:'θ̇'},{type:'shunt',stack:[{kind:'R',label:'1/b',sub:'damping'}]},{type:'shunt',stack:[{kind:'R',label:'1/b_valve',sub:'valve load'}]}]} title="DC motor: electrical loop, K_m : 1 coupling, mechanical node" caption="Mobility analogy on the mechanical side: potential = angular velocity, flux = torque." />
+
+<Answer>
+
+The circuit above (10 marks: circuit with transformer or gyrator, labelled).
+
+*Real-world:* an electric actuator on a flow valve (an HVAC damper or a process valve).
+
+</Answer>
+
+<Source>official ✔.</Source>
+
+</Problem>
+
+<Problem id="MT2 W2012 Q2" title="Two-tank system with orifice A blocked: circuit, q_out/q_in, Matlab step (25 marks)" tags="interacting tanks, Matlab tf/step">
+
+<Statement>
+
+Two tanks of surface areas $S_1,S_2$ connected through orifice B (resistance $R_{fB}$); tank 2 drains through orifice C ($R_{fC}$); **orifice A is blocked**; a pump supplies $q_{in}$ to tank 1; the outflow of tank 2 is $q_{out}$. (a) Equivalent circuit of the linearised system. (b) $q_{out}/q_{in}$. (c) For $S_1=S_2=2$ m² and all resistances equal to 1 s/m², write a Matlab script for the unit-step response.
+
+</Statement>
+
+<Think>
+
+Potential = head $h$, flux = volume flow $q$. Net inflow = rate of change of stored volume, for each tank. Tank 2 draws from tank 1 through $R_B$ **and** its head pushes back: the tanks interact.
+
+</Think>
+
+<Steps>
+<Step title="(a) Circuit">
+
+Current source $q_{in}$ into node $h_1$; capacitor $C_1=S_1$ from $h_1$ to ground; resistor $R_{fB}$ from $h_1$ to node $h_2$ (carrying $q_1$); capacitor $C_2=S_2$ from $h_2$ to ground; resistor $R_{fC}$ from $h_2$ to ground (carrying $q_{out}$).
+
+</Step>
+<Step title="(b) 1. Tank 1">
+
+$C_1\dot h_1=q_{in}-q_1$ with $q_1=\dfrac{h_1-h_2}{R_B}$: $\;(C_1s+\tfrac1{R_B})H_1=Q_{in}+\dfrac{H_2}{R_B}$ (i).
+
+</Step>
+<Step title="(b) 2. Tank 2">
+
+$C_2\dot h_2=q_1-q_{out}$ with $q_{out}=h_2/R_C$: $\;(C_2s+\tfrac1{R_B}+\tfrac1{R_C})H_2=\dfrac{H_1}{R_B}$ (ii).
+
+</Step>
+<Step title="(b) 3. Eliminate H₁">
+
+From (i): $H_1=\dfrac{R_BQ_{in}+H_2}{R_BC_1s+1}$. Put into (ii) with $H_2=R_CQ_{out}$ and clear denominators (multiply by $R_B(R_BC_1s+1)$):
+$$\big[(C_2R_Cs+1)(R_BC_1s+1)+R_CC_1s\big]Q_{out}=Q_{in}.$$
+
+</Step>
+<Step title="(b) 4. Expand">
+
+$(C_2R_Cs+1)(R_BC_1s+1)=R_BC_1R_CC_2s^2+(R_BC_1+R_CC_2)s+1$; adding $R_CC_1s$:
+$$\frac{Q_{out}}{Q_{in}}=\frac{1}{R_BC_1R_CC_2s^2+(R_BC_1+R_CC_2+R_CC_1)s+1}$$
+(the interacting-tank formula of Lecture 15).
+
+</Step>
+<Step title="(b) 5. Numbers">
+
+$S_1=S_2=2$, $R=1$: $R_BC_1R_CC_2=4$ and $R_BC_1+R_CC_2+R_CC_1=6$, so $\dfrac{Q_{out}}{Q_{in}}=\dfrac1{4s^2+6s+1}$. Poles $s=\dfrac{-6\pm\sqrt{36-16}}8=-0.191,\ -1.309$: time constants 5.2 s and 0.76 s; DC gain 1 (all the inflow leaves).
+
+</Step>
+<Step title="(c) Matlab script">
+
+```
+num = [1];
+den = [4 6 1];
+sys = tf(num, den);
+step(sys)
+```
+The step response rises monotonically to 1 (overdamped); the 2% settling time is about $4/0.191\approx20$ s (the slow pole).
+
+</Step>
+</Steps>
+
+<Answer>
+
+(b) $\dfrac{Q_{out}}{Q_{in}}=\dfrac1{R_BC_1R_CC_2s^2+(R_BC_1+R_CC_2+R_CC_1)s+1}$; (c) $\dfrac1{4s^2+6s+1}$ and the script above.
+
+*Real-world:* two coupled settling tanks (water treatment): a step in pump flow takes about 20 s to fully appear at the output.
+
+</Answer>
+
+<Traps>
+
+- Omitting the interaction term $R_CC_1s$ in the middle coefficient.
+- Treating the tanks as independent first-order lags (a product of two lags): wrong because tank 2's head pushes back on tank 1.
+
+</Traps>
+
+<Source>official ✔ (a grading note on the page: "circuit error: −3 pts").</Source>
+
+<LabLink lab="tanks">Two-tank lab</LabLink>
+
+</Problem>
+
+<Problem id="MT2 W2012 Q3" title="Tachometer-feedback DC motor: closed loop, steady-state error, sensitivity to R_a drift (25 marks)" tags="back-emf loop, e_ss, S^T_{R_a}">
+
+<Statement>
+
+Armature-controlled DC motor with tachometer feedback: $K_m=10$ N·m/A, $J=1$ kg·m², $R_a=1\ \Omega$, $K_b=0.1$ V·s/rad, tachometer gain $K_t=1$. Block diagram: $V\to\oplus(-)$, error $E=V-K_t\omega\to$ controller $K_p\to\oplus(-,$ disturbance $D)\to\dfrac{K_m}{R_aJs}\to\omega$, with the back emf $K_b$ feeding back inside. (a) Closed loop $T=\omega/V$ ($D=0$). (b) Controller gain $K_p$ so the steady-state error to a unit step is 0.1. (c) $R_a$ drifts over time: how should $K_p$ be chosen so (b) still holds while the closed loop changes as little as possible? Consider (i) $s\ll1$, (ii) $s\gg1$.
+
+</Statement>
+
+<Think>
+
+The motor alone is an integrator (speed from torque) whose back-emf loop makes it a first-order lag. The outer tachometer loop with gain $K_p$ sets the DC gain and the error. Sensitivity to $R_a$ says how much the closed loop moves when the armature warms up.
+
+</Think>
+
+<Steps>
+<Step title="(a) 1. Motor with back emf">
+
+$\omega=\dfrac{K_m}{R_aJs}\{K_pE-K_b\omega\}$ with $E=V-K_t\omega$ (the controller output is the armature voltage and the back emf subtracts).
+
+</Step>
+<Step title="(a) 2. Solve">
+
+Multiply by $R_aJs$: $R_aJs\,\omega=-K_mK_b\omega+K_mK_p(V-K_t\omega)$:
+$$T(s)=\frac{\omega}{V}=\frac{K_mK_p}{R_aJs+K_mK_b+K_mK_pK_t}=\frac{10K_p}{s+1+10K_p}\quad(K_mK_b=1).$$
+
+</Step>
+<Step title="(b) Steady-state error">
+
+$E=[1-K_tT]V$; for $V=1/s$: $e_{ss}=1-T(0)=1-\dfrac{10K_p}{1+10K_p}=\dfrac1{1+10K_p}$. Require $\le0.1$: $1+10K_p\ge10\Rightarrow K_p\ge0.9$.
+
+</Step>
+<Step title="(c) 1. Sensitivity of T to R_a">
+
+With $T=\dfrac{K_mK_p}{R_aJs+D_0}$, $D_0=K_mK_b+K_mK_pK_t$: $\dfrac{\partial T}{\partial R_a}=-\dfrac{K_mK_pJs}{(R_aJs+D_0)^2}$, so
+$$S^T_{R_a}=\frac{R_a}T\frac{\partial T}{\partial R_a}=-\frac{R_aJs}{R_aJs+K_mK_b+K_mK_pK_t}=-\frac{R_as}{R_as+1+10K_p}.$$
+
+</Step>
+<Step title="(c) 2. (i) s ≪ 1">
+
+$S\approx-\dfrac{R_as}{1+10K_p}$: **choose $K_p$ large** and $S\to0$ (the DC gain $\tfrac{10K_p}{1+10K_p}$ barely depends on $R_a$).
+
+</Step>
+<Step title="(c) 3. (ii) s ≫ 1">
+
+$S\to-\dfrac{R_as}{R_as}=-1$ **whatever $K_p$**: "$K_p$ has no effect" (the high-frequency response is set by the motor's inertia and resistance, not by the feedback loop).
+
+</Step>
+</Steps>
+
+<Answer>
+
+(a) $T=\dfrac{10K_p}{s+1+10K_p}$; (b) $K_p\ge0.9$; (c) $S=-\dfrac{R_as}{R_as+1+10K_p}$: large $K_p$ helps at low frequency, no choice of $K_p$ helps at high frequency.
+
+*Real-world:* a copper armature heats up and its resistance rises by about 30%: with a high loop gain the speed at low frequency hardly changes, but fast transients still feel it.
+
+</Answer>
+
+<Traps>
+
+- Forgetting the back-emf term $K_mK_b$ in the denominator.
+- Omitting the tachometer gain $K_t$ (numerically the same here since $K_t=1$).
+
+</Traps>
+
+<Source>official ✔ ($T=10K_p/(s+1+10K_p)$, $K_p>0.9$, sensitivity $-R_as/(R_as+1+10K_p)$).</Source>
+
+</Problem>
+
+<Problem id="MT2 W2012 Q4" title="Op-amp current amplifier driving a DC motor: V_in to I_a (25 marks)" tags="always take i at nodes, virtual ground, transconductance amplifier">
+
+<Statement>
+
+A current amplifier drives the DC motor so that the motor current follows the input voltage. $V_{in}$ through $R_{in}$ to the inverting node A; $R$ from A to the motor's bottom node B; $R_f$ from the output $V_{out}$ to A; the motor (armature $R_a$, back emf $K_e\omega$) in the output branch; a sensor resistor $R_s$ from B to ground; the non-inverting input is grounded. Motor $\dfrac{\omega}{I_a}=\dfrac{K_t}{J_ms+b}$; inductance neglected. (a) Assuming $R_s\ll R$, find $C(s)=I_a/V_{in}$ in terms of $R,R_s,R_a,R_f,R_{in},K_e,K_t,J_m,b$. (b) Simplify for $R_f\to\infty$.
+
+</Statement>
+
+<Think>
+
+Anthony's rule: **always take $i$ at nodes** (KCL). Ideal op-amp: $V_+=V_-=0$, so node A is a **virtual ground**. Write KCL at A, then at B, then the motor voltage.
+
+</Think>
+
+<Steps>
+<Step title="(a) 1. KCL at A (virtual ground V_A = 0)">
+
+Currents leaving A: $\dfrac{V_{in}-0}{R_{in}}+\dfrac{V_{out}-0}{R_f}+\dfrac{V_B-0}{R}=0$ (the term $V_B/R$: the resistor $R$ connects A to B).
+
+</Step>
+<Step title="(a) 2. KCL at B">
+
+The motor current $I_a$ flows into B and leaves through $R$ (to A) and $R_s$ (to ground): $I_a-\dfrac{V_B}R-\dfrac{V_B}{R_s}=0\Rightarrow V_B=I_a\dfrac{RR_s}{R+R_s}\approx R_sI_a$ for $R_s\ll R$.
+
+</Step>
+<Step title="(a) 3. Motor voltage">
+
+$V_a=I_aR_a+K_e\omega=I_aR_a+\dfrac{K_eK_tI_a}{J_ms+b}$; the output is $V_{out}=V_a+V_B=I_a\Big[R_a+R_s+\dfrac{K_eK_t}{J_ms+b}\Big]$.
+
+</Step>
+<Step title="(a) 4. Substitute into KCL at A">
+
+$\dfrac{V_{in}}{R_{in}}+\dfrac{I_a}{R_f}\Big[R_a+R_s+\dfrac{K_eK_t}{J_ms+b}\Big]+\dfrac{I_aR_s}R=0$, so
+$$\frac{I_a}{V_{in}}=-\frac{1}{R_{in}\Big\{\dfrac{R_s}R+\dfrac1{R_f}\Big[R_a+R_s+\dfrac{K_eK_t}{J_ms+b}\Big]\Big\}} .$$
+
+</Step>
+<Step title="(b) R_f → ∞">
+
+The feedback term vanishes:
+$$\frac{I_a}{V_{in}}=-\frac{R}{R_{in}R_s}.$$
+
+</Step>
+<Step title="Interpretation">
+
+The output current is **proportional to the input voltage and independent of the motor's parameters** ($R_a,K_e,J_m,b$): a *transconductance amplifier*, $I_a=-\dfrac{R}{R_{in}R_s}V_{in}$. The minus sign is the inversion; a following inverting stage makes it positive.
+
+</Step>
+</Steps>
+
+<Answer>
+
+(a) as above; (b) $\dfrac{I_a}{V_{in}}=-\dfrac{R}{R_{in}R_s}$: set only by the three resistors.
+
+*Real-world:* a motor driver where torque (current) is commanded directly by a voltage (servo drives): the motor's electrical dynamics are made irrelevant by the feedback.
+
+</Answer>
+
+<Callout kind="note" title="Handwriting ambiguity">
+
+The last symbol of the official final line (b) can look like "$R_a$", but the algebra above requires **$R_s$**, the sensor resistor: the DC gain is set only by $R$, $R_{in}$, $R_s$ and not by the motor. The official intermediate relations match; the simplification was checked symbolically.
+
+</Callout>
+
+<Traps>
+
+- Using $V_{out}$ instead of the node voltage $V_B$ at the sensor resistor.
+- Forgetting the back emf in the motor voltage.
+- Letting $R_s$ appear in parallel with $R$ at node A (it is at node B).
+
+</Traps>
+
+<Source>official ✔.</Source>
+
+</Problem>
+
+<Examined>
+
+Analogs: <Ch slug="analogies">Chapter 10</Ch>; coupled tanks: <Ch slug="hydraulic-thermal">Chapter 13</Ch>; tachometer feedback and sensitivity: <Ch slug="sensitivity">Chapter 14</Ch>; op-amp nodes: <Ch slug="circuits-opamps">Chapter 8</Ch>. Same sensitivity pattern as $\text{MT2 W2024 Q4}$ and $\text{MT2 W2019 MU Q2}$.
+
+</Examined>

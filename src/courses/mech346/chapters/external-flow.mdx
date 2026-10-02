@@ -1,0 +1,154 @@
+<p className="eyebrow">Chapter 7 · External forced convection · Midterm 2 and Final</p>
+
+# External forced convection
+
+<div className="lede">
+
+A fluid blown over an object from outside: wind on a hot pipe, air over a heat sink, water across a tube bundle. The physics is Chapter 6; the engineering is a **catalogue of correlations** and a short, reliable routine for using them. The routine is the same every time: (1) pick the film temperature and get the properties, (2) compute $Re$ and decide laminar or turbulent, (3) pick the correlation for the geometry, (4) get $Nu$, then $h=Nu\,k/L$, (5) use $h$ in a resistance network or in $\dot Q=hA_s(T_s-T_\infty)$. Midterm 2 Q3 and a final question are exactly this.
+
+</div>
+
+<Idea title="The 30-second version">
+
+1. **Film temperature** $T_f=(T_s+T_\infty)/2$: take $k,\nu,Pr$ (and $\mu,\rho,c_p$) there.
+2. **Flat plate:** $Re_L=VL/\nu$, critical value $5\times10^5$. 
+ Laminar ($Re_L\le5\times10^5$): $\overline{Nu}=0.664\,Re_L^{1/2}Pr^{1/3}$. 
+ Mixed (for $5\times10^5\le Re_L\le10^7$): $\overline{Nu}=(0.037Re_L^{0.8}-871)Pr^{1/3}$. 
+ Fully turbulent from the leading edge (tripped): $\overline{Nu}=0.037Re_L^{0.8}Pr^{1/3}$.
+3. **Cylinder in crossflow (Churchill–Bernstein):** $Nu=0.3+\dfrac{0.62Re_D^{1/2}Pr^{1/3}}{[1+(0.4/Pr)^{2/3}]^{1/4}}\left[1+\left(\dfrac{Re_D}{282\,000}\right)^{5/8}\right]^{4/5}$ ($Re_DPr>0.2$), with $D$ the diameter.
+4. **Sphere:** $Nu=2+\left[0.4Re_D^{1/2}+0.06Re_D^{2/3}\right]Pr^{0.4}(\mu_\infty/\mu_s)^{1/4}$.
+5. **Tube bank:** $Nu_D=C\,Re_{D,max}^{m}Pr^{0.36}(Pr/Pr_s)^{1/4}$ with the **maximum** velocity.
+6. Then $\dot Q=hA_s(T_s-T_\infty)$, or put $R_{conv}=1/(hA_s)$ into the chain of Chapter 3.
+
+</Idea>
+
+## Drag and heat transfer: friction drag and pressure drag
+
+A fluid exerts on a body a force in the flow direction, the **drag**, with two sources: **friction (viscous) drag** from wall shear, and **pressure (form) drag** from the high pressure at the front and low pressure in the wake behind. $F_D=C_D\,A\,\dfrac{\rho V^2}2$ where $A$ is the *frontal* area for blunt bodies and the *wetted* area for a plate parallel to the flow (where $C_D=C_f$ and only friction acts). A plate normal to the flow has pure pressure drag. Smooth cylinders and spheres have both; friction dominates at $Re<10$, pressure at $Re>5000$.
+
+These matter to the heat-transfer engineer because **heat transfer and friction rise together** (Chilton–Colburn): the surface that has high $h$ is the one that costs pumping power.
+
+## Flat plate in parallel flow
+
+### Laminar, mixed and turbulent
+
+On a flat plate the boundary layer starts laminar at the leading edge, becomes unstable at the **critical Reynolds number** $Re_{x,cr}=\dfrac{Vx_{cr}}\nu\approx5\times10^5$ (anywhere from $10^5$ to $3\times10^6$ depending on roughness and free-stream disturbances) and ends turbulent. The local coefficients (isothermal plate, $Pr\ge0.6$):
+
+$$\text{laminar: }Nu_x=0.332\,Re_x^{1/2}Pr^{1/3}\ (Re_x<5\times10^5),\qquad\text{turbulent: }Nu_x=0.0296\,Re_x^{4/5}Pr^{1/3}\ (5\times10^5\le Re_x\le10^7).$$
+
+Laminar $h_x\propto x^{-1/2}$, turbulent $h_x\propto x^{-1/5}$, and at the transition $h_x$ jumps up (turbulent mixing). The **average** over a plate of length $L$ is found by integrating, with a laminar part up to $x_{cr}$ and a turbulent part after:
+
+| Case | $\overline{Nu}_L=\bar hL/k$ | Valid |
+|---|---|---|
+| laminar over the whole plate | $0.664\,Re_L^{1/2}Pr^{1/3}$ | $Re_L\le5\times10^5$, $Pr\ge0.6$ |
+| turbulent over the whole plate (tripped) | $0.037\,Re_L^{4/5}Pr^{1/3}$ | $5\times10^5\le Re_L\le10^7$ |
+| **combined** laminar + turbulent | $(0.037\,Re_L^{4/5}-871)\,Pr^{1/3}$ | $5\times10^5\le Re_L\le10^7$, $0.6\le Pr\le60$ |
+
+The "871" is the correction for the laminar run: $0.037Re_{cr}^{0.8}-0.664Re_{cr}^{0.5}=871$ when $Re_{cr}=5\times10^5$. Use the combined formula whenever $Re_L>5\times10^5$ and nothing says the flow is tripped. Friction: $C_f=1.33/\sqrt{Re_L}$ (laminar), $0.074/Re_L^{1/5}$ (turbulent), $0.074/Re_L^{1/5}-1742/Re_L$ (mixed).
+
+**Special cases (all in the formula collection):**
+- **Unheated starting length** $\xi$ (a plate whose first part is not heated): $Nu_x=Nu_{x,\xi=0}/[1-(\xi/x)^{3/4}]^{1/3}$ laminar, $/[1-(\xi/x)^{9/10}]^{1/9}$ turbulent. The thermal layer starts late, so $h$ starts higher.
+- **Uniform heat flux** instead of uniform temperature: $Nu_x=0.453Re_x^{1/2}Pr^{1/3}$ (laminar, 36 % higher than isothermal), $0.0308Re_x^{4/5}Pr^{1/3}$ (turbulent, 4 % higher). Then $T_s(x)=T_\infty+q''_s/h_x$ (the surface temperature rises along the plate).
+- **Liquid metals** ($Pr\ll1$): $Nu_x=0.565(Re_xPr)^{1/2}$; one formula for **all** $Pr$ (laminar): $Nu_x=\dfrac{0.3387Pr^{1/3}Re_x^{1/2}}{[1+(0.0468/Pr)^{2/3}]^{1/4}}$ for $Re_xPr\ge100$.
+
+<Trap title="Always compute $Re_L$ first, and say which regime you assume">
+
+A wrong regime is the standard way to lose marks. The exam gives you the three formulas (laminar, turbulent, combined); you choose. If $Re_L>5\times10^5$ and the problem does not say "tripped" or "turbulent over the entire surface", use the **combined** formula. Where the problem says the flow is turbulent over the entire surface (agitated by an engine block, 7-35), use the fully turbulent formula.
+
+</Trap>
+
+<ToolLink tool="plate">Plate calculator: regime, $Nu$, $h$, $\dot Q$ from $V$, $L$ and the film temperature</ToolLink>
+<LabLink lab="boundary-layer">Boundary-layer lab: watch $\delta(x)$, $h(x)$ and the transition</LabLink>
+
+## Cylinders and spheres
+
+For a cylinder (wire, pipe, tube) or sphere in crossflow, the characteristic length is the **diameter** $D$, and $Re_D=VD/\nu$ uses the free-stream velocity. The boundary layer separates around $\theta\approx80^\circ$ from the front stagnation point if laminar and $140^\circ$ if turbulent, leaving a wake. The local $h$ is highest at the front stagnation point, drops along the laminar layer, has a minimum near separation and rises again in the turbulent wake. You only need the **average** $Nu$.
+
+**Cylinder, one equation for all $Re_DPr>0.2$** (Churchill–Bernstein): the formula in the box above, with all properties at $T_f$. The older table form is $Nu=C\,Re_D^mPr^{1/3}$ with $(C,m)=(0.989,0.330)$ for $0.4<Re<4$; $(0.911,0.385)$ for $4$–$40$; $(0.683,0.466)$ for $40$–$4000$; $(0.193,0.618)$ for $4000$–$40\,000$; $(0.027,0.805)$ for $40\,000$–$400\,000$. The two agree within 15 %.
+
+**Sphere** (Whitaker): $3.5<Re_D<80\,000$, $0.7<Pr<380$; properties at $T_\infty$ except $\mu_s$ at the surface temperature. For a still fluid $Re=0$ gives $Nu=2$: pure conduction.
+
+## Tube banks (heat exchanger tube bundles)
+
+Banks of tubes across which a fluid flows are the core of many heat exchangers. Tubes are **in-line (aligned)** or **staggered**, with transverse pitch $S_T$, longitudinal pitch $S_L$ and diagonal $S_D=\sqrt{S_L^2+(S_T/2)^2}$. The flow accelerates as it squeezes between tubes, so the Reynolds number uses the **maximum velocity**:
+
+$$V_{max}=\frac{S_T}{S_T-D}V\ \text{(in-line)};\qquad\text{staggered: the same, unless }2(S_D-D)<S_T-D,\text{ then }V_{max}=\frac{S_T}{2(S_D-D)}V.$$
+
+The average Nusselt number for a bank with 16 or more rows, $1000\le Re_{D,max}\le2\times10^5$ and $0.7\le Pr\le500$ (Zukauskas):
+
+$$Nu_D=C\,Re_{D,max}^m\,Pr^{0.36}\left(\frac{Pr}{Pr_s}\right)^{1/4},\quad C,m=\begin{cases}0.27,\,0.63&\text{in-line}\\0.35(S_T/S_L)^{0.2},\,0.60&\text{staggered, }S_T/S_L<2\\0.40,\,0.60&\text{staggered, }S_T/S_L>2\end{cases}$$
+
+For fewer than 16 rows multiply by a **row-correction factor** $F<1$ ($F=0.7$–$0.99$ for 1 to 16 rows: the first rows are less turbulent). Properties at the mean fluid temperature (inlet/outlet average), $Pr_s$ at the surface temperature.
+
+The fluid warms (or cools) as it passes through, with an **exponential approach** to the tube-surface temperature:
+
+$$T_e=T_s-(T_s-T_i)\exp\!\left(-\frac{\bar hA_s}{\dot m c_p}\right),\quad\dot Q=\bar hA_s\Delta T_{lm},\quad\Delta T_{lm}=\frac{(T_s-T_e)-(T_s-T_i)}{\ln\frac{T_s-T_e}{T_s-T_i}},$$
+with $A_s=N\pi DL$ ($N$ tubes), $\dot m=\rho_iV(N_TS_TL)$ evaluated at the **inlet**, and the pressure drop $\Delta P=N_Lf\dfrac{\rho V_{max}^2}2\chi$ with $f$ (and the correction $\chi$) read from a chart.
+
+## From $h$ to the heat rate: the resistance network
+
+The correlations give $\bar h$ for a **uniform-temperature** surface; in a problem the surface temperature is rarely known directly. The standard way out: put $R_{conv}=1/(\bar hA)$ into the series circuit of Chapter 3. A wall of layers with fluid flowing over its outside face:
+
+$$\dot Q=\frac{T_{in}-T_\infty}{R_{wall,1}+R_{wall,2}+\dots+\dfrac1{\bar hA}}.$$
+
+If a **surface temperature** is specified instead (a safety limit such as "the outside must not exceed 45 °C"), apply the energy balance **at that surface**: heat arriving by conduction from inside $=$ heat leaving by convection. That is how the insulation thickness is found in the first worked example.
+
+## Worked example 1: insulating a machine surface (Midterm 2, Nov 2022, Q3)
+
+A 1.5 m × 1.5 m aluminium machine surface (5 mm thick, $k=237$) has its inner face at up to 90 °C. The outer face is cooled by 30 °C air flowing parallel at 10 m/s. To protect operators from burns it is covered with insulation ($k=0.06$). What thickness keeps the **local outer surface temperature** at 45 °C or lower? Air: $\rho=1.145$, $c_p=1007$, $k=0.02625$, $\mu=1.655\times10^{-5}$, $Pr=0.7268$.
+
+**Backward approach.** What do I need? The insulation thickness $L_{ins}$. It sits in a resistance chain between the 90 °C inside and the 45 °C outside surface; the heat flux leaving the outside surface by convection must equal the flux conducted through the chain. So I need $h$ outside: external flow, flat plate.
+
+**Step 1: regime.** $Re_L=\dfrac{\rho VL}\mu=\dfrac{1.145(10)(1.5)}{1.655\times10^{-5}}=1.038\times10^6>5\times10^5$: **mixed laminar + turbulent**.
+
+**Step 2: Nusselt number and $h$.** 
+$$\overline{Nu}=(0.037Re_L^{0.8}-871)Pr^{1/3}=(0.037(1.038\times10^6)^{0.8}-871)(0.7268)^{1/3}=1379,$$ 
+$$h=\frac{k}{L}\overline{Nu}=\frac{0.02625}{1.5}(1379)=\mathbf{24.13\ W/m^2K}.$$
+
+**Step 3: energy balance.** Heat conducted through the aluminium and the insulation from the inside (per unit area) equals the heat convected from the 45 °C outside surface:
+$$\frac{T_1-T_3}{\dfrac{L_{al}}{k_{al}}+\dfrac{L_{ins}}{k_{ins}}}=h\,(T_3-T_\infty)\;\Longrightarrow\;\frac{90-45}{\dfrac{0.005}{237}+\dfrac{L_{ins}}{0.06}}=24.13(45-30)=362\ \text{W/m}^2.$$
+Solving, $\dfrac{L_{ins}}{0.06}=\dfrac{45}{362}-\dfrac{0.005}{237}=0.1243-0.00002=0.1243$, so
+$$L_{ins}=\mathbf{7.46\ mm}.$$
+*(Note the aluminium resistance is negligible: 0.00002 against 0.124. The insulation does all the work.)*
+
+<Callout kind="note" title="The instructor's note on this problem">
+
+The Nov 2022 paper's marking comments include "Backward approach is just a method that I learned and believe works better for me... in the exam you can use either forward or backward"; either route reaches 7.46 mm. Also: the same answer is the **local** limit at the end of the plate where the flow is warmest; the average $h$ is a modelling approximation.
+
+</Callout>
+
+## More worked examples (assignment 7)
+
+All use properties at the film temperature from the textbook table; the numbers below were recomputed.
+
+**7-26 (a fan cools a transformer fin).** A 12 W transformer, case at 60 °C in 25 °C air; finned surface area $0.0118$ m² (fin efficiency 1), plate length $L=0.1$ m. Find the minimum air velocity to keep the transformer at 60 °C. $\bar h=\dfrac{12}{0.0118(35)}=29.06$ W/m²K, $Nu=hL/k=29.06(0.1)/0.02681=108.4$; assuming laminar, $Re_L=[Nu/(0.664Pr^{1/3})]^2=3.30\times10^4$, $V=Re_L\nu/L=\mathbf{5.70}$ m/s. ($Re_L<5\times10^5$ confirms laminar.)
+
+**7-35 (the underside of an engine block).** 80 km/h under a car, block 0.8 m long × 0.4 m, surface at 100 °C, air at 20 °C, $\varepsilon=0.95$; the flow is assumed **turbulent over the entire surface** because of agitation. Film temperature 60 °C. $Re_L=\dfrac{(80/3.6)(0.8)}{1.896\times10^{-5}}=9.376\times10^5$; $Nu=0.037Re_L^{0.8}Pr^{1/3}=1988$; $h=69.8$ W/m²K; $\dot Q_{conv}=69.78(0.32)(80)=1786$ W. Radiation to the road at 25 °C: $\dot Q_{rad}=0.95(0.32)(5.67\times10^{-8})(373^4-298^4)=198$ W. **Total 1984 W.**
+
+**7-65 (a steam pipe in wind).** 8 cm pipe, surface 90 °C, 50 km/h wind at 7 °C. $Re_D=6.23\times10^4$; Churchill–Bernstein $Nu=159.1$; $h=54.2$ W/m²K; $\dot Q'=54.17(0.2513)(83)=\mathbf{1130\ W/m}$.
+
+**7-69 (a geothermal pipe in wind): inverse problem.** A 400 m, 15 cm pipe carries 8.5 kg/s of water cooling from 80 °C to 70 °C; pipe surface at 75 °C, air at 15 °C. Heat lost $\dot Q=\dot mc_p\Delta T=8.5(4193)(10)=356\,400$ W; $A=\pi DL=188.5$ m²; $h=\dfrac{356\,400}{188.5(60)}=31.5$ W/m²K; $Nu=175.1$; solve the Churchill–Bernstein equation for $Re_D$ (iteration or the equation solver): $Re_D\approx7.2\times10^4$, $V=Re\,\nu/D=\mathbf{8.4\ m/s}$ ($\approx30$ km/h). *Many exam problems are of this "find the velocity" type: guess $Re$, evaluate the RHS, adjust.*
+
+**7-80 (a bottle of cold water).** A 10 cm × 30 cm bottle warms from 3 °C to 11 °C in 45 min in air at 27 °C. Water mass 2.356 kg: $Q=mc_p\Delta T=79\,160$ J, average rate 29.3 W, $h=15.55$, $Nu=62.4$ (cylinder correlation), $Re_D\approx1.29\times10^4$, $V=\mathbf{1.9\ m/s}$.
+
+**7-87 (a person's head).** A 30 cm sphere releasing 21 W in a 25 km/h wind at 10 °C. $Re_D=1.46\times10^5$; Whitaker $Nu=283.2$; $h=23.0$; surface temperature $=T_\infty+\dfrac{\dot Q}{hA}=10+\dfrac{21}{23.02(0.2827)}=\mathbf{13.2\ ^\circ C}$ (the assumed 15 °C for $\mu_s$ was fine).
+
+**7-88 (a light bulb with a fan).** A 100 W bulb, 10 cm sphere, 90 % of the power becomes heat, air 2 m/s at 30 °C, $\varepsilon=0.9$. $Re=1.24\times10^4$; $Nu=67.1$; $h=17.4$ W/m²K. Equilibrium: $90=hA(T_s-T_\infty)+\varepsilon A\sigma(T_s^4-T_{surr}^4)$, solved by iteration: $T_s=409.9$ K $=\mathbf{136.8\ ^\circ C}$. (Redoing $\mu_s$ at 137 °C moves the answer by only about 1 K, to 137.8 °C: the iteration is not sensitive. The printed solution says 139.6 °C, which we could not reproduce; see <Asg n="07">the assignment page</Asg>.)
+
+**7-106 (a refrigerated tube bank).** In-line bank: $S_T=S_L=0.015$ m, $D=8$ mm, $30\times15=450$ tubes, 0.4 m long, air at 0 °C and 4 m/s, tube surface at $-20$ °C. $V_{max}=\dfrac{0.015}{0.007}(4)=8.57$ m/s; $Re_{D,max}=\dfrac{1.317(8.571)(0.008)}{1.705\times10^{-5}}=5297$; $Nu=0.27Re^{0.63}Pr^{0.36}(Pr/Pr_s)^{0.25}=53.6$ (16 or more rows: no correction); $h=155.9$ W/m²K; $A_s=450\pi(0.008)(0.4)=4.524$ m²; $\dot m=1.292(4)(15)(0.015)(0.4)=0.4651$ kg/s (inlet density); $T_e=-20+20\,e^{-155.9(4.524)/(0.4651\cdot1006)}=-15.6$ °C; $\Delta T_{lm}=-10.3$ K; refrigeration capacity $|\dot Q|=h A_s\Delta T_{lm}=\mathbf{7.29\ kW}$; $\Delta P=30(0.30)\dfrac{1.317(8.571)^2}2=435$ Pa.
+
+<Examined>
+
+- **MT2 Q3 (every year)**: external flow plus a resistance network. Nov 2022: flat plate with insulation (7.46 mm). Nov 2023 Q3 (a radioactive cylinder with an oil pipe and a glass-fibre jacket) uses a **cylinder in crossflow** (Churchill–Bernstein) for the outside, and internal flow for the oil (Chapter 8): see <Ex id="mt2-f2023">the paper</Ex>.
+- The formula sheet for Midterm 2 provides the laminar/turbulent/combined plate formulas and Churchill–Bernstein; **you decide which one**.
+- Final exam: a heat-exchanger-type tube-bank or cylinder problem is likely; assignment 7 is "one in six".
+- <Asg n="07">Assignment 7 (solved)</Asg>.
+
+</Examined>
+
+### Check yourself
+
+1. Air at 20 m/s over a 0.3 m plate: $Re_L$ with $\nu=1.6\times10^{-5}$? Regime? *($3.75\times10^5$: laminar.)*
+2. Why does the average laminar $h$ equal twice the local $h$ at the end of the plate? *($h_x\propto x^{-1/2}$; the integral gives $2h_L$.)*
+3. A wire of diameter 1 mm in 2 m/s air ($\nu=1.6\times10^{-5}$): $Re_D$? Which equation? *($Re_D=125$: Churchill–Bernstein or Hilpert's third row.)*
+4. In a tube bank, why use $V_{max}$ in $Re$? *(The flow is fastest where it squeezes between tubes; $V_{max}$ controls the turbulence and the heat transfer.)*

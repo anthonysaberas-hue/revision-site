@@ -1,0 +1,209 @@
+<p className="eyebrow">Practice set 8 · Chapter 8 · internal forced convection · original problems</p>
+
+# Practice 8: tubes, ducts, exit temperatures, pressure drop
+
+<div className="lede">
+
+Four original problems in the pattern of the **Final exam**: *find $Re$ and the regime, pick the correlation, get $h$, then either the exit temperature (given the length) or the length (given the exit temperature), and finish with the pressure drop and pumping power.* See <Ch slug="internal-flow">the chapter</Ch>. Properties are from CoolProp at the bulk mean temperature (they may differ from textbook tables in the third digit); every number was recomputed independently.
+
+</div>
+
+<Problem id="P8-1" title="Electrically heated air duct (constant heat flux)" tags="turbulent, Dittus–Boelter vs Gnielinski, T_e, wall temperature, fan power">
+
+<Statement>
+
+Air at 20 °C and $\dot m=0.02$ kg/s enters a circular duct of diameter 5 cm and length 2 m whose wall delivers a uniform heat flux $q''_s=800$ W/m². Find the exit air temperature, the wall temperature at the exit, the pressure drop and the fan power.
+
+</Statement>
+
+<Think>
+
+Constant flux: the heat rate is known, so $T_e=T_i+\dfrac{q''_sA_s}{\dot mc_p}$ needs no correlation. The correlation gives $h$, hence $T_s(x)=T_m(x)+q''_s/h$. Properties at $T_b=(T_i+T_e)/2$.
+
+</Think>
+
+<Steps>
+<Step title="1. Heat rate and exit temperature">
+
+$A_s=\pi DL=\pi(0.05)(2)=0.3142$ m²; $\dot Q=800(0.3142)=251.3$ W; $T_e=20+\dfrac{251.3}{0.02(1006)}=32.5$ °C. $T_b=26.2$ °C.
+
+</Step>
+<Step title="2. Properties at 26.2 °C">
+
+$\rho=1.179$, $c_p=1006$, $k=0.02634$, $\mu=1.851\times10^{-5}$, $Pr=0.707$.
+
+</Step>
+<Step title="3. Regime">
+
+$Re=\dfrac{4\dot m}{\pi D\mu}=\dfrac{4(0.02)}{\pi(0.05)(1.851\times10^{-5})}=27\,500$: turbulent. The entry length $\approx10D=0.5$ m (25 % of the duct, so the fully-developed formula is a mild approximation).
+
+</Step>
+<Step title="4. Nusselt number and $h$">
+
+Dittus–Boelter (heating, $n=0.4$): $Nu=0.023(27\,500)^{0.8}(0.707)^{0.4}=71.3$, $h=\dfrac{71.3(0.02634)}{0.05}=37.6$ W/m²K. (Gnielinski: $f=0.0241$, $Nu=66.1$, $h=34.8$: 8 % lower; the two methods agree within their stated accuracy.)
+
+</Step>
+<Step title="5. Wall temperature at the exit">
+
+$T_s=T_e+\dfrac{q''_s}h=32.5+\dfrac{800}{37.6}=53.8$ °C (55.5 °C with Gnielinski).
+
+</Step>
+<Step title="6. Pressure drop and fan power">
+
+$V_m=\dfrac{\dot m}{\rho A_c}=\dfrac{0.02}{1.179(1.963\times10^{-3})}=8.64$ m/s; with $f=0.0241$: $\Delta P=f\dfrac LD\dfrac{\rho V_m^2}2=0.0241(40)\dfrac{1.179(74.6)}2=42$ Pa. Power $=\dot V\Delta P=\dfrac{0.02}{1.179}(42)=0.72$ W.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**$T_e=32.5$ °C; $T_{s,exit}\approx54$ °C (DB); $\Delta P\approx42$ Pa; fan power $\approx0.7$ W.**
+
+</Answer>
+
+</Problem>
+
+<Problem id="P8-2" title="How long must the tube be? (constant surface temperature)" tags="Gnielinski, exponential law solved for L, LMTD check">
+
+<Statement>
+
+Water enters a 2 cm diameter tube at 15 °C with $\dot m=0.15$ kg/s. The tube wall is held at 100 °C by condensing steam. What tube length is required to heat the water to 55 °C? Also give the heat rate and the pressure drop.
+
+</Statement>
+
+<Think>
+
+$T_e=T_s-(T_s-T_i)e^{-hA_s/\dot mc_p}$ solved for $A_s$: $A_s=-\dfrac{\dot mc_p}h\ln\dfrac{T_s-T_e}{T_s-T_i}$. $h$ depends only on $Re$ and $Pr$ at the bulk mean temperature (35 °C), not on $L$ (fully developed turbulent).
+
+</Think>
+
+<Steps>
+<Step title="1. Properties at 35 °C">
+
+$\rho=994$, $c_p=4179$, $k=0.6218$, $\mu=7.19\times10^{-4}$, $Pr=4.83$.
+
+</Step>
+<Step title="2. Reynolds number and $h$">
+
+$Re=\dfrac{4(0.15)}{\pi(0.02)(7.19\times10^{-4})}=13\,280$ (turbulent). Gnielinski: $f=0.0291$; $Nu=\dfrac{(0.0291/8)(12\,280)(4.83)}{1+12.7\sqrt{0.003639}\,(4.83^{2/3}-1)}=89.1$; $h=\dfrac{89.1(0.6218)}{0.02}=2770$ W/m²K. (Dittus–Boelter: $Nu=85.9$, 3.6 % lower.)
+
+</Step>
+<Step title="3. Required area and length">
+
+$A_s=-\dfrac{0.15(4179)}{2770}\ln\dfrac{100-55}{100-15}=-0.2263\ln(0.5294)=0.1439$ m²; $L=\dfrac{A_s}{\pi D}=\dfrac{0.1439}{\pi(0.02)}=2.29$ m $=114D$.
+
+</Step>
+<Step title="4. Heat rate and LMTD check">
+
+$\dot Q=\dot mc_p\Delta T=0.15(4179)(40)=25.07$ kW. $\Delta T_{lm}=\dfrac{(100-55)-(100-15)}{\ln(45/85)}=62.9$ K; $hA_s\Delta T_{lm}=2770(0.1439)(62.9)=25.07$ kW ✓.
+
+</Step>
+<Step title="5. Pressure drop">
+
+$V_m=\dfrac{0.15}{994(3.142\times10^{-4})}=0.480$ m/s; $\Delta P=0.0291\dfrac{2.29}{0.02}\dfrac{994(0.480)^2}2=382$ Pa.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**$L=2.29$ m; $\dot Q=25.1$ kW; $\Delta P\approx0.38$ kPa.**
+
+</Answer>
+
+</Problem>
+
+<Problem id="P8-3" title="Rectangular air duct: hydraulic diameter, $h$, pressure drop per metre" tags="non-circular duct, D_h, Gnielinski">
+
+<Statement>
+
+Air at 25 °C flows at 5 m/s through a 20 cm × 10 cm rectangular duct. Find $D_h$, $Re$, $h$ and the pressure drop per metre (smooth duct).
+
+</Statement>
+
+<Think>
+
+Use $D_h=4A_c/p$ everywhere a diameter appears. A turbulent flow correlation for circular tubes is accepted for the non-circular duct.
+
+</Think>
+
+<Steps>
+<Step title="1. Hydraulic diameter">
+
+$A_c=0.2(0.1)=0.02$ m², $p=2(0.3)=0.6$ m; $D_h=\dfrac{4(0.02)}{0.6}=0.1333$ m.
+
+</Step>
+<Step title="2. Reynolds number">
+
+$\nu=1.558\times10^{-5}$: $Re=\dfrac{5(0.1333)}{1.558\times10^{-5}}=42\,800$: turbulent.
+
+</Step>
+<Step title="3. $Nu$ and $h$">
+
+$f=(0.79\ln42\,800-1.64)^{-2}=0.0217$; Gnielinski with $Pr=0.707$: $Nu=93.0$; $h=\dfrac{93.0(0.02625)}{0.1333}=18.3$ W/m²K.
+
+</Step>
+<Step title="4. Pressure drop per metre">
+
+$\dfrac{\Delta P}L=\dfrac f{D_h}\dfrac{\rho V^2}2=\dfrac{0.0217}{0.1333}\dfrac{1.184(25)}2=2.41$ Pa/m.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**$D_h=13.3$ cm, $Re=42\,800$, $h\approx18$ W/m²K, $\Delta P/L=2.4$ Pa/m.**
+
+</Answer>
+
+</Problem>
+
+<Problem id="P8-4" title="Slow water in a small tube: the laminar entry trap" tags="laminar, entry lengths, f = 64/Re, Hagen–Poiseuille check">
+
+<Statement>
+
+Water at 20 °C flows through a 3 m long, 1 cm diameter tube at $\dot m=0.01$ kg/s. Find $Re$, the hydrodynamic and thermal entry lengths, the pressure drop and the pumping power. Which Nusselt number would you use if the wall is isothermal?
+
+</Statement>
+
+<Think>
+
+Compute $Re$ first: if laminar use $f=64/Re$; compare the entry lengths with 3 m to decide between 3.66 and the developing-flow formula.
+
+</Think>
+
+<Steps>
+<Step title="1. Properties and $Re$">
+
+$\rho=998$, $\mu=1.0\times10^{-3}$, $Pr=7.0$: $Re=\dfrac{4(0.01)}{\pi(0.01)(1.0\times10^{-3})}=1271$: **laminar**.
+
+</Step>
+<Step title="2. Entry lengths">
+
+$L_h=0.05Re\,D=0.64$ m; $L_t=0.05Re\,Pr\,D=4.5$ m $>3$ m: the flow is **thermally developing over the whole tube**.
+
+</Step>
+<Step title="3. Nusselt number choice">
+
+Use the Hausen formula, not 3.66: $Gz=\dfrac DLRe\,Pr\approx\dfrac{0.01}{3}(1271)(7.0)=29.7$, giving $Nu=3.66+\dfrac{0.065(29.7)}{1+0.04(29.7)^{2/3}}=5.05$ (about 38 % above 3.66).
+
+</Step>
+<Step title="4. Pressure drop">
+
+$V_m=\dfrac{4(0.01)}{998\pi(0.01)^2}=0.1275$ m/s; $f=64/Re=0.0503$; $\Delta P=f\dfrac LD\dfrac{\rho V^2}2=0.0503(300)\dfrac{998(0.1275)^2}2=122.6$ Pa. Check by Hagen–Poiseuille $\Delta P=\dfrac{32\mu VL}{D^2}=\dfrac{32(10^{-3})(0.1275)(3)}{10^{-4}}=122.4$ Pa ✓.
+
+</Step>
+<Step title="5. Pumping power">
+
+$\dot W=\dot V\Delta P=\dfrac{0.01}{998}(122.6)=1.2\times10^{-3}$ W.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**$Re=1271$ (laminar), $L_h=0.64$ m, $L_t=4.5$ m, $\Delta P=123$ Pa, power 1.2 mW; use Hausen ($Nu\approx5.05$).**
+
+</Answer>
+
+</Problem>

@@ -1,0 +1,63 @@
+<p className="eyebrow">Exam toolkit · recipes</p>
+
+# Exam recipes: the twelve question templates
+
+<div className="lede">
+
+Across the past midterms and the assignments the same templates recur with new numbers. Each recipe below is a checklist that gets a full-marks solution: *classify, write the governing equation, state the assumption and its check, compute, sanity-check*. Under each one: the typical numbers from the papers on this site, so that you can recognise it fast.
+
+</div>
+
+## R1 · "Select the wrong statement" (MT1 Q1)
+
+Test each option against the physics; if two look false, choose the *physically impossible* one. The recurring facts: contact resistance is **not** about convection; radiation needs **no medium**; convection does not depend on the **solid's $k$**; $\partial/\partial z(\partial T/\partial z)$ is **one-dimensional**; insulating the fin tip **reduces** the heat. (<Ex id="mt1-f2021">2021</Ex>, <Ex id="mt1-f2023">2023</Ex>)
+
+## R2 · Rectangular or pin fin (MT1 Q2)
+
+$p,A_c\to m\to mL_c$; $\dot Q=\sqrt{hpkA_c}\theta_b\tanh(mL_c)$; $\eta=\tanh(mL_c)/mL_c$; $\varepsilon=\dot Q/(hA_c\theta_b)$; error of the infinite fin $=1/\tanh(mL)-1$. Typical: $m=16.9$, $\dot Q=44.3$ W, $\eta=0.39$, $\varepsilon=59$, error 1.2 %.
+
+## R3 · Generation in a sphere, cylinder or wall (MT1 Q3)
+
+ODE → two integrations → BC 1 (symmetry, $C_1=0$) → BC 2 (convection) or energy balance for $T_s$ → $T(r)$ → $T_0$ → sketch of $q''$ or $\dot Q(r)$. Typical: sphere $T_s=125$ °C, $T_0=658$ °C; fuel rod $T_{max}=323$ °C. Composite wall with generation in the middle: **fluxes from the outer circuits, energy balance for $\dot e$, parabola for $k_B$** ($k_B=15.5$).
+
+## R4 · Layers, studs and pipes (assignment 3)
+
+Draw the circuit; per-metre resistances for cylinders; parallel paths for studs; $\dot Q=\Delta T/R_{tot}$; interface temperatures $T=T_{start}-\dot QR_{partial}$. Check the critical radius if insulating a small pipe.
+
+## R5 · Lumped annealing (MT2 Q1)
+
+$L_c=V/A_s$ of the actual body → $Bi\le0.1$ → $b=h/(\rho c_pL_c)$ → $t=\ln(\theta_i/\theta)/b$ → $Q=\rho Vc_p\Delta T$ (joules). Typical: 180 s and 1465 J (small cylinder), 6285 s and 6.55 kW (30 cm sphere).
+
+## R6 · One-term and product solutions (MT2 Q2)
+
+$Bi$ with $r_0$ or $L$ → Table 4-2 → $Fo>0.2$ → $\theta_0$ → position factor → $Q/Q_{max}$ with the **actual** volume. Short cylinder on a table: product of cylinder and half-wall (symmetry). Hemisphere on a table: half a sphere. Typical: 42.5 °C and 42.5 kJ (brass cylinder), 61.5 / 80.1 °C and 9.4 MJ (hemisphere).
+
+## R7 · External flow with a resistance network (MT2 Q3)
+
+$Re_L\to$ regime $\to\overline{Nu}\to h$ → energy balance at the surface or a series chain. Typical: $Re=1.04\times10^6$, combined formula, $h=24.1$, insulation 7.46 mm. Cylinder in crossflow: Churchill–Bernstein, $h=15.8$ W/m²K for a 40 cm cylinder at 5 m/s.
+
+## R8 · Internal flow (Final)
+
+$Re$ → regime → entry length vs $L$ → $Nu$ (3.66 / Hausen / Dittus–Boelter / Gnielinski) → $h$ → $T_e$ (constant $q''$: energy balance; constant $T_s$: exponential) → $\dot Q$ (two ways) → $\Delta P$ and power. Typical: oil laminar, Hausen $Nu=79$, $h=1319$, $T_e=32.5$ °C.
+
+## R9 · Natural convection (Final)
+
+$T_f$ (K), $\beta=1/T_f$, $L_c$, $Ra$ → geometry's correlation → $h$ → add radiation. Typical: horizontal pipe $h=5.7$ W/m²K, radiation 51 % of the loss; hot face up = $2\times$ hot face down.
+
+## R10 · Heat exchanger (Final)
+
+All four temperatures known → LMTD ($F$ for shell-and-tube) → $A$. Outlet unknown → $C_{min}$, $NTU$, $\varepsilon$ → $\dot Q$ → outlets; check with LMTD. Fouling lowers $UA$. A condenser: $C_r=0$.
+
+## R11 · Spectrum and surface properties (Final)
+
+$\lambda_{max}$, $E_b$, $f_\lambda$ table for bands, absorptivity vs emissivity (solar vs infrared), equilibrium temperature $\alpha_sG=\varepsilon\sigma T^4$.
+
+## R12 · Radiation network (Final)
+
+Sketch the surfaces; $F_{ij}$ by reciprocity, summation and symmetry; $R_i$, $R_{ij}$; nodes $J_i$; black surface $J=E_b$; reradiating surface $\dot Q=0$; solve node equations; check $\sum\dot Q=0$. Shields: add $N(1/\varepsilon_1+1/\varepsilon_2-1)$.
+
+<Callout kind="note" title="Universal habits that earn marks">
+
+State the assumptions (steady, 1-D, constant properties, neglect radiation, fully developed); state the **check** you did (e.g. $Bi$, $Fo>0.2$, $Re$ regime, $L_t$ vs $L$); show the formula before the numbers; give units; write a one-line physical comment.
+
+</Callout>

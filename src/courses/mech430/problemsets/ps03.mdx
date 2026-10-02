@@ -1,0 +1,335 @@
+<p className="eyebrow">Problem Set 3 · Winter 2025</p>
+
+# Compressibility & applications of isentropic flow
+
+<p className="lede">When does Bernoulli fail? How do you size a rocket nozzle? Why does stagnation pressure depend on who is watching? Which p₀ chokes a C-D nozzle, and which makes it fully supersonic? And how fast can a gas go at all? γ = 1.4; critical ratios p*/p₀ = 0.5283, T*/T₀ = 0.8333.</p>
+
+<Problem id="PS3 P1" title="When does Bernoulli break down?" tags="compressibility, Bernoulli, M < 0.3">
+
+<Statement>
+
+Air (MW 28.9, γ 1.4) accelerates isentropically from rest at 1 bar and 300 K to 50 m/s. Compute $p_0 - p$ (a) with incompressible Bernoulli, (b) with the isentropic relations. (c) Repeat for 250 m/s, (d) for 500 m/s. When does Bernoulli break down?
+
+</Statement>
+
+<Think>
+
+Compare $\frac12\rho_0V^2$ with the exact $p_0[1 - (T/T_0)^{3.5}]$. The ratio is $1 + M^2/4 + \dots$, so the answer is "when $M$ is no longer small" (rule of thumb M = 0.3). [Chapter 5 §compressibility](#/mech430/ch/isentropic)
+
+</Think>
+
+<Plan>
+
+$\rho_0 = p_0/RT_0$. For each V: Bernoulli; then $T = T_0 - V^2/2c_p$ → $M$ → $p$.
+
+</Plan>
+
+<Steps>
+<Step title="1. Bernoulli">
+
+$\rho_0 = 100\,000/(288.7 \times 300) = 1.155$ kg/m³ (official R from MW 28.8). $\frac12\rho_0V^2$ = 1444 Pa (50 m/s), 36.1 kPa (250 m/s), 144.3 kPa (500 m/s).
+
+</Step>
+<Step title="2. Isentropic, 50 m/s">
+
+$T = T_0 - \frac{\gamma-1}{2}\frac{V^2}{\gamma R} = 300 - 0.2 \times 2500/404.2 = 298.76$ K, $M = 0.144$; $p = 10^5/(300/298.76)^{3.5}$, so $p_0 - p = 1436$ Pa (official 1439 with rounded T).
+
+</Step>
+<Step title="3. Isentropic, 250 m/s">
+
+$T = 269.1$ K, $M = 0.758$, $p_0/p = (300/269.1)^{3.5} = 1.463$, so $p_0 - p = 31.7$ kPa.
+
+</Step>
+<Step title="4. Isentropic, 500 m/s">
+
+$T = 176.3$ K, $M = 1.87$, $p_0/p = 6.43$, so $p_0 - p = 84.4$ kPa. (Not in the official scan.)
+
+</Step>
+</Steps>
+
+<Answer>
+
+| V | M | Bernoulli | Isentropic | ratio |
+|---|---|---|---|---|
+| 50 m/s | 0.14 | 1444 Pa | 1436 Pa | 0.995 |
+| 250 m/s | 0.76 | 36.1 kPa | 31.7 kPa | 0.88 |
+| 500 m/s | 1.87 | 144 kPa (impossible: > p₀) | 84.4 kPa | 0.59 |
+
+Bernoulli is good to about 2% for $M < 0.3$; the error grows like $M^2/4$.
+
+</Answer>
+
+<CompressibilitySim />
+
+<Traps>
+
+- Anthony concluded that the methods differ significantly only "for M > 1". Too generous: the error is already 12% at M = 0.76.
+- At 500 m/s Bernoulli gives $p_0 - p > p_0$, a negative absolute pressure.
+- Why Bernoulli overestimates: it keeps $\rho = \rho_0$, but the gas expands as it accelerates, and $dp = -\rho V\,dV$ needs less pressure drop with a lower ρ.
+
+</Traps>
+
+<Source>official 2025 solution pp. 1–2 · Anthony's PS03-mine pp. 3–8</Source>
+
+</Problem>
+
+<Problem id="PS3 P2" title="N₂ nozzle: optimum exit Mach, exhaust velocity, throat and exit areas" tags="rocket nozzle, Fliegner, Isp">
+
+<Statement>
+
+N₂ (MW 28, γ 1.4) at $p_0 = 2.5$ MPa and $T_0 = 1400$ K expands in a nozzle to an ambient pressure of 40 kPa. (a) Exit Mach for optimum thrust ($p_e = p_\text{amb}$)? (b) Exhaust velocity? (c) For 5 kg/s, throat and exit areas?
+
+</Statement>
+
+<Think>
+
+Optimum thrust means matched exit, so $p_0/p_e$ fixes $M_e$. The throat is choked (Fliegner), and the exit is $A^*$ times $A/A^*$ at $M_e$. See [Chapter 6](#/mech430/ch/nozzles).
+
+</Think>
+
+<Plan>
+
+$p_0/p_e = 62.5$ → $M_e$ → $T_e$, $V_e$ → Fliegner → $A_t$ → $A_e$.
+
+</Plan>
+
+<Steps>
+<Step title="1. Exit Mach (a)">
+
+$p_0/p_e = 2500/40 = 62.5$ ⇒ $M_e = \sqrt{5(62.5^{0.2857} - 1)} = 3.36$. <T>A2 @ M = 3.36: p/p₀ = 0.0160</T>
+
+</Step>
+<Step title="2. Exhaust velocity (b)">
+
+$T_e = 1400/(1 + 0.2 \times 3.36^2) = 429.6$ K; $c_e = \sqrt{1.4 \times 296.9 \times 429.6} = 422.6$ m/s; $V_e = 3.36 \times 422.6 = 1420$ m/s. Same from the rocket equation: $\sqrt{7 \times 296.9 \times 1400(1 - 0.016^{0.2857})} = 1420$ m/s. Matched, so $I_{sp} = V_e = 1420$ m/s = 144.7 s.
+
+</Step>
+<Step title="3. Throat (c)">
+
+Fliegner for N₂: $\dot m = 0.0397\,A_tp_0/\sqrt{T_0}$ ⇒
+
+$$
+A_t = \frac{5\sqrt{1400}}{0.0397 \times 2.5\times10^6} = 0.00188\ \text{m}^2 = 18.8\ \text{cm}^2
+$$
+
+</Step>
+<Step title="4. Exit (c)">
+
+<T>A2 @ M = 3.36: A/A* = 5.956</T> ⇒ $A_e = 0.00188 \times 5.96 = 0.0112$ m² = 112 cm². (Check by continuity: $\rho_e = 40\,000/(296.9 \times 429.6) = 0.313$ kg/m³, $A_e = 5/(0.313 \times 1420) = 0.0112$ m².)
+
+</Step>
+</Steps>
+
+<Answer>
+
+- (a) $M_e = 3.36$
+- (b) $V_e = 1420$ m/s ($I_{sp} = 144.7$ s)
+- (c) $A_t = 18.8$ cm², $A_e = 112$ cm² ($A_e/A_t = 5.96$)
+
+</Answer>
+
+<IsentropicDuct3D M1={0.15} M2={3.36} wall="engine" plume="ideal" label1="N₂ · 2.5 MPa · 1400 K" label2="exit · M = 3.36 · p = 40 kPa" />
+
+<Traps>
+
+- Fliegner's constant depends on the gas: 0.0404 for air, 0.0397 for N₂ ($\sqrt{\gamma/R}(2/(\gamma+1))^3$).
+- At the matched condition all the thrust is momentum; $I_{sp} = V_e$.
+
+</Traps>
+
+<Source>official 2025 solution pp. 3–4 · Anthony's PS03-mine pp. 9–11</Source>
+
+</Problem>
+
+<Problem id="PS3 P3" title="Balloon, airliner and sample bottle" tags="reference frames, stagnation pressure, choking">
+
+<Statement>
+
+You float in a balloon at 10 km (T = −50 °C, p = 0.26 atm) and fill an evacuated sample bottle (p = 0) with ambient air. An airliner passes at M = 0.86. (a) From the balloon, what are the static and stagnation pressures of the air? (b) From the airliner? (c) At the choke point in the bottle's valve (isentropic)?
+
+</Statement>
+
+<Think>
+
+**Static properties are frame-independent; stagnation properties are not.** For (c), the still air is the reservoir and the vacuum chokes the valve.
+
+</Think>
+
+<Plan>
+
+(a) V = 0 ⇒ $p_0 = p$. (b) $p_0 = p(1 + 0.2M^2)^{3.5}$. (c) $p_0$ = ambient, $p^* = 0.5283\,p_0$.
+
+</Plan>
+
+<Steps>
+<Step title="1. Balloon frame (a)">
+
+The air is at rest relative to you: $p = p_0 = 0.26$ atm.
+
+</Step>
+<Step title="2. Airliner frame (b)">
+
+<T>A2 @ M = 0.86: p/p₀ = 0.6170</T> ⇒ $p_0 = 0.26/0.617 = 0.421$ atm. Static $p$ is still 0.26 atm.
+
+</Step>
+<Step title="3. Valve (c)">
+
+$p_b/p_0 = 0 < 0.528$: choked, M = 1 at the constriction. $p_0 = 0.26$ atm and $p^* = 0.5283 \times 0.26 = 0.137$ atm.
+
+</Step>
+</Steps>
+
+<Answer>
+
+- (a) $p = 0.26$ atm, $p_0 = 0.26$ atm
+- (b) $p = 0.26$ atm, $p_0 = 0.421$ atm
+- (c) $p_0 = 0.26$ atm, $p = p^* = 0.137$ atm (choked)
+
+</Answer>
+
+<BottleValveFigure />
+
+<Traps>
+
+- The handout figure says M 0.85 and the text says 0.86; the official solution uses 0.86.
+- Anthony rounded 0.26 atm to 26 kPa (it is 26.3 kPa), giving 13.73 kPa instead of 13.9 kPa at the valve.
+- The valve stays choked until the bottle pressure rises above 0.137 atm.
+
+</Traps>
+
+<Source>official 2025 solution p. 5 · Anthony's PS03-mine pp. 12–13</Source>
+
+</Problem>
+
+<Problem id="PS3 P4" title="C-D nozzle 1 → 5 m²: lowest p₀ to choke vs p₀ for supersonic flow" tags="two roots of A/A*, first critical, design">
+
+<Statement>
+
+A C-D nozzle (throat 1 m², exit 5 m²) is fed air at $p_0$ and $T_0 = 300$ K and exhausts to 1 atm. (a) Lowest $p_0$ that chokes the flow, with exit Mach and $\dot m$. (b) $p_0$ for isentropic supersonic flow through the whole diverging part, with exit Mach and $\dot m$. (c) Both are choked: are the mass flows the same?
+
+</Statement>
+
+<Think>
+
+Choked ⇒ $A^* = A_t$, so $A_e/A^* = 5$, which has **two roots**. Subsonic root = first critical (just choked); supersonic root = design. Here $p_b$ is fixed and $p_0$ is the unknown.
+
+</Think>
+
+<Plan>
+
+A/A* = 5 → $M_\text{sub}$, $M_\text{sup}$ → $p_0 = p_b(p_0/p)$ each → $\dot m$ from Fliegner at the throat.
+
+</Plan>
+
+<Steps>
+<Step title="1. The two roots">
+
+<T>A2 @ A/A* = 5.0: M = 0.117 (sub) or 3.17 (sup)</T> — exact 0.1167 and 3.175. <CalcLink calc="isentropic" q="in=A&v=5&b=sup">check</CalcLink>
+
+</Step>
+<Step title="2. (a) Just choked">
+
+$p_0 = 1 \times (1 + 0.2 \times 0.1167^2)^{3.5} = 1.0096$ atm = 102.3 kPa. Then
+
+$$
+\dot m = 0.0404\frac{A_tp_0}{\sqrt{T_0}} \approx \frac{1 \times 102\,300}{\sqrt{300}}\sqrt{\frac{1.4}{288.7}}(0.5787) = 238\ \text{kg/s}
+$$
+
+</Step>
+<Step title="3. (b) Fully supersonic">
+
+$p_0 = (1 + 0.2 \times 3.175^2)^{3.5} = 47.6$ atm = 4.83 MPa; $\dot m = 238 \times 47.6/1.0096 = 11\,230$ kg/s.
+
+</Step>
+<Step title="4. (c) Same mass flow?">
+
+No. Choking fixes **M = 1 at the throat**, not $\dot m$. With the same $A_t$ and $T_0$, $\dot m \propto p_0$: $11\,230/238 = 47.2 = 47.6/1.0096$.
+
+</Step>
+</Steps>
+
+<Answer>
+
+- (a) $p_0 = 1.0096$ atm, $M_e = 0.117$, $\dot m = 238$ kg/s
+- (b) $p_0 = 47.6$ atm (4.83 MPa), $M_e = 3.17$, $\dot m = 11\,230$ kg/s
+- (c) No: $\dot m \propto p_0$; choking only makes it independent of the back pressure.
+
+</Answer>
+
+<NozzleSim initialAR={5} initialPb={0.99} />
+
+<Traps>
+
+- Between 1.0096 and 47.6 atm the nozzle is choked but there is a shock inside or an over-expanded exit (Ch. 8).
+- Anthony interpolated M = 0.116 (A/A* = 5.03), giving 237 kg/s; the official answer used 0.1167.
+- The official solution (and statement) use R = 288.7; with 287 the mass flows go up 0.3%.
+
+</Traps>
+
+<Source>official 2025 solution pp. 6–7 · Anthony's PS03-mine pp. 14–16</Source>
+
+</Problem>
+
+<Problem id="PS3 P5" title="Maximum velocity of an isentropic expansion" tags="V_max, c₀, light gases">
+
+<Statement>
+
+For fixed stagnation conditions, start from $h_0 = h + V^2/2$ and derive the maximum velocity when the flow is expanded to $M \to \infty$, in terms of $c_0$ and γ. With a 3000 K pressure vessel and the best gas, what is the fastest isentropic flow? Which gas? Could a lab make faster flow?
+
+</Statement>
+
+<Think>
+
+$M \to \infty$ means $T \to 0$ (c → 0, not V → ∞): all enthalpy becomes kinetic energy. Then pick the gas with the largest $c_p$, i.e. the lowest MW.
+
+</Think>
+
+<Plan>
+
+Energy with $T = 0$ → $V_\text{max} = \sqrt{2c_pT_0}$ → in terms of $c_0$ → numbers.
+
+</Plan>
+
+<Steps>
+<Step title="1. Energy at T → 0">
+
+$c_pT_0 = c_pT + V^2/2 \to V_\text{max}^2/2$.
+
+</Step>
+<Step title="2. Rewrite">
+
+$c_p = \gamma R/(\gamma-1)$ and $c_0^2 = \gamma RT_0$:
+
+$$
+V_\text{max} = \sqrt{2c_pT_0} = \sqrt{\frac{2}{\gamma - 1}}\,c_0 \quad (= 2.236\,c_0 \text{ for } \gamma = 1.4)
+$$
+
+</Step>
+<Step title="3. Best gas at 3000 K">
+
+$V_\text{max}^2 = \frac{2\gamma}{\gamma-1}\frac{\Re}{MW}T_0$: MW matters more than γ. H₂: $\sqrt{7 \times 4157 \times 3000} = 9343$ m/s. He: $\sqrt{(2 \times 1.67/0.67)(2078.5)(3000)} = 5575$ m/s. Air: 2455 m/s.
+
+</Step>
+</Steps>
+
+<Answer>
+
+- $V_\text{max} = \sqrt{2/(\gamma-1)}\,c_0 = \sqrt{2c_pT_0}$
+- Hydrogen: about 9.3 km/s at 3000 K (helium only 5.6 km/s)
+- Yes, faster flow is possible with **unsteady** devices (shock and expansion tubes, light-gas guns) that heat the gas only for microseconds (notes' footnote: see Ch. 16).
+
+</Answer>
+
+<VmaxGasFigure />
+
+<Traps>
+
+- Anthony first wrote "choose helium" (lowest MW?) and then correctly computed with H₂ (MW 2 < 4).
+- At 3000 K hydrogen partly dissociates and $c_p$ is not constant, so 9.3 km/s is idealised.
+- The official solution stops after the derivation; the numbers above are Anthony's (H₂) plus a check.
+
+</Traps>
+
+<Source>official 2025 solution p. 8 (derivation only) · Anthony's PS03-mine pp. 16–17</Source>
+
+</Problem>

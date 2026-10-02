@@ -1,0 +1,116 @@
+<p className="eyebrow">Chapter 14 · Lecture 16 (slides missing, reconstructed) · MT2 W2011 Q2, W2012 Q3, W2019 Q3</p>
+
+# Feedback characteristics: sensitivity, disturbances
+
+<div className="lede">
+
+Why bother with feedback at all? Because it makes a system **insensitive to the things you don't control**: a heavier car, a worn motor winding, a headwind. This chapter puts numbers on that claim with one definition — the *sensitivity* — and shows the two places it is examined: "how much does the answer change if this parameter drifts?" and "how big an offset does a disturbance cause?".
+
+</div>
+
+<Callout kind="note" title="Where this chapter comes from">
+
+The lecture-16 slides are missing. It is rebuilt from the opening polls of lecture 17, Anthony's "Review final" pages (his open- vs closed-loop error example), and every exam question that uses sensitivity (MT2 W2011 Q2d, W2012 Q3c, W2019 Q3b, make-up Q2d, W2024 Q4).
+
+</Callout>
+
+<Idea title="The 30-second version">
+
+**Sensitivity of $T$ to a parameter $P$:** $S^T_P=\dfrac{\partial T/T}{\partial P/P}=\dfrac PT\dfrac{\partial T}{\partial P}$ ("a 1 % change in $P$ gives $S\,$% change in $T$"). For a loop $T=\dfrac{G}{1+GH}$:
+
+$$
+S^T_G=\frac1{1+GH},\qquad S^T_H=\frac{-GH}{1+GH},\qquad S^T_K=S^T_G\,S^G_K\ \text{(chain rule)}.
+$$
+
+*Where the loop gain $|GH|\gg1$: $S^T_G\approx0$ (the plant can change a lot without moving $T$), but $S^T_H\approx-1$ (the sensor must be accurate).* Open loop has $S=1$ always.
+
+</Idea>
+
+## Open loop versus closed loop (Anthony's "Review final" example)
+
+Suppose the plant-plus-controller gain is $K$ and the input is a unit step. FVT on the error:
+
+- **Open loop** ($y=Kr$): $e_\infty=1-K$. Zero error needs $K=1$ **exactly**.
+- **Closed loop** (unity feedback): $e_\infty=1-\dfrac K{1+K}=\dfrac1{1+K}$. Small error needs $K$ **large**.
+
+Now let the gain drift by 10 % ($K\to1.1K$):
+
+- open loop: the error changes by $0.1$, i.e. 10 % of the command;
+- closed loop: $\Delta e=\dfrac{1}{1+K}-\dfrac1{1+1.1K}=\dfrac{0.1K}{(1+K)(1+1.1K)}$: for $K=80$ it is $0.0011$ (**0.11 %**), for $K=100$ it is $0.0009$.
+
+*(Anthony's page prints "0.0011 % = 0.11 %" — the units slip is in the first figure; the conclusion — feedback makes the error about 100 times less sensitive — is correct.)*
+
+<Remember title="Real-life picture: cruise control">
+
+A car is 10 % heavier (plant gain change) or faces a hill (disturbance). With a fixed throttle (open loop) the speed changes by the full amount. With a high-gain speed loop the change is divided by $1+K$. The price: too much loop gain makes the car hunt (oscillate) — Chapters 16–21.
+
+</Remember>
+
+<ToolLink tool="bode">See the same idea in the frequency domain</ToolLink>
+
+<SensitivitySim />
+
+## How to compute a sensitivity (three ways, and which to use)
+
+**Way 1: chain rule.** For $T=\dfrac{G}{1+GH}$ and a parameter $K$ inside $G$: $S^T_K=S^T_G\,S^G_K$. If $G\propto K$ then $S^G_K=1$ and $S^T_K=\dfrac1{1+GH}$.
+
+**Way 2: direct differentiation.** $S=\dfrac PT\dfrac{\partial T}{\partial P}$. Always do the algebra with $T$ as an explicit fraction, differentiate with the quotient rule $(U/V)'=(U'V-V'U)/V^2$, then multiply by $P/T$.
+
+**Way 3: numerical.** `sensitivityNumeric` in the library; useful to check your algebra.
+
+### Worked examples from the exams
+
+**(a) $\text{MT2 W2019 Q3b}$.** Open loop $G=\dfrac{K(s^2+3s+30)}{s^n(s+5)}$, unity feedback, sensitivity of the closed loop to $K$.
+1. $S^T_G=\dfrac1{1+G}=\dfrac{s^n(s+5)}{s^n(s+5)+K(s^2+3s+30)}$.
+2. $S^G_K=\dfrac KG\dfrac{\partial G}{\partial K}=1$.
+3. $$\boxed{S^T_K=\frac{s^n(s+5)}{s^n(s+5)+K(s^2+3s+30)}}$$ (with $n=1$ from part (a): for $s\to0$, $S\to0$; for large $s$, $S\to\tfrac1{1+K}$).
+
+**(b) $\text{MT2 W2011 Q2d}$: tank level, sensitivity to the capacitance $C$.** $T=\dfrac{RK}{RCs+1+RK}$.
+1. $\dfrac{\partial T}{\partial C}=-\dfrac{RK\cdot Rs}{(RCs+1+RK)^2}$.
+2. $S^T_C=\dfrac CT\dfrac{\partial T}{\partial C}=\boxed{-\dfrac{RCs}{RCs+1+RK}}$.
+3. Reading: $S=0$ at DC (the steady value $RK/(1+RK)$ does not depend on $C$), $\to-1$ at high frequency, and a larger loop gain $RK$ reduces it in between.
+
+**(c) $\text{MT2 W2012 Q3c}$: motor with tachometer, sensitivity to the armature resistance.** $T=\dfrac{K_mK_p}{R_aJs+K_mK_b+K_mK_pK_t}$ (here $K_mK_b=1$, $K_mK_pK_t=10K_p$).
+1. $\dfrac{\partial T}{\partial R_a}=-\dfrac{K_mK_p\,Js}{D^2}$ with $D=R_aJs+1+10K_p$.
+2. $S^T_{R_a}=\dfrac{R_a}{T}\dfrac{\partial T}{\partial R_a}=\boxed{-\dfrac{R_as}{R_as+1+10K_p}}$ (with $J=1$).
+3. **Low frequency** ($s\ll1$): $S\approx-\dfrac{R_as}{1+10K_p}$: choose **$K_p$ large** and the response is insensitive to $R_a$.
+4. **High frequency** ($s\gg1$): $S\to-1$ **independent of $K_p$**: "the controller gain has no effect" at fast time scales.
+
+**(d) $\text{MT2 W2019 make-up Q2d}$: robot gripper, sensitivity to the load damping $b$.** $T=\dfrac{600}{Js^2+bs+600}$, so $S^T_b=-\dfrac{bs}{Js^2+bs+600}=-\dfrac{10s}{s^2+10s+6000}$. It is zero at DC (a final angle does not depend on friction), $|S|=1$ at the resonance $\omega_n=77.5$ rad/s (the maximum), and falls again at high frequency. *Uncertainty in the damping matters only near the resonance.*
+
+**(e) $\text{MT2 W2024 Q4}$:** $T_c=\dfrac{2K_m}{\tau s^2+s+4K_mK_2/K_1}$ and $S^{T_c}_{K_m}=\dfrac{s(\tau s+1)}{\tau s^2+s+4K_mK_2/K_1}$; zero at DC, $\to1$ at high frequency.
+
+<Trap title="Common sensitivity mistakes">
+
+- Forgetting the factor $P/T$ (differentiating $T$ but not scaling).
+- Using $S^T_G=1/(1+G)$ when the parameter is *inside* $H$: then $S^T_H=-GH/(1+GH)$.
+- Reading "sensitivity at DC" from an expression with $s$: set $s\to0$ **only after** simplifying.
+
+</Trap>
+
+## Disturbance rejection
+
+Add a disturbance $T_d$ entering between the controller and the plant. With the loop $G_1$ (controller), $G_2$ (plant), feedback $H$: $\dfrac{Y}{T_d}=\dfrac{G_2}{1+G_1G_2H}$ — the **same** denominator, so a large controller gain $G_1$ shrinks the effect of the disturbance.
+
+**Tank with proportional vs integral control** ($\text{MT2 W2011 Q2}$): error $E=-\dfrac{(RCs+1)Q_3}{RCs+1+RG(s)}$.
+- $G=K$, unit step disturbance $Q_3=1/s$: $e_{ss}=\lim sE=\boxed{-\dfrac1{1+RK}}$: an **offset** (never zero).
+- $G=K/s$ (integral controller): $e_{ss}=\lim_{s\to0}\dfrac{-s(RCs+1)}{RCs^2+s+RK}=\boxed0$.
+
+*Rule:* a **constant** disturbance is rejected completely only if the controller has an integrator **in front of the point where the disturbance enters**. (HW9 Q1: a lag compensator with a quasi-integrator leaves an offset $Q/G_c(0)=Q/726$; a true PID would give 0.) In $\text{MT2 W2012 Q3}$ the disturbance enters after the controller, so $K_p$ large lowers the offset to $-A/600$ rather than zero.
+
+For a motor loop: a step load torque $A/s$ with $\dfrac{\theta}{T_d}=-\dfrac1{s(Js+b)+K}$: $\theta_{ss}=-A/K$, where $K$ is the loop DC gain (600 for the gripper).
+
+<Examined>
+
+- Sensitivity: $\text{MT2 W2011 Q2d}$, $\text{W2012 Q3c}$, $\text{W2019 Q3b}$, $\text{make-up Q2d}$, $\text{W2024 Q4b}$ — a standing 8–13 marks.
+- Disturbance offset: $\text{W2011 Q2b–c}$, $\text{W2012 Q3}$, $\text{make-up Q2b}$, $\text{W2024 Q4c}$ (FVT with $\Delta V_1=A/s$: $T_\infty=-AK_1/(4K_mK_2)$), <Hw n="9">HW9</Hw> Q1d.
+- Also the HW7-solution "Problem V": $S^T_{K_1}=\dfrac1{1+K_1H_1+K_1K_2H_2}\approx0.01$ for $K_1=K_2=100$.
+
+</Examined>
+
+### Check yourself
+
+1. $L=100$ at low frequency. What is $S$ there? *($\approx0.01$: 1 % drift in the plant gives 0.01 % drift in $T$.)*
+2. Why is $S^T_H\approx-1$ for large loop gain? *($T\approx1/H$: the sensor sets the answer.)*
+3. For which controller is a step disturbance rejected completely? *(One with an integrator ahead of the disturbance entry.)*
+4. $T=\dfrac{10}{s+10}$, sensitivity to the gain 10 (both places)? *($\dfrac{s}{s+10}$: zero at DC, 1 at high frequency.)*

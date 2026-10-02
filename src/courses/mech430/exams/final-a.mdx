@@ -1,0 +1,519 @@
+<p className="eyebrow">Past exams · Final</p>
+
+# Final exam A
+
+<p className="lede">Five 20-point problems that sweep the second half of the course: a detonation (shock + Rayleigh), rocket nozzles with lip waves, a diamond airfoil, a Method-of-Characteristics table and a piston in a tube. Only student solutions exist for this paper, so every answer below was recomputed with the site's gas-dynamics library, and each student slip is flagged.</p>
+
+<Callout kind="note" title="About the sources">
+
+The only source is a set of handwritten tablet solutions with the question photos pasted in. The style matches Anthony's own, so these may be his practice solutions. There is **no official solution**. The digest author re-checked every number with exact relations (γ = 1.4). Where the student slipped, the corrected value is given below and the slip is named in the Traps. Problems 1, 2 and 5 were solved correctly; problem 3 has a chart-reading error that changes the lift by 12 %; problem 4 is missing its pressures.
+
+</Callout>
+
+| Problem | Topic | Recipe |
+|---|---|---|
+| [P1](#final-a-p1) | Detonation = normal shock + Rayleigh to thermal choking | [Rayleigh duct](#/mech430/page/recipes#3-rayleigh-duct-heat-addition) |
+| [P2](#final-a-p2) | Merlin vs Raptor: design A/A*, Isp, over/under-expanded lip | [Rocket nozzle](#/mech430/page/recipes#4-rocket-nozzle) |
+| [P3](#final-a-p3) | Diamond airfoil at α = 5°: lift and drag | [Shock-expansion airfoil](#/mech430/page/recipes#5-shock-expansion-airfoil) |
+| [P4](#final-a-p4) | MOC in a channel with a curved wall | [MOC table](#/mech430/page/recipes#6-moc-table) |
+| [P5](#final-a-p5) | Piston pushed (shock) and pulled (expansion fan) | [Piston / shock tube](#/mech430/page/recipes#8-piston--shock-tube) |
+
+<Problem id="Final A P1" title="Detonation wave: normal shock + Rayleigh heat addition to thermal choking (20 pts)" tags="Rayleigh, normal shock, CJ detonation">
+
+<Statement>
+
+A *detonation wave* is a supersonic combustion wave that propagates through a combustible mixture, wherein a normal shock initiates burning of the mixture immediately after the shock. In a steady reference frame attached to the wave, the detonation can be treated as a normal shock followed by one-dimensional heat addition from combustion of the mixture (Rayleigh flow). This heating **thermally chokes the flow at the exit plane** of the wave.
+
+For a hydrogen–air mixture at **300 K** static temperature approaching the normal shock (mixture properties: γ = 1.4, MW = 25 kg/kmol, c_p = 3 kJ/kg·K, all taken as constant), the heat released by combustion is **Δq = 4000 kJ/kg**. Find the **Mach number of the flow approaching the normal shock** in this reference frame.
+
+*Figure: a channel; uniform arrows from the left meet a shock front, then a shaded "heat addition" band, then a dotted "sonic plane".*
+
+</Statement>
+
+<Think>
+
+This is a **Chapman–Jouguet (CJ) detonation**: shock, then [Rayleigh flow](#/mech430/ch/rayleigh) heated until $M = 1$. The phrase "thermally chokes at the exit" means the exit is the Rayleigh \* state, so all of Δq is exactly $\Delta q^*$.
+
+The key insight saves you half the work. A normal shock conserves $\dot m/A$, $p + \rho V^2$ and $T_0$ in a constant-area duct, which are exactly the three things that define a Rayleigh line. So **the states before and after the shock sit on the same Rayleigh line, with the same $T_0^*$**. You can therefore apply the Rayleigh $T_0/T_0^*$ relation directly at the *upstream* Mach number, without marching through the shock.
+
+</Think>
+
+<Plan>
+
+$M_1$ (unknown) → $T_{01} = T_1(1 + 0.2M_1^2)$ → $T_0^* = T_{01}/(T_0/T_0^*)(M_1)$ → energy: $\Delta q = c_p(T_0^* - T_{01})$ → one equation in $M_1$.
+
+<DetonationSim />
+
+</Plan>
+
+<Steps>
+<Step title="1. Energy: the heat brings T₀ exactly up to T₀*">
+
+Rayleigh energy equation with the exit at $M = 1$:
+
+$$
+\Delta q = c_p\,(T_0^* - T_{01}) \quad\Rightarrow\quad \frac{\Delta q}{c_p T_1} = \frac{T_{01}}{T_1}\left(\frac{T_0^*}{T_{01}} - 1\right)
+$$
+
+</Step>
+<Step title="2. Substitute the isentropic and Rayleigh ratios at M₁">
+
+$T_{01}/T_1 = 1 + \tfrac{\gamma-1}{2}M_1^2$ and, from the Rayleigh sheet, $\dfrac{T_0}{T_0^*} = \dfrac{2(\gamma+1)M^2\left(1+\frac{\gamma-1}{2}M^2\right)}{(1+\gamma M^2)^2}$. The $(1 + 0.2M^2)$ factors cancel:
+
+$$
+\frac{\Delta q}{c_p T_1} = \frac{(1+\gamma M_1^2)^2}{2(\gamma+1)M_1^2} - \left(1 + \tfrac{\gamma-1}{2}M_1^2\right) = \frac{(M_1^2-1)^2}{2(\gamma+1)M_1^2}
+$$
+
+This is the same "maximum heat" result as [PS8 P1](#/mech430/ps/ps08#ps8-p1). For γ = 1.4 the denominator is $4.8M_1^2$.
+
+</Step>
+<Step title="3. Solve the quadratic in M₁²">
+
+$\Delta q/(c_pT_1) = 4000/(3 \times 300) = 4.444$, so $(M^2 - 1)^2 = 4.444 \times 4.8\,M^2 = 21.33\,M^2$:
+
+$$
+M^4 - 23.33\,M^2 + 1 = 0 \quad\Rightarrow\quad M_1^2 = 23.29 \;(\text{supersonic root}) \quad\Rightarrow\quad M_1 = 4.826
+$$
+
+(The other root, $M^2 = 0.043$, is the subsonic deflagration branch, which a shock-led wave cannot be.)
+
+</Step>
+<Step title="4. Check by marching through the shock (the long way)">
+
+$T_{01} = 300(1 + 0.2 \times 23.29) = 1697.4$ K. $(T_0/T_0^*)(4.826) = 0.5601$, so $T_0^* = 3030.8$ K and $c_p(T_0^* - T_{01}) = 3(3030.8 - 1697.4) = 4000$ kJ/kg ✓.
+
+Through the shock: <T>A3 @ Mₓ = 4.83: M_y = 0.418, T_y/Tₓ = 5.47</T>, so $T_y = 1640$ K, and $(T_0/T_0^*)(0.418) = 0.5601$, **identical** to the value at $M_1$. Same Rayleigh line, same $T_0^*$. — <CalcLink calc="normal" q="in=Mx&v=4.826">check the shock</CalcLink> · <CalcLink calc="rayleigh" q="in=M&v=0.4178&b=sub">check T₀/T₀*</CalcLink>
+
+</Step>
+<Step title="5. Flag: c_p is inconsistent with γ and MW">
+
+With γ = 1.4 and MW = 25, $R = 8314/25 = 332.6$ J/kg·K and $c_p = \gamma R/(\gamma - 1) = 1.164$ kJ/kg·K, not 3. The statement says "all taken as constant", so **use the given c_p = 3** (the student circled the line and did exactly that). For reference only: with $c_p = 1.164$ the same equation gives $M_1 \approx 7.55$.
+
+</Step>
+</Steps>
+
+<Answer>
+
+- $M_1 = 4.83$ (exact 4.826), with $T_{01} = 1697$ K and $T_0^* = 3031$ K.
+- The student's answer (M = 4.826, T₀₁ = 1697.5 K, checked by Δq = 4000 ✓) is **correct**.
+- Bonus states (from the sim): von Neumann spike $p = 27.0\,p_1$, $T = 1640$ K; CJ plane $p = 14.0\,p_1$, $T = 8.42\,T_1 = 2526$ K, $M = 1$.
+
+</Answer>
+
+<Traps>
+
+- Don't march through the shock and then do Rayleigh from $M_y$ unless you want the long way. Both routes give the same $T_0^*$.
+- "Thermally chokes at the exit" means $\Delta q = \Delta q^* = c_p(T_0^* - T_{01})$.
+- It is a quadratic in $M^2$: $(M^2-1)^2 = kM^2$. Take the supersonic root.
+- The given $c_p$ clashes with γ and MW. Use what is given and say so in one line.
+
+</Traps>
+
+<Source>student tablet solution, Final-A p1–2 · digest exam-Final-A.md (verified exactly) · lib/detonation.ts</Source>
+
+</Problem>
+
+<Problem id="Final A P2" title="Merlin vs Raptor: design area ratio, Isp, and the lip waves when off-design (20 pts)" tags="rocket nozzle, oblique shock, Prandtl–Meyer">
+
+<Statement>
+
+SpaceX is transitioning from the Merlin engine (Falcon 9) to the Raptor (Starship). Merlin has a chamber pressure of **10 MPa**; Raptor an upgraded **30 MPa**. Both have a chamber temperature of **3500 K**. The exhaust of both engines has **MW = 17 kg/kmol** and **γ = 1.4**.
+
+(a) Both nozzles are optimized for maximum thrust by matching the atmospheric pressure at 3 km altitude, **70 kPa**. Find the **exit-to-throat area ratio** of each engine. This ratio stays fixed for the rest of the problem.
+
+(b) Find the ratio of specific impulse ($I_{sp} = F/\dot m$) of Raptor to Merlin at optimal conditions. What percent increase can SpaceX expect? **Explain in words** the increased efficiency.
+
+(c) At sea level, the Raptor exit-plane pressure is still 70 kPa but the ambient is **100 kPa**: the flow is over-expanded. Find the **shock angle and the flow deflection angle** at the nozzle exit.
+
+(d) In the vacuum of space (ambient pressure zero) the exit is under-expanded. Find the **outward deflection angle** as the flow leaves the nozzle and expands to vacuum.
+
+</Statement>
+
+<Think>
+
+Four short blocks from four chapters:
+
+- (a) isentropic design, $p_e = p_{amb}$ ([nozzles](#/mech430/ch/nozzles));
+- (b) at design $F/\dot m = V_e$ exactly (the pressure term is zero);
+- (c) the lip of an over-expanded nozzle carries an **oblique shock** whose pressure ratio is $p_{amb}/p_e$ ([oblique](#/mech430/ch/oblique));
+- (d) the lip of an under-expanded nozzle carries a **Prandtl–Meyer fan**; to vacuum the fan turns until $M \to \infty$ ([P-M](#/mech430/ch/prandtl-meyer)).
+
+The chamber pressure only enters through $p_0/p_e$, so tripling $p_0$ means a bigger expansion and a faster jet.
+
+</Think>
+
+<Plan>
+
+$p_0/p_e$ → $M_e$ → $A_e/A^*$ → $V_e$. Then (c) $p_y/p_x = 100/70$ → $M_{xn}$ → $\sigma = \sin^{-1}(M_{xn}/M_e)$ → δ from θ-β-M. (d) $\nu_{max} - \nu(M_e)$.
+
+<RaptorNozzleSim />
+
+</Plan>
+
+<Steps>
+<Step title="1. (a) Exit Mach from the pressure ratio">
+
+$$
+M_e = \sqrt{\frac{2}{\gamma-1}\left[\left(\frac{p_0}{p_e}\right)^{\frac{\gamma-1}{\gamma}} - 1\right]}
+$$
+
+Merlin: $p_0/p_e = 10\,000/70 = 142.9$ → $M_e = 3.954$. Raptor: $p_0/p_e = 428.6$ → $M_e = 4.822$.
+
+</Step>
+<Step title="2. (a) Area ratios">
+
+<T>A2 @ M = 3.95: A/A* ≈ 10.3</T>, exactly $A_e/A^* = 10.290$ (Merlin). <T>A2 @ M = 4.82: A/A* ≈ 21.6</T>, exactly $21.642$ (Raptor). — <CalcLink calc="isentropic" q="in=M&v=4.8215">check</CalcLink>
+
+</Step>
+<Step title="3. (b) Isp = V_e at design">
+
+$R = 8314/17 = 489.1$ J/kg·K. With $p_e = p_{amb}$:
+
+$$
+\frac{F}{\dot m} = V_e = \sqrt{\frac{2\gamma}{\gamma-1}RT_0\left[1 - \left(\frac{p_e}{p_0}\right)^{\frac{\gamma-1}{\gamma}}\right]}
+$$
+
+Merlin: $\sqrt{7 \times 489.1 \times 3500 \times (1 - 0.007^{0.2857})} = 3013$ m/s. Raptor: $3140$ m/s. Ratio $3140.2/3013.1 = 1.0422$: **+4.2 %**.
+
+Why: the higher chamber pressure allows a larger expansion ratio to the same exit pressure, so the gas expands further, reaches a higher Mach number and converts more of its stagnation enthalpy $c_pT_0$ into kinetic energy (the temperature left in the jet, $T_e$, is lower). The ceiling is $V_{max} = \sqrt{2c_pT_0} = 3437$ m/s.
+
+</Step>
+<Step title="4. (c) Over-expanded: the lip shock">
+
+The shock must raise 70 kPa to 100 kPa: $p_y/p_x = 1.4286$. Use the oblique shock as a normal shock on the normal component: <T>A3 @ py/px ≈ 1.43: Mₓ = 1.17, M_y = 0.862</T> (exact $M_{xn} = 1.1693$). — <CalcLink calc="normal" q="in=pr&v=1.4286">check</CalcLink>
+
+$$
+\sigma = \sin^{-1}\frac{M_{xn}}{M_e} = \sin^{-1}\frac{1.1693}{4.8215} = 14.04^\circ
+$$
+
+then the θ-β-M relation $\tan\delta = \dfrac{2\cot\sigma(M^2\sin^2\sigma - 1)}{M^2(\gamma + \cos 2\sigma) + 2} = 0.0534$ gives $\delta = 3.06^\circ$, turning the jet **inward**. — <CalcLink calc="oblique" q="M=4.8215&in=pr&v=1.4286">check</CalcLink>
+
+</Step>
+<Step title="5. (d) Under-expanded to vacuum: the lip fan">
+
+Expanding to $p = 0$ means $M \to \infty$, i.e. $\nu \to \nu_{max}$:
+
+$$
+\nu_{max} = \frac{\pi}{2}\left(\sqrt{\frac{\gamma+1}{\gamma-1}} - 1\right) = 130.45^\circ, \qquad \nu(4.82) = 75.20^\circ
+$$
+
+Outward turn $= 130.45 - 75.20 = 55.25^\circ$. — <CalcLink calc="pm" q="in=M&v=4.8215">check ν</CalcLink>
+
+</Step>
+</Steps>
+
+<Answer>
+
+- (a) $A_e/A_t$: **Merlin 10.29**, **Raptor 21.64** ($M_e$ = 3.954 and 4.822).
+- (b) $I_{sp}$ = 3013 vs 3140 m/s: **ratio 1.042, +4.2 %**. A larger expansion converts more enthalpy into jet velocity.
+- (c) **σ = 14.0°, δ = 3.06°** (inward).
+- (d) **Outward deflection ≈ 55.3°**.
+- The student's answers are all correct; small differences are table rounding (their ν = 75.186° gives 55.26°).
+
+</Answer>
+
+<ExpansionFanSim initialM={4.82} initialTheta={55} />
+
+<Traps>
+
+- Here $I_{sp} = F/\dot m$ in m/s, with no $g_0$. At design the pressure-thrust term is zero.
+- (c) is an **oblique** shock: $p_y/p_x$ fixes only the normal Mach number. Don't stop at the normal-shock table.
+- (d) Vacuum means $\nu_{max}$, not "M very large, read the last table row".
+- The 3-D lab shows the same plume regimes: [rocket engine explorer](#/mech430/lab/engine).
+
+</Traps>
+
+<Source>student tablet solution, Final-A p4–6 · digest exam-Final-A.md (all correct) · lib/rocket.ts, obliqueShock.ts, prandtlMeyer.ts</Source>
+
+</Problem>
+
+<Problem id="Final A P3" title="Diamond airfoil at 5° angle of attack: pressures, lift and drag (20 pts)" tags="oblique shock, Prandtl–Meyer, shock-expansion, forces">
+
+<Statement>
+
+A symmetric diamond airfoil with **half-angle 10°** is at an **angle of attack of 5°** in a **Mach 2** flow at **100 kPa** static pressure. The airfoil has a chord (leading to trailing edge) of **1 m** and a width (out of the page) of **1 m**. Find the **lift and drag** on the airfoil in newtons by solving for the pressure on all four surfaces. "Recall *lift* is the force parallel to the original flow direction and *drag* is the force perpendicular to the flow direction."
+
+*Figure: M∞ = 2.0, p∞ = 100 kPa; a horizontal diamond, 20° included angles at the leading and trailing edges, chord tilted 5° nose-up.*
+
+</Statement>
+
+<Think>
+
+[Shock-expansion theory](#/mech430/ch/airfoils): an oblique shock on each front face, a Prandtl–Meyer fan at each shoulder, then integrate pressure × area. The only real decisions are the turning angles:
+
+- upper (leeward) front face turns the flow by $\varepsilon - \alpha = 10 - 5 = 5^\circ$;
+- lower (windward) front face by $\varepsilon + \alpha = 15^\circ$;
+- each shoulder expands by the full included turn $2\varepsilon = 20^\circ$.
+
+**Flag on the statement:** it swaps the usual definitions. Lift is normally **perpendicular** to the free stream and drag **parallel**. The student used the standard definitions, and so do we; both are reported at the end.
+
+</Think>
+
+<Plan>
+
+Faces 1 (upper front), 2 (upper rear), 3 (lower front), 4 (lower rear). Faces 1, 3: θ-β-M → $M_{xn}$ → A3 → $p$, $M$. Faces 2, 4: $\nu + 20^\circ$ → A6 → $M$ → $p = p_{front}\,\dfrac{(p/p_0)(M_{rear})}{(p/p_0)(M_{front})}$. Each face is $(c/2)/\cos 10^\circ = 0.5077$ m long.
+
+<AirfoilFigure variant="diamond" />
+
+</Plan>
+
+<Steps>
+<Step title="1. Face 1 (upper front, δ = 5°)">
+
+θ-β-M at M = 2, δ = 5°: **σ = 34.30°** (weak). $M_{xn} = 2\sin 34.30^\circ = 1.127$ → <T>A3 @ 1.13: py/px = 1.32, M_y = 0.89</T>. Exactly $p_1 = 131.5$ kPa and $M_1 = M_{yn}/\sin(\sigma - \delta) = 1.821$. — <CalcLink calc="oblique" q="M=2&in=delta&v=5&b=weak">check</CalcLink>
+
+</Step>
+<Step title="2. Face 2 (upper rear, 20° expansion)">
+
+<T>A6 @ M = 1.82: ν = 21.3°</T> → $\nu_2 = 41.3^\circ$ → <T>A6: M = 2.60</T>. $p_0$ is constant through the fan:
+
+$$
+p_2 = p_1\,\frac{(p/p_0)(2.60)}{(p/p_0)(1.82)} = 131.5 \times \frac{0.0503}{0.1685} = 39.3\ \text{kPa}
+$$
+
+</Step>
+<Step title="3. Face 3 (lower front, δ = 15°)">
+
+σ = 45.34°, $M_{xn} = 1.422$ → $p_3 = 219.5$ kPa, $M_3 = 1.446$. — <CalcLink calc="oblique" q="M=2&in=delta&v=15&b=weak">check</CalcLink>
+
+</Step>
+<Step title="4. Face 4 (lower rear, 20° expansion)">
+
+ν(1.446) = 10.31° → 30.31° → $M_4 = 2.146$, $p_4 = 219.5 \times (p/p_0)(2.146)/(p/p_0)(1.446) = 75.9$ kPa.
+
+</Step>
+<Step title="5. Forces (per 1 m span)">
+
+Resolve each face's normal force. With $A = 0.5077$ m² per face:
+
+$$
+F_\parallel = A\left[\sin 5^\circ(p_1 - p_4) + \sin 15^\circ(p_3 - p_2)\right] = 0.5077\,[4.85 + 46.62] = 26.1\ \text{kN}
+$$
+
+$$
+F_\perp = A\left[\cos 5^\circ(p_4 - p_1) + \cos 15^\circ(p_3 - p_2)\right] = 0.5077\,[-55.5 + 174.0] = 60.2\ \text{kN}
+$$
+
+</Step>
+<Step title="6. Where the student went wrong">
+
+The student read **σ = 35°** off the chart for δ = 5°. The exact value is 34.30°. That small error raises $p_1$ from 131.5 to 137.6 kPa, and lift is very sensitive to $p_1$ (it appears with the large $\cos 5^\circ$ weight). With their pressures (137.6, 42.22, 215.3, 74.78 kPa) the formulas give D = 25.5 kN and L = 53.1 kN; they wrote 52.8 kN (a small arithmetic slip too). Their geometry and force formulas are correct.
+
+</Step>
+</Steps>
+
+<Answer>
+
+| Face | σ or turn | M | p (kPa) | student |
+|---|---|---|---|---|
+| 1 upper front | σ = 34.3° | 1.82 | 131.5 | 137.6 (σ = 35°) |
+| 2 upper rear | +20° | 2.60 | 39.3 | 42.22 |
+| 3 lower front | σ = 45.3° | 1.45 | 219.5 | 215.3 |
+| 4 lower rear | +20° | 2.15 | 75.9 | 74.78 |
+
+- **Drag (∥ to flow) ≈ 26.1 kN, lift (⟂ to flow) ≈ 60.2 kN.** The student's L ≈ 53 kN is about 12 % low because σ was read as 35° instead of 34.3°.
+- With the exam's literal (swapped) wording, "lift" = 26.1 kN and "drag" = 60.2 kN. State which convention you use.
+
+</Answer>
+
+<DiamondAirfoilSim initialM={2} initialEps={10} initialAlpha={5} pInf={100} chord={1} />
+
+<Traps>
+
+- Read the θ-β-M chart carefully, or iterate the θ-β-M equation. Here 0.7° of σ changed the lift by 7 kN.
+- $p_0$ is constant through a fan but **not** across a shock: compute $p_2$ from $p_1$, never from $p_\infty$'s $p_0$.
+- Windward face = $\varepsilon + \alpha$, leeward = $\varepsilon - \alpha$, shoulder turn = $2\varepsilon$.
+- Face area = $(c/2)/\cos\varepsilon \times$ span.
+
+</Traps>
+
+<Source>student tablet solution, Final-A p8–11 · digest exam-Final-A.md (σ and lift corrected) · lib/obliqueShock.ts, prandtlMeyer.ts</Source>
+
+</Problem>
+
+<Problem id="Final A P4" title="Method of Characteristics in a channel with a curved upper wall (20 pts)" tags="MOC, Prandtl–Meyer, table">
+
+<Statement>
+
+A supersonic flow at **Mach 2** enters the channel with the flow parallel to the walls, at a static pressure of **100 kPa**. Using the two-dimensional steady Method of Characteristics, solve for the **flow Mach number and pressure at the interaction points 3–12**. The wall angles where the characteristics meet the walls are given in the sketch. Set up your calculation in a table.
+
+*Sketch: straight lower wall (θ = 0°). The upper wall rises from point 2 (θ_wall = 15°) through 5 (5°) and 8 (0°, the crest) to 11 (−5°). Points 1 and 2 carry M = 2, p = 100 kPa. Right-running lines: 2→3→4, 5→6→7, 8→9→10, 11→12. Left-running lines: 1→3→5, 4→6→8, 7→9→11, 10→12.*
+
+</Statement>
+
+<Think>
+
+Steady 2-D [MOC](#/mech430/ch/moc). Each characteristic carries one invariant:
+
+- right-running ($C_I$): $\nu + \theta$ = const;
+- left-running ($C_{II}$): $\nu - \theta$ = const.
+
+Interior point: $\nu = (C_I + C_{II})/2$, $\theta = (C_I - C_{II})/2$. Wall point: θ = θ_wall, and ν comes from the single invariant that reaches the wall. Higgins' convention: the initial point 2 carries the given M = 2 **with the local wall angle θ = 15°**. The flow is isentropic, so $p$ follows from M alone. The question asks for **pressure too**, which the student forgot.
+
+</Think>
+
+<Plan>
+
+ν(2) = 26.38°. Fill the table point by point in the order 3, 4, 5, …, 12, carrying the invariants along the lines.
+
+<MOCChannelFigure variant="A" />
+
+</Plan>
+
+<Steps>
+<Step title="1. Initial points">
+
+1: θ = 0, $C_I = C_{II} = 26.38$. 2: θ = 15°, $C_I = 41.38$, $C_{II} = 11.38$.
+
+</Step>
+<Step title="2. Points 3–5">
+
+3 (interior): $C_I$ from 2 = 41.38, $C_{II}$ from 1 = 26.38 → ν = 33.88, θ = 7.5 → <T>A6 @ ν = 33.9°: M = 2.28</T>.
+4 (lower wall, θ = 0): $C_I$ from 3 → ν = 41.38 → M = 2.60.
+5 (upper wall, θ = 5): $C_{II}$ from 3 = 26.38 → ν = 26.38 + 5 = 31.38 → M = 2.19.
+
+</Step>
+<Step title="3. Points 6–12">
+
+6: $C_I$ = 36.38 (from 5), $C_{II}$ = 41.38 (from 4) → ν = 38.88, θ = −2.5. 7 (lower): ν = 36.38. 8 (upper, θ = 0): ν = $C_{II}$ = 41.38. 9: $C_I$ = 41.38 (8), $C_{II}$ = 36.38 (7) → ν = 38.88, θ = 2.5. 10 (lower): ν = 41.38. 11 (upper, θ = −5): ν = 36.38 − 5 = 31.38. 12: $C_I$ = 26.38 (11), $C_{II}$ = 41.38 (10) → ν = 33.88, θ = −7.5.
+
+</Step>
+<Step title="4. Pressures (the missing column)">
+
+$p_0$ is the same everywhere: $p = 100\ \text{kPa} \times \dfrac{(p/p_0)(M)}{(p/p_0)(2)}$, with $(p/p_0)(2) = 0.1278$. Example point 3: $(p/p_0)(2.284) = 0.0820$ → $p = 64.2$ kPa. — <CalcLink calc="isentropic" q="in=M&v=2.284">check</CalcLink>
+
+</Step>
+</Steps>
+
+<Answer>
+
+| Point | $C_I = \nu+\theta$ | $C_{II} = \nu-\theta$ | ν (°) | θ (°) | M | p (kPa) |
+|---|---|---|---|---|---|---|
+| 1 | 26.38 | 26.38 | 26.38 | 0 | 2.000 | 100 |
+| 2 | 41.38 | 11.38 | 26.38 | 15 | 2.000 | 100 |
+| 3 | 41.38 | 26.38 | 33.88 | 7.5 | 2.284 | 64.2 |
+| 4 | 41.38 | 41.38 | 41.38 | 0 | 2.598 | 39.3 |
+| 5 | 36.38 | 26.38 | 31.38 | 5 | 2.186 | 74.7 |
+| 6 | 36.38 | 41.38 | 38.88 | −2.5 | 2.490 | 46.5 |
+| 7 | 36.38 | 36.38 | 36.38 | 0 | 2.385 | 54.8 |
+| 8 | 41.38 | 41.38 | 41.38 | 0 | 2.598 | 39.3 |
+| 9 | 41.38 | 36.38 | 38.88 | 2.5 | 2.490 | 46.5 |
+| 10 | 41.38 | 41.38 | 41.38 | 0 | 2.598 | 39.3 |
+| 11 | 26.38 | 36.38 | 31.38 | −5 | 2.186 | 74.7 |
+| 12 | 26.38 | 41.38 | 33.88 | −7.5 | 2.284 | 64.2 |
+
+The student's invariants, ν, θ and M are all correct (point 8's $C_I$ was written ambiguously as "41.78"; it is 41.38). The pressures were **not computed**; they are added here.
+
+</Answer>
+
+<MOCChannelSim preset="finalA" />
+
+<Traps>
+
+- Always add a **p column**: both practice-final students lost marks for skipping it.
+- Wall points: θ = θ_wall, and only one invariant arrives. Upper wall: ν = $C_{II}$ + θ. Lower wall: ν = $C_I$ − θ.
+- Initial points carry the given M **and** the local wall angle.
+
+</Traps>
+
+<Source>student tablet table, Final-A p12 · digest exam-Final-A.md (pressures computed by the digest author) · lib/prandtlMeyer.ts</Source>
+
+</Problem>
+
+<Problem id="Final A P5" title="Impulsive piston: pushed (moving shock) and pulled (centred expansion) (20 pts)" tags="moving shock, unsteady expansion, Riemann invariants">
+
+<Statement>
+
+**Part 1:** A piston is accelerated impulsively to **200 m/s** into air initially at rest at **1 atm and 300 K** (it reaches 200 m/s instantly and then moves at constant velocity).
+
+(a) Find the **Mach number of the shock wave** generated and the **post-shock temperature and pressure**.
+
+(b) **Sketch the pressure field** (pressure vs distance along the tube) at two different times. Label the positions of the shock and the piston.
+
+**Part 2:** Now the opposite problem: a piston is impulsively **retracted** from an infinitely long tube of air at rest at 1 atm and 300 K, instantly reaching 200 m/s.
+
+(d) Find the **pressure and temperature of the gas at the piston face**. Use the fact that along $u + c$ and $u - c$ characteristics, $C^+ = u + \frac{2}{\gamma-1}c$ and $C^- = u - \frac{2}{\gamma-1}c$ are constant, respectively.
+
+(e) **Sketch the pressure field** at two different times. Label the piston and the leading and trailing acoustic waves.
+
+(There is no part (c) on the paper.)
+
+</Statement>
+
+<Think>
+
+[Unsteady waves](#/mech430/ch/unsteady). Pushing makes a **shock** (compression waves catch up with each other); pulling makes a **centred expansion fan** (the waves spread). Shock: the equation-sheet piston relation $V_p'/c_x = \frac{2}{\gamma+1}\frac{M_s^2 - 1}{M_s}$, then the normal-shock table at $M_s$ in the shock frame. Fan: isentropic, so use the Riemann invariant carried **from the undisturbed gas** into the fan.
+
+</Think>
+
+<Plan>
+
+$c_1 = \sqrt{1.4 \times 287.7 \times 300} = 347.6$ m/s. (a) $V_p/c_1 = 0.575$ → $M_s$ → A3. (d) $C^-$ from the gas at rest to the piston face → $c_p$ → $T$, $p$.
+
+<PistonXTSim up0={200} T1={300} />
+
+</Plan>
+
+<Steps>
+<Step title="1. (a) Shock Mach number">
+
+$$
+\frac{200}{347.6} = \frac{2}{2.4}\left(M_s - \frac{1}{M_s}\right) \Rightarrow M_s^2 - 0.690M_s - 1 = 0 \Rightarrow M_s = 1.403
+$$
+
+</Step>
+<Step title="2. (a) Post-shock state">
+
+<T>A3 @ Mₓ = 1.40: T_y/Tₓ = 1.255, p_y/pₓ = 2.120</T>. Exactly at 1.403: $T_y = 1.257 \times 300 = 377$ K, $p_y = 2.13$ atm. The shock moves at $W_s = M_s c_1 = 488$ m/s, faster than the piston. — <CalcLink calc="moving" q="">moving-shock calculator</CalcLink>
+
+</Step>
+<Step title="3. (b) Sketch">
+
+A step: $p = 2.13$ atm from the piston face ($x = V_pt$) to the shock ($x = W_st$), 1 atm ahead. At the later time the plateau is longer, because the shock outruns the piston.
+
+<PistonPushPullFigure mode="push" />
+
+</Step>
+<Step title="4. (d) Expansion: carry C⁻ from the undisturbed gas">
+
+The expansion waves run **into** the gas at rest (to the right), so the fan is a family of right-running waves, and the invariant crossing them unchanged is $C^- = u - \frac{2}{\gamma-1}c$, carried from the still gas to the piston face. With $u = -200$ m/s at the face:
+
+$$
+-200 - 5c_p = 0 - 5(347.6) \Rightarrow c_p = 347.6 - 40 = 307.6\ \text{m/s}
+$$
+
+</Step>
+<Step title="5. (d) T and p at the piston face">
+
+$T = T_1(c_p/c_1)^2 = 300 \times 0.7831 = 234.9$ K. Isentropic: $p = p_1(T/T_1)^{3.5} = 0.425$ atm.
+
+</Step>
+<Step title="6. (e) Sketch">
+
+$p = 0.425$ atm from the piston ($x = -200t$) to the fan's **trailing** edge, which moves at $u + c = -200 + 307.6 = +107.6$ m/s (still to the right!), then a smooth rise to 1 atm at the **leading** edge moving at $c_1 = 347.6$ m/s. The fan widens linearly with time.
+
+<PistonPushPullFigure mode="pull" />
+
+</Step>
+</Steps>
+
+<Answer>
+
+- (a) $M_s \approx 1.40$, $T_y \approx 377$ K, $p_y \approx 2.13$ atm (student, nearest table row: 1.40, 376.5 K, 2.12 atm ✓).
+- (d) At the piston face $c = 307.6$ m/s, **$T = 234.9$ K, $p = 0.425$ atm** (student ✓).
+- (b) and (e): sketches above (not answered in the student solution).
+
+</Answer>
+
+<Traps>
+
+- The shock is faster than the piston: $V_p/c_1 = \frac{2}{\gamma+1}(M_s - 1/M_s)$, not $V_p = M_s c_1$.
+- The expansion is isentropic, so $p/p_1 = (T/T_1)^{\gamma/(\gamma-1)} = (c/c_1)^{2\gamma/(\gamma-1)}$. No shock table.
+- Pick the invariant from the undisturbed gas: the family that is **not** the fan.
+- The fan's tail can still move toward the gas (here +108 m/s) even though the piston moves away.
+
+</Traps>
+
+<Source>student tablet solution, Final-A p13–14 · digest exam-Final-A.md (sketches supplied by the digest author) · lib/unsteady.ts</Source>
+
+</Problem>

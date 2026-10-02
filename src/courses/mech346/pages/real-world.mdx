@@ -1,0 +1,39 @@
+<p className="eyebrow">Exam toolkit · intuition</p>
+
+# Heat transfer you meet every day
+
+<div className="lede">
+
+Each idea of the course has an everyday face. The numbers below are the ones computed on this site, so you can check them. Use them as memory hooks: if you can say the example, you can rebuild the formula.
+
+</div>
+
+| You notice | The physics | Numbers on this site |
+|---|---|---|
+| Metal feels colder than wood at the same temperature | **Effusivity** $\sqrt{k\rho c_p}$ sets the contact temperature | Finger (34 °C) on 20 °C aluminum: 20.6 °C; on wood: 31.2 °C (<Asg n="04">practice 4</Asg>) |
+| A thin thermocouple reacts in seconds, a big sphere in hours | Lumped time constant $\tau=\rho c_pL_c/h$ | Bead: 2.3 s; a 30 cm metal sphere: 6285 s (<Ex id="mt2-f2023">MT2 2023</Ex>) |
+| A down jacket is warm though the fabric is thin | Trapped air gaps in series: huge resistance | 5 fabric layers with air gaps: 113 W vs 683 W without gaps (<Asg n="03">3-67</Asg>) |
+| You feel cold next to a cold window | Radiation to a cold wall, $\propto T^4$ | 26.7 W in a 27 °C room vs 121 W in a 7 °C room (<Asg n="01">1-79</Asg>) |
+| Wind makes 20 °C feel like 6 °C | $h$ doubles from 15 to 30 W/m²K | Wind chill 6 °C (<Asg n="01">1-127</Asg>) |
+| A radiator has fins on the air side | The smaller $h$ is the bottleneck | Fin array: 17.4 kW vs 2.45 kW bare (<Asg n="03">3-142</Asg>) |
+| A hot pipe is hot to touch only on its surface | Insulation is a series resistance | 40 mm of fiberglass: 406 → 48 W/m, surface 27.5 °C (<Ex id="final-mock-a">Final A</Ex>) |
+| Frost on a car windshield on a clear night | Radiation to the cold sky | Roof at 12 °C loses 122 W/m² to a 255 K sky (<Ch slug="radiation-basics">Ch 12</Ch>) |
+| A greenhouse is warm | Glass passes sunlight but not infrared | 87.5 % of sunlight in, $1.5\times10^{-4}$ of 350 K radiation out (<Ex id="final-mock-b">Final B</Ex>) |
+| Water pipes must be buried below the frost depth | Semi-infinite solid, $2\sqrt{\alpha t}$ | Frost depth 0.81 m after 60 days (<Asg n="04">practice 4</Asg>) |
+| Concrete protects steel in a fire | Low diffusivity, penetration $\sqrt{\alpha t}$ | 10 cm point at 51 °C after 30 min of 700 °C fire (<Ex id="final-mock-b">Final B</Ex>) |
+| An incandescent bulb is mostly a heater | Planck: the peak is in the infrared | 3000 K filament: 8 % visible (<Asg n="12">practice 12</Asg>) |
+| A hot circuit board cools better facing up | Orientation matters: hot face up is 2× better than hot face down | 13.5 W vs 6.8 W for a 20 cm board (<Asg n="09">practice 9</Asg>) |
+| A thermos keeps tea hot | Vacuum (no conduction/convection) and silvered walls ($\varepsilon\approx0.05$) | Concentric spheres: 38.5 W with $\varepsilon_1=0.1$ (<Asg n="12">practice 12</Asg>) |
+| Cooling a laptop CPU with a small fan | $h\propto V^{0.8}$ but pumping power $\propto V^{2.8}$ | Doubling $V$: $h\times1.74$, power $\times7$ to 8 (<Ch slug="internal-flow">Ch 8</Ch>) |
+| A car radiator needs large frontal area | Air side has $C_{min}$ and small $h$ | Cross-flow exchanger: $\varepsilon=0.665$ (<Ex id="final-mock-b">Final B</Ex>) |
+| A power-plant condenser is compact | Condensing coefficient is huge, $C_r=0$ | $\varepsilon=1-e^{-NTU}$: 2.3 m² condense 0.15 kg/s (<Asg n="11">practice 11</Asg>) |
+
+<Callout kind="note" title="One habit that explains most of these">
+
+Always ask **where the largest resistance is**. In the window it is the air gap; in the radiator it is the air film; in the pan it is the boiling water, not the aluminum; in the greenhouse it is the glass's opacity to infrared. The biggest resistance takes the biggest temperature drop and controls the heat flow.
+
+</Callout>
+
+<Examined>
+Not examined directly, but the physical-meaning lines in every solution on this site use these arguments, and they make the formulas easier to remember.
+</Examined>

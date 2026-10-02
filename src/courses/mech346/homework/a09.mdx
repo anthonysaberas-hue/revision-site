@@ -1,0 +1,224 @@
+<p className="eyebrow">Practice set 9 · Chapter 9 · natural convection · original problems</p>
+
+# Practice 9: free convection from plates, cylinders, spheres, gaps, and the mixed regime
+
+<div className="lede">
+
+Six original problems for <Ch slug="natural-convection">the natural-convection chapter</Ch>. Recipe: $T_f$ in kelvin, $\beta=1/T_f$, $Ra=g\beta\Delta TL_c^3/(\nu\alpha)$, the correlation of the geometry, $h=Nu\,k/L_c$, then add radiation. Properties from CoolProp at the film temperature (third digits may differ from tables). All numbers were recomputed independently.
+
+</div>
+
+<Problem id="P9-1" title="A window in winter: the full-range vs laminar formula" tags="vertical plate, Ra near 10^9, radiation gain">
+
+<Statement>
+
+The inner surface of a 1.2 m tall, 0.8 m wide window pane is at 12 °C; the room air is at 22 °C and the room walls at 22 °C. $\varepsilon=0.9$. Find the natural-convection heat gain by the glass and the radiative gain.
+
+</Statement>
+
+<Think>
+
+$T_f=17$ °C: vertical plate, height $L=1.2$ m. $Ra$ is near $10^9$, the transition between laminar and turbulent: the all-$Ra$ Churchill–Chu form is the safe choice.
+
+</Think>
+
+<Steps>
+<Step title="1. Properties and $Ra$">
+
+$T_f=290.15$ K: $k=0.02565$, $\nu=1.484\times10^{-5}$, $\alpha=2.095\times10^{-5}$, $Pr=0.708$, $\beta=3.446\times10^{-3}$. $Ra=\dfrac{9.81(3.446\times10^{-3})(10)(1.2)^3}{(1.484\times10^{-5})(2.095\times10^{-5})}=1.88\times10^9$.
+
+</Step>
+<Step title="2. Nusselt number">
+
+All-$Ra$ formula: $Nu=\{0.825+0.387Ra^{1/6}/[1+(0.492/Pr)^{9/16}]^{8/27}\}^2=149.3$. (The laminar-only formula would give 107.7: 28 % lower, and it is not valid above $Ra=10^9$.)
+
+</Step>
+<Step title="3. $h$ and convective heat">
+
+$h=\dfrac{149.3(0.02565)}{1.2}=3.19$ W/m²K; $A=1.2(0.8)=0.96$ m². $\dot Q_{conv}=3.19(0.96)(10)=30.6$ W gained by the cold glass.
+
+</Step>
+<Step title="4. Radiation">
+
+$\dot Q_{rad}=0.9(0.96)(5.67\times10^{-8})(295.15^4-285.15^4)=47.9$ W.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**$h=3.2$ W/m²K; convection 31 W, radiation 48 W gained by the window (total 79 W):** radiation is the larger share.
+
+</Answer>
+
+</Problem>
+
+<Problem id="P9-2" title="A horizontal pipe: convection and radiation" tags="horizontal cylinder, h_rad, total loss">
+
+<Statement>
+
+A horizontal 5 cm diameter, 1 m long pipe at 50 °C is in 20 °C still air; $\varepsilon=0.9$, walls at 20 °C. Find the total heat loss and the radiation share.
+
+</Statement>
+
+<Steps>
+<Step title="1. Properties, $Ra_D$">
+
+$T_f=35$ °C: $k=0.02699$, $\nu=1.652\times10^{-5}$, $\alpha=2.340\times10^{-5}$, $Pr=0.706$, $\beta=1/308.15$. $Ra_D=\dfrac{9.81\beta(30)(0.05)^3}{\nu\alpha}=3.09\times10^5$.
+
+</Step>
+<Step title="2. Churchill–Chu (cylinder)">
+
+$Nu=\{0.6+0.387Ra^{1/6}/[1+(0.559/Pr)^{9/16}]^{8/27}\}^2=10.50$; $h=\dfrac{10.50(0.02699)}{0.05}=5.67$ W/m²K.
+
+</Step>
+<Step title="3. Convection and radiation">
+
+$A=\pi(0.05)(1)=0.1571$ m². $\dot Q_{conv}=5.67(0.1571)(30)=26.7$ W. $\dot Q_{rad}=0.9(0.1571)(5.67\times10^{-8})(323.15^4-293.15^4)=28.2$ W ($h_{rad}=5.99$ W/m²K).
+
+</Step>
+<Step title="4. Total">
+
+$\dot Q=26.7+28.2=54.9$ W; radiation 51 %.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**$h_{conv}=5.7$ W/m²K; total 55 W, of which 51 % is radiation.** A shiny aluminum wrap ($\varepsilon\approx0.1$) would cut the radiation to 3 W and the total to about 30 W.
+
+</Answer>
+
+</Problem>
+
+<Problem id="P9-3" title="Electronics board: hot face up or down" tags="horizontal plate, L_c = A/p, orientation">
+
+<Statement>
+
+A 20 cm × 20 cm board dissipating heat from a surface at 70 °C in 25 °C air. Compare the natural-convection heat loss from the top face when it is the hot face up, and when the hot face is **down**.
+
+</Statement>
+
+<Steps>
+<Step title="1. Length scale and $Ra$">
+
+$L_c=\dfrac{A}{p}=\dfrac{0.04}{0.8}=0.05$ m. $T_f=47.5$ °C: $Ra=3.86\times10^5$ (between $10^4$ and $10^7$).
+
+</Step>
+<Step title="2. Hot face up">
+
+$Nu=0.54Ra^{1/4}=13.46$; $h=\dfrac{13.46(0.02790)}{0.05}=7.51$ W/m²K ($k=0.02790$ at 47.5 °C); $\dot Q=7.51(0.04)(45)=13.5$ W.
+
+</Step>
+<Step title="3. Hot face down">
+
+$Nu=0.27Ra^{1/4}=6.73$; $h=3.76$ W/m²K; $\dot Q=6.8$ W.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**13.5 W (up) vs 6.8 W (down): exactly a factor 2.** Mount the hot component on the top face, or add a heat sink to the up side.
+
+</Answer>
+
+</Problem>
+
+<Problem id="P9-4" title="A hot sphere in still air" tags="sphere, natural convection plus radiation">
+
+<Statement>
+
+A 15 cm diameter sphere at 80 °C in 20 °C still air, $\varepsilon=0.9$, surrounding walls at 20 °C. Find the convective and radiative losses.
+
+</Statement>
+
+<Steps>
+<Step title="1. $Ra_D$">
+
+$T_f=50$ °C; $Ra_D=\dfrac{g\beta\Delta TD^3}{\nu\alpha}=1.34\times10^7$ ($\le10^{11}$ ✓).
+
+</Step>
+<Step title="2. Nusselt number and $h$">
+
+$Nu=2+\dfrac{0.589Ra^{1/4}}{[1+(0.469/Pr)^{9/16}]^{4/9}}=29.5$; $h=\dfrac{29.5(0.02808)}{0.15}=5.52$ W/m²K.
+
+</Step>
+<Step title="3. Losses">
+
+$A=\pi D^2=0.0707$ m²: $\dot Q_{conv}=5.52(0.0707)(60)=23.4$ W; $\dot Q_{rad}=0.9(0.0707)(5.67\times10^{-8})(353.15^4-293.15^4)=29.5$ W. Total 52.9 W.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**Convection 23 W + radiation 30 W = 53 W.**
+
+</Answer>
+
+</Problem>
+
+<Problem id="P9-5" title="An air gap heated from below" tags="horizontal enclosure, k_eff">
+
+<Statement>
+
+Two horizontal plates 3 cm apart enclose air; the lower plate is at 40 °C, the upper at 20 °C. Find the heat flux across the gap by convection and compare it with pure conduction.
+
+</Statement>
+
+<Steps>
+<Step title="1. $Ra_L$">
+
+$T_f=30$ °C: $k=0.02662$, $\nu=1.605\times10^{-5}$, $\alpha=2.271\times10^{-5}$, $\beta=1/303.15$. $Ra_L=\dfrac{g\beta\Delta TL^3}{\nu\alpha}=4.80\times10^4$ (above 1708: cells develop).
+
+</Step>
+<Step title="2. $Nu$ and flux">
+
+$Nu=0.195Ra^{1/4}=2.89$. $q''=Nu\dfrac{k\Delta T}L=2.89\dfrac{0.02662(20)}{0.03}=51.2$ W/m². Pure conduction: $17.7$ W/m².
+
+</Step>
+</Steps>
+
+<Answer>
+
+**51 W/m² (2.9× the conduction value).** Heated from **above** the same gap would have $Nu=1$ (17.7 W/m²): a stable layer.
+
+</Answer>
+
+</Problem>
+
+<Problem id="P9-6" title="Is it forced, natural, or mixed? Combining the two" tags="Gr/Re^2, Nu_combined">
+
+<Statement>
+
+A vertical plate 0.2 m tall at 70 °C is in 25 °C air; air flows upward along it at 1 m/s (assisting). (a) Which regime applies? (b) Estimate $h$ using $Nu^3=Nu_f^3\pm Nu_n^3$.
+
+</Statement>
+
+<Steps>
+<Step title="1. Test">
+
+$T_f=47.5$ °C: $Gr=\dfrac{g\beta\Delta TL^3}{\nu^2}=3.50\times10^7$; $Re=\dfrac{1(0.2)}{1.773\times10^{-5}}=11\,280$; $\dfrac{Gr}{Re^2}=0.275$: between 0.1 and 10, so **mixed convection**.
+
+</Step>
+<Step title="2. Forced and natural parts">
+
+Forced, laminar plate: $Nu_f=0.664\sqrt{Re}Pr^{1/3}=62.8$ ($h=8.76$). Natural: $Ra=2.47\times10^7$, laminar vertical plate formula $Nu_n=36.9$ ($h=5.15$).
+
+</Step>
+<Step title="3. Combine">
+
+Assisting flow (buoyancy and forced flow in the same direction): $Nu=(62.8^3+36.9^3)^{1/3}=66.8$, $h=9.31$ W/m²K. Opposing flow: $Nu=(62.8^3-36.9^3)^{1/3}=58.2$, $h=8.12$ W/m²K.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**Mixed regime; $h=9.3$ W/m²K for assisting flow (8.1 for opposing), compared with 8.8 forced-only and 5.1 natural-only.** The combination is *not* the sum: it is the cubic mean.
+
+</Answer>
+
+</Problem>

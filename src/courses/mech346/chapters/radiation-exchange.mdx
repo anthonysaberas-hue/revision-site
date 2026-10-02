@@ -1,0 +1,144 @@
+<p className="eyebrow">Chapter 13 · Radiation heat transfer between surfaces · Final</p>
+
+# Radiation exchange between surfaces
+
+<div className="lede">
+
+Two hot bodies facing each other each emit, absorb part of what the other emits, and reflect the rest. How much heat actually flows from one to the other depends on three things: **how they see each other** (the *view factor*, pure geometry), **how well each emits and absorbs** (the emissivities), and **their temperatures** (to the fourth power). The method of this chapter turns the whole mess into an **electric circuit**: a surface resistance for every grey surface, a space resistance for every pair of surfaces, and potentials $E_b=\sigma T^4$. Then it's Kirchhoff's circuit laws again.
+
+</div>
+
+<Idea title="The 30-second version">
+
+1. **View factor** $F_{i\to j}$: the fraction of the radiation leaving $i$ that **strikes** $j$. Rules: reciprocity $A_iF_{ij}=A_jF_{ji}$; summation $\sum_jF_{ij}=1$; a flat or convex surface does not see itself ($F_{ii}=0$).
+2. **Radiosity** $J_i$: total radiation leaving surface $i$ (emitted + reflected), $J_i=\varepsilon_iE_{b,i}+(1-\varepsilon_i)G_i$.
+3. Net heat leaving surface $i$: $\dot Q_i=\dfrac{E_{b,i}-J_i}{R_i}$ with **surface resistance** $R_i=\dfrac{1-\varepsilon_i}{\varepsilon_iA_i}$.
+4. Between surfaces: $\dot Q_{i\to j}=\dfrac{J_i-J_j}{R_{ij}}$ with **space resistance** $R_{ij}=\dfrac1{A_iF_{ij}}$.
+5. Two-surface enclosure: $\dot Q_{12}=\dfrac{\sigma(T_1^4-T_2^4)}{\dfrac{1-\varepsilon_1}{\varepsilon_1A_1}+\dfrac1{A_1F_{12}}+\dfrac{1-\varepsilon_2}{\varepsilon_2A_2}}$.
+6. **Radiation shields** (thin, low-$\varepsilon$ sheets between two surfaces) multiply the resistance and cut the heat flow dramatically.
+
+</Idea>
+
+## View factors
+
+$F_{i\to j}$ depends only on the **geometry** (size, shape, distance, orientation) of the two surfaces, for diffuse surfaces. It is dimensionless, between 0 and 1. The definition is a double integral over both surfaces, but you almost never integrate: you use rules and a few formulas.
+
+**Rules (the "view factor algebra"):**
+
+1. **Reciprocity:** $A_iF_{ij}=A_jF_{ji}$ (area times view factor is symmetric: the "optical conductance" is the same in both directions).
+2. **Summation (enclosure):** $\sum_{j=1}^NF_{ij}=1$: all the radiation leaving $i$ lands somewhere in the enclosure, including itself if $i$ is concave: $F_{ii}\neq0$ for a concave surface (the inside of a cylinder), $=0$ for plane or convex.
+3. **Symmetry:** equal areas placed symmetrically have equal view factors.
+4. **Superposition:** if $j=j_1\cup j_2$, then $F_{i\to j}=F_{i\to j_1}+F_{i\to j_2}$ (**not** for the "from" surface; use reciprocity for that).
+
+**Standard values you must be able to quote:**
+
+- A small convex object (a sphere, a person) inside a large enclosure: $F_{12}=1$ (convex object sees only the enclosure); $F_{21}=A_1/A_2\to0$.
+- Two infinite parallel plates, concentric long cylinders or concentric spheres (inner 1, outer 2): $F_{12}=1$ and $F_{21}=A_1/A_2$.
+- A flat surface and a hemisphere over it: $F=1$ and $F_{hemisphere\to plane}=1/2$.
+- Two **coaxial parallel disks** of radii $r_1$, $r_2$ at distance $L$: $F_{12}=\tfrac12\left[S-\sqrt{S^2-4(r_2/r_1)^2}\right]$ with $S=1+(1+R_2^2)/R_1^2$, $R_i=r_i/L$. For $r_1=r_2=L$: $F_{12}=\mathbf{0.382}$.
+- **Aligned parallel rectangles** $a\times b$ separated by $c$: use the chart or the formula (with $X=a/c$, $Y=b/c$). For a square $1\times1$ m at $c=1$ m: $F=\mathbf{0.200}$; at $c=0.5$ m: $0.415$.
+- **Perpendicular rectangles** with a common edge: chart/formula in the textbook.
+
+**Using the rules: three-surface duct (a long triangle)** with sides $a,b,c$ so that $F_{12}+F_{13}=1$ etc. gives three reciprocity equations whose solution is $F_{12}=\dfrac{A_1+A_2-A_3}{2A_1}$ (areas are side lengths per unit depth: $F_{12}=\dfrac{L_1+L_2-L_3}{2L_1}$): the **crossed-string method** in algebraic form. An equilateral triangle: $F=\frac12$ for all pairs.
+
+<Callout kind="note" title="How to compute an unknown $F$ in three lines">
+
+Write the summation rule for each surface, the reciprocity relation for each pair, and solve. Example: surfaces 1 (flat, $F_{11}=0$), 2 (small), 3 (the rest). If $F_{12}$ is known (from a chart), $F_{13}=1-F_{12}$; then $F_{31}=A_1F_{13}/A_3$ by reciprocity; $F_{33}=1-F_{31}-F_{32}$ for a concave surface.
+
+</Callout>
+
+## Radiation exchange between black surfaces
+
+If all surfaces are black ($\varepsilon=1$, so $J=E_b$), the net exchange between $i$ and $j$ is the difference of what each sends to the other:
+$$\dot Q_{i\to j}=A_iF_{ij}\,\sigma(T_i^4-T_j^4).$$
+For an enclosure with $N$ surfaces: $\dot Q_i=\sum_{j}A_iF_{ij}\sigma(T_i^4-T_j^4)$. In this case no surface resistances appear.
+
+## Radiosity and the network method (grey-diffuse surfaces)
+
+A real grey surface does not only emit: it also **reflects** some of the radiation that arrives. The radiation leaving per unit area, **radiosity** $J_i=\varepsilon_iE_{b,i}+\rho_iG_i$, with $\rho=1-\varepsilon$ for opaque grey surfaces (using $\alpha=\varepsilon$). The net heat the surface loses is emitted minus absorbed, $\dot Q_i=A_i(\varepsilon_iE_{b,i}-\alpha_iG_i)$, which can be rewritten (eliminating the unknown irradiation $G_i$) as a **surface resistance** between the "blackbody potential" $E_{b,i}$ and the "radiosity node" $J_i$:
+$$\dot Q_i=\frac{E_{b,i}-J_i}{R_i},\qquad R_i=\frac{1-\varepsilon_i}{\varepsilon_iA_i}.$$
+A black surface ($\varepsilon=1$) has $R_i=0$: $J_i=E_{b,i}$. A surface with $\varepsilon\to0$ has a very large resistance: it can hardly exchange heat, whatever its temperature.
+
+The net heat flow from $i$ to all the others is $\dot Q_i=\sum_jA_iF_{ij}(J_i-J_j)=\sum_j\dfrac{J_i-J_j}{R_{ij}}$, with the **space (view) resistance** $R_{ij}=\dfrac1{A_iF_{ij}}$. The whole network is an electrical circuit with the unknown radiosities as node potentials. Solve it as in the nodal analysis of electrical circuits: at each radiosity node $J_i$, the current in through the surface resistance equals the current out through the space resistances:
+$$\frac{E_{b,i}-J_i}{R_i}=\sum_j\frac{J_i-J_j}{R_{ij}}.$$
+
+**Special surface conditions** (boundary conditions for the nodes):
+
+- **Known temperature** (given $T_i$): the potential $E_{b,i}=\sigma T_i^4$ is fixed.
+- **Known net heat flux or heat rate** (an insulated surface $\dot Q_i=0$ or a surface with a heater): the surface resistance carries the given current.
+- **Reradiating (insulated) surface:** $\dot Q=0$, so there is no current through $R_i$ and $J_i=E_{b,i}$: the surface re-emits all it receives. Its temperature floats to $T=(J/\sigma)^{1/4}$. The reradiating surface acts as a **node that joins** the other surfaces: it provides an additional parallel path through resistances $R_{13}+R_{32}$ (like a bridge circuit).
+- **Large surroundings / blackbody cavity opening:** a very large surface $A\to\infty$ has $R\to0$: take $J=E_b$ at $T_{surr}$.
+
+### Two-surface enclosure (the single-loop circuit)
+
+Two surfaces that only see each other (or a small convex body in a large enclosure) give a **series circuit** $R_1+R_{12}+R_2$:
+$$\dot Q_{12}=\frac{\sigma(T_1^4-T_2^4)}{\dfrac{1-\varepsilon_1}{\varepsilon_1A_1}+\dfrac1{A_1F_{12}}+\dfrac{1-\varepsilon_2}{\varepsilon_2A_2}}.$$
+
+| Case | $F_{12}$ | $\dot Q_{12}$ |
+|---|---|---|
+| Large parallel plates | $1$ | $\dfrac{A\sigma(T_1^4-T_2^4)}{1/\varepsilon_1+1/\varepsilon_2-1}$ |
+| Long concentric cylinders (or concentric spheres), $1$ inside | $1$ | $\dfrac{A_1\sigma(T_1^4-T_2^4)}{\dfrac1{\varepsilon_1}+\dfrac{1-\varepsilon_2}{\varepsilon_2}\dfrac{A_1}{A_2}}$ with $A_1/A_2=r_1/r_2$ (cylinders) or $r_1^2/r_2^2$ (spheres) |
+| Small object in a **large** room | $1$ | $\varepsilon_1A_1\sigma(T_1^4-T_2^4)$ ($A_1/A_2\to0$) |
+
+<Remember title="Why the large-room formula works">
+
+In the concentric formula, the second term has $A_1/A_2$ multiplying $(1-\varepsilon_2)/\varepsilon_2$; as $A_2\to\infty$ it vanishes whatever $\varepsilon_2$ is. So the room's emissivity does not matter and you get the simple $\varepsilon_1A_1\sigma(T_1^4-T_2^4)$ of Chapter 12.
+
+</Remember>
+
+<LabLink lab="furnace">Furnace lab: radiosity network of a 3-surface enclosure, solve the resistances live</LabLink>
+<ToolLink tool="radiation">Radiation calculator: enclosure solver for up to 6 grey-diffuse surfaces</ToolLink>
+
+## Radiation shields
+
+A **radiation shield** is a thin sheet of high reflectivity (low $\varepsilon$) placed between two surfaces: aluminium foil in a thermos or in the "space blanket", the multilayer insulation on spacecraft. It adds two surface resistances (one per side) and one more space resistance. For parallel plates with $N$ shields of emissivity $\varepsilon_3$ on both faces:
+$$\dot Q_{12,\text{with }N\text{ shields}}=\frac{A\sigma(T_1^4-T_2^4)}{\left(\dfrac1{\varepsilon_1}+\dfrac1{\varepsilon_2}-1\right)+N\left(\dfrac1{\varepsilon_3}+\dfrac1{\varepsilon_3}-1\right)}.$$
+With *equal* emissivities on all surfaces, $N$ shields reduce the heat flow to $1/(N+1)$. With low-$\varepsilon$ foil the effect is far greater. The steady shield temperature follows from continuity of $\dot Q$ through the series: for plates of equal $\varepsilon$ and one symmetric shield, $T_3=\left[(T_1^4+T_2^4)/2\right]^{1/4}$.
+
+## Worked examples
+
+**Example 1: network solution for a cylindrical furnace (textbook Example 13-8).** A cylindrical furnace of radius $r_0=H=1$ m. Top (1): $\varepsilon_1=0.8$, $700$ K. Base (2): $\varepsilon_2=0.4$, $500$ K. Side wall (3): black, $400$ K. Find the heat transfer rate of each surface.
+
+*Plan:* three surfaces, so three nodes $J_1,J_2,J_3$; the black side has $R_3=0$ and thus $J_3=E_{b3}$, leaving two unknowns $J_1,J_2$.
+
+1. **View factors.** The top and base are coaxial disks with $r_1=r_2=L$: $F_{12}=0.382$. Summation for 1: $F_{11}=0$, so $F_{13}=1-0.382=0.618$; the same for $F_{23}=0.618$. Reciprocity for the side: $F_{31}=A_1F_{13}/A_3=\pi(0.618)/(2\pi)=0.309$, $F_{32}=0.309$, $F_{33}=1-0.618=0.382$ (the wall sees itself: concave).
+2. **Potentials:** $E_{b1}=\sigma(700)^4=13\,614$, $E_{b2}=\sigma(500)^4=3544$, $E_{b3}=\sigma(400)^4=1452$ W/m².
+3. **Resistances** (m⁻²): $R_1=\dfrac{0.2}{0.8\pi}=0.0796$; $R_2=\dfrac{0.6}{0.4\pi}=0.477$; $R_3=0$; $R_{12}=\dfrac1{\pi(0.382)}=0.833$; $R_{13}=R_{23}=\dfrac1{\pi(0.618)}=0.515$.
+4. **Node equations** at $J_1$ and $J_2$:
+$$\frac{E_{b1}-J_1}{R_1}=\frac{J_1-J_2}{R_{12}}+\frac{J_1-E_{b3}}{R_{13}},\qquad\frac{E_{b2}-J_2}{R_2}=\frac{J_2-J_1}{R_{12}}+\frac{J_2-E_{b3}}{R_{23}}.$$
+Solving, $J_1=11\,420$ W/m² and $J_2=4573$ W/m².
+5. **Heat rates:** $\dot Q_1=\dfrac{E_{b1}-J_1}{R_1}=\mathbf{27.6\ kW}$ (top loses); $\dot Q_2=\dfrac{E_{b2}-J_2}{R_2}=\mathbf{-2.15\ kW}$ (the base *gains* heat: it is the coldest of the two, 500 K, but it is also heated by the 700 K top); $\dot Q_3=-(\dot Q_1+\dot Q_2)=\mathbf{-25.4\ kW}$ (the wall removes heat: black at 400 K). *The textbook's printed values are 27.6, −2.13 and −25.5 kW, from rounding of the view factors.*
+
+**Check:** by the energy balance, $\sum\dot Q_i=0$ in a closed enclosure ✓.
+
+**Example 2: a reradiating wall (textbook Example 13-9).** A long triangular duct with three equal sides (per unit length of side 1 m²). Surface 1: $\varepsilon=0.7$, $T=600$ K. Surface 2: black, $T=1000$ K. Surface 3: insulated (reradiating, $\varepsilon=1$). All $F_{ij}=0.5$.
+
+1. With $\dot Q_3=0$, $J_3=E_{b3}$. Unknowns $J_1,J_3$ (surface 2 is black: $J_2=E_{b2}=56\,700$). $E_{b1}=7348$ W/m².
+2. Node 3 (no net current): $J_3=0.5J_1+0.5E_{b2}$. Node 1: $J_1=\varepsilon_1E_{b1}+(1-\varepsilon_1)(0.5J_2+0.5J_3)=0.7(7348)+0.3(0.5\cdot56\,700+0.5J_3)$.
+3. Solving: $J_1=19\,353$, $J_3=38\,026$ W/m². The reradiating surface's temperature is $T_3=(38\,026/\sigma)^{1/4}=\mathbf{905\ K}$.
+4. $\dot Q_1=J_1-0.5J_2-0.5J_3=-\mathbf{28.0}$ kW/m² (surface 1 *absorbs*: it is the coldest) and $\dot Q_2=+28.0$ kW/m². The insulated wall transports heat between the two without any net loss.
+
+**Example 3: radiation shield for a cryogenic or oven wall.** Two large parallel plates at 600 K and 300 K, both $\varepsilon=0.8$. Without a shield: $q=\dfrac{\sigma(600^4-300^4)}{1/0.8+1/0.8-1}=\dfrac{6889}{1.5}=\mathbf{4593\ W/m^2}$. Insert one thin foil shield of emissivity $0.1$ on both sides: $q=\dfrac{6889}{1.5+(10+10-1)}=\dfrac{6889}{20.5}=\mathbf{336\ W/m^2}$, **a 93 % reduction**. The shield settles at $T_3=\left[(600^4+300^4)/2\right]^{1/4}=\mathbf{512\ K}$ (check: $q=\sigma(600^4-512.2^4)/(1/0.8+1/0.1-1)=336$ W/m² ✓).
+
+**Example 4: a hot pipe inside a duct (concentric cylinders).** An inner pipe $D_1=10$ cm at 400 K ($\varepsilon_1=0.8$) inside a concentric duct $D_2=20$ cm at 300 K ($\varepsilon_2=0.5$): per metre length $A_1=\pi(0.1)=0.314$ m²: $\dot Q'=\dfrac{A_1\sigma(400^4-300^4)}{1/0.8+\frac{1-0.5}{0.5}\cdot\frac{0.1}{0.2}}=\dfrac{312.2}{1.75}=\mathbf{178\ W/m}$. (If the duct were infinitely large the second term would vanish: $249$ W/m. So the closeness of the enclosure reduces the exchange by 29 %.)
+
+<Trap title="Radiation network slips">
+
+1. **Surface resistance of a black surface is zero**: do not give it $\varepsilon=0$.
+2. The **insulated (reradiating) wall** has $\dot Q=0$ but is *not* at the ambient temperature; its $J=E_b$ and its temperature is found afterwards.
+3. When an enclosure's surface is large and its temperature is known, set its node potential directly; do not try to compute the net heat in terms of its small resistance.
+4. $\dot Q_{12}$ in the network is the **net exchange between 1 and 2** only if there are no other surfaces; otherwise $\dot Q_1$ is the sum over all partners.
+5. The area in $R=\frac{1-\varepsilon}{\varepsilon A}$ and $R=\frac1{AF}$ is the same area throughout the circuit: do not mix per-metre and per-area values.
+
+</Trap>
+
+<Examined>
+Final exam: a three-surface enclosure (often with one reradiating surface), a shield problem, or a concentric-cylinder/sphere problem; the textbook's Examples 13-8 and 13-9 are the template. The instructor provided the three-surface network handout (Radiation Heat Transfer in three-surface enclosures). Always sketch the network first.
+</Examined>
+
+## Check yourself
+
+1. Two parallel black plates, $1\times1$ m, 1 m apart, at 800 K and 300 K: net radiation? *($\dot Q=A_1F_{12}\sigma(T_1^4-T_2^4)=0.2(5.67\times10^{-8})(4.096\times10^{11}-8.1\times10^9)=4.55$ kW.)*
+2. Why does a reradiating wall raise the exchange between the two other surfaces? *(It adds a parallel path $R_{13}+R_{32}$.)*
+3. Three equal shields between plates of $\varepsilon=0.8$: factor of reduction? *(Equal $\varepsilon$ throughout: $1/(N+1)=1/4$.)*
+4. A small black sphere inside a large furnace at 1000 K: heat absorbed? *($\sigma A(1000^4-T^4)$; the furnace's $\varepsilon$ is irrelevant.)*

@@ -1,0 +1,117 @@
+<p className="eyebrow">Chapter 1 · Lecture 1</p>
+
+# Feedback control systems
+
+<div className="lede">
+
+Every control system in the course is the same picture: measure what you got, compare it with what you wanted, and push on the system in proportion to the difference. This chapter gives you the vocabulary (so the exam's block diagrams stop being a puzzle) and the two mathematical objects, the step and the delta, that all later chapters lean on.
+
+</div>
+
+<Idea title="The 30-second version">
+
+A **controller** looks at the **error** (what you want minus what you measure) and drives an **actuator** that acts on the **process**. A **sensor** closes the loop. Disturbances and noise sneak in, and a good design keeps the output on target anyway. Everything else in MECH 412 is the machinery for answering three questions about such a loop: *what does it do* (modelling, Chapters 3–14), *is it stable* (Chapter 16) and *how do I make it do better* (Chapters 15–21).
+
+</Idea>
+
+## A loop you already live in: the thermostat
+
+Think of a house heated by a furnace:
+
+| Part of the loop | In the house | In the diagram |
+|---|---|---|
+| desired output | the 21 °C you set on the dial | reference $R$ |
+| sensor | the thermometer | sensor |
+| error | 21 °C − (what the thermometer says) | $E = R - B$ |
+| controller | the little box that decides "furnace on" or "off" | controller |
+| actuator | the furnace and its fan | actuator |
+| process | the air and walls of the house | process |
+| disturbance | someone opens a window | enters between actuator and process |
+| measurement noise | electrical hiss in the thermometer | enters at the sensor |
+
+<ControlLoopFigure caption="The control loop of Lecture 1, as Anthony redrew it in his review. The disturbance enters before the process, the noise enters at the sensor, and the measured output returns with a minus sign." />
+
+**Open loop versus closed loop.** A toaster timer is *open loop*: it never looks at the toast. A thermostat is *closed loop*: it looks at the result and corrects. Closed loop is what lets you cope with things you did not model (an open window, a heavier car, a hill).
+
+<Callout kind="note" title="Words the exams use (MT1 W2009 Q4)">
+
+In the diagram $R \to \oplus \to G \to C$ with $H$ in the feedback path: **G** is the direct (forward) transfer function, **C** the controlled output, **H** the feedback transfer function, **R** the reference input, **B** the primary feedback signal, **E** the error (actuating) signal. A question can simply ask you to name them.
+
+</Callout>
+
+<ToolLink tool="second-order">Try the calculators later in the course</ToolLink> — but first, watch what feedback does to a real car:
+
+<Car3D />
+
+Pick *fixed throttle*: the hill slows the car because nobody is correcting. Pick *PI*: the loop notices the speed drop and adds throttle until the speed is back. That one comparison (open loop vs closed loop) is why Chapters 14–17 exist.
+
+## Why does feedback help? (the idea, before the algebra)
+
+<Remember>
+
+- **Disturbances:** if something pushes the output off target, the error grows and the controller pushes back. Chapter 14 quantifies this with the *sensitivity* $S = 1/(1+GH)$.
+- **Uncertainty in the plant:** a car that is 10 % heavier is still held at 100 km/h by a high-gain loop. The open-loop error changes by 10 %, the closed-loop error by about $10\,\%/(1+K)$.
+- **Cost:** feedback can make a system *unstable* (a microphone too close to its speaker). Higher gain gives better accuracy but less stability; Chapters 16–21 are about getting both.
+
+</Remember>
+
+## Linear and nonlinear systems, models and reality
+
+From the first lecture, Anthony kept four statements about linearity:
+
+1. A linear system's response is described by linear equations.
+2. **Superposition** applies: the response to several inputs is the sum of the responses to each one. Experimentally, "linear" means cause and effect are proportional.
+3. Linearity holds only over a limited amplitude range in most real systems.
+4. Nonlinear analysis is hard, so we **linearise** about an operating point (Chapter 9).
+
+Every model is a compromise between complexity and accuracy: start with the fewest factors that can explain the behaviour, add more only if needed, and *state your assumptions*. The exam papers literally say "state your assumptions", and points are lost without them.
+
+This course is about **continuous-time** systems (differential equations), not discrete-time ones (difference equations).
+
+## Two mathematical objects you must handle correctly
+
+### The unit step (Heaviside) $H(x-a)$
+
+$$
+H(x-a)=\begin{cases}0 & x<a\ \tfrac12 & x=a\ 1 & x>a\end{cases}\qquad H(x-a)+H(a-x)=1 .
+$$
+
+It is **not a function** in the usual sense (it is not differentiable at the jump). The $\tfrac12$ at the jump matters only when you invert a transform exactly at the jump. A *pulse* from $t=a$ to $t=b$ is $H(t-a)-H(t-b)$ (Chapter 2 uses this).
+
+### The Dirac delta $\delta(x-c)$
+
+It is zero everywhere except at $x=c$, where it is "infinite" with total area one:
+
+$$
+\int_{-\infty}^{\infty}\delta(x-c)\,dx=1,\qquad \int F(x)\,\delta(x-c)\,dx=F(c)\ \ (\text{sifting}).
+$$
+
+Other rules (his review): shifting $\int\delta(x-c)F(x)\,dx=\int\delta(x)F(x+c)\,dx=F(c)$; scaling $\int\delta(x/a)F(x)\,dx=|a|F(0)$; and for a definite integral, $\int_a^b\delta(x-c)\,dx$ is $0$ if $c$ is outside $[a,b]$, $\tfrac12$ if $c$ is an end point, $1$ if inside.
+
+<Idea title="What the delta means physically">
+
+A hammer blow: a huge force for a tiny time whose *area* (the impulse) is what matters. The step is "switch on and leave on". The delta is the derivative of the step. Both are used to *probe* a system: its step response and impulse response tell you everything about it (Chapters 3–5).
+
+</Idea>
+
+## Where the history and examples fit
+
+The course opens with **Watt's flyball governor** (Chapter 15 returns to it as the hydraulic speed governor of $\text{MT2 W2019 Q2}$: you will derive its PI action), the boiler–generator, 3D printers, national-income models, smart grids and insulin delivery. They are qualitative here; the quantitative treatment of every one of those ideas is in the rest of the notes.
+
+<Examined>
+
+Chapter 1 is rarely examined directly. What does appear:
+
+- naming the elements of a feedback diagram and matching Matlab commands to tasks ($\text{MT1 W2009 Q4.4–5}$, MT1 F2007 Q3);
+- the delta and the step inside Laplace problems (<Hw n="1">HW1</Hw> Q2).
+
+Everything else in the course assumes you can read this diagram fast.
+
+</Examined>
+
+### Check yourself
+
+1. In a car's cruise control, which is the process, the actuator, the sensor, and what is the disturbance? *(Car body + drivetrain; throttle; speedometer/wheel sensor; a hill or headwind.)*
+2. A toaster timer vs a thermostat: which is closed loop and why? *(The thermostat measures the result and feeds it back.)*
+3. What is $\int_0^2\delta(t-2)\,dt$? *(½, the impulse is at the end point.)*
+4. Write a pulse of height 1 between $t=0.5$ and $t=1$ using steps. *($H(t-0.5)-H(t-1)$.)*

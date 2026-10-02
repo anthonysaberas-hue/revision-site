@@ -1,0 +1,149 @@
+<p className="eyebrow">Chapter 3 · Lecture 3 · HW2 · T01</p>
+
+# Mechanical models: Newton, energy, Lagrange; free and forced response
+
+<div className="lede">
+
+Before you can control a machine you have to write down how it moves. This chapter shows the one equation behind half of the course (mass–spring–damper), what its two numbers $\omega_n$ and $\zeta$ mean, and how the response splits into a **free part** (from the initial conditions) and a **forced part** (from the input, itself a transient plus a steady state).
+
+</div>
+
+<Idea title="The 30-second version">
+
+$m\ddot y+b\dot y+ky=F(t)$. Divide by $m$: $\ddot y+2\zeta\omega_n\dot y+\omega_n^2y=F/m$ with $\omega_n=\sqrt{k/m}$ and $\zeta=b/(2\sqrt{km})$. **$\zeta$ tells you the *style* of the response** (bouncy, just-right, sluggish); **$\omega_n$ tells you the *speed***. The two roots of $s^2+2\zeta\omega_ns+\omega_n^2$ are the poles.
+
+</Idea>
+
+## The thing you already know: a car suspension
+
+The car body is the mass $m$, the coil spring is $k$, the shock absorber is the dashpot $b$. Hit a pothole (an initial displacement / velocity) and the body does a **free response**: with worn shocks ($\zeta$ small) it bounces several times, with good shocks ($\zeta\approx0.7$) it settles in about one swing, with an over-damped (too stiff a shock) it creeps back slowly. Drive up a kerb (a step in the road height) and you get a **forced response**: first a transient that dies out, then a new steady height.
+
+<MassSpringDamper3D />
+
+Slide $b$ to zero (never settles), to about $0.2\cdot2\sqrt{km}$ (the default: several visible overshoots) and to $2\sqrt{km}$ (critical: the fastest approach with no overshoot). Switch to *release* to see the pure free response from an initial stretch.
+
+## Writing the equation of motion (three ways)
+
+### 1. Newton: free-body diagram
+
+Draw the mass alone, draw every force on it, apply $\sum F=m\ddot y$. With $y$ measured down, spring and dashpot pull *up* when the mass moves down:
+
+$$
+m\ddot y=F(t)-b\dot y-ky .
+$$
+
+*Rotation:* $\sum M_{\text{about a fixed point}}=I\ddot\theta$. Spring and damper forces turn into torques with their **arm** (and for small angles the displacement at the arm is arm $\times\,\theta$, so stiffness and damping get multiplied by the arm **squared**).
+
+### 2. Energy
+
+Write kinetic energy $T$ (what moves: $\tfrac12m\dot x^2+\tfrac12I\dot\theta^2$), potential energy $V$ (springs $\tfrac12kx^2$, gravity $mgh$) and dissipation. The EOM follows from the energy balance. Useful because it never needs internal forces.
+
+### 3. Lagrange
+
+For generalised coordinates $q$: $\dfrac d{dt}\dfrac{\partial T}{\partial\dot q}-\dfrac{\partial T}{\partial q}+\dfrac{\partial V}{\partial q}=Q$ ($Q$ = non-conservative generalised force). Do this when there are several coordinates or constraints (cart + pendulum, a rolling disc: for rolling without slipping use the kinetic energy about the instantaneous centre of zero velocity, $\tfrac12(I_c+mr^2)\omega^2$).
+
+<Remember title="Moments of inertia you will need">
+
+Uniform bar, mass $m$, length $\ell$: about its centre $\tfrac1{12}m\ell^2$; about one end $\tfrac13m\ell^2$. Disc/cylinder: $\tfrac12mr^2$ about its axis. Parallel-axis theorem: $I=I_G+md^2$. A disc *rolling* without slipping behaves like $I_c=\tfrac32mr^2$ about the contact point.
+
+</Remember>
+
+## From the ODE to $\omega_n$ and $\zeta$
+
+$$
+\ddot y+2\zeta\omega_n\dot y+\omega_n^2y=\frac{F}{m},\qquad \omega_n^2=\frac km,\quad 2\zeta\omega_n=\frac bm,\quad b_c=2\sqrt{km},\quad \zeta=\frac b{b_c}.
+$$
+
+Laplace-transform with initial conditions (correct form; Anthony's page has two sign slips in an intermediate line but his boxed result is right):
+
+$$
+\underbrace{\big(s^2+2\zeta\omega_ns+\omega_n^2\big)}_{\Delta(s)}Y=\frac{U}m+\dot y_0+(s+2\zeta\omega_n)y_0
+\;\Rightarrow\;
+Y=\underbrace{\frac1m\frac{U}{\Delta}}_{\text{forced}}+\underbrace{\frac{y_0s+(2\zeta\omega_ny_0+\dot y_0)}{\Delta}}_{\text{free (initial conditions)}} .
+$$
+
+The roots of $\Delta$ are the poles:
+
+$$
+s=-\zeta\omega_n\pm\omega_n\sqrt{\zeta^2-1}.
+$$
+
+| $\zeta$ | Poles | Free response | Name |
+|---|---|---|---|
+| $=0$ | $\pm j\omega_n$ | pure oscillation, never decays | undamped |
+| $0<\zeta<1$ | $-\sigma\pm j\omega_d$, $\sigma=\zeta\omega_n$, $\omega_d=\omega_n\sqrt{1-\zeta^2}$ | $e^{-\sigma t}(A\cos\omega_dt+B\sin\omega_dt)$ | underdamped |
+| $=1$ | double pole at $-\omega_n$ | $(c_1+c_2t)e^{-\omega_nt}$ | critically damped |
+| $>1$ | two real poles | sum of two decaying exponentials | overdamped |
+
+<Idea title="What the poles mean physically">
+
+The **real part** $-\sigma$ is how fast things decay (time constant $1/\sigma$). The **imaginary part** $\omega_d$ is how fast it wiggles. A pole far to the left dies fast; a pole near the imaginary axis lingers; a pole in the right half-plane grows (unstable). Chapter 4 turns this into overshoot and settling time.
+
+</Idea>
+
+### Forced response: transient plus steady state
+
+For a step force $F_0$ the forced response is $y=\dfrac{F_0}{k}\big[1-(\text{decaying terms})\big]$: the **steady-state** part is the new equilibrium $F_0/k$ (what the FVT gives); the **transient** part dies out with the poles. For a *sinusoidal* force the steady-state part is a sinusoid at the forcing frequency (Chapter 6), and the transient still carries the natural frequency.
+
+**Undamped system forced at $\omega$** (review p.14): $\ddot u+\tfrac km u=\tfrac Pm\sin\omega t$ from rest gives
+
+$$
+u(t)=\frac{P}{k-m\omega^2}\sin\omega t-\frac{P\,\omega\sqrt{m/k}}{k-m\omega^2}\sin\!\Big(\sqrt{\tfrac km}\,t\Big).
+$$
+
+If $\omega\to\sqrt{k/m}$ the denominator vanishes: **resonance**.
+
+## Worked example: the pinned bar (HW2 Q2, with every step)
+
+A uniform bar of length $L=0.1$ m, mass $m=3$ kg, rotates about a pin at one end. A slider at distance $L$ from the pin connects it to a spring $k=12$ kN/m (to the ground) and a dashpot $b=400$ N·s/m whose top end moves with input $x(t)$ (a 1 mm step). Find $\theta(t)$.
+
+**Plan.** Rotation about a fixed pin: moments. The spring and dashpot act at the slider, an arm $L$ from the pin.
+
+1. *Kinematics (small angle):* the slider moves $y=L\theta$.
+2. *Forces at the slider (down positive):* spring $-ky=-kL\theta$; dashpot $b(\dot x-\dot y)=b(\dot x-L\dot\theta)$ (it is driven by the *relative* velocity).
+3. *Moments about the pin:* $I\ddot\theta=L\big[b(\dot x-L\dot\theta)-kL\theta\big]$ with $I=\tfrac13mL^2=3(0.1)^2/3=0.01$ kg·m².
+4. *Rearrange:* $\dfrac{mL^2}3\ddot\theta+bL^2\dot\theta+kL^2\theta=bL\dot x$, i.e. $0.01\ddot\theta+4\dot\theta+120\theta=40\dot x$.
+5. *Transfer function:* $\dfrac\Theta X=\dfrac{40s}{0.01s^2+4s+120}=\dfrac{4000s}{s^2+400s+12000}$.
+6. *Specs:* $\omega_n^2=12000\Rightarrow\omega_n=109.5$ rad/s; $2\zeta\omega_n=400\Rightarrow\zeta=1.83$ (overdamped); poles $-32.67$ and $-367.3$.
+7. *Step input of 1 mm:* $X=0.001/s$ so $\Theta=\dfrac{4}{s^2+400s+12000}$. Residues over the two poles give
+ $\theta(t)=0.01195\big(e^{-32.67t}-e^{-367.3t}\big)$ rad.
+8. *Final value:* $\lim s\Theta=0$. A constant offset of the input end produces no steady force through the damper, so the bar returns to zero.
+9. *Peak:* at $t=\ln(367.3/32.67)/334.7=7.2$ ms, $\theta_{max}=8.6\times10^{-3}$ rad $=0.49^\circ$.
+
+<Trap title="Pitfalls Anthony's own page fell into">
+
+The plot must use the 1 **mm** step (numerator 4, not 4000): the peak is 8.6 *milli*radians. And $\omega_n=109.5$ is in **rad/s**, not "hz" (it is 17.4 Hz).
+
+</Trap>
+
+*What this means physically:* the damper is the only thing linking the bar to the moving input, so it can push the bar for a moment (a shove) but cannot hold it. That is a *high-pass* behaviour: a zero at $s=0$ in the transfer function.
+
+### Example 2: an unusual damper arrangement (T01 Q3 style)
+
+Rod ($m=2$ kg, $\ell=1$ m) hinged at one end, torque $T=\sin5t$, spring $4$ N/m at $\ell/2$ and damper $2$ N·s/m at $\ell$, $\theta(0)=1$, $\dot\theta(0)=0$: moments about the hinge, $J=\tfrac13m\ell^2=\tfrac23$:
+
+$$
+\tfrac23\ddot\theta+2\ell^2\dot\theta+4(\ell/2)^2\theta=T\;\Rightarrow\;\tfrac23\ddot\theta+2\dot\theta+\theta=\sin5t .
+$$
+
+The result is $\theta(t)=1.536e^{-0.634t}-0.5075e^{-2.366t}-0.0290\cos5t-0.0454\sin5t$. The official tutorial answer has the right sinusoid but wrong exponential coefficients (it gives $\theta(0)=0.658\ne1$). **Always check $\theta(0)$.**
+
+## Nonlinear systems, briefly
+
+An inverted pendulum or a rolling-without-slipping cart is *nonlinear* (it contains $\sin\theta$) and unstable. We analyse it by **linearising** about an operating point (Chapter 9). The cart–pendulum lab shows the real nonlinear motion balanced by a PD controller.
+
+<LabLink lab="pendulum">Balance the pendulum</LabLink>
+
+<Examined>
+
+- Quantities $\omega_n,\zeta$ from a polynomial: every servo question (Chapters 4, 11).
+- Rotational EOM and lever arms squared: <Hw n="2">HW2</Hw> Q2–Q3, $\text{MT2 F2022 Q1a}$ (pivoted bar), T01 Q3.
+- Free response and repeated roots: $\text{F2010 P1}$ (a double root at $-5$ gives $(1+5.2t)e^{-5t}$).
+
+</Examined>
+
+### Check yourself
+
+1. $m=1$, $b=2$, $k=100$. What are $\omega_n$, $\zeta$, $\omega_d$? *(10 rad/s, 0.1, 9.95 rad/s; step overshoot 72.9 %.)*
+2. Why does the dashpot constant get squared by the arm in a rotational problem? *(Force $=b\cdot$ arm$\cdot\dot\theta$, then torque $=$ force × arm.)*
+3. $\ddot x+10\dot x+25x=0$, $x(0)=1$, $\dot x(0)=0.2$. *($(1+5.2t)e^{-5t}$: double root, $c_2=\dot x_0+5x_0=5.2$.)*

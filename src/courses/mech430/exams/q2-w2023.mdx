@@ -1,0 +1,246 @@
+<p className="eyebrow">Quiz 2 · Winter 2023 · 80 min · closed book, tables provided</p>
+
+# Quiz 2, Winter 2023
+
+<p className="lede">Two 50-point problems: starting a fixed-geometry supersonic inlet (and its spillage when unstarted), and the three critical back pressures of a nozzle + Fanno pipe. Class average 58.5 % (median 60 %, standard deviation 20.5 %). This was the hardest of the four quizzes.</p>
+
+<Callout kind="note" title="Before you start">
+
+**Topics tested**
+- Inlet starting by overspeed, and the unstarted inlet's mass flow. See [Ch. 9 Pitot, inlets & wind tunnels](#/mech430/ch/inlets).
+- The nozzle + Fanno pipe back-pressure map: shock at the pipe exit, shock at the pipe entrance, first choking. See [Ch. 10 Fanno flow](#/mech430/ch/fanno), [Ch. 8 Flow with shocks](#/mech430/ch/shocks-in-flow) and [Ch. 6 Nozzles](#/mech430/ch/nozzles).
+
+**Recipes used:** §1.6 (inlets) and R3 (back-pressure map) on the [exam recipes page](#/mech430/page/recipes).
+
+**Tables:** A2, A3, A4. γ = 1.4.
+
+</Callout>
+
+<Problem id="W2023 P1" title="Fixed-geometry supersonic inlet: starting and spillage (50 pts: a 20, b 30)" tags="inlet starting, unstart, choked mass flow">
+
+<Statement>
+
+Consider a supersonic diffuser designed to operate isentropically at a flight Mach number M = 1.3. The inlet has a **fixed geometry**: the inlet-to-throat area ratio cannot be changed.
+
+(a) [20 pts] To what **flight Mach number** must the inlet be accelerated in order to *start* the diffuser?
+
+(b) [30 pts] If the diffuser is operating at M = 1.3 in an *unstarted* configuration (with a normal shock in front of the inlet), what is the **ratio of the mass flow rate** into the diffuser to the mass flow rate in the *started* configuration (with supersonic flow through the inlet) at M = 1.3?
+
+</Statement>
+
+<Think>
+
+"Designed isentropically at M = 1.3", "fixed geometry" and "start" mean the overspeed route of [Ch. 9](#/mech430/ch/inlets). Part (a) is exactly W2019 P1(a) with a different number: shock on the lip, $A^*_y = A_t$.
+
+Part (b) is about **spillage**. Before starting, a bow shock stands in front of the inlet. The throat is **still choked**, but with the lower stagnation pressure $p_{0y}$, so less mass gets through, and the rest spills around the cowl. In the choked-flow formula everything is the same except $p_0$.
+
+</Think>
+
+<Plan>
+
+- Design: $M = 1.3 \to A_{in}/A_t = A/A^*$.
+- (a) $A_{in}/A^*_y = A_{in}/A_t$ → A2 subsonic → $M_y$ → A3 → $M_x$.
+- (b) $\dot m \propto A_t\,p_0/\sqrt{T_0}$ at a choked throat → ratio $= p_{0y}/p_{0x}$ at M = 1.3.
+
+<InletStartFigure M={1.3} third="unstarted" />
+
+</Plan>
+
+<Steps>
+<Step title="1. Design area ratio">
+
+<T>A2 @ M = 1.30: A/A* = 1.06631</T> $= A_{in}/A_t$ — <CalcLink calc="isentropic" q="in=M&v=1.3">check</CalcLink>
+
+</Step>
+<Step title="2. (a) Shock on the lip, post-shock flow just choking the throat">
+
+The geometry is fixed, so $A_y/A^*_y = A_{in}/A_t = 1.06631$, on the subsonic branch:
+
+<T>A2 @ A/A* = 1.0663 (sub): M_y = 0.74</T> (exact 0.743) — <CalcLink calc="isentropic" q="in=A&v=1.06631&b=sub">check</CalcLink>
+
+<T>A3 @ M_y = 0.7397: Mₓ = 1.40</T> (exact 1.392) — <CalcLink calc="normal" q="in=My&v=0.74">check</CalcLink>
+
+So you must accelerate to **M = 1.4** to swallow the shock.
+
+</Step>
+<Step title="3. (b) Mass flow through a choked throat">
+
+The mass-flow equation from the sheet, at the throat with M = 1:
+
+$$
+\dot m = A_t\,\frac{p_0}{\sqrt{T_0}}\sqrt{\frac{\gamma}{R}}\;\frac{M}{\left(1 + \frac{\gamma-1}{2}M^2\right)^{\frac{\gamma+1}{2(\gamma-1)}}}
+$$
+
+Started: the flow reaches the throat isentropically with $p_{0x}$. Unstarted: the flow passes the bow shock first, then reaches the (still choked) throat with $p_{0y}$. $A_t$, M = 1, $T_0$, γ and R are all the same, so they cancel:
+
+$$
+\frac{\dot m_{unstarted}}{\dot m_{started}} = \frac{p_{0y}}{p_{0x}}\bigg|_{M=1.3}
+$$
+
+</Step>
+<Step title="4. (b) Table value">
+
+<T>A3 @ Mₓ = 1.30: p₀ᵧ/p₀ₓ = 0.9794</T> — <CalcLink calc="normal" q="in=Mx&v=1.3">check</CalcLink>
+
+So the unstarted inlet swallows about 2 % less air. The rest spills over the cowl.
+
+</Step>
+</Steps>
+
+<Answer>
+
+- (a) Accelerate to **M = 1.4** (exact 1.39) to start the inlet.
+- (b) $\dot m_{unstarted}/\dot m_{started} = p_{0y}/p_{0x} = $ **0.979**, about 2 % less mass flow. The marking accepted anything within 1 % (0.969 to 0.989).
+
+</Answer>
+
+<InletSection3D M={1.3} initial="unstarted" />
+
+<Traps>
+
+- (a) is the same logic as W2019 P1(a). Red marking note: "points were awarded for the right logic with regards to table use (A-2, then A-3)."
+- (b) The unstarted throat is **still choked**. The answer is a $p_0$ ratio, not a capture-area ratio from the geometry.
+- Marking for (b): 15 pts for the right ṁ equation ("if you started with ṁ = ρVA you need to rederive this equation correctly"), 5 for the ratio, 5 for cancelling everything correctly, 5 for the answer.
+- **Exam-speed version:** "a) M = 1.3 → A/A* = 1.06631 → (A2 sub) $M_y$ = 0.74 → (A3) $M_x$ = 1.4. b) choked throat in both cases: ṁ ∝ $p_0$ → $p_{0y}/p_{0x}$ = 0.9794."
+
+</Traps>
+
+<Source>official W2023 solution pp. 2–3 · Anthony's minimum-writing notes p. 14 (both passes)</Source>
+
+</Problem>
+
+<Problem id="W2023 P2" title="Nozzle + Fanno pipe: the three critical back pressures (50 pts: a 15, b 15, c 20)" tags="Fanno, normal shock, back pressure, choked mass flow">
+
+<Statement>
+
+Air (γ = 1.4, MW = 28) at a stagnation pressure of 500 kPa and a stagnation temperature of 300 K flows from a reservoir through an isentropic convergent-divergent nozzle with an exit-to-throat area ratio of 3. The nozzle exit feeds an insulated constant-area pipe with L/D = 20 and an average friction factor f = 0.0025. The pipe diameter is D = 0.5 m. The pipe exhausts into a chamber whose back pressure we can control.
+
+(a) [15 pts] At what **back pressure** will a normal shock appear at the exit plane of the pipe?
+
+(b) [15 pts] At what **back pressure** will a normal shock appear at the entrance plane of the pipe?
+
+(c) [20 pts] As the back pressure is lowered, at what **back pressure** does the mass flow rate become independent of the back pressure? What is this **mass flow rate** (kg/s)?
+
+</Statement>
+
+<Think>
+
+No shock-hunting here. The question gives you the shock position each time, so each part is a **straight march** from the reservoir to the exit (recipe R3). The three answers are the landmarks on the back-pressure map that the sim below draws as horizontal lines.
+
+- (a) Supersonic all the way, then a shock at ②: $p_b = p_{2y}$.
+- (b) Shock at ①, then subsonic Fanno to ②: $p_b = p_2$.
+- (c) "ṁ becomes independent of $p_b$" means **the throat just chokes**. That is the **subsonic** branch after the throat, and it is the highest of the three pressures.
+
+Before anything else: $4fL/D = 4(0.0025)(20) = 0.2$. This is a short pipe, so $L$ is less than $L^*$ on both branches, and $L_2^* = L_1^* - L$ is legal.
+
+</Think>
+
+<Plan>
+
+① = nozzle exit / pipe inlet ($A/A^* = 3$), ② = pipe exit. Carry pressure **ratios** through $p^*$:
+
+$$
+p_2 = \frac{p_2/p^*}{p_1/p^*}\cdot\frac{p_1}{p_0}\cdot p_0
+$$
+
+Drag $p_b/p_0$ in the sim: 0.308 puts the shock at the exit, 0.356 at the entrance, and 0.968 is first choking.
+
+<NozzlePipeSim AR={3} fL={0.2} pb={0.308} p0={500} />
+
+</Plan>
+
+<Steps>
+<Step title="1. Nozzle exit, supersonic branch">
+
+<T>A2 @ A/A* = 3 (sup): M₁ = 2.64, p₁/p₀ = 0.04711</T> → $p_1 = 23.56$ kPa — <CalcLink calc="isentropic" q="in=A&v=3&b=sup">check</CalcLink>
+
+<T>A4 @ M = 2.64: 4fL*/D = 0.46044, p/p* = 0.26818</T> — <CalcLink calc="fanno" q="in=M&v=2.64">check</CalcLink>
+
+$0.46044 > 0.2$: the supersonic flow fits in the pipe ($L < L^*$).
+
+</Step>
+<Step title="2. (a) March to the exit, then put the shock there">
+
+$4fL_2^*/D = 0.46044 - 0.2 = 0.26044$ (the official writes $L^*/D$: 46.044 − 20 = 26.044):
+
+<T>A4 @ 4fL*/D = 0.26044 (sup): M₂ₓ = 1.857, p/p* = 0.45382</T> — <CalcLink calc="fanno" q="in=fL&v=0.26044&b=sup">check</CalcLink>
+
+<T>A3 @ Mₓ = 1.857: M_y = 0.604, p_y/pₓ = 3.8392</T> — <CalcLink calc="normal" q="in=Mx&v=1.857">check</CalcLink>
+
+$$
+p_b = 3.8392 \times \frac{0.45382}{0.26818} \times 0.04711 \times 500 = 153\ \text{kPa}
+$$
+
+(Exact: 154.0 kPa.)
+
+</Step>
+<Step title="3. (b) Shock at the pipe entrance">
+
+<T>A3 @ Mₓ = 2.64: M_y = 0.5005, p_y/pₓ = 7.965</T> — <CalcLink calc="normal" q="in=Mx&v=2.64">check</CalcLink>
+
+<T>A4 @ M = 0.50: 4fL*/D = 1.06908, p/p* = 2.1381</T> — <CalcLink calc="fanno" q="in=M&v=0.5005">check</CalcLink>
+
+$1.06908 - 0.2 = 0.86908$:
+
+<T>A4 @ 4fL*/D = 0.869 (sub): M₂ = 0.527, p/p* = 2.0234</T> — <CalcLink calc="fanno" q="in=fL&v=0.86908&b=sub">check</CalcLink>
+
+$$
+p_b = \frac{2.0234}{2.1381}\times 7.965 \times 0.04711 \times 500 = 177.6\ \text{kPa}
+$$
+
+(Exact: 177.8 kPa.)
+
+</Step>
+<Step title="4. (c) First choking: the subsonic branch after the throat">
+
+ṁ stops depending on $p_b$ as soon as the throat chokes. At that moment the flow after the throat is still **subsonic**:
+
+<T>A2 @ A/A* = 3 (sub): M₁ = 0.20, p₁/p₀ = 0.9725</T> (exact 0.197) — <CalcLink calc="isentropic" q="in=A&v=3&b=sub">check</CalcLink>
+
+<T>A4 @ M = 0.20: 4fL*/D = 14.533, p/p* = 5.4555</T> — <CalcLink calc="fanno" q="in=M&v=0.2">check</CalcLink>
+
+$14.533 - 0.2 = 14.333$:
+
+<T>A4 @ 4fL*/D = 14.333: M₂ = 0.2013, p/p* = 5.4215</T>
+
+$$
+p_b = \frac{5.4215}{5.4555}\times 0.9725 \times 500 = 483.2\ \text{kPa}
+$$
+
+486.25 kPa (no interpolation, $p_{exit} \approx p_{in}$) was also accepted. Exact: 483.8 kPa.
+
+</Step>
+<Step title="5. (c) The choked mass flow">
+
+$A_t = A_{pipe}/3 = \frac13\cdot\frac{\pi(0.5)^2}{4} = 0.06545$ m², and $R = 8314/28 = 296.9$ J/kg·K:
+
+$$
+\dot m = A_t\,\frac{p_0}{\sqrt{T_0}}\sqrt{\frac{\gamma}{R}}\,\frac{1}{1.2^{3}} = 0.06545 \times \frac{500\,000}{\sqrt{300}}\sqrt{\frac{1.4}{296.9}} \times 0.5787 = 75.08\ \text{kg/s}
+$$
+
+<ChokedFlowMWCheck At={0.06545} p0={500000} T0={300} MWs={[28, 28.8]} />
+
+</Step>
+</Steps>
+
+<Answer>
+
+- (a) Shock at the pipe exit: **$p_b \approx 153$ kPa**.
+- (b) Shock at the pipe entrance: **$p_b \approx 177.6$ kPa**.
+- (c) ṁ is independent of $p_b$ below **$p_b \approx 483$ kPa** (486 kPa accepted), and then **ṁ = 75.08 kg/s**.
+
+</Answer>
+
+<Traps>
+
+- **Official slip, corrected:** the official solution plugs in MW = 28.8 (the 8 is crossed out in red), which gives 76.14 kg/s. The problem says MW = 28, so the answer is **75.08 kg/s**. The marker's blue note confirms "75.0779 kg/s if used MW = 28".
+- For (c) you **must** take the subsonic solution after the throat (red note). Saying "partially choked" earned only 2/5: the flow is choked.
+- −1 for forgetting $A_t = A_{pipe}/3$.
+- $p^*$ is a Fanno reference, not a physical pressure here. Carry the ratio $(p_2/p^*)/(p_1/p^*)$.
+- **Exam-speed version (Anthony):** "a) A/A* = 3 → M = 2.64, p = 23.555 kPa, 4fL*/D = 0.46044 − 0.2 = 0.26044 → M = 1.86, p = 39.76 → $M_y$ = 0.6076 → $p_y$ = 153.9 kPa. b) $M_y$ = 0.5005, $p_y$ = 7.965 × 23.55 = 187.6 → 1.06908 − 0.2 = 0.86908 → M = 0.53 → 176.6 kPa. c) A/A* = 3 → M = 0.2, p = 486.25; 14.533 − 0.2 barely changes M ⇒ $p_{exit}$ ≈ $p_{in}$ = 486 kPa; ṁ = 75.08 kg/s."
+
+</Traps>
+
+<Source>official W2023 solution pp. 4–6 with red marking notes · Anthony's minimum-writing notes pp. 15–16 · exact values from lib/nozzlePipe.ts</Source>
+
+</Problem>

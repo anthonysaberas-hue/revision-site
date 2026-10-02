@@ -1,0 +1,729 @@
+<p className="eyebrow">Assignment 3 · Chapter 3 · steady conduction and fins · instructor solutions provided</p>
+
+# Assignment 3: resistance networks, insulation, cylinders, spheres and fins
+
+<div className="lede">
+
+Fifteen problems from <Ch slug="steady-conduction">Chapter 3</Ch> and <Ch slug="fins">the fins chapter</Ch> (3-25, 3-30, 3-33, 3-52, 3-67, 3-73, 3-75, 3-81, 3-91, 3-94, 3-102, 3-127, 3-138, 3-142, 3-145). Two moves solve almost everything: **draw the thermal circuit first** (series for layers in the heat's path, parallel for paths side by side), then **$\dot Q=\Delta T_{total}/R_{total}$** and read intermediate temperatures with $\Delta T=\dot QR$. Every number was recomputed; rounding differences with the printed solutions are noted.
+
+</div>
+
+<Problem id="3-25" title="Double-pane window" tags="series resistances, convection on both sides">
+
+<Statement>
+
+A double-pane window is $1.5\times2.4$ m: two 3 mm glass panes ($k=0.78$ W/mK) separated by a 12 mm stagnant air gap ($k=0.026$). Indoors 21 °C with $h_i=10$ W/m²K, outdoors $-5$ °C with $h_o=25$ W/m²K. Radiation is negligible. Find the heat loss rate and the inner-surface temperature of the glass.
+
+</Statement>
+
+<Think>
+
+The heat crosses, in series: indoor convection, glass, air, glass, outdoor convection. Series resistances add.
+
+</Think>
+
+<Steps>
+<Step title="1. Area and resistances">
+
+$A=1.5(2.4)=3.6$ m². $R_i=\dfrac1{h_iA}=0.02778$; $R_{glass}=\dfrac{0.003}{0.78(3.6)}=0.00107$ (twice); $R_{air}=\dfrac{0.012}{0.026(3.6)}=0.12821$; $R_o=\dfrac1{25(3.6)}=0.01111$ K/W.
+
+</Step>
+<Step title="2. Total and heat rate">
+
+$R_{tot}=0.02778+2(0.00107)+0.12821+0.01111=0.16924$ K/W. $\dot Q=\dfrac{21-(-5)}{0.16924}=154$ W.
+
+</Step>
+<Step title="3. Inner glass surface">
+
+$T_{surface}=T_i-\dot QR_i=21-154(0.02778)=16.7$ °C.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**$\dot Q=154$ W, inner glass surface 16.7 °C.** The still air gap is 76 % of the total resistance: that is what a double-glazed window buys.
+
+</Answer>
+
+<Source>Textbook solution 3-25. Recomputed: identical.</Source>
+
+</Problem>
+
+<Problem id="3-30" title="Bonding a film in a heated chamber (work backwards)" tags="series resistance, unknown ambient temperature">
+
+<Statement>
+
+A 1 mm transparent film ($k=0.05$) is bonded onto a 13 mm solid plate ($k=1.2$) in a heated chamber with $h=70$ W/m²K. The bond (film–plate interface) must be at 70 °C while the plate's back face is at 52 °C. Find the chamber temperature and the film's surface temperature.
+
+</Statement>
+
+<Think>
+
+Heat flows from the chamber through convection, the film, then the plate. The same heat flux $q''$ passes through every layer, so I can find it from the plate (where both temperatures are known), then work back through the film and convection layer.
+
+</Think>
+
+<Steps>
+<Step title="1. Flux through the plate">
+
+$q''=\dfrac{T_b-T_2}{L_s/k_s}=\dfrac{70-52}{0.013/1.2}=\dfrac{18}{0.010833}=1661$ W/m².
+
+</Step>
+<Step title="2. Film surface temperature">
+
+$T_1=T_b+q''\dfrac{L_f}{k_f}=70+1661(0.02)=103.2$ °C.
+
+</Step>
+<Step title="3. Chamber temperature">
+
+$T_\infty=T_1+\dfrac{q''}h=103.2+\dfrac{1661}{70}=127$ °C.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**Chamber 127 °C, film surface 103 °C.**
+
+</Answer>
+
+<Source>Textbook solution 3-30. Recomputed: identical.</Source>
+
+</Problem>
+
+<Problem id="3-33" title="Insulating a furnace wall: thickness and payback" tags="insulation thickness for a given reduction, economics">
+
+<Statement>
+
+A 2 m × 1.5 m furnace surface at 110 °C loses heat to 32 °C air with $h=10$ W/m²K. Glass wool ($k=0.038$) is added to cut the heat loss by 90 %. Find the thickness, and the payback time if the furnace runs continuously at 78 % efficiency, gas costs 1.10 USD/therm (1 therm = 105 500 kJ) and the insulation costs 250 USD.
+
+</Statement>
+
+<Think>
+
+Bare surface: only convection. With insulation: insulation resistance in series with the convection. A 90 % reduction means the total resistance becomes 10× larger.
+
+</Think>
+
+<Steps>
+<Step title="1. Heat loss without insulation">
+
+$A=3$ m². $\dot Q=hA\Delta T=10(3)(78)=2340$ W.
+
+</Step>
+<Step title="2. Required resistance">
+
+$\dot Q_{new}=0.1(2340)=234$ W, so $R_{tot}=\dfrac{110-32}{234}=0.333$ K/W (convection alone: $1/(30)=0.0333$ K/W).
+
+</Step>
+<Step title="3. Insulation thickness">
+
+$R_{tot}=\dfrac1{hA}+\dfrac L{kA}\Rightarrow0.333=0.0333+\dfrac L{0.038(3)}\Rightarrow L=0.3(0.114)=0.0342$ m $=3.4$ cm.
+
+</Step>
+<Step title="4. Savings per year">
+
+Heat saved $=0.9(2340)=2106$ W. Gas energy $=\dfrac{2.106\ \text{kW}\times8760\ \text{h}\times3600}{0.78}=8.514\times10^7$ kJ $=807.1$ therm/yr. Money saved $=807.1(1.10)=887.8$ USD/yr.
+
+</Step>
+<Step title="5. Payback">
+
+$\dfrac{250}{887.8}=0.282$ yr $\approx3.4$ months.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**$L=3.4$ cm; payback about 3.4 months.**
+
+</Answer>
+
+<Source>Textbook solution 3-33. Recomputed: identical.</Source>
+
+</Problem>
+
+<Problem id="3-52" title="Contact resistance in an epoxy–copper sandwich" tags="contact resistance, percent error">
+
+<Statement>
+
+A 1 mm copper plate ($k=401$) is sandwiched between two 7 mm epoxy boards ($k=0.26$); the contact conductance at each copper–epoxy interface is $h_c=6000$ W/m²K. What percent error comes from ignoring the contact resistances?
+
+</Statement>
+
+<Think>
+
+Work per 1 m² of area. Layers in series: epoxy, contact, copper, contact, epoxy. Compare the total with and without the two contact terms.
+
+</Think>
+
+<Steps>
+<Step title="1. Resistances (m²K/W)">
+
+$R_c=1/6000=1.67\times10^{-4}$; $R_{Cu}=0.001/401=2.5\times10^{-6}$; $R_{epoxy}=0.007/0.26=0.02692$.
+
+</Step>
+<Step title="2. Total">
+
+$R_{tot}=2R_c+R_{Cu}+2R_{epoxy}=0.000333+0.0000025+0.05385=0.05418$.
+
+</Step>
+<Step title="3. Error">
+
+$\%\text{error}=\dfrac{2R_c}{R_{tot}}=\dfrac{0.000333}{0.05418}=0.62$ %.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**About 0.6 %: negligible.** The epoxy dominates (99 % of the resistance); a thin metal layer between insulators does almost nothing. (Contact resistance matters when the layers themselves are good conductors.)
+
+</Answer>
+
+<Source>Textbook solution 3-52 (prints 0.63 % from rounded numbers). Recomputed: 0.62 %.</Source>
+
+</Problem>
+
+<Problem id="3-67" title="A jacket with air layers" tags="layers in series, equivalent thickness">
+
+<Statement>
+
+A coat has 5 layers of 0.15 mm synthetic fabric ($k=0.13$) separated by 4 air gaps of 1.5 mm ($k=0.026$), area 1.25 m², $T_s=25$ °C on the skin side, outside air 0 °C with $h_o=25$ W/m²K. Find the heat loss, compare with a jacket of one 0.75 mm fabric layer (no air), and find the equivalent thickness of wool ($k=0.035$).
+
+</Statement>
+
+<Think>
+
+Series chain: 5 fabrics + 4 air gaps + outer convection. The comparison jacket removes the air gaps. For the wool: equate the **same total resistance** (including $R_o$).
+
+</Think>
+
+<Steps>
+<Step title="1. Resistances (K/W)">
+
+$R_{fab}=\dfrac{0.00015}{0.13(1.25)}=0.000923$; $R_{air}=\dfrac{0.0015}{0.026(1.25)}=0.04615$; $R_o=\dfrac1{25(1.25)}=0.032$.
+
+</Step>
+<Step title="2. Layered coat">
+
+$R_{tot}=5(0.000923)+4(0.04615)+0.032=0.2212$ K/W. $\dot Q=\dfrac{25-0}{0.2212}=113$ W.
+
+</Step>
+<Step title="3. Without the air gaps">
+
+$R_{tot}=5(0.000923)+0.032=0.0366$ K/W: $\dot Q=\dfrac{25}{0.0366}=683$ W (685 W with the rounded values of the printed solution): **six times more heat loss**.
+
+</Step>
+<Step title="4. Equivalent wool thickness">
+
+$\dfrac L{kA}+R_o=0.2212$: $\dfrac L{0.035(1.25)}=0.2212-0.032=0.1892\Rightarrow L=0.1892(0.04375)=8.28$ mm.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**113 W with air gaps (683 W without); equivalent wool thickness 8.3 mm.** Thin layers trapping still air insulate like a thick wool coat: the principle of down jackets.
+
+</Answer>
+
+<Source>Textbook solution 3-67 (113 W, 685 W, 8.29 mm; differences are rounding).</Source>
+
+</Problem>
+
+<Problem id="3-73" title="A wall with studs: parallel paths" tags="series–parallel network, 1-D approximation">
+
+<Statement>
+
+A $12\times5$ m wall is built from two 1 cm sheetrock layers ($k=0.17$) with 5 cm × 16 cm wood studs ($k=0.11$) every 60 cm centre to centre, the gap between studs (0.60 m wide, i.e. the representative section is 0.65 m) filled with fiberglass ($k=0.034$). Inside: 20 °C, $h_i=8.3$ W/m²K; outside: $-9$ °C, $h_o=34$ W/m²K. Find the wall's resistance and heat loss.
+
+</Statement>
+
+<Think>
+
+Take one representative section of width 0.65 m (one stud + one cavity). Heat flows through: inside film, sheetrock, **two parallel paths** (stud, or fiberglass), sheetrock, outside film. Series–parallel.
+
+</Think>
+
+<Steps>
+<Step title="1. Series resistances, section area $A=1(0.65)=0.65$ m²">
+
+$R_i=\dfrac1{8.3(0.65)}=0.1853$; $R_{sheetrock}=\dfrac{0.01}{0.17(0.65)}=0.0905$ (two); $R_o=\dfrac1{34(0.65)}=0.0452$.
+
+</Step>
+<Step title="2. Parallel middle layer">
+
+$R_{stud}=\dfrac{0.16}{0.11(0.05)}=29.09$; $R_{fiberglass}=\dfrac{0.16}{0.034(0.60)}=7.843$. $\dfrac1{R_{mid}}=\dfrac1{29.09}+\dfrac1{7.843}=0.1619\Rightarrow R_{mid}=6.178$ K/W.
+
+</Step>
+<Step title="3. Total and heat rate per section">
+
+$R_{tot}=0.1853+2(0.0905)+6.178+0.0452=6.588$ K/W; $\dot Q=\dfrac{20-(-9)}{6.588}=4.40$ W.
+
+</Step>
+<Step title="4. Whole wall">
+
+$\dot Q_{wall}=4.40\times\dfrac{12(5)}{0.65}=406$ W.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**$R=6.59$ K/W per section; $\dot Q\approx406$ W for the whole wall.** The studs conduct about 4× better than the insulation per unit area, so they are "thermal bridges" (the "R-value" of a framed wall is lower than the cavity insulation alone).
+
+</Answer>
+
+<Source>Textbook solution 3-73. Recomputed: identical.</Source>
+
+</Problem>
+
+<Problem id="3-75" title="A composite wall with horizontal and vertical layers" tags="series–parallel network, interface temperatures">
+
+<Statement>
+
+A composite wall is built from sections A ($k=2$, 1 cm thick, full height 12 cm), then a vertical stack B ($k=8$), C ($k=20$), C again (each 5 cm thick; heights 4, 4, 4 cm), then D ($k=15$) and E ($k=35$) (each 10 cm thick, heights 6 and 6 cm), then F ($k=2$, 6 cm thick, 12 cm height). The left face is at 300 °C and the right face at 100 °C. Representative section $0.12\times1$ m. Find the heat rate for the whole $5\times8$ m wall, the temperature where B, D, E meet, and the drop across F.
+
+</Statement>
+
+<Think>
+
+Left to right: A (series), then the first parallel group (C, B, C), then the second parallel group (D, E), then F (series). Draw the circuit: $R_A+(R_C\parallel R_B\parallel R_C)+(R_D\parallel R_E)+R_F$.
+
+</Think>
+
+<Steps>
+<Step title="1. Resistances (K/W), section area 0.12 m², stack areas 0.04 and 0.06 m²">
+
+$R_A=\dfrac{0.01}{2(0.12)}=0.0417$; $R_C=\dfrac{0.05}{20(0.04)}=0.0625$ (two); $R_B=\dfrac{0.05}{8(0.04)}=0.1563$; $R_D=\dfrac{0.1}{15(0.06)}=0.1111$; $R_E=\dfrac{0.1}{35(0.06)}=0.0476$; $R_F=\dfrac{0.06}{2(0.12)}=0.25$.
+
+</Step>
+<Step title="2. Parallel groups">
+
+$\dfrac1{R_{mid,1}}=\dfrac2{0.0625}+\dfrac1{0.1563}=32+6.4=38.4\Rightarrow R_{mid,1}=0.02604$. $\dfrac1{R_{mid,2}}=\dfrac1{0.1111}+\dfrac1{0.0476}=9+21=30\Rightarrow R_{mid,2}=0.0333$.
+
+</Step>
+<Step title="3. Total and heat rate">
+
+$R_{tot}=0.0417+0.0260+0.0333+0.25=0.3510$ K/W; $\dot Q=\dfrac{300-100}{0.3510}=570$ W per section. Wall: $\dot Q=570\times\dfrac{5(8)}{0.12}=1.90\times10^5$ W.
+
+</Step>
+<Step title="4. Temperature where B, D and E meet">
+
+$T=300-\dot Q(R_A+R_{mid,1})=300-570(0.0677)=261.4$ °C.
+
+</Step>
+<Step title="5. Drop across F">
+
+$\Delta T_F=\dot QR_F=570(0.25)=142$ °C.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**$\dot Q\approx1.9\times10^5$ W; $T\approx261$ °C; $\Delta T_F\approx142$ °C.** (Printed: 572 W per section, 263 °C, 143 °C; the small differences come from rounding $R_E$ to 0.05 and $R_B$ in the printed solution.) F, the low-conductivity thick layer, takes 71 % of the temperature drop: the **largest resistance** takes the largest drop.
+
+</Answer>
+
+<Traps>
+
+The 1-D "isothermal interfaces" assumption between the parallel groups is an approximation (the real flow bends toward the good conductors); the textbook uses it, and so does the exam.
+
+</Traps>
+
+<Source>Textbook solution 3-75. Recomputed with exact (unrounded) resistances: 570 W vs the printed 572 W.</Source>
+
+</Problem>
+
+<Problem id="3-81" title="Insulated steam pipe: heat loss and temperature drops" tags="cylindrical resistances, convection inside and out">
+
+<Statement>
+
+A steel pipe ($k=15$, inner diameter 5 cm, outer diameter 5.5 cm) carries steam at 280 °C ($h_i=80$ W/m²K) and is wrapped with 3 cm of glass wool ($k=0.038$). The outside air is at 5 °C with $h_o=22$ W/m²K. Find the heat loss per metre and the temperature drops across the pipe wall and the insulation.
+
+</Statement>
+
+<Think>
+
+Cylindrical series circuit, per metre: $R_i$, $R_{pipe}=\ln(r_2/r_1)/(2\pi kL)$, $R_{ins}=\ln(r_3/r_2)/(2\pi k L)$, $R_o$.
+
+</Think>
+
+<Steps>
+<Step title="1. Radii and areas">
+
+$r_1=2.5$, $r_2=2.75$, $r_3=5.75$ cm. $A_i=\pi(0.05)=0.157$ m²/m; $A_o=\pi(0.115)=0.361$ m²/m.
+
+</Step>
+<Step title="2. Resistances (K/W per metre)">
+
+$R_i=\dfrac1{80(0.157)}=0.0796$; $R_{pipe}=\dfrac{\ln(2.75/2.5)}{2\pi(15)}=0.00101$; $R_{ins}=\dfrac{\ln(5.75/2.75)}{2\pi(0.038)}=3.089$; $R_o=\dfrac1{22(0.361)}=0.1259$.
+
+</Step>
+<Step title="3. Heat loss">
+
+$R_{tot}=0.0796+0.0010+3.089+0.1259=3.296$ K/W (per metre of pipe); $\dot Q'=\dfrac{280-5}{3.296}=83.4$ W/m.
+
+</Step>
+<Step title="4. Temperature drops">
+
+$\Delta T_{pipe}=83.4(0.00101)=0.084$ °C; $\Delta T_{ins}=83.4(3.089)=257.6$ °C.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**$\dot Q'=83.4$ W/m; the steel wall drops only 0.08 °C, the insulation 257.6 °C.**
+
+</Answer>
+
+<Source>Textbook solution 3-81 (prints $R_i=0.08$). Recomputed: identical.</Source>
+
+</Problem>
+
+<Problem id="3-91" title="Hot-water tank: cost of the losses and the payback of extra insulation" tags="cylinder, economics">
+
+<Statement>
+
+An electric water heater has 3 cm of foam ($k=0.03$) between inner radius $r_1=20$ cm and $r_2=23$ cm, length 1.5 m (side only), water at 60 °C ($h_i=50$), room air 27 °C ($h_o=12$). Electricity costs 0.08 USD/kWh and the yearly hot-water bill is 280 USD. (a) What fraction of the bill is due to the heat loss? (b) A kit adds 3 cm of fiberglass ($k=0.035$) for 30 USD: how long to pay back?
+
+</Statement>
+
+<Think>
+
+Cylindrical circuit $R_i+R_{foam}+R_o$; yearly energy $=\dot Q\times8760$ h. Then repeat with the extra layer.
+
+</Think>
+
+<Steps>
+<Step title="1. Resistances without the kit">
+
+$A_i=\pi(0.40)(1.5)=1.885$, $A_o=\pi(0.46)(1.5)=2.168$ m². $R_i=0.0106$; $R_o=0.0384$; $R_{foam}=\dfrac{\ln(23/20)}{2\pi(0.03)(1.5)}=0.4943$; $R_{tot}=0.5433$ K/W.
+
+</Step>
+<Step title="2. Loss and cost">
+
+$\dot Q=\dfrac{60-27}{0.5433}=60.74$ W $\Rightarrow0.06074(8760)=532.1$ kWh/yr $\Rightarrow$ 42.57 USD/yr $=\dfrac{42.57}{280}=15.2$ % of the bill.
+
+</Step>
+<Step title="3. With the fiberglass jacket (outer radius 26 cm)">
+
+$A_o=\pi(0.52)(1.5)=2.450$, $R_o=0.0340$; $R_{fg}=\dfrac{\ln(26/23)}{2\pi(0.035)(1.5)}=0.3717$; $R_{tot}=0.0106+0.4943+0.3717+0.0340=0.9106$ K/W. $\dot Q=\dfrac{33}{0.9106}=36.24$ W.
+
+</Step>
+<Step title="4. Payback">
+
+Saving $=60.74-36.24=24.5$ W. $0.0245\ \text{kW}\times t\times0.08=30\Rightarrow t=15\,306$ h $=638$ days $\approx21$ months.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**(a) 15.2 % of the bill; (b) payback about 21 months.**
+
+</Answer>
+
+<Source>Textbook solution 3-91. Recomputed: identical.</Source>
+
+</Problem>
+
+<Problem id="3-94" title="Hot-water pipe in a basement: combined convection and radiation, flow velocity" tags="h_rad, combined coefficient, energy balance on the water">
+
+<Statement>
+
+Hot water at 90 °C ($h_i=120$ W/m²K) flows through a 15 m cast-iron pipe ($k=52$, $\varepsilon=0.7$, inner $D=4$ cm, outer $D=4.6$ cm). The basement air and surfaces are at 10 °C and $h_{conv}=15$ W/m²K outside. Find the heat loss and the water velocity if the water cools by 3 °C.
+
+</Statement>
+
+<Think>
+
+Outside, convection and radiation act in parallel to the same surroundings temperature, so their coefficients **add**: $h_{comb}=h_{conv}+h_{rad}$ with $h_{rad}=\varepsilon\sigma(T_s^2+T_{surr}^2)(T_s+T_{surr})$ at an **assumed** pipe-surface temperature (check after).
+
+</Think>
+
+<Steps>
+<Step title="1. Radiation coefficient (assume $T_s=80$ °C)">
+
+$h_{rad}=0.7(5.67\times10^{-8})(353^2+283^2)(353+283)=5.17$ W/m²K; $h_{comb}=5.17+15=20.17$.
+
+</Step>
+<Step title="2. Resistances (K/W)">
+
+$A_i=\pi(0.04)(15)=1.885$, $A_o=\pi(0.046)(15)=2.168$ m². $R_i=\dfrac1{120(1.885)}=0.00442$; $R_{pipe}=\dfrac{\ln(2.3/2)}{2\pi(52)(15)}=0.00003$; $R_o=\dfrac1{20.17(2.168)}=0.02287$; $R_{tot}=0.02732$.
+
+</Step>
+<Step title="3. Heat loss">
+
+$\dot Q=\dfrac{90-10}{0.02732}=2928$ W.
+
+</Step>
+<Step title="4. Water mass flow and velocity">
+
+$\dot m=\dfrac{\dot Q}{c_p\Delta T}=\dfrac{2928}{4180(3)}=0.2335$ kg/s; $V=\dfrac{\dot m}{\rho A_c}=\dfrac{0.2335}{1000\,\pi(0.04)^2/4}=0.186$ m/s.
+
+</Step>
+<Step title="5. Check the assumed surface temperature">
+
+$T_s=90-\dot Q(R_i+R_{pipe})=90-2928(0.00445)=77.0$ °C: close to the assumed 80 °C (no new iteration needed).
+
+</Step>
+</Steps>
+
+<Answer>
+
+**$\dot Q\approx2.93$ kW; $V\approx0.19$ m/s.**
+
+</Answer>
+
+<Source>Textbook solution 3-94. Recomputed: identical.</Source>
+
+</Problem>
+
+<Problem id="3-102" title="Liquid-nitrogen tank: boil-off without and with insulation" tags="spherical resistances, superinsulation">
+
+<Statement>
+
+A thin-shelled spherical tank of diameter 3 m holds liquid nitrogen at 1 atm ($-196$ °C, $h_{fg}=198$ kJ/kg) in 15 °C surroundings with combined $h_o=35$ W/m²K. Find the nitrogen boil-off rate with (a) no insulation, (b) 5 cm of fiberglass ($k=0.035$), (c) 2 cm of superinsulation ($k=5\times10^{-5}$).
+
+</Statement>
+
+<Think>
+
+The tank wall is at the nitrogen temperature (negligible resistance). The outer convection resistance in series with the spherical-shell resistance $R=\dfrac{r_2-r_1}{4\pi kr_1r_2}$. Boil-off $=\dot Q/h_{fg}$.
+
+</Think>
+
+<Steps>
+<Step title="1. (a) Bare tank">
+
+$A=\pi(3)^2=28.27$ m²; $R_o=\dfrac1{35(28.27)}=0.00101$; $\dot Q=\dfrac{15-(-196)}{0.00101}=208\,900$ W; $\dot m=\dfrac{208.9}{198}=1.055$ kg/s.
+
+</Step>
+<Step title="2. (b) 5 cm fiberglass">
+
+$r_1=1.5$, $r_2=1.55$ m: $A_o=\pi(3.1)^2=30.19$, $R_o=0.000946$; $R_{ins}=\dfrac{0.05}{4\pi(0.035)(1.55)(1.5)}=0.0489$; $R_{tot}=0.0498$: $\dot Q=\dfrac{211}{0.0498}=4233$ W; $\dot m=0.0214$ kg/s.
+
+</Step>
+<Step title="3. (c) 2 cm superinsulation">
+
+$r_2=1.52$: $A_o=\pi(3.04)^2=29.03$, $R_o=0.000984$; $R_{ins}=\dfrac{0.02}{4\pi(5\times10^{-5})(1.52)(1.5)}=13.96$; $\dot Q=\dfrac{211}{13.96}=15.1$ W; $\dot m=7.6\times10^{-5}$ kg/s (0.27 kg/h).
+
+</Step>
+</Steps>
+
+<Answer>
+
+**(a) 1.055 kg/s; (b) 0.0214 kg/s (50× less); (c) 7.6×10⁻⁵ kg/s (14 000× less).** The superinsulation (a vacuum multilayer) is what keeps liquid cryogens in storage for weeks.
+
+</Answer>
+
+<Source>Textbook solution 3-102. Recomputed: identical.</Source>
+
+</Problem>
+
+<Problem id="3-106C" title="Can adding insulation increase the heat loss?" tags="critical radius">
+
+<Statement>
+
+A person measures that a pipe with added insulation loses **more** heat than the bare pipe. Is this possible?
+
+</Statement>
+
+<Think>
+
+Yes, if the pipe's outer radius is **below the critical radius** $r_{cr}=k_{ins}/h_o$ (cylinder): adding a thin layer increases the outer area faster than it adds resistance.
+
+</Think>
+
+<Answer>
+
+**Yes, the measurement can be right**: for $r_{outer}<k/h$, the total resistance first *decreases* with insulation thickness until $r=r_{cr}$, and only beyond that does the loss fall below the bare-pipe value. Example: $k=0.04$, $h=10$ gives $r_{cr}=4$ mm; for a thin wire or small tube insulation helps electric cables dissipate heat. See <Ch slug="steady-conduction">the critical radius section</Ch>.
+
+</Answer>
+
+<Source>Textbook solution 3-106C.</Source>
+
+</Problem>
+
+<Problem id="3-127" title="Fin: error of the infinitely-long-fin approximation" tags="adiabatic tip vs infinite fin, m·L">
+
+<Statement>
+
+A pin fin of diameter 4 mm and length 10 cm (aluminum, $k=237$) in air with $h=12$ W/m²K. What percent error results from using the infinitely long fin formula instead of the adiabatic-tip fin formula?
+
+</Statement>
+
+<Think>
+
+Both formulas share $\sqrt{hpkA_c}\,\theta_b$; they differ only by $\tanh(mL)$. So the error is $\dfrac1{\tanh mL}-1$.
+
+</Think>
+
+<Steps>
+<Step title="1. Fin parameter">
+
+$m=\sqrt{\dfrac{hp}{kA_c}}=\sqrt{\dfrac{4h}{kD}}=\sqrt{\dfrac{4(12)}{237(0.004)}}=\sqrt{50.63}=7.116$ m⁻¹.
+
+</Step>
+<Step title="2. $mL$ and the error">
+
+$mL=0.7116$, $\tanh(0.7116)=0.6118$. $\%\text{error}=\dfrac1{0.6118}-1=0.635=63.5$ %.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**63.5 % over-estimate.** The rule: the infinite-fin formula is acceptable only for $mL\gtrsim3$ ($\tanh3=0.995$). Here $mL<1$, so the fin is "short" and its tip matters.
+
+</Answer>
+
+<Source>Textbook solution 3-127. Recomputed: identical.</Source>
+
+</Problem>
+
+<Problem id="3-138" title="Pipe flanges treated as annular fins" tags="annular fin efficiency, equivalent pipe length">
+
+<Statement>
+
+Two cast-iron steam pipes ($k=52$; inner/outer radius 4.6/5 cm; steam at 200 °C, $h_i=180$; air 12 °C, $h_o=25$; length 8 m) are joined by two 1 cm flanges (outer radius 9 cm, total thickness 2 cm). Find the pipe's outer surface temperature, the fin efficiency of the flanges, the heat rate from the flanges, and their equivalent pipe length.
+
+</Statement>
+
+<Think>
+
+First the pipe (a cylindrical circuit) gives its outer-surface temperature, which is the **fin base temperature**. The flange is an annular fin: efficiency from the chart (or Bessel formula), then $Q=\eta hA_{fin}(T_b-T_\infty)$. Equivalent length $=Q_{flange}/Q'_{pipe}$.
+
+</Think>
+
+<Steps>
+<Step title="1. Pipe circuit">
+
+$A_i=\pi(0.092)(8)=2.312$, $A_o=\pi(0.10)(8)=2.513$ m². $R_i=\dfrac1{180(2.312)}=0.00240$; $R_{cond}=\dfrac{\ln(5/4.6)}{2\pi(52)(8)}=0.00003$; $R_o=\dfrac1{25(2.513)}=0.01592$. $R_{tot}=0.01835$; $\dot Q=\dfrac{200-12}{0.01835}=10\,245$ W.
+
+</Step>
+<Step title="2. Outer surface (fin base) temperature">
+
+$T_b=12+\dot QR_o=12+10\,245(0.01592)=175.1$ °C.
+
+</Step>
+<Step title="3. Fin efficiency">
+
+Corrected length $L_c=L+t/2=0.04+0.01=0.05$ m, $r_{2c}/r_1=(0.09+0.01)/0.05=2.0$; $\xi=L_c^{3/2}\sqrt{\dfrac h{kA_p}}$ with $A_p=L_ct$: $\xi=0.05^{1.5}\sqrt{\dfrac{25}{52(0.05)(0.02)}}=0.245$. Chart: $\eta_{fin}=0.94$. (Bessel formula: 0.9465.)
+
+</Step>
+<Step title="3b. Fin area">
+
+Both faces plus the rim: $A_{fin}=2\pi(r_2^2-r_1^2)+2\pi r_2t=2\pi(0.0081-0.0025)+2\pi(0.09)(0.02)=0.0352+0.0113=0.0465$ m².
+
+</Step>
+<Step title="4. Heat from the flanges">
+
+$\dot Q_{fin}=0.94(25)(0.0465)(175.1-12)=178$ W.
+
+</Step>
+<Step title="5. Equivalent pipe length">
+
+Pipe loses $10\,245/8=1280$ W per metre, so the flanges equal $\dfrac{178}{1280}=0.139$ m $=13.9$ cm of extra pipe.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**$T_b=175.1$ °C; $\eta=0.94$; $\dot Q_{flanges}=178$ W; equivalent length 13.9 cm.**
+
+</Answer>
+
+<Source>Textbook solution 3-138. Recomputed: identical (the Bessel formula gives $\eta=0.9465$ vs the chart's 0.94).</Source>
+
+</Problem>
+
+<Problem id="3-142" title="Pin-fin plate: total heat and effectiveness" tags="pin-fin array, fin efficiency, effectiveness">
+
+<Statement>
+
+A 1 m × 1 m hot plate at 100 °C is covered by aluminum pin fins ($k=237$, $D=0.25$ cm, $L=3$ cm, spaced 0.6 cm apart in a square pattern; tips adiabatic) in 30 °C air with $h=35$ W/m²K. Find the total heat rate and the overall effectiveness.
+
+</Statement>
+
+<Think>
+
+Number of fins from the pitch; fin efficiency from $\tanh(mL)/(mL)$; total $=$ fins $+$ the unfinned plate area. Effectiveness $=\dot Q_{total}/\dot Q_{no\ fins}$.
+
+</Think>
+
+<Steps>
+<Step title="1. Fin parameter and efficiency">
+
+$m=\sqrt{\dfrac{4h}{kD}}=\sqrt{\dfrac{4(35)}{237(0.0025)}}=15.37$ m⁻¹; $mL=0.461$; $\eta=\dfrac{\tanh0.461}{0.461}=0.935$.
+
+</Step>
+<Step title="2. Areas">
+
+Number of fins $n=\dfrac1{(0.006)^2}=27\,778$. Area per fin (side + tip) $=\pi DL+\pi D^2/4=2.356\times10^{-4}+4.9\times10^{-6}=2.405\times10^{-4}$ m²: $A_{fin}=6.68$ m². Unfinned: $1-27\,778\,\dfrac{\pi(0.0025)^2}4=0.864$ m².
+
+</Step>
+<Step title="3. Heat rates">
+
+$\dot Q_{fins}=\eta hA_{fin}\Delta T=0.935(35)(6.68)(70)=15\,300$ W; $\dot Q_{unfinned}=35(0.864)(70)=2116$ W (printed 2107 W with 0.86 m²). Total $\approx17.4$ kW.
+
+</Step>
+<Step title="4. Effectiveness">
+
+Without fins: $35(1)(70)=2450$ W. $\varepsilon=\dfrac{17\,400}{2450}=7.1$.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**$\dot Q\approx17.4$ kW (about 7× the bare plate); $\eta_{fin}=0.935$.**
+
+</Answer>
+
+<Source>Textbook solution 3-142. Recomputed: identical within rounding.</Source>
+
+</Problem>
+
+<Problem id="3-145" title="Choosing a heat sink for a transistor (thermal resistance budget)" tags="resistance budget">
+
+<Statement>
+
+A transistor dissipating 40 W must keep its case below 90 °C in 20 °C air. Which heat sink (thermal resistance given in a catalogue table) can be chosen?
+
+</Statement>
+
+<Think>
+
+The sink + contact resistance is in series between the case and the air: required $R_{case-ambient}\le\dfrac{T_{case}-T_\infty}{\dot Q}$.
+
+</Think>
+
+<Steps>
+<Step title="1. Budget">
+
+$R_{case-ambient}\le\dfrac{90-20}{40}=1.75$ °C/W.
+
+</Step>
+<Step title="2. Choose">
+
+Pick any sink whose catalogue thermal resistance (in the orientation used, vertical or horizontal) is **below 1.75 °C/W**. The printed solution reads Table 3-6 and accepts HS6071 (vertical), and HS5030 and HS6115 (both orientations).
+
+</Step>
+</Steps>
+
+<Answer>
+
+**Required $R\le1.75$ °C/W.** (The table is not part of this site's data; the method is what the exam tests.) A bigger sink or a fan (forced convection) lowers $R$.
+
+</Answer>
+
+<Source>Textbook solution 3-145 (table selection quoted; method recomputed).</Source>
+
+</Problem>

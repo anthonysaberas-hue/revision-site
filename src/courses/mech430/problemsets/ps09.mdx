@@ -1,0 +1,340 @@
+<p className="eyebrow">Problem set 9</p>
+
+# Oblique shocks
+
+<p className="lede">Four problems that cover the whole of Chapter 12: the δ → 0 limit, a corner flow with its stagnation pressure and detachment angle, the inverse problem (pressure ratio → angles), and a wedge shock reflecting off a channel wall. The handout's rule: always take the weak solution; use the chart for a first guess, then iterate the tan δ formula.</p>
+
+All problems: air, γ = 1.4. Theory in [Chapter 12](#/mech430/ch/oblique).
+
+<Problem id="PS9 P1" title="As δ → 0 the shock angle tends to the Mach angle" tags="derivation, θ-β-M, Mach wave">
+
+<Statement>
+
+For an oblique shock, show that as the wedge angle δ given by
+
+$$
+\tan\delta = \frac{\left(M_x^2\sin^2\sigma - 1\right)\cot\sigma}{\frac{\gamma+1}{2}M_x^2 - M_x^2\sin^2\sigma + 1}
+$$
+
+goes to zero (δ → 0°), the shock angle σ approaches the Mach angle α.
+
+</Statement>
+
+<Think>
+
+A limit of the θ-β-M relation. Physically: a wedge of zero angle is no disturbance at all, so the "shock" must shrink to an infinitesimal sound wave, which sits on the Mach line. The algebra is just "a fraction is zero when its numerator is zero". The only subtlety is that the numerator has **two** factors, and each gives a root.
+
+</Think>
+
+<Plan>
+
+Set tan δ = 0 → numerator = 0 → two factors → identify each root physically → keep the weak one.
+
+<ObliqueCornerFigure M={2} delta={2} caption="M = 2 with a 2° wedge: the shock (σ = 31.6°) already lies almost on the Mach line (α = 30°)." />
+
+</Plan>
+
+<Steps>
+<Step title="1. Zero deflection means a zero numerator">
+
+δ → 0 gives tan δ → 0. The denominator stays finite and positive for $M_x > 1$ and α ≤ σ ≤ 90°, so the numerator must vanish:
+
+$$
+\left(M_x^2\sin^2\sigma - 1\right)\cot\sigma = 0
+$$
+
+</Step>
+<Step title="2. First root: cot σ = 0">
+
+$\cot\sigma = 0$ at **σ = 90°**. That is the normal shock, the top of the strong branch: it also deflects the flow by zero. It is a real solution, just not the one asked for.
+
+</Step>
+<Step title="3. Second root: the weak branch">
+
+$$
+M_x^2\sin^2\sigma - 1 = 0 \;\Rightarrow\; \sin\sigma = \frac{1}{M_x} \;\Rightarrow\; \sigma = \sin^{-1}\frac{1}{M_x} = \alpha
+$$
+
+Equivalently, $M_{xN} = M_x\sin\sigma = 1$: the normal Mach number is exactly sonic, so the "shock" has zero strength ($p_y/p_x = 1$).
+
+</Step>
+</Steps>
+
+<Answer>
+
+- As δ → 0 on the weak branch, $\sigma \to \alpha = \sin^{-1}(1/M_x)$: an infinitely weak oblique shock is a Mach wave.
+- The other root, σ = 90°, is the normal shock (strong branch).
+
+</Answer>
+
+<Traps>
+
+- The official solution writes "cot σ = 0 only if σ → ∞". It is a small slip: cot σ = 0 at **σ = 90°**, and that root is physical (the normal shock). The conclusion σ → α for the weak branch is correct.
+- Anthony silently dropped the cot σ branch. Fine for the answer, but the exam likes "two roots: Mach wave and normal shock".
+
+</Traps>
+
+<Source>official 2025 solution p. 1 · Anthony's tablet solution PS09-mine p. 1 · lecture notes Mar 26</Source>
+
+</Problem>
+
+<Problem id="PS9 P2" title="Mach 2 over a 10° concave corner: downstream state and detachment angle" tags="oblique shock, A3, stagnation pressure, δmax">
+
+<Statement>
+
+A uniform flow of air at Mach 2.0 passes over a sharp concave corner in which the wall turns the flow through 10°, generating an oblique shock. Upstream of the corner, p = 70 kPa and T = 10 °C. Find the Mach number, pressure, temperature and stagnation pressure downstream of the oblique shock. How large would the corner angle have to be before the shock became detached from the corner?
+
+</Statement>
+
+<Think>
+
+A direct oblique-shock problem: given (M, δ), find σ (weak root), then treat $M_1\sin\sigma$ as a normal shock with Table A3. Two traps: the downstream Mach number needs $\sin(\sigma-\delta)$, and the stagnation pressure must come from $p_{02}/p_{01}$ times the upstream $p_{01}$ found with the **full** $M_1$. Detachment is δmax(M₁).
+
+</Think>
+
+<Plan>
+
+σ from the chart + tan δ iteration → $M_{1N}$ → A3 ($M_{2N}$, $p_2/p_1$, $T_2/T_1$, $p_{02}/p_{01}$) → $M_2$ → $p_{01}$ from A2 → $p_{02}$ → δmax.
+
+<ObliqueCornerFigure M={2} delta={10} up="① M₁ = 2, p₁ = 70 kPa, T₁ = 283 K" down="② M₂, p₂, T₂, p₀₂ = ?" />
+
+</Plan>
+
+<Steps>
+<Step title="1. Shock angle (weak root)">
+
+Chart for M = 2, δ = 10°: σ ≈ 39–40°. Iterate tan δ: σ = 39° → δ = 9.71°; σ = 40° → δ = 10.62°. Interpolate to δ = 10°: **σ = 39.31°** (exact 39.31°). <CalcLink calc="oblique" q="M=2&in=delta&v=10&b=weak">check</CalcLink>
+
+</Step>
+<Step title="2. Normal Mach number and Table A3">
+
+$$
+M_{1N} = M_1\sin\sigma = 2\sin 39.31° = 1.267
+$$
+
+<T>A3 @ Mₓ = 1.267: M_y = 0.8032, p_y/pₓ = 1.706, T_y/Tₓ = 1.170, p₀y/p₀ₓ = 0.9847</T> (exact 0.8032, 1.7066, 1.1702, 0.98464). <CalcLink calc="normal" q="in=Mx&v=1.267">check</CalcLink>
+
+</Step>
+<Step title="3. Downstream Mach number">
+
+$$
+M_2 = \frac{M_{2N}}{\sin(\sigma - \delta)} = \frac{0.8032}{\sin 29.31°} = 1.64
+$$
+
+Still supersonic: the weak root.
+
+</Step>
+<Step title="4. Pressure and temperature">
+
+$p_2 = 1.706 \times 70 = 119.4$ kPa. $T_2 = 1.170 \times 283 = 331.1$ K (always absolute: 10 °C = 283 K).
+
+</Step>
+<Step title="5. Stagnation pressure">
+
+Upstream, with the **full** Mach number: <T>A2 @ M = 2.0: p/p₀ = 0.1278</T>
+
+$$
+p_{01} = \frac{70}{0.1278} = 547.7 \text{ kPa}, \qquad p_{02} = 0.9847 \times 547.7 = 539.3 \text{ kPa}
+$$
+
+The ratio $p_{02}/p_{01}$ from A3 is valid for the oblique shock because $V_T$ adds the same kinetic energy on both sides.
+
+</Step>
+<Step title="6. Detachment angle">
+
+$$
+\sin^2\sigma_{\delta_{max}} = \frac{1}{\gamma M_1^2}\left[\frac{\gamma+1}{4}M_1^2 - 1 + \sqrt{(\gamma+1)\left(1 + \frac{\gamma-1}{2}M_1^2 + \frac{\gamma+1}{16}M_1^4\right)}\right]
+$$
+
+$= \frac{1}{5.6}\left[1.4 + \sqrt{2.4 \times 4.2}\right] = 4.5749/5.6 = 0.8170$, so σ = 64.67°. Put it in tan δ: **δmax = 23.0°**. The chart gives the same.
+
+</Step>
+</Steps>
+
+<Answer>
+
+- σ = 39.3°, $M_2 = 1.64$, $p_2 = 119.4$ kPa, $T_2 = 331$ K
+- $p_{02} = 539.3$ kPa ($p_{01} = 547.7$ kPa, a loss of only 1.5%)
+- The shock detaches for corner angles above **δmax ≈ 23.0°** (σ = 64.7° at δmax).
+
+</Answer>
+
+<ObliqueShockSim initialM={2} initialDelta={10} />
+
+<Traps>
+
+- **Anthony's mistake:** he took the stagnation pressure from the normal-shock column at $M_{1N}$, getting $p_{02} = 70/0.3819 = 183$ kPa. That column ($p_x/p_{0y}$) describes a normal shock of Mach 1.267 and ignores the large tangential kinetic energy, so it is three times too small. Use $p_{02} = (p_{02}/p_{01})\,p_{01}$ with $p_{01}$ from the full $M_1 = 2$.
+- His table row was read slightly off 1.267 ($p_y/p_x = 1.715$ instead of 1.706). Use the calculator or interpolate when the answer must be tight.
+- $M_2$ uses $\sin(\sigma - \delta)$, not $\sin\sigma$.
+
+</Traps>
+
+<Source>official 2025 solution pp. 2–3 · Anthony's tablet solution PS09-mine pp. 2–3</Source>
+
+</Problem>
+
+<Problem id="PS9 P3" title="Deflection angle for a pressure ratio of 4 at Mach 3" tags="inverse oblique shock, A3, θ-β-M">
+
+<Statement>
+
+For a supersonic flow of air exiting a nozzle at Mach 3.0, find the deflection angle δ needed to produce an oblique shock with pressure ratio $p_y/p_x = 4$. Also, what is the shock angle σ?
+
+</Statement>
+
+<Think>
+
+The inverse problem, and the easiest kind. The pressure ratio depends only on the **normal** Mach number, so A3 gives $M_{xN}$ directly, $\sin\sigma = M_{xN}/M_x$ gives σ, and tan δ gives δ. No iteration needed. (Same move as the over-expanded nozzle lip in Final A P2(c).)
+
+</Think>
+
+<Plan>
+
+$p_y/p_x$ → A3 → $M_{xN}$ → σ → tan δ → δ.
+
+<ObliqueCornerFigure M={3} delta={21.07} up="Mₓ = 3, pₓ" down="p_y = 4 pₓ" />
+
+</Plan>
+
+<Steps>
+<Step title="1. Normal Mach number from the pressure ratio">
+
+<T>A3 @ p_y/pₓ = 4.0: Mₓ = 1.89, M_y = 0.5975</T>. Exactly:
+
+$$
+M_{xN}^2 = 1 + \frac{\gamma+1}{2\gamma}\left(\frac{p_y}{p_x} - 1\right) = 1 + \frac{2.4}{2.8}(3) = 3.571 \;\Rightarrow\; M_{xN} = 1.890
+$$
+
+<CalcLink calc="oblique" q="M=3&in=pr&v=4&b=weak">check</CalcLink>
+
+</Step>
+<Step title="2. Shock angle">
+
+$$
+\sin\sigma = \frac{1.89}{3.0} = 0.630 \;\Rightarrow\; \sigma = 39.05°
+$$
+
+</Step>
+<Step title="3. Deflection angle">
+
+tan δ formula with M = 3, σ = 39.05°: $\tan\delta = 0.3853$, so **δ = 21.07°** (the chart gives about 21.1°).
+
+</Step>
+</Steps>
+
+<Answer>
+
+- σ = 39.05°, δ = 21.1°
+- Not asked: $M_y = 0.5975/\sin(18.0°) = 1.94$.
+
+</Answer>
+
+<Traps>
+
+- Don't hunt the chart for σ: the pressure ratio pins $M_{xN}$, and the arcsine gives σ.
+- Anthony used the tan δ formula instead of the chart (21.07° vs 21.1°), which is better.
+
+</Traps>
+
+<Source>official 2025 solution p. 4 · Anthony's tablet solution PS09-mine p. 4</Source>
+
+</Problem>
+
+<Problem id="PS9 P4" title="Mach 4 wedge shock reflecting from the upper channel wall" tags="oblique shock, regular reflection, A3">
+
+<Statement>
+
+A supersonic flow of air ($M_1 = 4$) in a channel meets a wedge with deflection angle $\delta_1 = 20°$.
+
+(a) Find the initial shock angle $\sigma_1$, and the pressure ratio $p_2/p_1$ and Mach number $M_2$ leaving the shock.
+
+(b) When this flow reaches the upper wall, a reflected shock is created. Find the reflected shock angle $\sigma_2$, the pressure ratio $p_3/p_1$ and the Mach number $M_3$ leaving it.
+
+</Statement>
+
+<Think>
+
+Two oblique shocks in series. The boundary condition decides the second one: the upper wall is horizontal, so the reflected shock must turn the region-2 flow (tilted up 20°) back by $\delta_2 = \delta_1 = 20°$. It is computed with the **new** Mach number $M_2$, and its normal component is taken relative to *its own* angle. Check first that regular reflection is possible: $\delta_1$ must be below δmax($M_2$).
+
+</Think>
+
+<Plan>
+
+(a) $M_1$, δ₁ → σ₁ → $M_{1N}$ → A3 → $p_2/p_1$, $M_2$. (b) $M_2$, δ₂ = 20° → σ₂ → $M_2\sin\sigma_2$ → A3 → $p_3/p_2$, $M_3$ → $p_3/p_1 = (p_3/p_2)(p_2/p_1)$.
+
+<ChannelReflectionFigure M={4} delta={20} />
+
+</Plan>
+
+<Steps>
+<Step title="1. Incident shock angle">
+
+Chart for M = 4, δ = 20°: σ ≈ 32–33°. tan δ at 32° → 19.59°, at 33° → 20.47°; interpolate: **σ₁ = 32.46°** (official chart reading 32.5°). <CalcLink calc="oblique" q="M=4&in=delta&v=20&b=weak">check</CalcLink>
+
+</Step>
+<Step title="2. Across the incident shock">
+
+$M_{1N} = 4\sin 32.46° = 2.147$, <T>A3 @ Mₓ = 2.15: M_y = 0.5540, p_y/pₓ = 5.226</T> (exact 0.5544, 5.212).
+
+$$
+M_2 = \frac{0.5540}{\sin(32.5° - 20°)} = 2.56
+$$
+
+</Step>
+<Step title="3. Is regular reflection possible?">
+
+δmax(2.56) ≈ 30.4° > 20°, so yes: an attached reflected shock can turn the flow back by 20°.
+
+</Step>
+<Step title="4. Reflected shock angle">
+
+The reflected shock must turn the flow by $\delta_2 = 20°$ with upstream Mach 2.56. Chart: **σ₂ = 42.0°**, measured from the region-2 flow direction (so it makes 42° − 20° = 22° with the upper wall).
+
+</Step>
+<Step title="5. Across the reflected shock">
+
+Normal component relative to **this** shock:
+
+$$
+M_2\sin\sigma_2 = 2.56\sin 42° = 1.72
+$$
+
+<T>A3 @ Mₓ = 1.72: M_y = 0.6355, p_y/pₓ = 3.285</T> (exact with $M_2 = 2.569$: 0.6357, 3.280).
+
+$$
+M_3 = \frac{0.6355}{\sin(42° - 20°)} = 1.696
+$$
+
+</Step>
+<Step title="6. Overall pressure ratio">
+
+$$
+\frac{p_3}{p_1} = \frac{p_3}{p_2}\cdot\frac{p_2}{p_1} = 3.285 \times 5.226 = 17.17
+$$
+
+(17.09 with exact functions.)
+
+</Step>
+</Steps>
+
+<Answer>
+
+- (a) σ₁ = 32.5°, $p_2/p_1 = 5.23$, $M_2 = 2.56$
+- (b) σ₂ = 42.0° (from the region-2 flow), $p_3/p_1 = 17.2$, $M_3 = 1.70$
+
+</Answer>
+
+<ShockReflectionSim initialM={4} initialDelta={20} />
+
+<Traps>
+
+- **Anthony's mistake in (b):** he entered A3 with the *full* $M_2 = 2.6$ ($p_3/p_2 = 7.72$, $M_{3N} = 0.504$), treating the reflected shock as a normal shock, and got $p_3/p_1 = 38.4$. The table always takes the Mach number **normal to the shock you are crossing**: $M_2\sin\sigma_2 = 1.72$.
+- He also read the A3 row for 2.10 instead of 2.15 in (a) ($p_2/p_1 = 4.98$ instead of 5.21), which pushed $M_2$ up to 2.6.
+- σ₂ is measured from the region-2 flow, which is tilted 20°. Draw the reflected shock at 22° to the wall.
+- The reflection isn't mirror-like: σ₂ (42°) > σ₁ (32.5°) because the incoming flow is slower.
+- At δ₁ = 20° this M = 4 flow sits just below the von Neumann angle (20.9°); far from detachment (25.6°). With a blunter wedge it becomes a Mach reflection ([Chapter 12](#/mech430/ch/oblique)).
+
+</Traps>
+
+<Source>official 2025 solution pp. 5–6 · Anthony's tablet solution PS09-mine pp. 5–6</Source>
+
+</Problem>

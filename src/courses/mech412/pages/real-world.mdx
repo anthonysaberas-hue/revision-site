@@ -1,0 +1,63 @@
+<p className="eyebrow">Exam toolkit · intuition</p>
+
+# Control systems you use every day
+
+<div className="lede">
+
+You struggled with this course because the equations came before the pictures. Here are the pictures. Every system below is in the course, in disguise: find the **loop**, name the **poles**, and the exam question becomes a story you already know.
+
+</div>
+
+## 1 · The thermostat (<Ch slug="intro">Chapter 1</Ch>, <Ch slug="pid">17</Ch>)
+
+A thermometer measures, a box compares it with your dial, a furnace acts. **On/off control** hunts around the target; **P** control leaves a permanent offset when it is cold outside (the furnace needs a non-zero error to stay on); **I** removes the offset by accumulating the error; **D** anticipates ("the temperature is falling fast"). This is why PID exists. The poles of the house are slow (a time constant of an hour), which is why an integral term needs patience.
+
+## 2 · Cruise control (<Ch slug="steady-state-error">Chapter 15</Ch>, <Ch slug="pid">17</Ch>) · <LabLink lab="cruise">try it in the cruise lab</LabLink>
+
+A hill is a **disturbance**. With proportional control the car slows a little and stays slower (offset $\tfrac{1}{1+K}$); with integral action the controller keeps opening the throttle until the speed error is exactly zero. The steady-state error of a type-0 loop to a step is $1/(1+K_p)$: the exam's $e_{ss}$ question is a hill.
+
+## 3 · Car suspension and a shock absorber (<Ch slug="mech-models">Chapter 3</Ch>, <Ch slug="hydraulic-thermal">13</Ch>) · <LabLink lab="msd">mass–spring–damper lab</LabLink>
+
+Spring $k$, damper $c$, body mass $m$: $\omega_n=\sqrt{k/m}$ is the bounce frequency, $\zeta$ the comfort. Too little damping: you float over bumps. Too much: you feel every pothole. A **hydraulic dashpot in series with a spring** (the Maxwell element of the dashpot problems) transmits a sudden bump fully but ignores slow drift: it is a high-pass filter in metal.
+
+## 4 · A cordless drill (<Ch slug="electromechanical">Chapter 11</Ch>) · <LabLink lab="dc-motor">DC-motor lab</LabLink>
+
+Press the trigger: voltage, current, torque, the rotor accelerates, and as it speeds up the **back emf** grows until it nearly cancels the supply. Load it and the speed drops, drawing more current. That self-limiting is the term $K_bK_t$ in the denominator, and it is *extra damping*, never a negative one.
+
+## 5 · The toilet cistern (<Ch slug="hydraulic-thermal">Chapter 13</Ch>)
+
+A float valve is a proportional controller of level: when the level is low the valve opens wide; as it rises the valve closes. The tank is a **capacitor**, the outlet a **resistor** (the tank empties slowly through the orifice with $R=2H/Q$). Two such cisterns in series are the two-tank problem: the second responds more slowly than either alone.
+
+## 6 · Hard-disk drive and robot joints (<Ch slug="mech-models">Chapter 3</Ch>)
+
+A motor drives a head through a slightly flexible arm: two inertias joined by a spring and damper. The head lags the motor and rings; a little damping in the coupling adds a zero that helps. That is the flexible-shaft problem of the make-up midterm.
+
+## 7 · Power steering and aircraft control surfaces (<Ch slug="hydraulic-thermal">Chapter 13</Ch>) · <LabLink lab="hydraulic-servo">hydraulic servo lab</LabLink>
+
+You turn a light lever; a spool valve sends oil to a piston that does the heavy work. The piston moves at a speed proportional to the valve opening (an **integrator**), and the lever feeds the piston position back to the valve: that closes a loop and turns the integrator into a first-order lag. Add a dashpot to the feedback and you get PD or PI action.
+
+## 8 · The pneumatic controller in an old refinery or HVAC system (<Ch slug="acoustic-pneumatic">Chapter 12</Ch>)
+
+No electronics: a flapper over a nozzle makes a pressure signal; two rubber bellows and two air restrictors act as two RC lags; with a high-gain amplifier the controller becomes the *inverse of its feedback path*, which is P + I + D. The same idea as an op-amp PID, built from air.
+
+## 9 · Loudspeaker, microphone and shaker (<Ch slug="electromechanical">Chapter 11</Ch>, <Ch slug="analogies">10</Ch>)
+
+Current in the coil pushes the cone ($F=Bl\,i$); the moving cone induces a voltage back ($e=Bl\,\dot x$). The same coupling makes a speaker a microphone. The cone, the enclosure's air and the electrical filter form a chain of **mechanical, acoustic and electrical** subsystems joined by transformers and gyrators: the exam's cross-domain circuit.
+
+## 10 · A balancing robot or a rocket on its thrusters (<Ch slug="root-locus">Chapter 18</Ch>) · <LabLink lab="pendulum">pendulum lab</LabLink>
+
+An inverted pendulum falls: it has a pole in the right half-plane ($s=+1.39$ rad/s for the rocket in the final). Feedback of angle (stiffness larger than gravity's toppling) and rate (damping) moves the poles into the left half-plane. The minimum gain to stabilise is a **lower bound** (a Nyquist plot of an unstable plant must encircle $-1$ the other way).
+
+## 11 · An audio equaliser (<Ch slug="circuits-opamps">Chapter 8</Ch>, <Ch slug="bode-margins">19</Ch>)
+
+An op-amp with capacitors in the right places is a filter: a **band-pass** picks a tone (the MFB circuit), a **notch** removes mains hum (the bridged-T and twin-T), a **high-pass** blocks DC (the buffered LC filter). Reading a Bode plot is reading what the equaliser does at each frequency.
+
+## 12 · Why gain alone is never enough (<Ch slug="lead-lag">Chapter 20</Ch>, <Ch slug="nyquist">21</Ch>)
+
+Turn up a microphone's gain and it howls: the loop through the speaker comes back in phase and bigger. That is the Nyquist criterion in your ears: a curve that passes close to $-1$ means a system close to squealing; the **gain and phase margins** are how far you are from the howl. A **lead** compensator (look-ahead) buys phase; a **lag** (patience) buys accuracy.
+
+<Callout kind="note" title="Use these stories in the exam">
+
+When a question looks abstract, name the loop (what is measured, compared, actuated), name the energy stores (capacitors and inductors, hence the order), and ask the physical question first: *does it settle, overshoot, drift or squeal?* The mathematics is only the way to say how much.
+
+</Callout>

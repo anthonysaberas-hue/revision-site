@@ -1,0 +1,82 @@
+<p className="eyebrow">Midterm 1 · February 19, 2024 · McGill MECH 346 · 80 min · Question 3 only</p>
+
+# Midterm 1, February 2024 (Question 3)
+
+<div className="lede">
+
+Only **Question 3** of this paper is available (the 8-mark composite-wall problem with heat generation in the middle layer). It comes from a student's own attempt (5/8) and the regrade request; the page re-solves it cleanly and records where the grading did not match the work. Covers <Ch slug="conduction-eq">the conduction equation chapter</Ch> and <Ch slug="steady-conduction">steady conduction</Ch>. The statement is paraphrased.
+
+</div>
+
+<Problem id="Q3" title="Composite wall with uniform generation in the middle layer" tags="plane wall, heat generation, interface temperatures, location of the maximum, unknown k">
+
+<Statement>
+
+One-dimensional conduction in a plane composite wall of three layers A, B, C ($L_A=30$ mm, $L_B=30$ mm on each side of the middle plane so that B is 60 mm thick, $L_C=20$ mm; $k_A=25$ W/mK, $k_C=50$ W/mK). Both outer surfaces are exposed to fluid at 25 °C with $h=1000$ W/m²K. Uniform heat generation $\dot e_{gen}$ in B only. The highest temperature in A is 261 °C and the lowest temperature in C is 158 °C. Neglect contact resistance. Find (a) the lowest temperature in A, (b) the highest temperature in C, (c) $\dot e_{gen}$ in B, (d) the thermal conductivity $k_B$.
+
+</Statement>
+
+<Think>
+
+A and C have no generation: the heat flux is **constant** through each and the temperature is **linear**. In B the generation sends heat both ways, so the profile is a downward parabola with its maximum somewhere inside. For A and C, the temperature on the side touching B is the highest; the outer face (touching the fluid) the lowest. The two known temperatures therefore give the two outer fluxes via a series circuit, and the energy balance on B links them to $\dot e_{gen}$.
+
+</Think>
+
+<Plan>
+
+Left circuit $\to q''_L\to T_1$ (a). Right face: $q''_R=h(158-25)\to T_3$ (b). Energy balance of B: $\dot e_{gen}(2L_B)=q''_L+q''_R\to$ (c). Parabola in B with the known $T_2$, $T_3$, $q''_L\to k_B$ (d).
+
+</Plan>
+
+<Steps>
+<Step title="1. (a) Left side">
+
+$q''_L=\dfrac{T_2-T_\infty}{1/h+L_A/k_A}=\dfrac{261-25}{0.001+0.0012}=107\,273$ W/m². Lowest temperature in A: its outer face $T_1=T_\infty+\dfrac{q''_L}h=25+107.3=132.3$ °C.
+
+</Step>
+<Step title="2. (b) Right side">
+
+$q''_R=h(T_4-T_\infty)=1000(158-25)=133\,000$ W/m²; $T_3=T_4+q''_R\dfrac{L_C}{k_C}=158+133\,000\dfrac{0.02}{50}=211.2$ °C (highest in C: its face against B).
+
+</Step>
+<Step title="3. (c) Energy balance of B">
+
+Everything generated leaves through the two faces of B: $\dot e_{gen}(2L_B)=q''_L+q''_R$ with $2L_B=0.06$ m (the full thickness of B): $\dot e_{gen}=\dfrac{107\,273+133\,000}{0.06}=4.00\times10^6$ W/m³.
+
+</Step>
+<Step title="4. (d) $k_B$: parabola in B">
+
+Place $x=0$ at the A–B interface: $T(x)=T_2+\dfrac{q''_L}{k_B}x-\dfrac{\dot e_{gen}}{2k_B}x^2$ (the gradient at $x=0$ is $q''_L/k_B$, since the heat flowing left is $q''_L$). Impose $T(0.06)=T_3=211.2$:
+$$211.2=261+\frac{107\,273(0.06)}{k_B}-\frac{4.0045\times10^6(0.06)^2}{2k_B}\Rightarrow-49.8=\frac{6436.4-7208.2}{k_B}\Rightarrow k_B=15.5\ \text{W/mK}.$$
+
+</Step>
+<Step title="5. Extra: where is the maximum?">
+
+$dT/dx=0\Rightarrow x_{max}=\dfrac{q''_L}{\dot e_{gen}}=26.8$ mm from the A–B interface (and $q''_R/\dot e_{gen}=33.2$ mm from the B–C interface: the two add to 60 mm ✓). $T_{max}=261+\dfrac{\dot e_{gen}x_{max}^2}{2k_B}=261+\dfrac{4.0045\times10^6(0.02679)^2}{2(15.5)}=353.7$ °C.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**(a) 132.3 °C; (b) 211.2 °C; (c) $4.00\times10^6$ W/m³; (d) $k_B=15.5$ W/mK** (maximum temperature in B: 353.7 °C at 26.8 mm from the A side).
+
+</Answer>
+
+<Callout kind="note" title="The regrade request (5/8)">
+
+The graded attempt reaches **every one** of these numbers: $T_1=132.27$, $T_3=211.2$, the energy balance on B in the form $\dot e_{gen}(x_1+x_2)=\dot Q''_L+\dot Q''_R$ (with the origin at the point where $dT/dx=0$) giving $\dot e_{gen}=4.00\times10^6$, and $x_1=0.02679$ m. In (d) the attempt integrates the ODE to $T=-\dfrac{\dot ex^2}{2k}+C_1x+C_2$ and uses **three conditions** for the three unknowns $C_2,C_1,k$: $T(0)=261$, $T(0.06)=211.2$ and $dT/dx=0$ at $x=0.02679$. The grader's margin note "need more BCs" does not apply, because the third condition is independent (its location comes from the energy balance of part (c), not from $k$) and mathematically equivalent to $q''_L=k_BT'(0)$. Solving it gives $k=15.5$ W/mK, identical to the method above. So the marks lost (5/8) are not explained by an error in the physics; the regrade request is reasonable. (A red stroke across the correct part (a) is also unexplained.)
+
+</Callout>
+
+<Traps>
+
+- The *highest* temperature in A is at the interface with B, not at its outer face; the *lowest* is the outer face. Reading it the other way round is the most common slip.
+- Do not apply the generation energy balance to the whole wall with only one side: both sides lose heat.
+- If both outer films had different $h$ values, each flux would be computed with its own $h$.
+
+</Traps>
+
+<Source>Paper: Feb 19, 2024 Q3 (own attempt and regrade request). Recomputed: identical.</Source>
+
+</Problem>

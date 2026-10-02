@@ -1,0 +1,150 @@
+<p className="eyebrow">Chapter 5 · Lectures 5 and 7 · HW3</p>
+
+# Transfer functions, block-diagram algebra, signal-flow graphs and Mason's rule
+
+<div className="lede">
+
+A transfer function is the machine's *personality* in one fraction: feed it a signal, multiply by $G(s)$, get the output. Block diagrams let you build big machines out of small ones; signal-flow graphs and Mason's formula let you reduce a tangled diagram in one line without drawing ten intermediate pictures.
+
+</div>
+
+<Idea title="The 30-second version">
+
+- $G(s)=\dfrac{Y(s)}{U(s)}$ with zero initial conditions: **numerator roots = zeros, denominator roots = poles**.
+- Blocks in **series multiply**, in **parallel add**, and a **feedback loop** gives $\dfrac{G}{1+GH}$ (negative feedback).
+- For anything more tangled use **Mason**: $T=\dfrac{\sum_kP_k\Delta_k}{\Delta}$.
+
+</Idea>
+
+## Transfer function: the definition and what it hides
+
+For a linear time-invariant ODE
+$a_0y^{(n)}+\dots+a_ny=b_0u^{(m)}+\dots+b_mu$, take the Laplace transform with **zero initial conditions**:
+
+$$
+G(s)=\frac{Y(s)}{U(s)}=\frac{b_0s^m+\dots+b_m}{a_0s^n+\dots+a_n}.
+$$
+
+If the input is a unit impulse, $U=1$ and $Y=G$, so **$g(t)=\mathcal L^{-1}\{G\}$ is the impulse response**. Zero initial conditions means a transfer function describes only the *forced* response; the free response from initial conditions needs the state-space form (Chapter 7).
+
+*Examples.* A mass–spring–damper: $\dfrac Y F=\dfrac1{ms^2+bs+k}$. The Matlab line `sys=tf(6,[5 2 4])` is $\dfrac6{5s^2+2s+4}$: $\omega_n=\sqrt{4/5}=0.894$, $\zeta=\dfrac2{2\sqrt{20}}=0.224$, DC gain $1.5$; its step response overshoots by 49 %.
+
+### Turning an EOM into a transfer function when a node has no mass
+
+The step students mishandle: a junction that **has no mass** carries no inertia, so the forces on it **balance** exactly. Use this to eliminate it.
+
+**Example** ($\text{MT1 W2009 Q3}$): mass $m=0.1$ kg hung from the ceiling by spring $k_1=6$ N/m, and also by the series pair spring $k_2=4$ N/m + dashpot $b=0.4$ N·s/m (the dashpot's top is fixed; its lower end, a massless point $z$, joins the spring). Force $u$ on the mass.
+
+1. *Mass:* $m\ddot y+k_1y+k_2(y-z)=u$.
+2. *Massless junction $z$:* spring pull = dashpot pull, $k_2(y-z)=b\dot z$.
+3. Laplace: $[ms^2+k_1+k_2]Y=k_2Z+U$ and $k_2Y=(k_2+bs)Z$, so $Z=\dfrac{k_2Y}{k_2+bs}$.
+4. Substitute: $\big[(ms^2+k_1+k_2)(k_2+bs)-k_2^2\big]Y=(k_2+bs)U$.
+5. Expand: $\dfrac YU=\dfrac{bs+k_2}{mbs^3+mk_2s^2+(k_1+k_2)bs+k_1k_2}=\dfrac{10s+100}{s^3+10s^2+100s+600}$.
+6. *Sanity check:* DC gain $100/600=1/6=1/k_1$ ✔. At rest the series damper "lets go", so only $k_1$ holds the mass.
+
+(Another one, $\text{F2011 Q3}$: a massless point joined to the input by a spring $k$ **in parallel with** a dashpot $R_1$ and to the wall by $R_2$: $k(u-y)+R_1(\dot u-\dot y)=R_2\dot y\Rightarrow Y/U=\dfrac{s+3}{2s+3}$ for $k=6$, $R_1=R_2=2$. It has a zero: at high frequency the two dashpots form a divider $R_1/(R_1+R_2)=\tfrac12$.)
+
+*A velocity output is $s$ times the position output:* $\dfrac{sX}{F}$ (MT1 F2007 Q2).
+
+## Block-diagram algebra
+
+| Operation | Rule |
+|---|---|
+| summing point | output $=$ sum of inputs with their signs |
+| branching (pick-off) point | copies the signal (does not load it) |
+| **cascade** | $X_1\to G_1\to G_2\to X_3$ is $G_1G_2$ |
+| **parallel** | $G_1\pm G_2$ |
+| **negative feedback loop** | $\dfrac CR=\dfrac{G}{1+GH}$ (use $1-GH$ for positive feedback) |
+
+<BlockDiagram blocks={[{label:'G(s)',sub:'forward'}]} feedback={{label:'H(s)',sub:'feedback'}} input="R(s)" output="C(s)" errorLabel="E" caption="The basic loop. With negative feedback: C/R = G/(1+GH); error ratio E/R = 1/(1+GH); feedback ratio B/R = GH/(1+GH)." />
+
+**Three loop ratios to memorise** (they are on Anthony's crib sheet):
+
+$$
+\frac CR=\frac{G}{1+GH},\qquad \frac ER=\frac1{1+GH},\qquad \frac BR=\frac{GH}{1+GH}.
+$$
+
+<Trap title="The sign convention in the formula">
+
+$C/R=G/(1\pm GH)$: **negative feedback puts a plus in the denominator.** Anthony circled this on his review because the slides write it two ways. Always check the signs at the summing junction before you write the formula.
+
+</Trap>
+
+**Moving blocks around.** To move a *pick-off point* past a block $G$ to the right of it, the tapped copy now needs a $G$ in its branch; to move it to the left, a $1/G$. To move a *summing point* the other way, same idea. Derive each by asking "what signal must the branch carry so the original is unchanged?"
+
+**Worked example ($\text{HW3 Q1a}$): third-order system from three integrators.**
+$1/s$ blocks in series with states $X_1,X_2,X_3$; feedback gains $-a_1,-a_2,-a_3$ to the first summer; output $Y=b_1X_1+b_2X_2+b_3X_3$.
+
+1. Summer: $U-a_1X_1-a_2X_2-a_3X_3=sX_1$.
+2. With $X_2=X_1/s$ and $X_3=X_1/s^2$: $U=\dfrac{s^3+a_1s^2+a_2s+a_3}{s^2}X_1$.
+3. Output: $Y=\dfrac{b_1s^2+b_2s+b_3}{s^2}X_1$.
+4. Divide: $\boxed{\dfrac YU=\dfrac{b_1s^2+b_2s+b_3}{s^3+a_1s^2+a_2s+a_3}}$.
+
+*What this means:* this is exactly how an analog computer (or a Simulink model) realises a 3rd-order ODE with three integrators. It is also the *controllable canonical form* of Chapter 7.
+
+## Signal-flow graphs and Mason's formula
+
+A **signal-flow graph** replaces each block by a branch with a gain and each summing point by a node. Rules from the slides:
+
+- the node variable = the **sum of all signals entering it**;
+- a **path** is a run of branches in the arrow direction that meets no node twice;
+- a **loop** is a closed path;
+- two loops are **non-touching** if they share no node.
+
+**Mason's gain formula:**
+
+$$
+T=\frac{Y}{R}=\frac{\sum_kP_k\,\Delta_k}{\Delta},\qquad
+\Delta=1-\sum L_n+\sum_{\text{non-touching pairs}}L_nL_m-\sum_{\text{triples}}L_nL_mL_p+\cdots
+$$
+
+- $P_k$ = gain of the $k$-th forward path (product of the branch gains).
+- $L_n$ = gain of the $n$-th loop (product around the loop, with its sign).
+- $\Delta_k$ = $\Delta$ **with every loop that touches path $k$ removed**.
+
+**Recipe (Anthony's three lines):** (1) list all forward paths; (2) list all loops; (3) mark which loops don't touch each other, and which don't touch each path.
+
+### Worked example 1 (all loops touch the path)
+
+Forward chain $R\to G_1\to G_2\to G_3\to G_4\to Y$ with $H_2$ negative from the output of $G_3$ to before $G_2$, $H_1$ positive from $Y$ to before $G_3$, $H_3$ negative from $Y$ to the first summer.
+
+- One path: $P_1=G_1G_2G_3G_4$.
+- Loops: $L_1=-G_2G_3H_2$, $L_2=+G_3G_4H_1$, $L_3=-G_1G_2G_3G_4H_3$. All touch each other and the path, so $\Delta_1=1$, no pairs.
+- $T=\dfrac{G_1G_2G_3G_4}{1+G_2G_3H_2-G_3G_4H_1+G_1G_2G_3G_4H_3}$. (Numerical check with $G=2,3,5,7$, $H=0.3,0.2,0.1$: Mason and direct elimination both give $14.4828$.)
+
+### Worked example 2 (non-touching loops matter: HW3 Q1b)
+
+Chain $U\to\Sigma_1\to H_1\to\Sigma_2\to H_2\to\Sigma_3\to H_3\to Y$, plus a feed-forward $H_4$ from the first node to $\Sigma_4$, feedbacks $H_5$ (node 4 to $\Sigma_1$), $H_6$ (node 5 to $\Sigma_2$), $H_7$ (output to $\Sigma_3$); all signs positive.
+
+1. Forward paths: $P_1=H_1H_2H_3$, $P_2=H_4$.
+2. Loops: $L_1=H_1H_5$, $L_2=H_2H_6$, $L_3=H_3H_7$, $L_4=H_4H_7H_6H_5$.
+3. Non-touching: only $L_1$ and $L_3$ share no node.
+4. $\Delta=1-(L_1+L_2+L_3+L_4)+L_1L_3$.
+5. $\Delta_1=1$ (every loop touches $P_1$). $\Delta_2=1-L_2$ (only $L_2$ misses $P_2$).
+6. $$T=\frac{H_1H_2H_3+H_4(1-H_2H_6)}{1-H_1H_5-H_2H_6-H_3H_7-H_4H_5H_6H_7+H_1H_3H_5H_7}.$$
+
+<Trap title="Mason mistakes">
+
+- A two-node loop's gain is the **product** $a_{12}a_{21}$, not the sum (Anthony's page wrote $a_{12}+a_{21}$ in $\Delta$).
+- Count each loop once. His figure had a stray fourth loop that double-counted the two-node loop.
+- "Positive-sign summers" means loop gains are just the products of the blocks. With a negative sign at a summer the loop gain carries that minus.
+
+</Trap>
+
+## Pole movements and what they do (poll answers)
+
+Anthony's list from the polls: move poles **vertically** (parallel to the imaginary axis): $\omega_d$ changes, $\sigma$ stays, overshoot rises when they move away from the axis. **Radially** outward: $\omega_n$ rises, $\zeta$ constant, same overshoot but faster. **Horizontally to the left**: $\omega_d$ constant, overshoot falls, more stable.
+
+<Examined>
+
+- Block-diagram reduction and Mason: <Hw n="3">HW3</Hw> Q1, $\text{MT1 W2009 Q1}$ (a motor loop with $K_es$ velocity feedback: $X/V=\dfrac{K_f}{mLs^3+(bL+mR)s^2+(kL+bR+K_fK_e)s+kR}$), MT1 W2017/W2019.
+- Reading a TF from a diagram: $\text{MT1 F2011 Q2}$.
+- Massless nodes: $\text{MT1 W2009 Q3}$, $\text{F2011 Q3}$.
+
+</Examined>
+
+### Check yourself
+
+1. Close the loop on $G=\dfrac{K}{s(s+2)}$ with unity feedback. *($\dfrac K{s^2+2s+K}$.)*
+2. Why does a massless node give an *algebraic* force balance instead of a differential equation? *(No mass, no $m\ddot z$ term: the net force must vanish.)*
+3. In Mason's formula, what does $\Delta_k$ remove? *(All loops that touch the $k$-th path.)*

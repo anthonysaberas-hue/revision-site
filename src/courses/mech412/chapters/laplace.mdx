@@ -1,0 +1,219 @@
+<p className="eyebrow">Chapter 2 · Lectures 2 · T01 · HW1</p>
+
+# Complex numbers, Laplace, partial fractions, IVT/FVT
+
+<div className="lede">
+
+Differential equations are hard; algebra is easy. The Laplace transform turns calculus into algebra: differentiation becomes multiplication by $s$, an ODE becomes a polynomial equation, you solve it, and you transform back. This chapter is the toolbox every later chapter uses: **partial fractions** to go back to time, and the **initial / final value theorems** to read the start and end of a response without inverting anything.
+
+</div>
+
+<Idea title="The 30-second version">
+
+1. Replace $f(t)$ by $F(s)=\int_0^\infty f(t)e^{-st}\,dt$. Derivatives become $sF-f(0)$, integrals become $F/s$.
+2. A linear ODE with constant coefficients becomes $Y(s)=\dfrac{\text{numerator}}{\text{denominator}}$, a ratio of polynomials in $s$.
+3. **Poles** (roots of the denominator) decide the *shape* of $y(t)$ (decay rates and oscillation frequencies); **residues** (the partial-fraction numbers) decide the *amounts*.
+4. Invert with a table after splitting into simple pieces (partial fractions). Check with the IVT ($t=0^+$) and the FVT ($t=\infty$).
+
+</Idea>
+
+## Warm-up: complex numbers
+
+You need them because poles are complex. A complex number can be written two ways:
+
+$$
+z=x+jy=Ae^{j\varphi}=A(\cos\varphi+j\sin\varphi),\qquad A=\sqrt{x^2+y^2},\quad \varphi=\operatorname{atan2}(y,x).
+$$
+
+<Trap title="Plain arctan loses the quadrant">
+
+$\tan^{-1}(y/x)$ is only right in quadrants 1 and 4. In quadrant 2 add $\pi$, in quadrant 3 subtract $\pi$ (or use `atan2`). Anthony marked this with a ⚠. Example: $z=-1+j$ has $\varphi=135^\circ$, not $-45^\circ$.
+
+</Trap>
+
+**Why engineers like polar form:** multiplying complex numbers multiplies the magnitudes and *adds* the angles; dividing subtracts them. That is exactly how a transfer function's gain and phase are computed at a frequency (Chapter 6).
+
+## The transform, its inverse and the rules
+
+$$
+F(s)=\mathcal L\{f\}=\int_0^\infty f(t)\,e^{-st}\,dt,\quad s=\sigma+j\omega,\qquad f(t)=\frac{1}{2\pi j}\int_{c-j\infty}^{c+j\infty}F(s)e^{st}\,ds .
+$$
+
+You will never evaluate the inverse integral on an exam; you use the table. The rules you do use:
+
+| Rule | Formula | Physical meaning |
+|---|---|---|
+| linearity | $\mathcal L\{af_1+bf_2\}=aF_1+bF_2$ | superposition |
+| derivative | $\mathcal L\{f'\}=sF-f(0)$, $\mathcal L\{f''\}=s^2F-sf(0)-f'(0)$ | initial conditions appear automatically |
+| integral | $\mathcal L\{\int_0^t f\}=F/s$ | integrator = $1/s$ (this is why block diagrams use $1/s$ boxes) |
+| time shift | $\mathcal L\{f(t-a)H(t-a)\}=e^{-as}F(s)$ | a delay of $a$ seconds |
+| $t$-multiplication | $\mathcal L\{t\,f\}=-F'(s)$ | handy for double poles |
+
+### The table you need (Anthony's circled pairs)
+
+| $f(t)$, $t\ge0$ | $F(s)$ |
+|---|---|
+| $\delta(t)$ | $1$ |
+| $1$ (unit step) | $\dfrac1s$ |
+| $t$ | $\dfrac1{s^2}$ |
+| $t^n$ | $\dfrac{n!}{s^{n+1}}$ |
+| $e^{-at}$ | $\dfrac1{s+a}$ |
+| $t\,e^{-at}$ | $\dfrac1{(s+a)^2}$ |
+| $\sin\omega t$ | $\dfrac{\omega}{s^2+\omega^2}$ |
+| $\cos\omega t$ | $\dfrac{s}{s^2+\omega^2}$ |
+| $e^{-at}\sin\omega t$ | $\dfrac{\omega}{(s+a)^2+\omega^2}$ |
+| $e^{-at}\cos\omega t$ | $\dfrac{s+a}{(s+a)^2+\omega^2}$ |
+
+<Remember>
+
+The last two rows are the ones his red box says are "useful for 2nd order systems". Every underdamped response you will meet is a combination of exactly these two. Also: $\sin t=\dfrac{e^{jt}-e^{-jt}}{2j}$ (he wrote $/2$; it is $/2j$) and $\cos t=\dfrac{e^{jt}+e^{-jt}}{2}$.
+
+</Remember>
+
+## Poles, zeros, proper and improper
+
+Write $F(s)=\dfrac{B(s)}{A(s)}=\dfrac{K(s+z_1)\cdots(s+z_m)}{(s+p_1)\cdots(s+p_n)}$.
+
+- **Zeros** $=$ roots of the *numerator* (F is zero there). **Poles** $=$ roots of the *denominator* (F blows up).
+- A factor $(s+p)^k$ in the denominator is a **repeated pole of order $k$**.
+- **Proper** means degree of $A$ > degree of $B$. If not (improper), *divide first*: you get a polynomial part (which inverts to derivatives of $\delta(t)$) plus a proper remainder.
+
+<Trap title="Don't mix up zeros and poles">
+
+Anthony's page says "zeros = roots of $Y(s)$, poles = roots of $U(s)$": that is loose. For a transfer function $G=Y/U$ the zeros are the roots of the *numerator polynomial of $G$* and the poles the roots of its *denominator polynomial*.
+
+</Trap>
+
+## Partial fractions: the whole method in four moves
+
+**Real-life picture.** A complicated response is a *chord* made of simple notes. Each pole is a note: a real pole $-p$ is a decaying exponential $e^{-pt}$; a complex pair $-\sigma\pm j\omega$ is a decaying oscillation $e^{-\sigma t}\cos(\omega t+\cdot)$. Partial fractions find how loud each note is.
+
+### Case 1: distinct real poles
+
+$$
+F=\frac{a_1}{s+p_1}+\cdots+\frac{a_m}{s+p_m},\qquad a_k=\Big[(s+p_k)F(s)\Big]_{s=-p_k},\qquad f(t)=\sum a_ke^{-p_kt}.
+$$
+
+**Worked example 1** (poll 1): $F=\dfrac{s+3}{(s+1)(s+2)}$.
+
+1. Split: $F=\dfrac{a}{s+1}+\dfrac{b}{s+2}$.
+2. *Cover-up for $a$:* multiply by $(s+1)$ and set $s=-1$: $a=\dfrac{-1+3}{-1+2}=2$.
+3. *Cover-up for $b$:* multiply by $(s+2)$ and set $s=-2$: $b=\dfrac{-2+3}{-2+1}=-1$.
+4. $f(t)=2e^{-t}-e^{-2t}$. *Check:* $f(0)=1$ and $\lim_{s\to\infty}sF=1$ ✔ (IVT).
+
+*What this means physically:* a fast mode $e^{-2t}$ and a slow mode $e^{-t}$; the slow one dominates after a while.
+
+### Case 2: complex pair (the one you always get for 2nd-order systems)
+
+An irreducible quadratic $s^2+as+b$ in the denominator: **complete the square** to $(s+\alpha)^2+\omega^2$ and split the numerator into an $(s+\alpha)$ part and an $\omega$ part:
+
+$$
+\frac{Bs+C}{(s+\alpha)^2+\omega^2}=B\,\frac{(s+\alpha)}{(s+\alpha)^2+\omega^2}+\frac{C-B\alpha}{\omega}\cdot\frac{\omega}{(s+\alpha)^2+\omega^2}.
+$$
+
+**Worked example 2** ($\text{MT1 W2009 Q2}$): $F=\dfrac{3s^2+2s+2}{(s+2)(s^2+2s+5)}$.
+
+1. Form: $F=\dfrac{A}{s+2}+\dfrac{Bs+C}{s^2+2s+5}$.
+2. *Real pole by cover-up:* $A=\dfrac{3(4)-4+2}{4-4+5}=\dfrac{10}{5}=2$.
+3. *Match numerators:* $3s^2+2s+2=2(s^2+2s+5)+(Bs+C)(s+2)=(2+B)s^2+(4+2B+C)s+(10+2C)$.
+4. $s^2$: $2+B=3\Rightarrow B=1$. $s^0$: $10+2C=2\Rightarrow C=-4$. *Check with $s^1$:* $4+2-4=2$ ✔. (**Always do this third equation as a free check.**)
+5. *Complete the square:* $s^2+2s+5=(s+1)^2+2^2$. Rewrite the numerator: $s-4=(s+1)-5=(s+1)-\tfrac52\cdot2$.
+6. $F=\dfrac2{s+2}+\dfrac{s+1}{(s+1)^2+2^2}-\dfrac52\cdot\dfrac2{(s+1)^2+2^2}$.
+7. $f(t)=2e^{-2t}+e^{-t}\cos2t-\tfrac52e^{-t}\sin2t$. *Check:* $f(0)=2+1=3=\lim sF$ ✔.
+
+<ToolLink tool="pfe">Check it in the partial-fraction calculator</ToolLink>
+
+### Case 3: repeated poles
+
+For $(s+p)^m$: $F=\dfrac{b_m}{(s+p)^m}+\cdots+\dfrac{b_1}{s+p}$, with
+
+$$
+b_{m-j}=\frac1{j!}\frac{d^j}{ds^j}\Big[(s+p)^mF(s)\Big]_{s=-p}.
+$$
+
+(Anthony's page only shows $b_m$ and $b_{m-1}$; the $\tfrac1{j!}$ form is what you need for the third coefficient of a triple pole.)
+
+**Worked example 3** ($\text{MT1 F2007 Q1}$): $\dfrac1{s^3(s+1)}$.
+
+1. $\dfrac{1}{s^3(s+1)}=\dfrac{A}{s+1}+\dfrac{B}{s^3}+\dfrac{C}{s^2}+\dfrac{D}{s}$.
+2. $A=\left.\dfrac1{s^3}\right|_{s=-1}=-1$.
+3. Let $g(s)=\dfrac1{s+1}$ (what is left after multiplying by $s^3$). $B=g(0)=1$; $C=g'(0)=-\dfrac1{(s+1)^2}\Big|_0=-1$; $D=\tfrac12g''(0)=\tfrac12\cdot\dfrac2{(s+1)^3}\Big|_0=1$.
+4. $\dfrac1{s^3(s+1)}=-\dfrac1{s+1}+\dfrac1{s^3}-\dfrac1{s^2}+\dfrac1s$. *Check at $s=1$:* LHS $\tfrac12$; RHS $-\tfrac12+1-1+1=\tfrac12$ ✔.
+5. $f(t)=-e^{-t}+\tfrac{t^2}2-t+1$.
+
+**Another one** (poll 4): $\dfrac{s^2+2s+3}{(s+1)^3}$. Write the numerator in powers of $(s+1)$: $s^2+2s+3=(s+1)^2+2$. Then $F=\dfrac1{s+1}+\dfrac2{(s+1)^3}$ and $f=(1+t^2)e^{-t}$. (*Trick: when the pole is not at zero, re-centre the numerator on $(s+1)$.*)
+
+### Case 4: improper
+
+**Poll 2:** $\dfrac{s^3+5s^2+9s+7}{(s+1)(s+2)}$. Divide: $s^3+5s^2+9s+7=(s^2+3s+2)(s+2)+(s+3)$, so $F=s+2+\dfrac{s+3}{(s+1)(s+2)}$. The $s+2$ inverts to $\delta'(t)+2\delta(t)$; the remainder is Example 1. $f=\delta'+2\delta+2e^{-t}-e^{-2t}$.
+
+### A special trick for $(s+1)/(s^2+2s+2)^2$ (HW1 review)
+
+Notice $\dfrac{s+1}{(s^2+2s+2)^2}=-\dfrac12\dfrac{d}{ds}\dfrac1{s^2+2s+2}$. Since $\mathcal L\{tg\}=-G'$, the inverse is $\tfrac t2\,g(t)=\tfrac t2e^{-t}\sin t$. (Anthony's last line has a sign slip; the answer is $+\tfrac t2e^{-t}\sin t$.)
+
+## IVT and FVT: reading the response without inverting
+
+$$
+f(0^+)=\lim_{s\to\infty}sF(s),\qquad f(\infty)=\lim_{s\to0}sF(s).
+$$
+
+<Trap title="The FVT has a condition nobody wrote on the slides">
+
+It is valid **only if every pole of $sF(s)$ is in the open left half-plane** (so the response actually settles). For $F=\dfrac{1}{s^2+4}$ the limit exists but means nothing: the response oscillates forever. Always check stability *first* (Chapters 16–17 rely on this).
+
+</Trap>
+
+*Use:* the response of $y''+4y'+3y=6u$, $y(0)=2$, $y'(0)=0$, to a step of height 5 has $Y=\dfrac{2s+8}{(s+1)(s+3)}+\dfrac{6}{(s+1)(s+3)}\cdot\dfrac5s$. FVT: $y(\infty)=\dfrac{30}{3}=10$ without inverting. Full inverse: $y=10-12e^{-t}+4e^{-3t}$. Check $y(0)=2$ ✔.
+
+## Solving an ODE with initial conditions (the recipe)
+
+For $a\ddot y+b\dot y+cy=u(t)$ transform term by term:
+
+$$
+(as^2+bs+c)\,Y=U+\underbrace{(as+b)\,y(0)+a\,\dot y(0)}_{\text{initial conditions}}\quad\Longrightarrow\quad Y=\underbrace{\frac{U}{as^2+bs+c}}_{\text{forced}}+\underbrace{\frac{(as+b)y(0)+a\dot y(0)}{as^2+bs+c}}_{\text{free}} .
+$$
+
+**Worked example 4** ($\text{MT1 F2011 Q1}$): $\ddot y+\dot y+3y=0$, $y(0)=1$, $\dot y(0)=2$.
+
+1. Transform: $[s^2Y-s(1)-2]+[sY-1]+3Y=0\Rightarrow(s^2+s+3)Y=s+3$.
+2. $Y=\dfrac{s+3}{s^2+s+3}$, with $s^2+s+3=(s+\tfrac12)^2+\tfrac{11}4$, so $\omega=\tfrac{\sqrt{11}}2$.
+3. Numerator $s+3=(s+\tfrac12)+\tfrac52$. The sine needs a numerator of $\omega=\tfrac{\sqrt{11}}2$: $\tfrac52=\tfrac5{\sqrt{11}}\cdot\tfrac{\sqrt{11}}2$.
+4. $y(t)=e^{-t/2}\Big[\cos\tfrac{\sqrt{11}}2t+\tfrac5{\sqrt{11}}\sin\tfrac{\sqrt{11}}2t\Big]$.
+5. *Check:* $y(0)=1$ ✔; $\dot y(0)=-\tfrac12+\tfrac5{\sqrt{11}}\cdot\tfrac{\sqrt{11}}2=2$ ✔.
+
+<Trap title="The free term is not just y(0)/(s²+…)">
+
+Anthony's page (and a lot of students) wrote $Y=U/(\ldots)+y(0)/(\ldots)$. The correct free term for $\ddot y+2\dot y+2y$ with $y(0)=0,\dot y(0)=1$ is $[\dot y(0)+(s+2)y(0)]/(s^2+2s+2)=1/(s^2+2s+2)$, i.e. $e^{-t}\sin t$. Derive it from the derivative rule every time.
+
+</Trap>
+
+## Pulses and shifted inputs (MT1 F2007 Q1)
+
+A pulse of height 1 from $t=0.5$ to $t=1$ is $u=H(t-0.5)-H(t-1)$, so $U=\dfrac{e^{-0.5s}-e^{-s}}s$. For $\dfrac{X}{U}=\dfrac1{s^2(s+1)}$:
+
+$$
+X=\frac{e^{-0.5s}-e^{-s}}{s^3(s+1)}\;\Rightarrow\; x(t)=h(t-0.5)H(t-0.5)-h(t-1)H(t-1),\quad h(t)=-e^{-t}+\tfrac{t^2}2-t+1 .
+$$
+
+For $t>1$ both steps are on: $x(t)=e^{-(t-1)}-e^{-(t-0.5)}+\tfrac12\big[(t-0.5)^2-(t-1)^2\big]-0.5$. The recipe: *solve the unit-step response once, then shift and subtract.*
+
+<Examined>
+
+Laplace skills appear on every MT1:
+
+- partial fractions with a complex pair: $\text{MT1 W2009 Q2}$; repeated pole: MT1 F2007 Q1; with initial conditions: MT1 F2011 Q1; final-exam impulse response $\text{F2009 P1}$;
+- <Hw n="1">HW1</Hw> Q3–Q5 (shifted functions, five inverse transforms, three ODEs) and T01;
+- MCQs: IVT statement, Matlab `residue` ordering for repeated poles (the residues come out in ascending power).
+
+Exam habit: after any inversion, test $f(0)$ against the IVT.
+
+</Examined>
+
+### Check yourself
+
+1. Invert $\dfrac{2s+12}{s^2+2s+5}$. *(Write $2(s+1)+10$: $2e^{-t}\cos2t+5e^{-t}\sin2t$.)*
+2. What is $\lim_{t\to\infty}f(t)$ for $F=\dfrac{10}{s(s+2)}$? *(5.)*
+3. Why is $\dfrac{s^2+1}{s+1}$ not ready for partial fractions? *(Improper: divide first.)*
+4. The residues for the double pole at zero in `residue` come out as $[0\ 1]$. Is that $0/s+1/s^2$ or $1/s+0/s^2$? *(Ascending power: $0/s+1/s^2$.)*
+
+<PfeTool />

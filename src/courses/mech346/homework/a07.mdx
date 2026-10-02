@@ -1,0 +1,518 @@
+<p className="eyebrow">Assignment 7 · Chapter 7 · external forced convection · instructor solutions provided</p>
+
+# Assignment 7: flat plate, cylinder, sphere and tube bank
+
+<div className="lede">
+
+Eight textbook problems on <Ch slug="external-flow">external forced convection</Ch> (7-26, 7-35, 7-65, 7-69, 7-80, 7-87, 7-88, 7-106). Each one follows the same routine: (1) film temperature and properties, (2) $Re$ and regime, (3) the correlation of the geometry, (4) $Nu$ then $h$, (5) the energy balance. **One of the six final-exam problems comes from the assignments**, so be able to redo each of these cold. Every number below was recomputed; the printed solutions agree except for one small discrepancy in 7-88 (flagged).
+
+</div>
+
+<Problem id="7-26" title="Fan cooling of a transformer heat sink: find the minimum air speed" tags="flat plate, laminar, inverse problem, fin efficiency 1">
+
+<Statement>
+
+A fan blows 25 °C air parallel to the passages of a finned heat sink on a transformer. The heat sink base is $10\times6.2$ cm; it carries 7 fins, each $10$ cm long, $0.5$ cm high and $0.2$ cm thick (the 7 fin bases cover $7\times0.2\times10$ cm$^2$ of the base). The transformer dissipates 12 W and the surface must stay at 60 °C. Assume the fin efficiency is 1 (isothermal fins), radiation negligible. Find the **minimum free-stream velocity** the fan must provide. Take the flow as laminar over the whole surface.
+
+</Statement>
+
+<Think>
+
+An *inverse* problem: the heat rate is fixed (12 W) and I must find the speed. So I go **backwards**: $\dot Q\to h\to Nu\to Re\to V$. Because it's laminar and flat-plate, $Nu=0.664Re^{1/2}Pr^{1/3}$ can be inverted by hand. The only trap is the **area**: it is the total finned area (fins plus the unfinned base).
+
+</Think>
+
+<Plan>
+
+Total area $\to$ $h=\dot Q/(A\Delta T)$ $\to$ $Nu=hL/k$ $\to$ $Re_L=(Nu/0.664Pr^{1/3})^2$ $\to$ $V=Re_L\nu/L$ $\to$ check $Re_L<5\times10^5$.
+
+</Plan>
+
+<Steps>
+<Step title="1. Film temperature and properties">
+
+$T_f=(60+25)/2=42.5$ °C. Air: $k=0.02681$ W/mK, $\nu=1.726\times10^{-5}$ m²/s, $Pr=0.7248$.
+
+</Step>
+<Step title="2. Heat-transfer area">
+
+Fin surfaces (both sides of each fin, the 0.5 cm height; the fin tips are neglected): $A_{fin}=2\times7\times(0.10)(0.005)=0.0070$ m². Unfinned base: base area minus the fin footprints, $0.10(0.062)-7(0.002)(0.10)=0.0062-0.0014=0.0048$ m². Total $A_s=0.0118$ m².
+
+</Step>
+<Step title="3. Heat transfer coefficient from Newton's law">
+
+With $\eta=1$: $\dot Q=hA_s(T_s-T_\infty)\Rightarrow h=\dfrac{12}{0.0118(60-25)}=29.06$ W/m²K.
+
+</Step>
+<Step title="4. Nusselt number">
+
+The flow length is the plate length along the flow, $L=0.1$ m: $Nu=\dfrac{hL}k=\dfrac{29.06(0.1)}{0.02681}=108.4$.
+
+</Step>
+<Step title="5. Invert the laminar plate correlation">
+
+$Nu=0.664Re_L^{1/2}Pr^{1/3}\Rightarrow Re_L=\left(\dfrac{Nu}{0.664Pr^{1/3}}\right)^2=\left(\dfrac{108.4}{0.664(0.7248)^{1/3}}\right)^2=\left(\dfrac{108.4}{0.5965}\right)^2=3.30\times10^4$.
+
+</Step>
+<Step title="6. Velocity and check">
+
+$V=\dfrac{Re_L\nu}L=\dfrac{3.30\times10^4(1.726\times10^{-5})}{0.1}=5.70$ m/s. $Re_L=3.3\times10^4<5\times10^5$: the laminar assumption holds ✓.
+
+</Step>
+</Steps>
+
+<Answer>
+
+$h=29.06$ W/m²K, $Nu=108.4$, $Re_L=3.30\times10^4$, **$V_{min}=5.70$ m/s**.
+
+</Answer>
+
+<Traps>
+
+- Using only the fin area, or only the base area, changes $h$ by 2×. The heat leaves through **all** the surfaces; with $\eta=1$ the fins count fully.
+- Do not forget to **check** that $Re_L$ is below $5\times10^5$ after solving.
+- For real fins ($\eta<1$) you would write $\dot Q=h(\eta A_{fin}+A_{unfinned})\Delta T$.
+
+</Traps>
+
+<Source>Assignment 7 solution, 7-26. Recomputed: identical.</Source>
+
+</Problem>
+
+<Problem id="7-35" title="Hot engine block under a moving car: convection plus radiation" tags="flat plate, turbulent over the entire surface, radiation">
+
+<Statement>
+
+A car travels at 80 km/h. The bottom surface of the engine block, $0.8$ m long (in the flow direction) and $0.4$ m wide, is at 100 °C with $\varepsilon=0.95$. The air is at 20 °C and the road/surroundings at 25 °C. Because of the constant agitation of the block, assume the flow is **turbulent over the entire surface**. Find the heat transfer rate from this surface.
+
+</Statement>
+
+<Think>
+
+Two parallel paths: convection to the air and radiation to the road. Compute each and add. The statement tells me the regime (turbulent from the start), so the *tripped* formula $0.037Re^{0.8}Pr^{1/3}$ is used instead of the combined one: even though $Re_L$ is above $5\times10^5$, I must **not subtract 871**.
+
+</Think>
+
+<Steps>
+<Step title="1. Properties at the film temperature 60 °C">
+
+$k=0.02808$ W/mK, $\nu=1.896\times10^{-5}$ m²/s, $Pr=0.7202$.
+
+</Step>
+<Step title="2. Reynolds number">
+
+$V=80/3.6=22.22$ m/s; $Re_L=\dfrac{VL}\nu=\dfrac{22.22(0.8)}{1.896\times10^{-5}}=9.376\times10^5>5\times10^5$. Left alone this would be a mixed layer, but the statement says turbulent everywhere.
+
+</Step>
+<Step title="3. Nusselt number and $h$">
+
+$Nu=0.037Re_L^{0.8}Pr^{1/3}=0.037(9.376\times10^5)^{0.8}(0.7202)^{1/3}=0.037(59\,940)(0.8964)=1988$. $h=\dfrac kLNu=\dfrac{0.02808}{0.8}(1988)=69.78$ W/m²K.
+
+</Step>
+<Step title="4. Convection">
+
+$A_s=0.8(0.4)=0.32$ m². $\dot Q_{conv}=hA_s(T_s-T_\infty)=69.78(0.32)(80)=1786$ W.
+
+</Step>
+<Step title="5. Radiation to the surroundings at 25 °C">
+
+$\dot Q_{rad}=\varepsilon A_s\sigma(T_s^4-T_{surr}^4)=0.95(0.32)(5.67\times10^{-8})(373^4-298^4)=198$ W. (Temperatures in kelvin!)
+
+</Step>
+<Step title="6. Total">
+
+$\dot Q=1786+198=1984$ W.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**$\dot Q_{total}\approx1984$ W** (convection 1786 W, radiation 198 W).
+
+</Answer>
+
+<Traps>
+
+- If you had used the mixed formula (subtract 871), $Nu=1207$ and $\dot Q_{conv}=1084$ W: about 40 % lower. **Read the regime statement.**
+- Radiation needs kelvin and the *surroundings* temperature (25 °C road), not the air temperature (20 °C).
+
+</Traps>
+
+<Source>Assignment 7 solution, 7-35. Recomputed: identical.</Source>
+
+</Problem>
+
+<Problem id="7-65" title="A steam pipe in the wind (cylinder in crossflow)" tags="Churchill–Bernstein, heat loss per metre">
+
+<Statement>
+
+A steam pipe of diameter 8 cm and surface temperature 90 °C is exposed to a 50 km/h wind at 7 °C. Find the rate of heat loss per metre of length (radiation neglected).
+
+</Statement>
+
+<Think>
+
+Cylinder in crossflow, characteristic length $D$, so use $Re_D$ and the single Churchill–Bernstein equation valid for every $Re_D$ with $Re_DPr>0.2$. Straight application.
+
+</Think>
+
+<Steps>
+<Step title="1. Properties at the film temperature 48.5 °C">
+
+$k=0.02724$, $\nu=1.784\times10^{-5}$, $Pr=0.7232$.
+
+</Step>
+<Step title="2. Reynolds number">
+
+$V=50/3.6=13.89$ m/s; $Re_D=\dfrac{13.89(0.08)}{1.784\times10^{-5}}=6.228\times10^4$.
+
+</Step>
+<Step title="3. Churchill–Bernstein, step by step">
+
+$Re^{1/2}=249.6$, $Pr^{1/3}=0.8975$, numerator $0.62(249.6)(0.8975)=138.9$; denominator $[1+(0.4/0.7232)^{2/3}]^{1/4}=[1.6743]^{1/4}=1.1375$; ratio $=122.1$. Bracket $[1+(62\,280/282\,000)^{5/8}]^{4/5}=[1+0.3891]^{0.8}=1.301$. $Nu=0.3+122.1(1.301)=159.1$.
+
+</Step>
+<Step title="4. $h$ and heat rate per metre">
+
+$h=\dfrac kDNu=\dfrac{0.02724}{0.08}(159.1)=54.17$ W/m²K. $A_s'=\pi D(1\text{ m})=0.2513$ m²/m. $\dot Q'=54.17(0.2513)(90-7)=1130$ W/m.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**$\dot Q'=1130$ W per metre** ($h=54.2$ W/m²K).
+
+</Answer>
+
+<Traps>
+
+- The diameter, **not** the length, is the characteristic length for $Re$ and $Nu$.
+- Because the pipe is hot at 90 °C, radiation would add about $\varepsilon(\pi D)\sigma(363^4-280^4)$, roughly 130 W/m for $\varepsilon\approx0.8$: the problem tells you to neglect it, but in real life a bare steam pipe loses significant heat that way.
+
+</Traps>
+
+<Source>Assignment 7 solution, 7-65. Recomputed: identical.</Source>
+
+</Problem>
+
+<Problem id="7-69" title="A geothermal pipe: find the wind speed from the heat loss" tags="Churchill–Bernstein inverted, energy balance on the water">
+
+<Statement>
+
+Hot geothermal water flows at 8.5 kg/s through a 400 m long, 15 cm diameter pipe and cools from 80 °C to 70 °C because of the wind (air at 15 °C, radiation neglected). Assume the pipe surface is at the average water temperature, 75 °C. Find the average wind speed.
+
+</Statement>
+
+<Think>
+
+Two-step: (i) the **energy balance on the water** gives the heat lost; (ii) Newton's law gives $h$, Churchill–Bernstein gives $Re$ (inverse), and $Re$ gives $V$. The inversion of the correlation has no closed form: iterate (guess $Re$, compute $Nu$, compare).
+
+</Think>
+
+<Steps>
+<Step title="1. Heat lost by the water">
+
+$\dot Q=\dot m c_p\Delta T=8.5(4193)(80-70)=356\,400$ W (with $c_p$ at 75 °C).
+
+</Step>
+<Step title="2. $h$ from Newton's law">
+
+$A_s=\pi DL=\pi(0.15)(400)=188.5$ m²; $h=\dfrac{\dot Q}{A_s(T_s-T_\infty)}=\dfrac{356\,400}{188.5(75-15)}=31.51$ W/m²K.
+
+</Step>
+<Step title="3. Nusselt number">
+
+Air at $T_f=45$ °C: $k=0.02699$, $\nu=1.75\times10^{-5}$, $Pr=0.7241$. $Nu=\dfrac{hD}k=\dfrac{31.51(0.15)}{0.02699}=175.1$.
+
+</Step>
+<Step title="4. Solve Churchill–Bernstein for $Re$ (iteration)">
+
+Try $Re=7\times10^4$: $Nu=171.6$ (too low); $Re=7.2\times10^4$: $Nu=174.8$; $Re=7.22\times10^4$: $Nu=175.1$ ✓. So $Re_D\approx7.2\times10^4$ (the printed solution gives 71 900; the difference is rounding).
+
+</Step>
+<Step title="5. Wind speed">
+
+$V=\dfrac{Re_D\nu}D=\dfrac{7.2\times10^4(1.75\times10^{-5})}{0.15}=8.4$ m/s $=30.2$ km/h.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**$V\approx8.4$ m/s (30 km/h).**
+
+</Answer>
+
+<Traps>
+
+- Use $c_p$ of the **water** in the energy balance and the properties of the **air** (at 45 °C) in the correlation.
+- Always bracket the iteration: $Nu$ rises monotonically with $Re$, so a sign change tells you which way to move.
+
+</Traps>
+
+<Source>Assignment 7 solution, 7-69. Recomputed: $Re$ 72 200, $V$ 8.42 m/s vs printed 8.39 (rounding).</Source>
+
+</Problem>
+
+<Problem id="7-80" title="A bottle of water warming in the wind" tags="cylinder in crossflow, transient energy balance gives the average heat rate">
+
+<Statement>
+
+A cylindrical bottle, $D=10$ cm and $L=30$ cm, filled with cold water at 3 °C, is in windy air at 27 °C. The water temperature rises to 11 °C in 45 minutes. Heat transfer at the top and bottom is negligible, and so is radiation. Estimate the average wind speed.
+
+</Statement>
+
+<Think>
+
+Same inverse structure as 7-69, but the heat rate comes from the *stored energy* in the water: $Q/\Delta t$. The bottle surface is taken at the **average water temperature** (7 °C), which neglects the glass wall and the water-side convection resistances (a simplification).
+
+</Think>
+
+<Steps>
+<Step title="1. Energy stored">
+
+Mass: $m=\rho V=999.8\cdot\dfrac{\pi(0.1)^2}4(0.30)=2.356$ kg. $Q=mc_p\Delta T=2.356(4200)(11-3)=79\,160$ J.
+
+</Step>
+<Step title="2. Average heat rate">
+
+$\dot Q=\dfrac Q{\Delta t}=\dfrac{79\,160}{45\times60}=29.32$ W.
+
+</Step>
+<Step title="3. Heat transfer coefficient">
+
+Side area only: $A_s=\pi DL=\pi(0.1)(0.3)=0.0942$ m². Surface temperature $\approx(3+11)/2=7$ °C: $h=\dfrac{29.32}{0.0942(27-7)}=15.55$ W/m²K. Air at $T_f=(7+27)/2=17$ °C: $k=0.02491$, $\nu=1.488\times10^{-5}$, $Pr=0.7317$.
+
+</Step>
+<Step title="4. Nusselt and Reynolds numbers">
+
+$Nu=\dfrac{15.55(0.1)}{0.02491}=62.42$. Churchill–Bernstein with $Pr=0.7317$ is solved by iteration: $Re=12\,856$ gives $Nu=62.42$ ✓.
+
+</Step>
+<Step title="5. Wind speed">
+
+$V=\dfrac{12\,856(1.488\times10^{-5})}{0.1}=1.91$ m/s.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**$V\approx1.9$ m/s** ($h=15.55$ W/m²K).
+
+</Answer>
+
+<Traps>
+
+- The surface temperature used here (7 °C, the average of 3 and 11) is an assumption; the actual outer-wall temperature is slightly above the water temperature, so the true $h$ is a bit smaller. State your assumption.
+- Use the **side area** only (the problem says top and bottom are negligible).
+
+</Traps>
+
+<Source>Assignment 7 solution, 7-80. Recomputed: identical.</Source>
+
+</Problem>
+
+<Problem id="7-87" title="Surface temperature of an uncovered head in the wind" tags="sphere (Whitaker), viscosity ratio">
+
+<Statement>
+
+The head is modelled as a 30 cm diameter sphere; a quarter of the person's 84 W metabolic heat (that is, 21 W) is lost through the head. A 25 km/h wind blows at 10 °C. Estimate the head's surface temperature, assuming radiation negligible and taking $\mu_s$ at an assumed surface temperature of 15 °C.
+
+</Statement>
+
+<Think>
+
+Whitaker's sphere correlation uses properties at the **free-stream** temperature but $\mu_s$ at the **surface** temperature, which is unknown, hence the assumed 15 °C (verify afterwards).
+
+</Think>
+
+<Steps>
+<Step title="1. Properties at $T_\infty=10$ °C">
+
+$k=0.02439$, $\nu=1.426\times10^{-5}$, $\mu_\infty=1.778\times10^{-5}$, $Pr=0.7336$. At 15 °C: $\mu_s=1.802\times10^{-5}$ kg/m·s.
+
+</Step>
+<Step title="2. Reynolds number">
+
+$V=25/3.6=6.944$ m/s; $Re_D=\dfrac{6.944(0.3)}{1.426\times10^{-5}}=1.461\times10^5$.
+
+</Step>
+<Step title="3. Whitaker">
+
+$Nu=2+\left[0.4Re^{1/2}+0.06Re^{2/3}\right]Pr^{0.4}\left(\mu_\infty/\mu_s\right)^{1/4}$. $Re^{1/2}=382.2$, $Re^{2/3}=2774$: $[0.4(382.2)+0.06(2774)]=[152.9+166.4]=319.3$; $Pr^{0.4}=0.8835$; viscosity factor $(1.778/1.802)^{1/4}=0.9967$. $Nu=2+319.3(0.8835)(0.9967)=283.2$.
+
+</Step>
+<Step title="4. $h$, then the surface temperature">
+
+$h=\dfrac{0.02439}{0.3}(283.2)=23.02$ W/m²K; $A_s=\pi D^2=0.2827$ m². $T_s=T_\infty+\dfrac{\dot Q}{hA_s}=10+\dfrac{21}{23.02(0.2827)}=13.2$ °C.
+
+</Step>
+<Step title="5. Check the assumption">
+
+13.2 °C is close to the assumed 15 °C (the viscosity ratio hardly changes), so no new iteration is needed.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**$T_s\approx13.2$ °C** (with $h=23.0$ W/m²K).
+
+</Answer>
+
+<Traps>
+
+- Using the whole 84 W instead of $84/4=21$ W.
+- Properties at the free-stream temperature (10 °C) here, not at the film temperature. Always read the validity statement of the correlation you quote.
+
+</Traps>
+
+<Source>Assignment 7 solution, 7-87. Recomputed: identical.</Source>
+
+</Problem>
+
+<Problem id="7-88" title="A light bulb cooled by a fan: convection and radiation, iterating for the glass temperature" tags="sphere, iteration, radiation, viscosity assumption">
+
+<Statement>
+
+A 100 W light bulb ($D=10$ cm, 90 % of the electric power becomes heat that the glass must lose) is cooled by a fan: 30 °C air at 2 m/s. The glass has $\varepsilon=0.9$ and the surroundings are at 30 °C. Find the equilibrium glass temperature.
+
+</Statement>
+
+<Think>
+
+Sphere in crossflow: Whitaker with $\mu_s$ at an assumed surface temperature (100 °C first). Then a **nonlinear energy balance**: heat generated $=$ convection $+$ radiation, solved by iteration for $T_s$. Re-check the assumed viscosity.
+
+</Think>
+
+<Steps>
+<Step title="1. Properties">
+
+Air at 30 °C: $k=0.02588$, $\nu=1.608\times10^{-5}$, $\mu_\infty=1.872\times10^{-5}$, $Pr=0.7282$. Assumed $T_s=100$ °C: $\mu_s=2.181\times10^{-5}$.
+
+</Step>
+<Step title="2. Nusselt number and $h$">
+
+$Re=\dfrac{2(0.1)}{1.608\times10^{-5}}=1.244\times10^4$. $Nu=2+[0.4(111.5)+0.06(536.9)](0.7282)^{0.4}(1.872/2.181)^{1/4}=2+[44.6+32.2](0.8803)(0.9625)=67.1$. $h=\dfrac{0.02588}{0.1}(67.14)=17.37$ W/m²K.
+
+</Step>
+<Step title="3. Energy balance">
+
+$\dot Q=0.9(100)=90$ W. $A_s=\pi D^2=0.0314$ m². $90=hA_s(T_s-303)+\varepsilon A_s\sigma(T_s^4-303^4)$:
+$$90=17.37(0.0314)(T_s-303)+0.9(0.0314)(5.67\times10^{-8})(T_s^4-303^4).$$
+Iterate: $T_s=400$ K: RHS $=52.9+0.9(0.0314)(5.67\times10^{-8})(2.56\times10^{10}-8.43\times10^9)=52.9+27.6=80.5$ W (too small); $T_s=410$ K: $58.4+31.8=90.2$ W ✓. So $T_s\approx409.9$ K $=136.9$ °C.
+
+</Step>
+<Step title="4. Revisit the assumed viscosity">
+
+The assumed 100 °C is far from 137 °C. With $\mu_s$ at 137 °C ($2.332\times10^{-5}$): $Nu=66.06$, $h=17.10$ W/m²K; the energy balance gives $T_s\approx137.8$ °C.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**$T_s\approx137$ °C** ($136.9$ °C first pass; $137.8$ °C after correcting $\mu_s$).
+
+</Answer>
+
+<Callout kind="warn" title="⚠ The printed second iteration does not reproduce">
+
+The official solution states that repeating the calculation with the viscosity at 136.9 °C gives $T_s=412.6$ K $=139.6$ °C, "a difference of 2.7 °C". Our recomputation (same property values) gives $T_s=137.8$ °C, a change of only **0.9 °C**: with $h=17.10$ W/m²K the energy balance is already satisfied at 137.8 °C (convection $58.0$ W + radiation $32.2$ W $=90.2$ W), whereas at 139.6 °C the sum would be $58.9+33.0=91.9$ W. The first-pass answer (136.9 °C) is therefore perfectly adequate, and the printed 139.6 °C is a small slip (about 2 K). It does not matter for the exam because the iteration converges so quickly, but do not be worried if you do not reproduce 139.6.
+
+</Callout>
+
+<Traps>
+
+- Radiation matters here: it carries about 35 % of the heat. Neglecting it would raise the answer a lot.
+- The surface temperature appears three times (in the convection, the radiation and the viscosity); the viscosity effect is small (a 1.6 % change in $h$).
+
+</Traps>
+
+<Source>Assignment 7 solution, 7-88 (first pass identical; second pass differs, see the warning).</Source>
+
+</Problem>
+
+<Problem id="7-106" title="Evaporator tube bank: refrigeration capacity and pressure drop" tags="in-line tube bank, V_max, exit temperature, LMTD, pressure drop">
+
+<Statement>
+
+Air at 0 °C and 4 m/s (1 atm) is cooled by an evaporating refrigerator: a bank of in-line tubes with $D=8$ mm, longitudinal and transverse pitches $S_L=S_T=1.5$ cm, 30 rows in the flow direction ($N_L=30$) and 15 tubes per row ($N_T=15$), each 0.4 m long. The tube surfaces are at the refrigerant temperature $-20$ °C. Find the refrigeration capacity (heat removed from the air) and the pressure drop. Use air properties at an assumed mean temperature of $-5$ °C.
+
+</Statement>
+
+<Think>
+
+A tube bank problem has a fixed recipe: (1) $V_{max}$ from the pitch, (2) $Re_{D,max}$, (3) Zukauskas $Nu$ for in-line, (4) $h$, (5) $A_s=N\pi DL$, (6) mass flow **at the inlet**, (7) exit temperature by the exponential law, (8) $\Delta T_{lm}$ and $\dot Q$, (9) $\Delta P$ from the friction factor chart.
+
+</Think>
+
+<Steps>
+<Step title="1. Properties at −5 °C">
+
+$k=0.02326$ W/mK, $c_p=1006$ J/kgK, $\rho=1.317$ kg/m³, $\mu=1.705\times10^{-5}$, $Pr=0.7375$; $Pr_s=Pr_{-20^\circ C}=0.7408$. (Inlet density at 0 °C: $1.292$ kg/m³.)
+
+</Step>
+<Step title="2. Maximum velocity and Reynolds number">
+
+$V_{max}=\dfrac{S_T}{S_T-D}V=\dfrac{15}{15-8}(4)=8.571$ m/s. $Re_{D,max}=\dfrac{\rho V_{max}D}\mu=\dfrac{1.317(8.571)(0.008)}{1.705\times10^{-5}}=5297$.
+
+</Step>
+<Step title="3. Zukauskas Nusselt number (in-line)">
+
+$Nu_D=0.27Re^{0.63}Pr^{0.36}(Pr/Pr_s)^{1/4}=0.27(5297)^{0.63}(0.7375)^{0.36}(0.9956)^{0.25}=53.63$. With 30 rows ($\ge16$) no row correction: $Nu=53.63$.
+
+</Step>
+<Step title="4. $h$ and area">
+
+$h=\dfrac kD Nu=\dfrac{0.02326(53.63)}{0.008}=155.9$ W/m²K. Number of tubes $N=30(15)=450$; $A_s=N\pi DL=450\pi(0.008)(0.4)=4.524$ m².
+
+</Step>
+<Step title="5. Air mass flow (inlet conditions)">
+
+$\dot m=\rho_iV(N_TS_TL)=1.292(4)(15)(0.015)(0.4)=0.4651$ kg/s (the frontal area is $N_T S_T L$).
+
+</Step>
+<Step title="6. Exit temperature">
+
+$\dfrac{hA_s}{\dot mc_p}=\dfrac{155.9(4.524)}{0.4651(1006)}=1.507$; $T_e=T_s-(T_s-T_i)e^{-1.507}=-20-(-20-0)(0.2216)=-15.57$ °C.
+
+</Step>
+<Step title="7. Heat rate (refrigeration capacity)">
+
+$\Delta T_{lm}=\dfrac{(T_s-T_i)-(T_s-T_e)}{\ln[(T_s-T_i)/(T_s-T_e)]}=\dfrac{-20-(-4.43)}{\ln(-20/-4.43)}=-10.33$ K. $\dot Q=hA_s\Delta T_{lm}=155.9(4.524)(10.33)=7285$ W **removed from the air**. *(Check: $\dot m c_p\Delta T=0.4651(1006)(15.57)=7285$ W ✓.)*
+
+</Step>
+<Step title="8. Pressure drop">
+
+From the chart for in-line banks at $Re_D=5297$ and $S_T/D=1.875$: $f=0.30$, $\chi=1$. $\Delta P=N_Lf\chi\dfrac{\rho V_{max}^2}2=30(0.30)(1)\dfrac{1.317(8.571)^2}2=435$ Pa.
+
+</Step>
+<Step title="9. Check the assumed mean temperature">
+
+$(0+(-15.57))/2=-7.8$ °C, reasonably close to the assumed $-5$ °C: no new iteration needed.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**$\dot Q\approx7.29$ kW; $\Delta P\approx435$ Pa;** $T_e=-15.6$ °C, $h=155.9$ W/m²K.
+
+</Answer>
+
+<Traps>
+
+- $Re$ uses $V_{max}$, but the mass flow uses the **approach velocity** and the **inlet** density: they are different velocities.
+- $N$ = total number of tubes (rows × tubes per row), not the number per row.
+- The chart value of $f$ (0.30) is read from a figure; on an exam it would be provided.
+- Heat rate sign: the air loses heat, so you may see $-7285$ W if you keep signs; the "capacity" is the magnitude.
+
+</Traps>
+
+<Source>Assignment 7 solution, 7-106. Recomputed: $\dot Q=7285$–$7290$ W (rounding), $\Delta P=435$ Pa.</Source>
+
+</Problem>

@@ -1,0 +1,346 @@
+<p className="eyebrow">Homework 8 · practice sheet (not collected) · Lectures 21–23</p>
+
+# HW8: lead and lag design, Bode margins, Nyquist; the 2019 multi-loop Routh
+
+<div className="lede">
+
+This page has two sheets. **Part A** is the 2024 practice sheet (lead/lag on $40/[s(s+2)]$, Bode margins, Nyquist), solved by a handwritten solution file that the survey had paired with the wrong sheet. **Part B** is the 2019 assignment: a multi-loop Routh problem (B1), plus two problems identical to <Hw n="7">HW7</Hw> Q3 and Q4. Background: <Ch slug="bode-margins">Chapter 19</Ch>, <Ch slug="lead-lag">Chapter 20</Ch>, <Ch slug="nyquist">Chapter 21</Ch>, <Ch slug="routh">Chapter 16</Ch>.
+
+</div>
+
+## Part A · the 2024 practice sheet
+
+<Problem id="HW8 A1" title="Lead and lag compensation of G(s) = 40/[s(s+2)], PM 30°" tags="lead, lag, crossover, K_v">
+
+<Statement>
+
+Unity feedback, plant $G=\dfrac{40}{s(s+2)}$, desired phase margin $30^\circ$. (a) Choose the crossover frequency 10 rad/s and design a lead compensator for a relatively large bandwidth. (b) Design a lag compensator so the steady-state error for a ramp input is 0.05. (c) Verify both and compare the transient responses.
+
+</Statement>
+
+<Think>
+
+A **lead** adds phase near the crossover so the margin goes up *and* it pushes the crossover to higher frequency, so the system gets faster. A **lag** does the opposite: it leaves the phase alone near crossover but **drops the crossover to where the plant already has enough phase**, fixing the margin by going slower, while keeping the low-frequency gain (accuracy). The first step is always the uncompensated plant: write $G=\dfrac{20}{s(0.5s+1)}$ ($K_v=20$) and find its margin.
+
+</Think>
+
+<Plan>
+
+Uncompensated margin; lead recipe at $\omega_c=10$ (with the $K_c\sqrt\alpha$ trap); lag recipe (choose new crossover from the phase, read the gain there, $\beta$); simulate and compare.
+
+</Plan>
+
+<Steps>
+<Step title="1. The uncompensated plant">
+
+$G=\dfrac{20}{s(0.5s+1)}$: $|G(j\omega)|=1$ at $\omega_{gc}=6.17$ rad/s, phase there $-90^\circ-\tan^{-1}(0.5\cdot6.17)=-162^\circ$, **PM $=18^\circ$**, gain margin infinite (the phase never reaches $-180^\circ$). Poor: the closed loop would overshoot 61%.
+
+</Step>
+<Step title="2. (a) Lead: look at the plant at the target crossover">
+
+At $\omega=10$: $|G|=-8.1$ dB and $\angle G=-90^\circ-\tan^{-1}5=-168.7^\circ$, so the plant has only $11.3^\circ$ of PM there. Required lead: $30^\circ-11.3^\circ+5^\circ$ (safety) $=23.7^\circ$ (more than "30° − 18° = 12°", because the crossover moved up where the plant phase is worse).
+
+</Step>
+<Step title="3. (a) Lead parameters, the closed-form route">
+
+$\alpha=\dfrac{1-\sin\varphi_m}{1+\sin\varphi_m}=\dfrac{1-0.402}{1+0.402}=0.427$. Place $\omega_m=10$: zero $\omega_m\sqrt\alpha=6.53$, pole $\omega_m/\sqrt\alpha=15.3$.
+
+**Gain trap:** at $\omega_m$ the lead $K_c\dfrac{s+z}{s+p}$ (normalised so the DC gain is $K_cz/p=K_c\alpha$) has magnitude $K_c\sqrt\alpha$ (not 1). We need $K_c\sqrt\alpha\,|G(j10)|=1$ with $|G(j10)|=10^{-8.1/20}=0.392$:
+$$K_c=\frac{1}{\sqrt{0.427}\cdot0.392}=3.90.$$
+
+$$G_c=3.90\,\frac{s+6.53}{s+15.3}\;\Rightarrow\;PM=35.0^\circ\text{ at exactly }10.0\text{ rad/s}.$$
+
+</Step>
+<Step title="4. (a) The iterative route the official solution takes (four steps)">
+
+1. $\varphi_m=17^\circ$, $\alpha=0.545$, zero 7.38, pole 13.55, $K_c\alpha=1$: $G_c=1.835\dfrac{s+7.38}{s+13.55}$ gives PM 32.4° but crossover only 8.83 (the compensator itself shifts the crossover).
+2. Loop gain at 10 rad/s is $-5.5$ dB, so raise by 1.88: $3.5\dfrac{s+7.38}{s+13.55}$, $\omega_c=10.1$, PM 28.4°.
+3. Add 5° of lead: $\alpha=0.455$, zero 6.75, pole 14.82: PM 33.8°, $\omega_c=9.53$.
+4. Re-trim the gain (×1.07): **$G_c=3.75\dfrac{s+6.75}{s+14.82}$, PM 33.3°, $\omega_c=9.95$ rad/s.**
+
+Moral: iteration works, but the closed-form $K_c\sqrt\alpha$ trick lands in one go.
+
+</Step>
+<Step title="5. (b) Lag: the DC gain is already right">
+
+$K_v=\lim sG=20$ gives $e_{ss}=1/K_v=0.05$ **already**, so the lag must keep it: $K_c\beta=1$ (DC gain 1 with the standard form $G_c=K_c\dfrac{Ts+1}{\beta Ts+1}$, $\beta>1$).
+
+</Step>
+<Step title="6. (b) New crossover from the phase">
+
+Wanted PM $30^\circ$ plus 5° for the lag's own phase dip $=35^\circ$, i.e. plant phase $-145^\circ$: $-90^\circ-\tan^{-1}(0.5\omega)=-145^\circ\Rightarrow\omega=2.85$ rad/s. The plant gain there is $+12$ dB, so the lag must attenuate by 12 dB: $20\log(1/\beta)=-12\Rightarrow\beta=4$ and $K_c=1/4$.
+
+</Step>
+<Step title="7. (b) Place the lag corner">
+
+Zero a decade below the new crossover: $1/T=0.285$; pole $1/(\beta T)=0.071$:
+$$G_c=0.25\,\frac{s+0.285}{s+0.071}\;\Rightarrow\;PM=30.6^\circ,\;\omega_c=2.87\text{ rad/s}.$$
+
+</Step>
+<Step title="8. (c) Compare (simulation)">
+
+| Case | closed-loop poles | step OS | 2% settling | ramp error |
+|---|---|---|---|---|
+| none | −1 ± j6.24 | 61% | 3.7 s | 0.05 |
+| lead (3.75…) | −3.79 ± j9.76, −9.2 | 42% | 1.05 s | 0.029 |
+| lead (3.90…) | −4.10 ± j9.76, −9.1 | 40% | 1.02 s | 0.030 |
+| lag | −0.89 ± j2.97, −0.30 | 44% | 3.7+ s (slow pole −0.3) | 0.05 |
+
+The **lead** is 3.5× faster and also lowers the ramp error (its DC gain is about 1.7, so $K_v=34$, $e_{ss}=0.029$). The **lag** keeps the same $K_v$ and the same slow time scale, with a slow closed-loop pole at $-0.3$ that makes a long creeping tail. A PM of 30–35° still means about 40% overshoot ($\zeta\approx0.3$): **PM alone does not guarantee small overshoot.**
+
+</Step>
+</Steps>
+
+<Answer>
+
+(a) $G_c=3.75\dfrac{s+6.75}{s+14.82}$ (or $3.90\dfrac{s+6.53}{s+15.3}$). (b) $G_c=0.25\dfrac{s+0.285}{s+0.071}$ ($\beta=4$).
+
+*Real-world:* lead = anticipation (faster, noisier); lag = patience (accurate, slower). The plant is a motor-driven position servo with a 0.5 s lag.
+
+</Answer>
+
+<Traps>
+
+- The lead's phase boost happens at $\omega_m$, the geometric mean of zero and pole; if the new crossover is not at $\omega_m$ you do not get the lead you computed.
+- The compensator gain at $\omega_m$ is $K_c\sqrt\alpha$, not 1.
+- For a lag, $K_c\beta=1$ keeps $K_v$; the zero goes a decade below the new crossover so the phase dip is small there.
+
+</Traps>
+
+<Source>handwritten solution file HW08b-sol Problem I (iterative; PM 33.3°/9.95 rad/s reproduced); closed-form lead and lag PM 30.6° by the digest. No Anthony version.</Source>
+
+<ToolLink tool="lead-lag">Open the lead/lag designer with this plant</ToolLink>
+
+</Problem>
+
+<Problem id="HW8 A2" title="Bode diagram and margins of L(s) = 10(1+0.4s) / [s(1+2s)(1+0.24s+0.04s²)]" tags="Bode, margins, quadratic factor">
+
+<Statement>
+
+Plot the Bode diagram and find the gain margin and phase margin.
+
+</Statement>
+
+<Think>
+
+Break $L$ into building blocks (<Ch slug="bode-margins">Chapter 19</Ch>): a gain, an integrator, a zero, a real pole, a quadratic pole. Add their slopes; then the margins are read at the crossing frequencies.
+
+</Think>
+
+<Steps>
+<Step title="1. Identify the factors">
+
+Gain $10$ (20 dB). Integrator $1/s$. **Zero** $1+0.4s$: corner $1/0.4=2.5$ rad/s. **Real pole** $1+2s$: corner 0.5 rad/s. **Quadratic** $1+0.24s+0.04s^2=\dfrac{s^2}{25}+0.24s+1$: $\omega_n=5$ rad/s and $\dfrac{2\zeta}{\omega_n}=0.24\Rightarrow\zeta=0.6$ (little resonance).
+
+Equivalent form: $L=\dfrac{50(s+2.5)}{s(s+0.5)(s^2+6s+25)}$.
+
+</Step>
+<Step title="2. Asymptotic magnitude">
+
+Low frequency: $10/\omega$, $-20$ dB/dec, 20 dB at $\omega=1$. After 0.5: $-40$. After the zero at 2.5: back to $-20$. After the quadratic at 5: $-60$.
+
+</Step>
+<Step title="3. Phase">
+
+$-90^\circ$ (integrator) $\to-180^\circ$ (after 0.5) $\to$ rises back toward $-90^\circ$ (zero at 2.5) $\to-270^\circ$ (quadratic at 5).
+
+</Step>
+<Step title="4. Margins (computed)">
+
+Gain crossover $\omega_{gc}=2.76$ rad/s, **PM $=14.4^\circ$**. Phase crossover $\omega_{pc}=3.74$ rad/s, **GM $=3.91$ dB** (factor 1.57).
+
+</Step>
+</Steps>
+
+<Answer>
+
+GM $=3.91$ dB, PM $=14.4^\circ$ (both positive: stable, but only just). A step response would be very oscillatory.
+
+*Real-world:* a servo with little damping margin: the phase is already at $-165^\circ$ where the gain crosses 0 dB.
+
+</Answer>
+
+<Traps>
+
+- The coefficient 0.24 is $2\zeta/\omega_n$, not $2\zeta$.
+- The zero at 2.5 lifts the phase only briefly: the quadratic at 5 takes it away again.
+
+</Traps>
+
+<Source>handwritten solution Problem II: GM 3.91 dB, PM 14.4° recomputed (3.907 dB, 14.44°) ✔. No Anthony version.</Source>
+
+<ToolLink tool="bode">Plot this loop in the Bode tool</ToolLink>
+
+</Problem>
+
+<Problem id="HW8 A3" title="Nyquist plots of K/[s(s²+s+6)] and K(s+1)/[s²(s²+6)]; K_max" tags="Nyquist, indentations, Routh check">
+
+<Statement>
+
+(a) $L=\dfrac{K}{s(s^2+s+6)}$; (b) $L=\dfrac{K(s+1)}{s^2(s^2+6)}$. Decide stability with the Nyquist criterion; (c) if stable, find the largest $K$ from the real-axis crossing.
+
+</Statement>
+
+<Think>
+
+Nyquist: $Z=N+P$, where $P$ is the number of open-loop RHP poles, $N$ the clockwise encirclements of $-1$, and $Z$ the closed-loop RHP poles (<Ch slug="nyquist">Chapter 21</Ch>). Poles *on* the imaginary axis (here the origin and $\pm j\sqrt6$) force you to indent the contour around them.
+
+</Think>
+
+<Steps>
+<Step title="(a) Counting">
+
+$P=0$ (the origin pole is handled by the indentation). The $K=1$ plot makes no encirclement of $-1$: $N=0$, so $Z=0$: **stable**.
+
+</Step>
+<Step title="(a) Where the curve crosses the real axis">
+
+$L(j\omega)=\dfrac{K}{j\omega(6-\omega^2+j\omega)}$. Rationalising, the imaginary part is zero at $\omega^2=6$, and there $u=-\dfrac{6K}{36}=-\dfrac K6$.
+
+</Step>
+<Step title="(a) Largest K">
+
+Stable while the crossing is to the right of $-1$: $-K/6>-1\Rightarrow K<6$. Check with Routh on $s^3+s^2+6s+K$: stable iff $K<6$ ✔; at $K=6$ the poles are $\pm j\sqrt6$ and $-1$.
+
+</Step>
+<Step title="(b) Counting">
+
+With the large semicircle for the double pole at the origin and small indentations at $\pm j\sqrt6$, the $K=1$ curve encircles $-1$ **twice clockwise**: $N=2$, $P=0\Rightarrow Z=2$: **unstable for every $K$**.
+
+</Step>
+<Step title="(b) Routh confirmation">
+
+Closed-loop polynomial $s^4+6s^2+Ks+K$ has **no $s^3$ term**, so the Routh array fails for all $K$ (two RHP roots: $0.088\pm j2.42$ at $K=1$, $0.83\pm j2.59$ at $K=10$).
+
+</Step>
+</Steps>
+
+<Answer>
+
+(a) stable for $0<K<6$, $K_{max}=6$. (b) unstable for all $K$ (two RHP roots).
+
+*Real-world:* (a) a servo with an integrator and a lightly damped mode: gain can rise to 6 and no further. (b) a double integrator with a lightly damped mode cannot be stabilised by gain alone: it needs phase lead (a derivative term).
+
+</Answer>
+
+<Traps>
+
+- Poles on the imaginary axis (origin, $\pm j\sqrt6$) need indentations; count the arcs.
+- When the closed-loop polynomial is available, a Routh check is the safest confirmation.
+
+</Traps>
+
+<Source>handwritten solution Problem III: both conclusions confirmed by root computation. No Anthony version.</Source>
+
+<ToolLink tool="nyquist">Draw these Nyquist plots</ToolLink>
+
+</Problem>
+
+## Part B · the 2019 sheet
+
+<Problem id="HW8 B1" title="Multi-loop block diagram: closed-loop transfer function and stability conditions on K₁…K₅" tags="block diagram reduction, unstable plant, cubic Routh">
+
+<Statement>
+
+All gains $K_i>0$. The chain is $R\to\oplus\to K_1\to\dfrac1{s+1}\to\times3\to\oplus\to\dfrac1{2s-4}\to K_2\to\dfrac{10}{s-10}\to Y$. Inner feedbacks: $K_3$ (from the output of $K_1/(s+1)$ back to the first $\oplus$), $K_5$ (from the output of $K_2$ back to the second $\oplus$); outer feedback $K_4$ from $Y$ to the first $\oplus$. (a) Find $T(s)=Y/R$. (b) Give conditions on the gains for closed-loop stability. (c) Choose a valid set and plot the step response.
+
+</Statement>
+
+<Think>
+
+Note first that the plant has poles at $s=2$ (from $2s-4$) and $s=10$ (from $s-10$): **both unstable**, so the feedback is essential. Reduction rule: reduce the **innermost** loops first with $G/(1+GH)$, then the outer loop; then expand the denominator and apply the cubic Routh test.
+
+</Think>
+
+<Steps>
+<Step title="1. First inner loop (K₃)">
+
+Forward $\dfrac{K_1}{s+1}$ with feedback $K_3$: $\dfrac{K_1/(s+1)}{1+K_1K_3/(s+1)}=\dfrac{K_1}{s+1+K_1K_3}$. With the $\times3$ gain: $\dfrac{3K_1}{s+1+K_1K_3}$.
+
+</Step>
+<Step title="2. Second inner loop (K₅)">
+
+Forward $\dfrac{K_2}{2s-4}$ with feedback $K_5$: $\dfrac{K_2}{2s-4+K_2K_5}$; then times $\dfrac{10}{s-10}$: $\dfrac{10K_2}{(2s-4+K_2K_5)(s-10)}$.
+
+</Step>
+<Step title="3. Outer loop (K₄)">
+
+$$T(s)=\frac{30K_1K_2}{(s+1+K_1K_3)(s-10)(2s+K_2K_5-4)+30K_1K_2K_4}.$$
+
+</Step>
+<Step title="4. Expand the denominator">
+
+Let $A=1+K_1K_3$ and $B=K_2K_5-4$: $(s+A)(s-10)(2s+B)=2s^3+a_1s^2+a_2s+\ldots$ with
+$a_1=B+2(A-10)=2K_1K_3+K_2K_5-22$,
+$a_2=(A-10)B-20A=K_1K_2K_3K_5-24K_1K_3-9K_2K_5+16$,
+$a_3=-10AB+30K_1K_2K_4=-10K_1K_2K_3K_5+30K_1K_2K_4+40K_1K_3-10K_2K_5+40$.
+
+(Check the pieces: $(s+A)(s-10)=s^2+(A-10)s-10A$; times $(2s+B)$ gives $2s^3+[B+2(A-10)]s^2+[(A-10)B-20A]s-10AB$.)
+
+</Step>
+<Step title="5. Stability conditions">
+
+For $2s^3+a_1s^2+a_2s+a_3$: all of $a_1,a_2,a_3>0$ and $a_1a_2>2a_3$ (Routh's $b_1=(a_1a_2-a_0a_3)/a_1>0$ with $a_0=2$).
+
+</Step>
+<Step title="6. A valid set and a numeric check">
+
+$K_1=50$, $K_2=30$, $K_3=1$, $K_4=0.3$, $K_5=1$: $a_1=108$, $a_2=46$, $a_3=240$, $a_1a_2=4968>480$ ✔ stable; poles $-53.6$, $-0.19\pm j1.48$. DC gain $T(0)=\dfrac{30K_1K_2}{a_3}=\dfrac{45000}{240}=187.5$; the step plot settles near 190 with a lightly damped oscillation (OS about 70%).
+
+</Step>
+</Steps>
+
+<Answer>
+
+$T(s)$ as in step 3; stable iff $a_1,a_2,a_3>0$ and $a_1a_2>2a_3$; for example $(K_1,\dots,K_5)=(50,30,1,0.3,1)$.
+
+*Real-world:* stabilising an open-loop unstable plant (inverted pendulum, rocket attitude): the gains must be large enough to pull the unstable poles into the LHP but not so large that the loop oscillates.
+
+</Answer>
+
+<Traps>
+
+- The minus signs from $(s-10)$ and $(2s-4)$ enter $a_2,a_3$ as negative terms.
+- The official Matlab script reuses $k_3$ where $K_5$ should appear, without saying so.
+- A DC gain of 187.5 is not good tracking: the loop is not unity feedback, so scale accordingly.
+
+</Traps>
+
+<Source>2019 official solution (TF and coefficients recomputed ✔). No Anthony version.</Source>
+
+</Problem>
+
+<Problem id="HW8 B2B3" title="2019 Q2 and Q3 are HW7 Q3 and Q4" tags="PI design, Ziegler–Nichols">
+
+<Statement>
+
+The 2019 sheet's Q2 (PI controller on $1/[s(s+15)(s+25)]$) and Q3 (paper machine $e^{-2s}/(3s+1)$) are identical to <Hw n="7">HW7 Q3 and Q4</Hw>.
+
+</Statement>
+
+<Steps>
+<Step title="Q2 (official 2019 solution)">
+
+"Assume $K_I=0.1K_p$": $a=29.15$, $b=0.1$, $\omega_n=7.6$, $K_p=1720$, $K_I=172$ ✔; Matlab step: rise 0.282 s, peak time 0.626 s, settling 1.089 s, peak 1.064 (OS 6.4%). It does **not** compute the velocity and acceleration errors; the correct values are $0$, $0$ and $375/K_I=2.18$. (A stray "num=[1702 172]" in the Matlab code is a typo for 1720, harmless.)
+
+</Step>
+<Step title="Q3 (official)">
+
+Method 1: $L=2$ s, $T=3$ s: $K_p=1.2T/L=1.8$, $T_i=4$ s, $T_d=1$ s. Method 2 with the period read as $P_u\approx7$ s: $K_p=0.6\cdot3.044=1.83$, $T_i=3.5$ s, $T_d=0.875$ s. (The solution calls it "the impulse response"; it is the oscillation of the marginally stable *step* response. Exact $P_u=6.59$ s.)
+
+</Step>
+</Steps>
+
+<Answer>
+
+See the full treatment in <Hw n="7">HW7</Hw>.
+
+</Answer>
+
+</Problem>
+
+<Examined>
+
+Lead/lag design: $\text{MT3 practice}$, $\text{final F2009 P6}$, $\text{final F2010}$. Margins from Bode: every final. Nyquist with imaginary-axis poles: the final-exam Nyquist questions. Multi-loop reduction + Routh: $\text{MT1}$ block-diagram questions.
+
+</Examined>

@@ -1,0 +1,429 @@
+<p className="eyebrow">Problem set 11</p>
+
+# Moving shocks and shock tubes
+
+<p className="lede">Six problems that build the shock tube from its parts. A frame change explains when the flow behind a moving shock is supersonic (P1) and what a water hammer is (P2). Riemann invariants give the rarefaction (P3–P4). Contact matching gives the shock-tube equation (P5). The reflected shock turns the shock tube into a lab instrument (P6).</p>
+
+PS11 was not collected, so **there is no solution by Anthony**. The official solution has two errors in P6, which are corrected below. Air: γ = 1.4, R = 8314/28.9 J/kg·K. Theory in [Ch. 16](#/mech430/ch/unsteady).
+
+<Problem id="PS11 P1" title="When is the lab-frame flow behind a moving shock supersonic? (M_s = 2.068 for air)" tags="moving shock, frame change, derivation">
+
+<Statement>
+
+Flow leaving a shock wave is always subsonic relative to the shock. As seen from the fixed laboratory frame, however, the flow behind a moving shock can be subsonic or supersonic. For a shock propagating into stationary gas (arbitrary γ), find the shock Mach number at which the flow behind the shock becomes supersonic in the lab frame. For air (γ = 1.4), show that this happens at a shock Mach number of 2.068.
+
+</Statement>
+
+<Think>
+
+A frame-change problem. In the lab frame the gas behind the shock moves at the piston speed $V_p'$, which the unsteady shock formula gives. Whether that is supersonic depends on the sound speed **behind** the shock, $c_y$. Sound speed is a temperature, and temperature does not depend on the frame, so $c_y/c_x$ comes from the steady normal-shock relation with $M_x = M_s$.
+
+</Think>
+
+<Plan>
+
+$\dfrac{V_p'}{c_y} = \dfrac{V_p'}{c_x}\cdot\dfrac{c_x}{c_y}$ = (unsteady shock formula) × $\sqrt{T_x/T_y}$ (A3) → set it equal to 1 → solve for $M_s$.
+
+<MovingShockFramesFigure Ms={3} c1={348} T1={300} />
+
+</Plan>
+
+<Steps>
+<Step title="1. Write the lab-frame Mach number behind the shock">
+
+$$
+\frac{V_p'}{c_y} = \underbrace{\frac{2}{\gamma+1}\frac{M_s^2-1}{M_s}}_{V_p'/c_x}\;\underbrace{\sqrt{\frac{(\gamma+1)^2M_s^2}{\left[2\gamma M_s^2-(\gamma-1)\right]\left[2+(\gamma-1)M_s^2\right]}}}_{c_x/c_y = \sqrt{T_x/T_y}}
+$$
+
+</Step>
+<Step title="2. Set it equal to 1 and square">
+
+Why: the $(\gamma+1)^2$ cancels, leaving a quadratic in $M_s^2$:
+
+$$
+4(M_s^2-1)^2 = \left[2\gamma M_s^2-(\gamma-1)\right]\left[2+(\gamma-1)M_s^2\right]
+$$
+
+Expand and collect, then divide by $(1+\gamma)$:
+
+$$
+2(2-\gamma)M_s^4 - (7-\gamma)M_s^2 + 2 = 0
+\quad\Rightarrow\quad
+M_s^2 = \frac{(7-\gamma)+\sqrt{\gamma^2+2\gamma+17}}{4(2-\gamma)}
+$$
+
+(The other root gives $M_s$ below 1.)
+
+</Step>
+<Step title="3. Air">
+
+$M_s^2 = \dfrac{5.6+\sqrt{21.76}}{2.4} = \dfrac{5.6+4.6648}{2.4} = 4.2770$, so $M_s = 2.068$ ✓.
+
+</Step>
+</Steps>
+
+<Answer>
+
+The lab-frame flow is supersonic when $M_s^2 > \dfrac{(7-\gamma)+\sqrt{\gamma^2+2\gamma+17}}{4(2-\gamma)}$. For air, that is **M_s above 2.068**. The official solution states the inequality and the number but does not solve the general-γ equation; the closed form above does.
+
+</Answer>
+
+<PistonXTSim up0={460} />
+
+<Traps>
+
+- Test against $c_y$, the sound speed *behind* the shock. Using $c_x$ is the classic mistake.
+- Even an infinitely strong shock gives a bounded lab Mach number: $V_p'/c_y \to \sqrt{2/(\gamma(\gamma-1))} = 1.89$.
+- The notes' example ($M_s = 3$) gives 773.3/569.6 = 1.357, which is supersonic. In the sim, push at about 460 m/s (M_s ≈ 2.07) and read the lab Mach number.
+
+</Traps>
+
+<Source>official 2025 solution p. 1 · closed form derived and checked in the digest</Source>
+
+</Problem>
+
+<Problem id="PS11 P2" title="Water hammer: a valve slammed shut on 50 m/s air" tags="moving shock, frame change, piston analogy">
+
+<Statement>
+
+Air (γ = 1.4) at 25 °C and 100 kPa flows at 50 m/s in a constant-area pipe. A valve at the end of the pipe is suddenly closed. This creates a weak shock that propagates upstream and brings the air to rest. Calculate the pressure caused by this shock wave. (In water, the same effect is the "bang" of a water hammer in old Montreal plumbing.)
+
+</Statement>
+
+<Think>
+
+Choose the frame in which the gas ahead of the shock is **at rest**: the frame moving with the incoming 50 m/s gas. In that frame the closed valve and the stopped gas both move at 50 m/s into still gas. It looks exactly like a piston, so the unsteady-shock formula applies with $V_p' = 50$ m/s.
+
+</Think>
+
+<Plan>
+
+$c_x = \sqrt{\gamma RT}$ → $V_p'/c_x$ → $M_s$ (quadratic) → A3 → $p_y$, $T_y$.
+
+<WaterHammerFigure V={50} Ms={1.09} c={346} />
+
+</Plan>
+
+<Steps>
+<Step title="1. Sound speed ahead">
+
+$c_x = \sqrt{1.4 \times (8314/28.9) \times 298} = 346.4$ m/s. The official solution writes 349.3 m/s, an arithmetic slip that changes the answer by only 0.2 kPa.
+
+</Step>
+<Step title="2. Shock Mach number">
+
+With $k = \tfrac{\gamma+1}{2}\tfrac{V_p'}{c_x} = 1.2 \times 50/346.4 = 0.1732$:
+
+$M_s = \tfrac12\left(k + \sqrt{k^2+4}\right) = 1.0903$ (official 1.0895, from c = 349.3) — <CalcLink calc="moving">check</CalcLink>
+
+</Step>
+<Step title="3. Normal-shock ratios">
+
+<T>A3 @ Mₓ = 1.09: p_y/pₓ = 1.218, T_y/Tₓ = 1.058</T> (exact at 1.0903: 1.2203 and 1.0588)
+
+$p_y = 122.0$ kPa (official 121.8 kPa); $T_y = 315.5$ K
+
+</Step>
+</Steps>
+
+<Answer>
+
+- $p \approx 122$ kPa: a rise of about 22 kPa ("more than enough to cause hearing damage").
+- $T \approx 315$ K, $M_s \approx 1.09$.
+- In the lab the shock moves upstream at $M_s c_x - 50 \approx 328$ m/s.
+
+</Answer>
+
+<Traps>
+
+- Acoustic check: $\Delta p \approx \rho c\,\Delta u = 1.169 \times 346 \times 50 = 20$ kPa, which agrees with the 22 kPa above.
+- In water ($\rho c \approx 1.5\times10^6$ kg/m²s) the same 50 m/s, or even 1 m/s, gives MPa. That is why a water hammer bangs.
+- Use absolute temperature (298 K).
+
+</Traps>
+
+<Source>official 2025 solution p. 2 · arithmetic check in the digest</Source>
+
+</Problem>
+
+<Problem id="PS11 P3" title="Show that F = ∫dp/(ρc) = 2c/(γ−1)" tags="derivation, Riemann invariants">
+
+<Statement>
+
+As shown in lecture, the conservation laws for 1-D unsteady flow can be written as
+
+$$
+\frac{\partial(u+F)}{\partial t} + (u+c)\frac{\partial(u+F)}{\partial x} = 0, \qquad
+\frac{\partial(u-F)}{\partial t} + (u-c)\frac{\partial(u-F)}{\partial x} = 0, \qquad F = \int_{p_o}^{p}\frac{dp}{\rho c}
+$$
+
+Show that for a perfect gas $F = 2c/(\gamma-1)$. Thus $C^\pm = u \pm 2c/(\gamma-1)$ are constant along $u \pm c$ waves. This is the basis of the method of characteristics.
+
+</Statement>
+
+<Think>
+
+A short derivation. Write $\rho c$ in terms of p and c, use the isentropic relation between p and c, and the integrand collapses to a constant times dc.
+
+</Think>
+
+<Plan>
+
+$\rho c = \gamma p/c$ → isentropic $p \propto c^{2\gamma/(\gamma-1)}$ → $dp$ in terms of $dc$ → integrate.
+
+<RiemannXTFigure />
+
+</Plan>
+
+<Steps>
+<Step title="1. Express ρc with p and c">
+
+$c^2 = \gamma p/\rho$, so $\rho c = \gamma p/c$ and $\dfrac{dp}{\rho c} = \dfrac{c}{\gamma}\dfrac{dp}{p}$.
+
+</Step>
+<Step title="2. Isentropic link between p and c">
+
+$\dfrac{p}{p_o} = \left(\dfrac{T}{T_o}\right)^{\frac{\gamma}{\gamma-1}} = \left(\dfrac{c}{c_o}\right)^{\frac{2\gamma}{\gamma-1}}$, so taking the log derivative gives $\dfrac{dp}{p} = \dfrac{2\gamma}{\gamma-1}\dfrac{dc}{c}$.
+
+</Step>
+<Step title="3. Integrate">
+
+$$
+\frac{dp}{\rho c} = \frac{c}{\gamma}\cdot\frac{2\gamma}{\gamma-1}\frac{dc}{c} = \frac{2}{\gamma-1}\,dc
+\quad\Rightarrow\quad
+F = \frac{2c}{\gamma-1} \;(+\ \text{const})
+$$
+
+The constant from the lower limit cancels whenever invariants are compared, so it is dropped.
+
+</Step>
+</Steps>
+
+<Answer>
+
+$F = \dfrac{2c}{\gamma-1}$, so $C^+ = u + \dfrac{2c}{\gamma-1}$ is constant along $dx/dt = u + c$ and $C^- = u - \dfrac{2c}{\gamma-1}$ along $dx/dt = u - c$.
+
+</Answer>
+
+<Traps>
+
+- The derivation needs **homentropic** flow. Across a shock the entropy jumps and the invariants are not carried through.
+- The official scan writes "u + 2/(γ−1) = const" and drops the c. That is a slip.
+- The step from the PDEs: their left-hand sides are derivatives *along* the paths $dx/dt = u \pm c$ (Higgins's $D^\pm/Dt$), which are the trajectories of sound waves.
+
+</Traps>
+
+<Source>official 2025 solution p. 3 · Lecture 23 notes (Anthony) for the PDE derivation</Source>
+
+</Problem>
+
+<Problem id="PS11 P4" title="Rarefaction relation u₃(p₃/p₄) in a shock tube" tags="centred expansion, Riemann invariant">
+
+<Statement>
+
+Using the method of characteristics, show that in a shock tube, where high-pressure gas in state 4 (with γ₄) expands through an unsteady rarefaction wave to become state 3, the velocity $u_3$ and pressure $p_3$ are related by
+
+$$
+u_3 = \frac{2c_4}{\gamma_4-1}\left[1 - \left(\frac{p_3}{p_4}\right)^{\frac{\gamma_4-1}{2\gamma_4}}\right]
+$$
+
+Hint: this is similar to the projectile-launcher relation derived in class.
+
+</Statement>
+
+<Think>
+
+The driver fan is made of $u - c$ waves running left into still gas 4. The $u + c$ characteristics cross the fan from left to right, and **all of them start in region 4**, where u = 0 and c = c₄. So $C^+$ has the same value everywhere in the fan and in region 3. Combine that with the isentropic p–c relation.
+
+</Think>
+
+<Plan>
+
+$C^+ = 2c_4/(\gamma_4-1)$ → $c_3/c_4$ in terms of $u_3$ → isentropic $p_3/p_4 = (c_3/c_4)^{2\gamma_4/(\gamma_4-1)}$ → invert.
+
+<ShockTubeXTFigure p41={10} />
+
+</Plan>
+
+<Steps>
+<Step title="1. The invariant from region 4">
+
+$u_3 + \dfrac{2c_3}{\gamma_4-1} = 0 + \dfrac{2c_4}{\gamma_4-1}$, so $\dfrac{c_3}{c_4} = 1 - \dfrac{\gamma_4-1}{2}\dfrac{u_3}{c_4}$.
+
+</Step>
+<Step title="2. Isentropic expansion">
+
+$\dfrac{p_3}{p_4} = \left(\dfrac{c_3}{c_4}\right)^{\frac{2\gamma_4}{\gamma_4-1}} = \left[1 - \dfrac{\gamma_4-1}{2}\dfrac{u_3}{c_4}\right]^{\frac{2\gamma_4}{\gamma_4-1}}$
+
+</Step>
+<Step title="3. Invert">
+
+Raise both sides to $\frac{\gamma_4-1}{2\gamma_4}$ and solve for $u_3$, which gives the result to be shown.
+
+</Step>
+</Steps>
+
+<Answer>
+
+$u_3 = \dfrac{2c_4}{\gamma_4-1}\left[1 - (p_3/p_4)^{(\gamma_4-1)/(2\gamma_4)}\right]$. Its maximum, for expansion to $p_3 \to 0$, is the escape velocity $2c_4/(\gamma_4-1)$: the same $u_\text{max}$ as the gas gun, with the contact surface playing the role of the projectile.
+
+</Answer>
+
+<Traps>
+
+- Use the invariant of the family that **crosses** the fan ($C^+$), not the family the fan is made of.
+- Only driver properties (γ₄, c₄) appear. The driven gas does not enter.
+
+</Traps>
+
+<Source>official 2025 solution p. 4 · Lecture 23 gas-gun derivation</Source>
+
+</Problem>
+
+<Problem id="PS11 P5" title="Derive the shock-tube equation" tags="contact surface, moving shock, algebra">
+
+<Statement>
+
+Using the result of Problem 4 and the fact that pressure and velocity must match at the contact interface ($p_3 = p_2$, $u_3 = u_2$), derive the shock-tube equation
+
+$$
+\frac{p_4}{p_1} = \frac{p_2}{p_1}\left[1 - \frac{(\gamma_4-1)(c_1/c_4)(p_2/p_1-1)}{\sqrt{2\gamma_1\left(2\gamma_1+(\gamma_1+1)(p_2/p_1-1)\right)}}\right]^{-\frac{2\gamma_4}{\gamma_4-1}}
+$$
+
+</Statement>
+
+<Think>
+
+Four pieces (lecture's list): (1) the expansion relation of P4; (2) the moving-shock relation for the driven gas, **with the contact surface as the piston**; (3) $u_3 = u_2$; (4) $p_3 = p_2$. The rest is eliminating $M_s$.
+
+</Think>
+
+<Plan>
+
+$\dfrac{p_4}{p_1} = \dfrac{p_4}{p_3}\dfrac{p_2}{p_1}$ → P4 with $u_3 = u_2$ → $u_2/c_1$ from the unsteady shock formula → $M_s^2$ from $p_2/p_1$ → simplify.
+
+</Plan>
+
+<Steps>
+<Step title="1. Split the ratio">
+
+$\dfrac{p_4}{p_1} = \dfrac{p_2}{p_1}\left[1 - \dfrac{\gamma_4-1}{2}\dfrac{u_2}{c_4}\right]^{-\frac{2\gamma_4}{\gamma_4-1}}$ (P4 inverted, with $p_3 = p_2$ and $u_3 = u_2$).
+
+</Step>
+<Step title="2. Shock side">
+
+$\dfrac{u_2}{c_1} = \dfrac{2}{\gamma_1+1}\dfrac{M_s^2-1}{M_s}$ and $M_s^2 = \dfrac{(\gamma_1+1)(p_2/p_1)+(\gamma_1-1)}{2\gamma_1} \equiv \dfrac{X}{2\gamma_1}$.
+
+</Step>
+<Step title="3. Eliminate M_s">
+
+$\dfrac{M_s^2-1}{M_s} = \dfrac{X-2\gamma_1}{\sqrt{2\gamma_1}\sqrt X}$, where $X - 2\gamma_1 = (\gamma_1+1)(p_2/p_1-1)$ and $X = 2\gamma_1+(\gamma_1+1)(p_2/p_1-1)$.
+
+So $\dfrac{\gamma_4-1}{2}\dfrac{u_2}{c_4} = \dfrac{\gamma_4-1}{2}\dfrac{c_1}{c_4}\dfrac{2}{\gamma_1+1}\dfrac{(\gamma_1+1)(p_2/p_1-1)}{\sqrt{2\gamma_1 X}}$. The $(\gamma_1+1)$ cancels, which leaves the bracket of the shock-tube equation.
+
+</Step>
+</Steps>
+
+<Answer>
+
+The shock-tube equation as stated. It links the diaphragm ratio $p_4/p_1$ to the shock strength $p_2/p_1$ (or $M_s$) through $c_1/c_4$, γ₁ and γ₄. A larger $c_4/c_1$ (a light or hot driver) gives a stronger shock for the same $p_4/p_1$.
+
+</Answer>
+
+<ShockTubeSim p41={10} />
+
+<Traps>
+
+- Across the contact only p and u match. T and ρ jump.
+- The bracket must stay positive. As $p_4/p_1 \to \infty$ the shock strength saturates: there is a finite maximum $M_s$.
+- `shockTube()` in the site's lib solves this equation for $p_2/p_1$ by bisection. Every readout in the sim comes from it.
+
+</Traps>
+
+<Source>official 2025 solution pp. 4–6 · lecture "(1)+(2)+(3)+(4) ⇒ shock tube equation"</Source>
+
+</Problem>
+
+<Problem id="PS11 P6" title="Shock-tube design for T₅ = 1200 K, p₅ = 5 atm; nitrogen vs helium driver" tags="reflected shock, iteration, shock-tube equation, official errors corrected">
+
+<Statement>
+
+Shock tubes are used to bring a test gas almost instantaneously to a chosen state. The state of interest is state 5, behind the shock reflected from the end wall. We want to study methyl-butanoate combustion in air at **5 atm and 1200 K** (state 5). Find the required initial conditions of state 1 (T₁, p₁; the handout says "T₄, p₁", a typo) and the driver pressure p₄, with T₄ = 300 K. Treat the test gas as air. Do this for (a) a nitrogen driver (MW 28, γ = 1.4) and (b) a helium driver (MW 4, γ = 1.666). Which needs the greater p₄?
+
+</Statement>
+
+<Think>
+
+Two moving shocks in series. Seen from gas 2, the **end wall is a piston** moving at $u_2$, so the reflected shock obeys the same formula with $c_x = c_2$. T₅/T₁ depends only on $M_s$, so iterate on $M_s$ until T₅ = 1200 K (with T₁ = 300 K). Then p₁ follows from the pressure ratios, and p₄ from the shock-tube equation (P5).
+
+</Think>
+
+<Plan>
+
+Guess $M_s$ → (A3) $T_2/T_1$, $p_2/p_1$, $c_2 = c_1\sqrt{T_2/T_1}$ → $u_2$ → $M_R$ from $u_2/c_2$ → (A3) $T_5/T_2$, $p_5/p_2$ → $T_5$. Iterate. Then $p_1 = 5\ \text{atm}/[(p_5/p_2)(p_2/p_1)]$ → P5 for $p_4/p_1$.
+
+<ReflectedShockFigure Ms={2.705} MR={2.019} />
+
+</Plan>
+
+<Steps>
+<Step title="1. Iterate on M_s (c₁ = 347.6 m/s)">
+
+| guess $M_s$ | $T_2/T_1$ | $p_2/p_1$ | $c_2$ (m/s) | $u_2$ (m/s) | $M_R$ | $T_5/T_2$ | $p_5/p_2$ | $T_5$ (K) |
+|---|---|---|---|---|---|---|---|---|
+| 2 | 1.6875 | 4.5 | 451.5 | 434.5 | 1.732 | 1.4815 | 3.33 | 750 |
+| 3 | 2.679 | 10.33 | 568.9 | 772.4 | 2.104 | 1.774 | 5.00 | 1426 |
+| 2.7 | 2.3429 | 8.338 | 532.1 | 674.8 | 2.018 | 1.7019 | 4.58 | 1196 |
+| **2.705** | 2.348 | **8.370** | 532.7 | 676.5 | **2.019** | **1.7032** | **4.590** | **1200** |
+
+(The site's lib root: $M_s = 2.7052$. Anderson's closed-form reflected-shock relation gives the same $M_R$.)
+
+</Step>
+<Step title="2. Initial pressure p₁ (corrected)">
+
+$$
+p_1 = \frac{p_5}{(p_5/p_2)(p_2/p_1)} = \frac{5}{4.590 \times 8.370} = 0.130\ \text{atm} \;(13.2\ \text{kPa})
+$$
+
+The official solution divides by $T_5/T_2 = 1.70317$ instead of $p_5/p_2 = 4.590$, which gives 0.351 atm. Both numbers sit side by side in its own table. Check: $0.1301 \times 8.370 \times 4.590 = 5.00$ atm ✓.
+
+</Step>
+<Step title="3. Driver pressures from the shock-tube equation (corrected)">
+
+$c_4(\text{N}_2) = \sqrt{1.4 \times 296.9 \times 300} = 353.1$ m/s and $c_4(\text{He}) = \sqrt{1.666 \times 2078.5 \times 300} = 1019$ m/s.
+
+| driver | bracket term | 1 − term | exponent | $p_4/p_1$ | $p_4$ |
+|---|---|---|---|---|---|
+| N₂ | $0.4 \times 0.9843 \times 7.370/7.574 = 0.383$ | 0.617 | −7 | **≈ 246** | **≈ 32 atm** |
+| He | $0.666 \times 0.3410 \times 7.370/7.574 = 0.221$ | 0.779 | −5.0 | **≈ 29.2** | **≈ 3.8 atm** |
+
+Cross-check through $u_2 = u_3 = 676.5$ m/s with P4: for N₂, $(p_3/p_4)^{1/7} = 1 - 0.2 \times 676.5/353.1$, so $p_4/p_2 = 29.4$ and $p_4/p_1 = 246$ ✓.
+
+The official 6.18 (N₂) and 3.46 (He) are **impossible**: both are below $p_2/p_1 = 8.37$, but the driver expands *down* to $p_3 = p_2$, so $p_4$ must exceed $p_2$.
+
+</Step>
+</Steps>
+
+<Answer>
+
+- Incident shock $M_s = 2.705$ ($p_2/p_1 = 8.37$, $u_2 = 676.5$ m/s), reflected $M_R = 2.019$.
+- T₁ = 300 K, **p₁ = 0.130 atm** (official 0.351 atm, corrected).
+- **p₄(N₂) ≈ 32 atm** ($p_4/p_1 \approx 246$) and **p₄(He) ≈ 3.8 atm** ($p_4/p_1 \approx 29.2$). The official values (2.16 and 1.21 atm) are corrected here.
+- **Nitrogen needs the greater driver pressure**, about 8.4 times more. The conclusion of the official solution stands, and is even stronger. A heavy driver spends its internal energy accelerating itself; light helium ($c_4/c_1 \approx 2.9$) spends it on the test gas.
+
+</Answer>
+
+<ShockTubeSim p41={29.2} driver="He" driven="air" />
+
+<Traps>
+
+- The test state is **5** (behind the reflected shock, at rest at the wall), not 2.
+- Back out p₁ with $p_5/p_2$, not $T_5/T_2$. Mixing up columns in an iteration table is easy.
+- Sanity check: $p_4 > p_2$ always.
+- Set $p_4/p_1 = 29.2$ with He driving air in the sim: it should read $p_2/p_1 \approx 8.37$, $M_s \approx 2.705$ and $T_5 \approx 1200$ K.
+
+</Traps>
+
+<Source>official 2025 solution pp. 7–9 · corrections recomputed in the digest and checked by lib/groupE.test.ts</Source>
+
+</Problem>

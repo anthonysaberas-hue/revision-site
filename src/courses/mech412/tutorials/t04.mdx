@@ -1,0 +1,235 @@
+<p className="eyebrow">Tutorials 4 and 5 · Feb 2024 · Lectures 7–11</p>
+
+# Tutorial 4 (with the T5 solutions): RLC state space and Φ(t), a nonlinear circuit, an op-amp PID
+
+<div className="lede">
+
+The statement is Tutorial 4; the instructor's tablet solutions are filed as "T05-sol". Topics: a circuit turned into state space and $\Phi(t)$ (<Ch slug="state-space">Chapter 7</Ch>, <Ch slug="circuits-opamps">Chapter 8</Ch>), a **nonlinear** circuit linearised around an operating point (<Ch slug="linearization">Chapter 9</Ch>), and an op-amp network that turns out to be a PID controller. Everything was recomputed; the only slips in the instructor's sheet are rounding and one exponent sign.
+
+</div>
+
+<Problem id="T4 Q1" title="RLC network: block diagram, signal-flow graph, state space, transfer function, Φ(t)" tags="impedance, canonical form, state-transition matrix">
+
+<Statement>
+
+The source $V_i$ feeds a $5\ \Omega$ resistor to node A; a $1$ F capacitor goes from A to ground; a $2$ H inductor goes from A to the output node; a $10\ \Omega$ resistor goes from the output $V_o$ to ground. Sketch the block diagram and signal-flow graph; find the state-space model and the transfer function; find $\Phi(t)$.
+
+</Statement>
+
+<Think>
+
+Two energy-storing elements ($C$ and $L$) mean **two states**, second order. Strategy: impedances ($Z_L=Ls$, $Z_C=1/(Cs)$), **KCL at each node**, eliminate the internal node to get $V_o/V_i$, then write the *controllable canonical* state space from the denominator, and finally $\Phi(s)=(sI-A)^{-1}$.
+
+</Think>
+
+<Steps>
+<Step title="1. KCL at node A">
+
+Currents leaving A: through the 5 Ω back toward $V_i$, through the capacitor to ground, through the inductor toward $V_o$:
+$$\frac{V_A-V_i}{5}+V_A\,s+\frac{V_A-V_o}{2s}=0.$$
+Multiply by $10s$: $2s(V_A-V_i)+10s^2V_A+5(V_A-V_o)=0\Rightarrow(10s^2+2s+5)V_A-5V_o=2sV_i$.
+
+</Step>
+<Step title="2. KCL at the output node">
+
+$\dfrac{V_o-V_A}{2s}+\dfrac{V_o}{10}=0\Rightarrow5(V_o-V_A)+sV_o=0\Rightarrow V_A=\dfrac{s+5}{5}V_o$.
+
+</Step>
+<Step title="3. Eliminate V_A">
+
+$(10s^2+2s+5)\dfrac{s+5}{5}V_o-5V_o=2sV_i$. Multiply by 5 and expand $(10s^2+2s+5)(s+5)=10s^3+52s^2+15s+25$: $(10s^3+52s^2+15s+25-25)V_o=10sV_i$, i.e. $(10s^3+52s^2+15s)V_o=10sV_i$. Cancel $s$ (and divide by 10):
+$$\frac{V_o}{V_i}=\frac{1}{s^2+5.2s+1.5}.$$
+**Check:** DC gain $1/1.5=2/3$: at DC the inductor is a short and the 5 Ω, 10 Ω form the divider $10/15=2/3$ ✔. Poles $-4.893$ and $-0.3065$ (overdamped, no resonance).
+
+</Step>
+<Step title="4. State space (controllable canonical)">
+
+Let $z=V_i/D(s)$, $x_1=z$, $x_2=\dot z$, so $\ddot z=u-5.2\dot z-1.5z$:
+$$\dot x=\begin{bmatrix}0&1\\-1.5&-5.2\end{bmatrix}x+\begin{bmatrix}0\\1\end{bmatrix}u,\qquad y=\begin{bmatrix}1&0\end{bmatrix}x.$$
+
+</Step>
+<Step title="5. Diagrams">
+
+Block diagram: $u\to\oplus\to\int\to\int\to y$ with feedback gains $5.2$ (from $x_2$) and $1.5$ (from $x_1$) into the summer. Signal-flow graph: $u\to x_2'$ (gain 1), $x_2'\to x_2$ ($1/s$), $x_2\to x_1$ ($1/s$), $x_1\to y$; loops $-5.2$ ($x_2\to x_2'$) and $-1.5$ ($x_1\to x_2'$).
+
+</Step>
+<Step title="6. State-transition matrix">
+
+$\Phi(s)=(sI-A)^{-1}=\dfrac{1}{s^2+5.2s+1.5}\begin{bmatrix}s+5.2&1\\-1.5&s\end{bmatrix}$. With $(s+0.3065)(s+4.8935)$ and $4.8935-0.3065=4.587$, partial fractions (cover-up) of each entry:
+
+- $\Phi_{11}$: residue at $-0.3065$: $\dfrac{4.8935}{4.587}=1.067$; at $-4.8935$: $\dfrac{0.3065}{-4.587}=-0.067$.
+- $\Phi_{12}$: $\pm\dfrac1{4.587}=\pm0.218$. $\Phi_{21}$: $\mp\dfrac{1.5}{4.587}=\mp0.327$.
+- $\Phi_{22}$: at $-0.3065$: $\dfrac{-0.3065}{4.587}=-0.067$; at $-4.8935$: $\dfrac{-4.8935}{-4.587}=1.067$.
+
+$$\Phi(t)=\begin{bmatrix}1.067e^{-0.307t}-0.067e^{-4.89t}&0.218\big(e^{-0.307t}-e^{-4.89t}\big)\\-0.327\big(e^{-0.307t}-e^{-4.89t}\big)&1.067e^{-4.89t}-0.067e^{-0.307t}\end{bmatrix}.$$
+
+**Check at $t=1$:** $\Phi(1)=\begin{bmatrix}0.785&0.159\\-0.238&-0.041\end{bmatrix}=e^{A}$ ✔ (matrix exponential computed independently). At $t=0$: $\Phi=I$ ✔ ($1.067-0.067=1$).
+
+</Step>
+</Steps>
+
+<Answer>
+
+$\dfrac{V_o}{V_i}=\dfrac1{s^2+5.2s+1.5}$; $A=\begin{bmatrix}0&1\\-1.5&-5.2\end{bmatrix}$, $B=\begin{bmatrix}0\\1\end{bmatrix}$, $C=\begin{bmatrix}1&0\end{bmatrix}$; $\Phi(t)$ as above.
+
+*Real-world:* a low-pass RLC ladder: DC gain $2/3$, no resonance.
+
+</Answer>
+
+<Callout kind="note" title="Instructor's sheet">
+
+TF and $\Phi(t)$ agree up to rounding (it writes 1.1, 0.068, 0.22, 0.33), with one exponent typo: a term printed as $e^{+4.89t}$ must be $e^{-4.89t}$.
+
+</Callout>
+
+<Traps>
+
+- The output is the voltage across the 10 Ω, not across the capacitor.
+- This state-space model is canonical (states $z,\dot z$), **not** the physical states $(v_C,i_L)$: the transfer function is the same, $\Phi(t)$ is not.
+
+</Traps>
+
+<Source>tablet solution T05-sol ✔ (recomputed with numpy and sympy).</Source>
+
+<ToolLink tool="state-space">Check A, B, C in the state-space tool</ToolLink>
+
+</Problem>
+
+<Problem id="T4 Q2" title="Nonlinear circuit i_o = |e_o| e_o: operating point, linearised transfer function, state space" tags="linearisation, d(|e|e)/dt, operating point">
+
+<Statement>
+
+The source $e_i(t)$ feeds a $\tfrac14\,\Omega$ resistor and a $\tfrac12$ H inductor into node $e_o$; a $\tfrac12\,\Omega$ resistor connects to a 12 V battery; a 2 F capacitor goes to ground; a nonlinear load draws $i_o=|e_o|e_o$. With $e_i=4+\hat e_i$: find the nonlinear input–output ODE, the operating point, the linearised equation and state space, and the steady-state response to a unit step in $\hat e_i$.
+
+</Statement>
+
+<Think>
+
+**Never use Laplace or impedances on the nonlinear equation.** First write the nonlinear ODE with KCL, then find the equilibrium, then linearise by Taylor expansion (<Ch slug="linearization">Chapter 9</Ch>). The load is a "square-law" device: for small changes it looks like a resistor with slope $\dfrac{d i_o}{de_o}=2|\bar e_o|$.
+
+</Think>
+
+<Steps>
+<Step title="1. KCL at e_o">
+
+The instructor treats the $\tfrac14\,\Omega$ and $\tfrac12$ H as parallel branches between $e_i$ and $e_o$:
+$$4(e_o-e_i)+2\!\int(e_o-e_i)\,dt+2(e_o-12)+2\dot e_o+i_o=0.$$
+
+</Step>
+<Step title="2. Remove the integral">
+
+Differentiate once (the constant 12 V and the integration constant vanish; the battery only fixes the inductor's initial current):
+$$2\ddot e_o+6\dot e_o+2e_o+\frac{d}{dt}\big(|e_o|e_o\big)=4\dot e_i+2e_i,\qquad \frac{d}{dt}\big(|e_o|e_o\big)=2|e_o|\dot e_o.$$
+
+</Step>
+<Step title="3. Operating point">
+
+All derivatives zero, $\bar e_i=4$: $2\bar e_o=2\bar e_i\Rightarrow\bar e_o=4$, and $\bar\imath_o=|4|\cdot4=16$.
+
+</Step>
+<Step title="4. Linearise">
+
+Only the product term is nonlinear: $f=2|e_o|\dot e_o$. At equilibrium $\dot{\bar e}_o=0$: $\dfrac{\partial f}{\partial e_o}=2\,\mathrm{sgn}(e_o)\dot e_o=0$ and $\dfrac{\partial f}{\partial\dot e_o}=2|\bar e_o|=8$. So
+$$2\ddot{\hat e}_o+(6+8)\dot{\hat e}_o+2\hat e_o=4\dot{\hat e}_i+2\hat e_i\;\Rightarrow\;\frac{\hat E_o}{\hat E_i}=\frac{4s+2}{2s^2+14s+2}=\frac{2s+1}{s^2+7s+1}.$$
+Poles $-0.146$ and $-6.85$.
+
+</Step>
+<Step title="5. State space">
+
+With $z=u/D$: $\dot x=\begin{bmatrix}0&1\\-1&-7\end{bmatrix}x+\begin{bmatrix}0\\1\end{bmatrix}u$, $y=\begin{bmatrix}1&2\end{bmatrix}x$ (because $y=z+2\dot z$). Block diagram: $u\to\oplus\to\int\to\int$, feedbacks $7$ ($x_2$) and $1$ ($x_1$), and a feed-forward gain 2 from $x_2$ to the output summer.
+
+</Step>
+<Step title="6. Unit step in ê_i">
+
+$\hat e_{o,ss}=\lim_{s\to0}s\cdot\dfrac1s\cdot\dfrac{2s+1}{s^2+7s+1}=1$, so $e_{o,ss}=4+1=5$. (The nonlinear equation gives exactly the same, since its DC balance $2e_o=2e_i$ is linear.)
+
+</Step>
+</Steps>
+
+<Answer>
+
+Nonlinear: $2\ddot e_o+6\dot e_o+2e_o+2|e_o|\dot e_o=4\dot e_i+2e_i$; operating point $\bar e_o=4$, $\bar\imath_o=16$; linearised $\dfrac{\hat E_o}{\hat E_i}=\dfrac{2s+1}{s^2+7s+1}$; $e_o\to5$ for a unit step.
+
+*Real-world:* a supply with a square-law load (fan, diode-like device): small disturbances see an effective incremental resistance $1/(2|\bar e_o|)=1/8\ \Omega$.
+
+</Answer>
+
+<Callout kind="note" title="Reading the figure">
+
+The figure is ambiguous about whether the $\tfrac14\,\Omega$ and the $\tfrac12$ H are parallel; the answer follows the instructor's equation.
+
+</Callout>
+
+<Traps>
+
+- Never apply impedance or Laplace to the nonlinear equation before linearising.
+- The 12 V source disappears when you differentiate.
+- The slope of $|e|e$ is $2|\bar e|=8$, not $2\bar e$ without the absolute value in general (equal here only because $\bar e>0$).
+
+</Traps>
+
+<Source>tablet solution ✔ (all steps reproduced).</Source>
+
+</Problem>
+
+<Problem id="T4 Q3" title="Op-amp with Z₁ = C₁ ∥ R₁ at the input and Z₂ = R₂ + C₂ in the feedback" tags="op-amp, PID circuit, improper transfer function">
+
+<Statement>
+
+Find the transfer function, the pole-zero map and the state-space model.
+
+</Statement>
+
+<Think>
+
+Ideal inverting op-amp: $\dfrac{e_o}{e_i}=-\dfrac{Z_2}{Z_1}$ (<Ch slug="circuits-opamps">Chapter 8</Ch>). Here the *input* element is a parallel pair, the *feedback* element a series pair.
+
+</Think>
+
+<Steps>
+<Step title="1. Impedances">
+
+$Z_1=\dfrac{R_1}{1+R_1C_1s}$ (the parallel pair), $Z_2=R_2+\dfrac1{C_2s}=\dfrac{1+R_2C_2s}{C_2s}$.
+
+</Step>
+<Step title="2. Divide">
+
+$$\frac{E_o}{E_i}=-\frac{Z_2}{Z_1}=-\frac{(1+R_2C_2s)(1+R_1C_1s)}{R_1C_2\,s}.$$
+
+</Step>
+<Step title="3. Poles, zeros, and what it is">
+
+Pole at $0$ (an integrator); zeros at $-1/(R_1C_1)$ and $-1/(R_2C_2)$. Expanding the numerator gives a **PID controller circuit**: $P=-\dfrac{R_1C_1+R_2C_2}{R_1C_2}$, $I=-\dfrac1{R_1C_2s}$, $D=-R_2C_1s$.
+
+</Step>
+<Step title="4. State space?">
+
+The transfer function is **improper** (numerator degree 2 > denominator degree 1): it contains a pure differentiator, which a finite state-space model $(A,B,C,D)$ cannot represent. No state-space model exists ("not realisable"). A realisable version adds a small series resistor with $C_1$ (or a small $R$ with the feedback capacitor), which makes the derivative term $\dfrac{s}{\tau s+1}$ instead.
+
+</Step>
+</Steps>
+
+<Answer>
+
+$\dfrac{E_o}{E_i}=-\dfrac{(1+R_1C_1s)(1+R_2C_2s)}{R_1C_2s}$: pole at 0, zeros at $-1/R_1C_1$ and $-1/R_2C_2$; improper, so no state-space model.
+
+*Real-world:* the analog PID controller of <Ch slug="pid">Chapter 17</Ch>.
+
+</Answer>
+
+<Traps>
+
+- The denominator constant is $R_1C_2$ (from $\big(R_2+\tfrac1{C_2s}\big)\big(\tfrac1{R_1}+C_1s\big)$).
+- A transfer function with more zeros than poles is not realisable as a state-space model.
+
+</Traps>
+
+<Source>tablet solution ✔.</Source>
+
+</Problem>
+
+<Examined>
+
+Op-amp PID circuit: $\text{MT2 W2009 Q3}$, $\text{W2010 Q4}$; linearisation of a nonlinear circuit: $\text{MT2 W2024 Q3}$; $\Phi(t)$ from an RLC network: $\text{MT1}$ state-space questions.
+
+</Examined>

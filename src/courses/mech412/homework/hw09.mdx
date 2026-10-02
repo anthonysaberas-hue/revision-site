@@ -1,0 +1,206 @@
+<p className="eyebrow">Homework 9 · 2019 sheet (the 2024 sheet is not in the archive) · Lectures 19–20</p>
+
+# HW9: antenna PID and root-locus tuning, gain selection, high-order root-locus shapes
+
+<div className="lede">
+
+Root-locus design with real stakes (<Ch slug="root-locus">Chapter 18</Ch>, <Ch slug="pid">Chapter 17</Ch>). The official file is a mix: one handwritten page (the Ziegler–Nichols part of Q1) and several pages from the Dorf & Bishop solution manual. Q2 is the same loop as <Hw n="7">HW7 Q5</Hw>. There is no Anthony work for HW9.
+
+</div>
+
+<Problem id="HW9 Q1" title="Satellite antenna: Ziegler–Nichols first cut, then root-locus tuning; effect of a disturbance" tags="Z–N, K_v, lead-lag, disturbance">
+
+<Statement>
+
+A large antenna tracks a satellite; the plant (armature-controlled motor driving the dish) is $G(s)=\dfrac{10}{s(s+5)(s+10)}$, unity feedback with controller $G_c(s)$. Specs: ramp $r=Bt$ steady-state error $\le0.01B$; step overshoot $<5\%$; 2% settling time $<2$ s. (a) Use Ziegler–Nichols to get a first-cut PID. (b) Tweak with the root locus. (c) Plot the step response; overshoot and settling time. (d) Effect of a disturbance $T_d(s)=Q/s$ entering at the plant input.
+
+</Statement>
+
+<Think>
+
+Z–N is a **first cut**: it ignores your specs and usually leaves 25–60% overshoot. The root locus then tweaks it. The ramp spec is a **$K_v$ spec**: for a type-1 loop $e_{ss}=1/K_v$ so we need $K_v\ge100$. The disturbance question is about the transfer function $Y/T_d=G/(1+G_cG)$ and its DC value.
+
+</Think>
+
+<Steps>
+<Step title="(a) Ultimate gain (Z–N method 2)">
+
+With $G_c=K_p$: $1+K_p\dfrac{10}{s(s+5)(s+10)}=0\Rightarrow s^3+15s^2+50s+10K_p=0$. Routh: $s^1$ entry $b_1=\dfrac{15\cdot50-10K_p}{15}$, which hits zero at $10K_p=750$: **$K_{cr}=75$**.
+
+</Step>
+<Step title="(a) Ultimate period">
+
+At $K_{cr}$ the auxiliary equation from the $s^2$ row is $15s^2+750=0\Rightarrow s=\pm j\sqrt{50}$: $\omega=5\sqrt2=7.07$ rad/s, $P_{cr}=2\pi/7.07=0.889$ s.
+
+</Step>
+<Step title="(a) Z–N PID rules">
+
+$K_p=0.6K_{cr}=45$, $T_i=0.5P_{cr}=0.444$ s, $T_d=0.125P_{cr}=0.111$ s.
+
+</Step>
+<Step title="(a) Does the first cut meet the specs? (digest check)">
+
+Closed-loop poles: $-1.50\pm j5.14$, $-5.18$, $-6.82$: **OS about 59%, 2% settling 2.58 s**: it fails the 5% / 2 s specs, as the problem expects. Hence (b).
+
+</Step>
+<Step title="(b) The Dorf design: a lead-lag-style compensator">
+
+$$G_c(s)=K\,\frac{(s+5.5)(s+0.01)}{(s+6.5)(s+0.0001)},\qquad K=8.58 .$$
+
+Two ideas: the **zero at $-5.5$ almost cancels the plant pole at $-5$**, and the **zero/pole pair at $-0.01$/$-0.0001$ is a lag** that multiplies the DC gain by 100 without disturbing the transient.
+
+</Step>
+<Step title="(b) Velocity constant and ramp error">
+
+$K_v=\lim_{s\to0}sG_cG=8.58\cdot\dfrac{5.5\cdot0.01}{6.5\cdot0.0001}\cdot\dfrac{10}{5\cdot10}=8.58\cdot84.6\cdot0.2=145.2\ \text{s}^{-1}$, so $e_{ss}=1/K_v=0.0069B<0.01B$ ✔.
+
+</Step>
+<Step title="(c) Transient (computed)">
+
+Closed-loop poles $-11.4$, $-5.66$, $-2.21\pm j1.54$, $-0.0101$: **OS = 1.77%, $t_p=2.14$ s, $t_s=1.51$ s** ✔ both specs.
+
+</Step>
+<Step title="(d) Disturbance">
+
+$\dfrac{Y}{T_d}=\dfrac{G}{1+G_cG}$. For a step $Q/s$ the final value is $\lim_{s\to0}\dfrac{G}{1+G_cG}Q=\dfrac{Q}{G_c(0)}$ (because $G\to\infty$ as $s\to0$). $G_c(0)=8.58\cdot\dfrac{5.5\cdot0.01}{6.5\cdot0.0001}=726$, so **offset $=Q/726=0.0014Q$**. The response first bumps to about $0.14Q$, then decays very slowly (time constant $\approx100$ s, set by the closed-loop pole at $-0.0101$): matches the manual's 600 s plot.
+
+</Step>
+</Steps>
+
+<Answer>
+
+(a) $K_{cr}=75$, $P_{cr}=0.889$ s; $K_p=45$, $T_i=0.444$ s, $T_d=0.111$ s (OS 59%, fails the specs). (b)–(c) $G_c=8.58\dfrac{(s+5.5)(s+0.01)}{(s+6.5)(s+0.0001)}$: OS 1.8%, $T_s=1.5$ s, $e_{ss}=0.0069B$. (d) offset $Q/726\approx0.0014Q$ with a slow decay ($\tau\approx100$ s).
+
+*Real-world:* a radio-telescope or satellite dish: the ramp error is the pointing lag behind a satellite moving at constant angular rate; the disturbance is a wind gust torque on the dish.
+
+</Answer>
+
+<Callout kind="note" title="Digest remark (my addition, not in the manual)">
+
+The disturbance does **not** vanish because this $G_c$ has no true integrator: its pole at $-0.0001$ is a pseudo-integrator, giving $G_c(0)=726$ finite. A real PID (a true $1/s$ in the controller, *before* the point where the disturbance enters) would give **zero** steady offset.
+
+</Callout>
+
+<Traps>
+
+- Z–N is only a first cut: it does **not** meet the 5% overshoot (it gives 59%).
+- A lag section with a pole at $-0.0001$ is great for $e_{ss}$ but slow at recovering from disturbances.
+- The zero at $-5.5$ almost cancels the plant pole at $-5$ (pole–zero cancellation: fine here because both are stable and well damped).
+
+</Traps>
+
+<Source>handwritten page 1 for (a) ✔; Dorf CP7.6 for (b)–(d), recomputed ($K_v$, OS, $t_s$, poles). No Anthony version.</Source>
+
+<ToolLink tool="root-locus">Open the root-locus tool</ToolLink>
+
+</Problem>
+
+<Problem id="HW9 Q2" title="Root locus of K(s+2)²/[s(s+10)(s+20)(s²+3s+3.5)]: choose K for OS < 10 %, T_s < 4 s" tags="gain selection">
+
+<Statement>
+
+Same loop as <Hw n="7">HW7 Q5</Hw>: select $K$ so that $OS<10\%$ and $T_s<4$ s.
+
+</Statement>
+
+<Steps>
+<Step title="From HW7 Q5">
+
+The valid range is $194\lesssim K\lesssim523$ (full derivation there).
+
+</Step>
+<Step title="The manual's answer (Dorf AP7.11)">
+
+"A suitable gain is $K=500$": overshoot 9.01%, peak 1.09 at 0.945 s, 2% settling time 2.39 s. The digest recomputation gives $OS=9.02\%$, $t_s=2.39$ s at $K=500$ ✔ (identical).
+
+</Step>
+<Step title="A critical comment">
+
+$K=500$ sits close to the upper edge of the range (the 10% bound is at 523). A design with margin takes $K\approx300$ to $460$.
+
+</Step>
+</Steps>
+
+<Answer>
+
+$K=500$ meets both specs (OS 9.0%, $t_s=2.39$ s), but $K\approx300$–$460$ is safer.
+
+</Answer>
+
+<Callout kind="note" title="Other manual pages in the same file">
+
+AP7.10: root locus of $1+K\dfrac{s^2+7s+20}{s(s^2+7s+10)}$; with $K=15$: $T=\dfrac{10s+150}{s^3+22s^2+115s+300}$, P.O. 4.8%, $T_s=2$ s. AP7.12 belongs to another assignment.
+
+</Callout>
+
+<Source>Dorf AP7.11 ✔ (K = 500 recomputed).</Source>
+
+</Problem>
+
+<Problem id="HW9 Q3" title="Verify four high-order root-locus shapes" tags="break-away points, asymptotes, dK/ds = 0">
+
+<Statement>
+
+Verify the root loci (a)–(d) by constructing them, with open-loop functions
+(a) $KF=\dfrac{s^2+7s+8.25}{s^3+6s^2+5s}$; (b) $KF=\dfrac{s+8}{s^5+30s^4+296s^3+1170s^2+1575s}$; (c) $KF=\dfrac{1}{s^6+2s^5+s^4}$; (d) $KF=\dfrac{s^2+6s+6.75}{s^3+5s^2+4s}$.
+
+</Statement>
+
+<Think>
+
+The checklist of <Ch slug="root-locus">Chapter 18</Ch>: poles and zeros, real-axis segments (odd count to the right), asymptotes ($n-m$ of them, centroid), then break-away/break-in points from $dK/ds=0$ with $K=-1/F(s)$. **Check the sign of $K$ at every candidate**: only $K>0$ points are on the locus.
+
+</Think>
+
+<Steps>
+<Step title="Computed data">
+
+| | poles | zeros | $n-m$, asymptotes | centroid | real break points (and K) |
+|---|---|---|---|---|---|
+| (a) | $0,-1,-5$ | $-1.5,-5.5$ | 1 (180°) | $+1$ (irrelevant: one branch on the axis) | $-0.63$ (0.24), $-2.5$ (3.1), $-3.59$ (3.3), $-7.28$ (10.1) |
+| (b) | $0,-3,-5,-7,-15$ | $-8$ | 4 ($\pm45^\circ,\pm135^\circ$) | $-5.5$ | $-1.126$ (97), $-6.40$ (98), $-9.34$ (2540), $-11.6$ (2860) |
+| (c) | $0$ (×4), $-1$ (×2) | none | 6 ($\pm30^\circ,\pm90^\circ,\pm150^\circ$) | $-1/3$ | $-2/3$ (0.022) |
+| (d) | $0,-1,-4$ | $-1.5,-4.5$ | 1 (180°) | $+1$ | $-0.63$ (0.23), $-6.14$ (8.9) |
+
+</Step>
+<Step title="(c) worked: the break-away point">
+
+$K=-1/F=-s^4(s+1)^2$. Differentiate: $\dfrac{dK}{ds}\propto 4s^3(s+1)^2+2s^4(s+1)=2s^3(s+1)(3s+2)=0\Rightarrow s=-2/3$ (the roots at 0 and $-1$ are the multiple poles themselves). The four branches leaving the quadruple pole at the origin fan out at multiples of $90^\circ/$... (the angles come from $\dfrac{(2k+1)180^\circ}{4}$ for the angle of departure from a fourth-order pole).
+
+</Step>
+<Step title="(a) and (d): two bubbles">
+
+In (a) and (d) the zeros are close to the poles, so the locus forms a small bubble between $0$ and $-1$ and another around the pair $-5$/$-5.5$ (or $-4$/$-4.5$): the break-away points are on the left of each pole pair, the break-in on the right of each zero.
+
+</Step>
+<Step title="(b): bubble then bending to the asymptotes">
+
+A small bubble near $-7/-8$ (break points $-6.40$ and $-9.34$), then the far branches bend toward the $\pm45^\circ$ and $\pm135^\circ$ asymptotes from the centroid $-5.5$. The values $-1.125,-6.4,-9.34,-11.6$ in the manual's figure match.
+
+</Step>
+</Steps>
+
+<Answer>
+
+All four shapes match the figures; the table above is the checklist.
+
+*Real-world:* high-order root loci are not "just two branches meeting": bubbles and detours are common and the real-axis break points come from solving $dK/ds=0$.
+
+</Answer>
+
+<Traps>
+
+- Break points with $K<0$ are **not on the locus**: for example $-4.04$ in (b) gives $K=-33$, reject it.
+- A multiple pole at the origin sends several branches out at once; the angles of departure split $180^\circ$ equally.
+
+</Traps>
+
+<Source>Dorf P7.24 figures; digest recomputation of poles, zeros and break points ✔. No Anthony version.</Source>
+
+</Problem>
+
+<Examined>
+
+Z–N then retune: $\text{final F2009}$; $K_v$ spec design: every final; disturbance transfer function: sensitivity chapter and $\text{MT2}$ questions; root-locus sketching: every MT3 / final.
+
+</Examined>

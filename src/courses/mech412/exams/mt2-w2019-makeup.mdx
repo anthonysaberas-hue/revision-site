@@ -1,0 +1,319 @@
+<p className="eyebrow">Midterm 2 make-up · Winter 2019 (Mar 29, 2019) · no official solution · 4 × 25 = 100 marks</p>
+
+# Midterm 2 make-up, Winter 2019: flexible shaft, DC-motor position loop, interacting tanks, MFB band-pass
+
+<div className="lede">
+
+**There is no official solution for this paper.** Every answer below was derived step by step and checked numerically (poles, step responses, filter parameters). The topics are the standard MT2 mix: a flexible-shaft mechanical model (<Ch slug="mech-models">Chapter 3</Ch>), a DC-motor position loop with sensitivity and steady-state error (<Ch slug="electromechanical">Chapter 11</Ch>, <Ch slug="sensitivity">Chapter 14</Ch>), two interacting tanks (<Ch slug="hydraulic-thermal">Chapter 13</Ch>) and a multiple-feedback op-amp band-pass (<Ch slug="circuits-opamps">Chapter 8</Ch>).
+
+</div>
+
+<Problem id="MT2 W2019 MU Q1" title="Disk-drive read/write head on a flexible shaft: EOM, circuit, Ω₂/Ω₁ (25 marks)" tags="two inertias, shaft torque, mobility analog">
+
+<Statement>
+
+Motor inertia $I_1$ (angle $\theta_1$) drives the head inertia $I_2$ ($\theta_2$) through a flexible shaft with torsional stiffness $k$ and viscous damping $b$. External moments $M_c$ and $M_d$ act on the motor. (a) Free-body diagrams and equations of motion. (b) An equivalent electrical circuit (state the analogy, flux and potential, label the elements). (c) The transfer function between the angular velocity of the head and of the motor.
+
+</Statement>
+
+<Think>
+
+Two flywheels joined by a springy, slightly lossy rod. Twist the rod and it pushes back with $k(\theta_1-\theta_2)$ plus a damping torque $b(\dot\theta_1-\dot\theta_2)$; the same torque that pushes the head forward pulls the motor back (Newton's third law). The shaft torque depends on the **relative** angle and angular velocity.
+
+</Think>
+
+<Steps>
+<Step title="(a) 1. Free-body diagrams">
+
+Motor: external torque $M_c+M_d$ forward; the shaft torque $T_s=k(\theta_1-\theta_2)+b(\dot\theta_1-\dot\theta_2)$ acts **backward**. Head: the same $T_s$ acts **forward**; no external torque.
+
+</Step>
+<Step title="(a) 2. Equations of motion (ΣM = Iθ̈)">
+
+$$I_1\ddot\theta_1+b(\dot\theta_1-\dot\theta_2)+k(\theta_1-\theta_2)=M_c+M_d\quad(E1)$$
+$$I_2\ddot\theta_2+b(\dot\theta_2-\dot\theta_1)+k(\theta_2-\theta_1)=0\quad(E2)$$
+
+</Step>
+<Step title="(b) Circuit (mobility analog: potential = ω, flux = torque)">
+
+Nodes $\omega_1$, $\omega_2$ and ground. **Current source** $M_c+M_d$ into node $\omega_1$; **capacitor $I_1$** from $\omega_1$ to ground; **capacitor $I_2$** from $\omega_2$ to ground (an inertia sees the absolute velocity); between $\omega_1$ and $\omega_2$, in parallel: **resistor $1/b$** (the damper, carrying the relative velocity) and **inductor $1/k$** (the spring). KCL at $\omega_1$: $M_c+M_d=I_1\dot\omega_1+b(\omega_1-\omega_2)+k\!\int(\omega_1-\omega_2)dt$ ✔ identical to (E1). The impedance analog is the dual: two series loops sharing $b$ and $1/k$.
+
+</Step>
+<Step title="(c) Transfer function">
+
+Laplace transform of (E2) with zero initial conditions: $(I_2s^2+bs+k)\Theta_2=(bs+k)\Theta_1$. With $\omega=s\Theta$ the $s$ cancels on both sides:
+$$\frac{\Omega_2(s)}{\Omega_1(s)}=\frac{bs+k}{I_2s^2+bs+k}.$$
+
+</Step>
+<Step title="(c) Checks">
+
+$k\to\infty$ (rigid shaft): $\Omega_2/\Omega_1\to1$ ✔ (the head follows the motor). $b=0$: pure resonance at $\omega_n=\sqrt{k/I_2}$; the zero at $s=-k/b$ improves damping when $b>0$. DC ($s\to0$): $\Omega_2/\Omega_1\to1$ ✔.
+
+</Step>
+</Steps>
+
+<CircuitBoard source={{kind:'Is',label:'M_c + M_d',sub:'torque'}} sections={[{type:'shunt',stack:[{kind:'C',label:'I₁'}],node:'ω₁'},{type:'bridge',els:[{kind:'R',label:'1/b'},{kind:'L',label:'1/k'}]},{type:'shunt',stack:[{kind:'C',label:'I₂'}],node:'ω₂'}]} title="Mobility analog of the flexible shaft" caption="Torque source into the motor node; the shaft (damper in parallel with spring) between the two velocity nodes; inertias to ground." />
+
+<Answer>
+
+(E1), (E2); the circuit above; $\dfrac{\Omega_2}{\Omega_1}=\dfrac{bs+k}{I_2s^2+bs+k}$.
+
+*Real-world:* a hard-disk-drive actuator or a robot joint with a flexible coupling: the head lags and rings after the motor; the numerator zero is why a little shaft damping helps.
+
+</Answer>
+
+<Traps>
+
+- Putting the damper from the head to ground (it lies across the shaft, between the two inertias).
+- Putting $M_c$ on the head's equation.
+
+</Traps>
+
+<Source>digest derivation (no official solution); same EOM structure as the belt problem of <Hw n="4">HW4</Hw> and $\text{MT1 W2019 Q2}$.</Source>
+
+</Problem>
+
+<Problem id="MT2 W2019 MU Q2" title="Robot gripper position control by a DC motor: step, disturbance, ramp error, sensitivity to b (25 marks)" tags="second-order loop, ζ = 0.065, K_v, S^T_b">
+
+<Statement>
+
+Block diagram: $\theta_d\to K_i\to\oplus\to$ power amplifier $K\to\dfrac{K_m}{R_f}\to\oplus$ (disturbance $T_d$ with a minus sign) $\to\dfrac1{s(Js+b)}\to\theta$; feedback $K_f$ from $\theta$ to the first junction. Values $K_m=30$, $R_f=1\ \Omega$, $K_f=K_i=1$, $J=0.1$, $b=1$, $K=20$. (a) The response $\theta(t)$ to a step in $\theta_d$ for $K=20$. (b) With $\theta_d=0$, the effect of a load disturbance $T_d=A/s$. (c) The steady-state error $e_{ss}$ for the input $r(t)=t$ ($T_d=0$). (d) The closed-loop sensitivity of the response to variations in the load damping $b$ ($T_d=0$).
+
+</Statement>
+
+<Think>
+
+A motor with a position sensor: error to amplifier to torque to inertia and friction to angle. High loop gain makes the angle follow the command; the price is a lightly damped oscillation because $J$ is small relative to the loop gain.
+
+</Think>
+
+<Steps>
+<Step title="(a) 1. Loop gain">
+
+Forward gain $K_iK\dfrac{K_m}{R_f}\dfrac1{s(Js+b)}=\dfrac{1\cdot20\cdot30}{s(0.1s+1)}=\dfrac{600}{s(0.1s+1)}$; feedback $K_f=1$.
+
+</Step>
+<Step title="(a) 2. Closed loop">
+
+$\dfrac{\theta}{\theta_d}=\dfrac{600}{s(0.1s+1)+600}=\dfrac{600}{0.1s^2+s+600}=\dfrac{6000}{s^2+10s+6000}$.
+
+</Step>
+<Step title="(a) 3. Second-order parameters">
+
+$\omega_n^2=6000\Rightarrow\omega_n=77.46$ rad/s; $2\zeta\omega_n=10\Rightarrow\zeta=0.0645$ (very underdamped); poles $-5\pm j77.30$.
+
+</Step>
+<Step title="(a) 4. Step response">
+
+$$\theta(t)=\theta_d\Big\{1-e^{-5t}\Big[\cos77.3t+\tfrac5{77.3}\sin77.3t\Big]\Big\}.$$
+Overshoot $100e^{-\pi\zeta/\sqrt{1-\zeta^2}}=81.6\%$; peak time $t_p=\pi/\omega_d=0.041$ s; 2% settling time $\approx4/(\zeta\omega_n)=0.8$ s; DC gain 1 (zero steady-state error to a step). Check: $\theta(0)=\dot\theta(0)=0$ ✔.
+
+</Step>
+<Step title="(b) 1. Disturbance path">
+
+With $T_d$ the only input: $\dfrac\theta{T_d}=-\dfrac{1/(s(Js+b))}{1+600/(s(Js+b))}=-\dfrac{1}{s(Js+b)+600}=-\dfrac{10}{s^2+10s+6000}$.
+
+</Step>
+<Step title="(b) 2. Step disturbance A/s">
+
+$\theta_{ss}=\lim_{s\to0}s\cdot\dfrac As\cdot\dfrac{-10}{s^2+10s+6000}=-\dfrac A{600}$ rad. A constant load torque rotates the gripper by $A/600$ against the command: a small but non-zero **offset** (the plant integrator comes **after** the disturbance entry). Insight: offset $=-A/(\text{loop DC gain})$; doubling $K$ halves it.
+
+</Step>
+<Step title="(c) Ramp error">
+
+With $K_i=K_f=1$, $e=\theta_d-\theta$. $G=\dfrac{600}{s(0.1s+1)}$ is **type 1**: $K_v=\lim sG=600$, so $e_{ss}=\dfrac1{K_v}=\dfrac1{600}=1.67\times10^{-3}$ rad.
+
+</Step>
+<Step title="(d) 1. Closed-loop TF in terms of b">
+
+$T=\dfrac{600}{Js^2+bs+600}$ (the constant $600=KK_mK_f/R_f$ with $K_i=K_f=1$).
+
+</Step>
+<Step title="(d) 2. Sensitivity">
+
+$S^T_b=\dfrac bT\dfrac{\partial T}{\partial b}$ with $\dfrac{\partial T}{\partial b}=-\dfrac{600s}{(Js^2+bs+600)^2}$:
+$$S^T_b=-\frac{bs}{Js^2+bs+600}=-\frac{10s}{s^2+10s+6000}\quad(b=1).$$
+
+</Step>
+<Step title="(d) 3. Reading S">
+
+$S=0$ at $s=0$: the DC response does not depend on $b$ (the integrator makes the final angle independent of friction). At high frequency $S\to0$ too. At $s=j\omega_n$ the terms $Js^2+600$ cancel and the denominator is purely $jb\omega_n$, so $S=-1$ there, and $|S|=\dfrac{b\omega}{\sqrt{(600-J\omega^2)^2+b^2\omega^2}}\le1$ with its maximum at the resonance $\omega_n=77.5$ rad/s. **Uncertainty in the load damping matters only near the resonance.**
+
+</Step>
+</Steps>
+
+<Answer>
+
+(a) $\theta/\theta_d=\dfrac{6000}{s^2+10s+6000}$, $\zeta=0.0645$, OS 81.6%, $t_s\approx0.8$ s. (b) $\theta_{ss}=-A/600$. (c) $e_{ss}=1/600$ rad. (d) $S^T_b=-\dfrac{bs}{Js^2+bs+600}$.
+
+*Real-world:* robotic joints: the large gain buys precision (small ramp and load errors) but gives a stiff, spring-like loop with little damping ($\zeta=0.065$) that oscillates; real designs add derivative (tachometer) feedback.
+
+</Answer>
+
+<Traps>
+
+- Dropping $K_i$ and $K_f$ (they are 1 here but must appear in a symbolic answer).
+- Using critically-damped formulas when $\zeta$ is tiny.
+- Forgetting the minus sign on $T_d$.
+
+</Traps>
+
+<Source>digest derivation (poles, overshoot 81.6% and the error constants confirmed numerically).</Source>
+
+<ToolLink tool="second-order">Explore this second-order loop</ToolLink>
+
+</Problem>
+
+<Problem id="MT2 W2019 MU Q3" title="Two interacting tanks in series: circuit, response time, effect of doubling tank 2 (25 marks)" tags="interacting tanks, dominant pole, 2 % band">
+
+<Statement>
+
+Both tanks have area $A=2.56$ m²; valves $R_1$ (tank 1 to tank 2) and $R_2$ (tank 2 outlet) are constant, $R_1=R_2=5\times10^5$ N·s/m⁵; water $\rho=1000$ kg/m³. Inflow $Q_{avg}+q$ to tank 1; outflow $Q_{avg}+q_2$ from tank 2. (a) Draw an equivalent electrical circuit. (b) Estimate the response time (to the 2% band) for a unit step in the inflow. (c) How does it change if the area of tank 2 is doubled?
+
+</Statement>
+
+<Think>
+
+Two buckets with holes, coupled: tank 1 feeds tank 2, tank 2 drains outside. Each bucket alone would be a first-order lag $RC$; because tank 1 is also **loaded** by tank 2 (the interaction), the pair is slower than either alone. Since $R$ is in N·s/m⁵ (pressure per volume flow), the tank capacitance must be the **pressure-based** one: $C=A/(\rho g)$.
+
+</Think>
+
+<Steps>
+<Step title="(a) Circuit">
+
+$C=\dfrac A{\rho g}=\dfrac{2.56}{1000\cdot9.81}=2.61\times10^{-4}$ m⁵/N. Current source $q$ into node 1; $C_1=C$ from node 1 to ground; $R_1$ from node 1 to node 2; $C_2=C$ from node 2 to ground; $R_2$ from node 2 to ground (output current $q_2$ through $R_2$).
+
+</Step>
+<Step title="(b) 1. Transfer function (interacting)">
+
+$$\frac{Q_2}{Q}=\frac{1}{R_1R_2C_1C_2s^2+(R_1C_1+R_2C_2+R_2C_1)s+1}.$$
+The cross-term $R_2C_1$ is the interaction: tank 2 "pulls" on tank 1 through $R_1$.
+
+</Step>
+<Step title="(b) 2. Numbers">
+
+$\tau=RC=5\times10^5\cdot2.61\times10^{-4}=130.5$ s. For $R_1=R_2$, $C_1=C_2$: $\tau^2s^2+3\tau s+1=0\Rightarrow s=\dfrac{-3\pm\sqrt5}{2\tau}$: $-0.382/\tau=-0.002927$ s⁻¹ and $-2.618/\tau=-0.02006$ s⁻¹: time constants **341.6 s** and **49.8 s**.
+
+</Step>
+<Step title="(b) 3. Response time">
+
+The slow pole dominates: $t_{2\%}\approx\dfrac{4}{0.002927}\approx1370$ s ($\approx23$ min). The exact step response crosses the 2% band at **1390 s**. The steady-state level has unit gain flow-to-flow (all the inflow leaves).
+
+</Step>
+<Step title="(c) Double the area of tank 2">
+
+$C_2=2C$, $C_1=C$: den $=2\tau^2s^2+(\tau+2\tau+\tau)s+1=2\tau^2s^2+4\tau s+1\Rightarrow s=\dfrac{-4\pm\sqrt8}{4\tau}$: $-0.293/\tau=-0.002245$ s⁻¹ and $-1.707/\tau=-0.0131$ s⁻¹. Dominant time constant 445 s, so $t_{2\%}\approx1780$ s (numerically **1830 s**): about **30% slower**.
+
+</Step>
+<Step title="(c) Why not 2×?">
+
+Only part of the extra volume sits in the slow path, and the interaction softens the effect.
+
+</Step>
+</Steps>
+
+<Answer>
+
+(b) poles $-0.0029$ and $-0.0201$ s⁻¹; $t_{2\%}\approx1370$–$1390$ s ($\approx23$ min). (c) $\approx1780$–$1830$ s: about 30% slower, not 2×.
+
+*Real-world:* water towers and settling basins respond in tens of minutes; doubling the second tank's footprint delays equilibrium by about a third.
+
+</Answer>
+
+<Traps>
+
+- Using the single time constant $RC=130$ s (ignores the second tank and the interaction).
+- Using head-based capacitance $A$ with $R$ in N·s/m⁵: the units require $A/(\rho g)$.
+- Adding the two time constants ($130+130=261$ s): not valid for coupled tanks.
+
+</Traps>
+
+<Source>digest derivation (poles and 2% crossing times computed numerically); matches the interacting-tank result of Lecture 15 and $\text{T8 Q1}$.</Source>
+
+<LabLink lab="tanks">Two-tank lab</LabLink>
+
+</Problem>
+
+<Problem id="MT2 W2019 MU Q4" title="Op-amp multiple-feedback band-pass: R₁ = 1.1 kΩ, R₂ = 1.2 kΩ, R₃ = 150 kΩ, C₁ = C₂ = 0.01 µF (25 marks)" tags="virtual ground, node KCL, band-pass, Q">
+
+<Statement>
+
+$V_{in}\to R_1\to$ node $X$; $R_2$ from $X$ to ground; $C_1$ from $X$ to the inverting input $J$ (non-inverting input grounded); $C_2$ from $X$ to $V_{out}$; $R_3$ from $J$ to $V_{out}$. (a) Find $V_{out}/V_{in}$. (b) How would the output differ if $C_2$ were replaced by an inductor (in words)? (c) If $R_2$ is shorted ($R_2=0$), what is the voltage across $C_1$?
+
+</Statement>
+
+<Think>
+
+An inverting op-amp with a **T-shaped** input and feedback made of two capacitors and a resistor: it passes a band of frequencies around $\omega_0$ and rejects low and high ones. Use the ideal rules: $J$ is a **virtual ground** and no current enters the op-amp. Anthony's rule: **take $i$ at nodes**.
+
+</Think>
+
+<Steps>
+<Step title="(a) 1. KCL at J">
+
+Current arriving through $C_1$ equals the current leaving through $R_3$: $sC_1V_X=-\dfrac{V_{out}}{R_3}\Rightarrow V_X=-\dfrac{V_{out}}{sC_1R_3}$.
+
+</Step>
+<Step title="(a) 2. KCL at X (currents leaving X)">
+
+$\dfrac{V_X-V_{in}}{R_1}+\dfrac{V_X}{R_2}+sC_1V_X+sC_2(V_X-V_{out})=0$. With $G=\dfrac1{R_1}+\dfrac1{R_2}=1.742\times10^{-3}$ S: $V_X[G+s(C_1+C_2)]-sC_2V_{out}=\dfrac{V_{in}}{R_1}$.
+
+</Step>
+<Step title="(a) 3. Substitute V_X">
+
+$-V_{out}\dfrac{G+s(C_1+C_2)}{sC_1R_3}-sC_2V_{out}=\dfrac{V_{in}}{R_1}\Rightarrow V_{out}\dfrac{G+s(C_1+C_2)+s^2C_1C_2R_3}{sC_1R_3}=-\dfrac{V_{in}}{R_1}$.
+
+</Step>
+<Step title="(a) 4. Result">
+
+$$\frac{V_{out}}{V_{in}}=-\frac{(C_1R_3/R_1)\,s}{C_1C_2R_3s^2+(C_1+C_2)s+\left(\frac1{R_1}+\frac1{R_2}\right)}.$$
+Numbers: numerator $-1.364\times10^{-3}s$; denominator $1.5\times10^{-11}s^2+2\times10^{-8}s+1.742\times10^{-3}$. Divide by $1.5\times10^{-11}$:
+$$\frac{V_{out}}{V_{in}}=-\frac{9.09\times10^4\,s}{s^2+1333\,s+1.162\times10^8}.$$
+
+</Step>
+<Step title="(a) 5. Filter parameters">
+
+$\omega_0=\sqrt{\dfrac G{C_1C_2R_3}}=10\,780$ rad/s ($f_0=1715$ Hz); bandwidth $\Delta\omega=\dfrac{C_1+C_2}{C_1C_2R_3}=1333$ rad/s (212 Hz); $Q=\omega_0/\Delta\omega=8.1$; centre gain $\Big|-\dfrac{R_3}{2R_1}\Big|=68.2$ (36.7 dB), **negative** (inverting). Limits: $s\to0$ gives 0 and $s\to\infty$ gives 0: a band-pass.
+
+</Step>
+<Step title="(b) C₂ replaced by an inductor L">
+
+Replace $sC_2$ by $\dfrac1{sL}$ and redo the algebra:
+$$\frac{V_{out}}{V_{in}}=-\frac{(C_1R_3/R_1)s^2}{C_1s^2+(G+C_1R_3/L)s+1/L}:$$
+a **second-order high-pass**: zero at DC ($C_1$ blocks DC, so $J$ carries no current and $V_{out}=0$), and a flat gain of $-R_3/R_1=-136$ (43 dB) at high frequency instead of the band-pass roll-off. In words: with $C_2$ the circuit attenuates both low and high frequencies; with an inductor the high-frequency attenuation disappears, so it amplifies all high frequencies including noise.
+
+</Step>
+<Step title="(c) R₂ shorted">
+
+$X$ is tied to ground and $J$ is a virtual ground (0 V), so the voltage across $C_1$ is $V_X-V_J=0-0=\mathbf{0}$ V: no signal reaches the op-amp ($V_{out}=0$ for the ideal op-amp); $R_1$ just loads the source ($V_{in}/R_1$ flows to ground).
+
+</Step>
+</Steps>
+
+<Answer>
+
+(a) $\dfrac{V_{out}}{V_{in}}=-\dfrac{9.09\times10^4s}{s^2+1333s+1.162\times10^8}$; $f_0=1715$ Hz, $Q=8.1$, centre gain $-68.2$. (b) a high-pass with gain $-R_3/R_1$ at high frequency. (c) 0 V.
+
+*Real-world:* the standard MFB band-pass of active filters (graphic equalisers, tone detectors): $\omega_0\approx1.7$ kHz and $Q=8$ make a narrow tone detector.
+
+</Answer>
+
+<Traps>
+
+- The minus sign in $V_X=-V_{out}/(sC_1R_3)$ is essential (inverting circuit).
+- $C_2$ goes to $V_{out}$, not to the inverting input (otherwise $C_1\parallel C_2$ and it is not a band-pass).
+- $R_2$ in parallel with $R_1$ sets the centre frequency ($G=1/R_1+1/R_2$).
+
+</Traps>
+
+<Source>digest derivation ($\omega_0$, $Q$ and centre gain recomputed numerically: 10 777 rad/s, 8.08, 68.18; matches the textbook MFB form).</Source>
+
+<ToolLink tool="bode">Check the band-pass in the Bode tool</ToolLink>
+
+</Problem>
+
+<Examined>
+
+A reminder that the make-up paper is a fair guide to the *style* of MT2 questions: modelling (Q1), a motor loop with sensitivity (Q2), liquid level (Q3), an op-amp (Q4). Related: $\text{HW4 Q6}$, $\text{T8 Q1}$, $\text{MT2 W2019 Q4}$.
+
+</Examined>

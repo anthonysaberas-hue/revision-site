@@ -1,0 +1,121 @@
+<p className="eyebrow">Chapter 11 · Heat exchangers · Final</p>
+
+# Heat exchangers
+
+<div className="lede">
+
+A heat exchanger moves heat from one fluid to another without letting them mix: the radiator in a car, the condenser of a power plant, the coil in a fridge, the oil cooler of an engine. The thermal question is always the same: *given the two streams and the hardware, how much heat is exchanged and what are the outlet temperatures?* (rating), or *how big must the hardware be?* (sizing). There are two tools: the **log-mean temperature difference (LMTD)** method when all four temperatures are known, and the **effectiveness–NTU ($\varepsilon$–NTU)** method when the outlets are unknown. The tools are equivalent; choose by what the problem gives you.
+
+</div>
+
+<Idea title="The 30-second version">
+
+1. Energy balance on each stream: $\dot Q=\dot m_hc_{p,h}(T_{h,i}-T_{h,o})=\dot m_cc_{p,c}(T_{c,o}-T_{c,i})$, i.e. $\dot Q=C_h\Delta T_h=C_c\Delta T_c$ with the **capacity rate** $C=\dot mc_p$.
+2. Heat-transfer law: $\dot Q=UA\,\Delta T_{lm}\,F$ with $\Delta T_{lm}=\dfrac{\Delta T_1-\Delta T_2}{\ln(\Delta T_1/\Delta T_2)}$ ($F=1$ for double-pipe).
+3. **Counterflow**: $\Delta T_1=T_{h,i}-T_{c,o}$, $\Delta T_2=T_{h,o}-T_{c,i}$. **Parallel**: $\Delta T_1=T_{h,i}-T_{c,i}$, $\Delta T_2=T_{h,o}-T_{c,o}$.
+4. $\varepsilon=\dfrac{\dot Q}{\dot Q_{max}}$, $\dot Q_{max}=C_{min}(T_{h,i}-T_{c,i})$, $NTU=\dfrac{UA}{C_{min}}$, $C_r=\dfrac{C_{min}}{C_{max}}$. $\varepsilon=f(NTU,C_r,\text{flow type})$.
+5. Counterflow beats parallel flow for the same $UA$.
+
+</Idea>
+
+## Types of heat exchangers
+
+- **Double pipe** (a pipe inside a pipe): the simplest; flows **parallel** (same direction) or **counter** (opposite directions).
+- **Shell-and-tube**: a bundle of tubes in a cylindrical shell with baffles; the workhorse of power plants and refineries. Designated "1 shell pass, 2 (or 4…) tube passes". The flow is partly parallel, partly counter, so the effective $\Delta T$ is lower than the ideal counterflow value: a **correction factor $F<1$**.
+- **Cross-flow**: air blown across finned tubes (car radiator, air conditioner coil). Each fluid is "mixed" or "unmixed" depending on baffles/fins.
+- **Plate** and compact exchangers: very large area per volume, laminar flow in thin channels.
+
+The **overall heat transfer coefficient $U$** combines the whole path from fluid to fluid, exactly as in a resistance network (Chapter 3), here for a tube:
+$$\frac1{UA}=\frac1{h_iA_i}+\frac{R_{f,i}}{A_i}+\frac{\ln(D_o/D_i)}{2\pi kL}+\frac{R_{f,o}}{A_o}+\frac1{h_oA_o}.$$
+$R_f$ are **fouling resistances** (scale, rust, deposits; typically $10^{-4}$ to $10^{-3}$ m²K/W), which build up over time and force the heat exchanger to be oversized at the start. $U$ may be referred to the inner or outer area, but $UA$ is the same either way. For a thin, high-conductivity wall (copper) the wall term is negligible, and then the **smaller of $h_i$, $h_o$ dominates** (it is the bottleneck: air side in an air-to-water radiator, hence the fins on the air side).
+
+Typical $U$ values: water–water 850–1700, condensing steam–water 1000–6000, oil–water 100–350, gas–gas 10–50, finned air–water 25–50 W/m²K (order of magnitude).
+
+## The LMTD method
+
+The two fluids' temperatures change along the exchanger, so $T_h-T_c$ is not constant. For a differential piece, $d\dot Q=U\,\Delta T\,dA$ and the temperature differences vary exponentially, which integrates to the **log-mean** form:
+$$\dot Q=UA\,\Delta T_{lm},\qquad\Delta T_{lm}=\frac{\Delta T_1-\Delta T_2}{\ln(\Delta T_1/\Delta T_2)}\quad(\text{if }\Delta T_1=\Delta T_2,\ \Delta T_{lm}=\Delta T_1).$$
+$\Delta T_1$ and $\Delta T_2$ are the temperature differences between the fluids at the two **ends** (check the table in the Idea box for the definition: it depends on the flow arrangement; counterflow at the hot-inlet end is $T_{h,i}-T_{c,o}$).
+
+**Counter vs parallel.** In counterflow the cold fluid exits near the hot inlet temperature, so the cold outlet can exceed the hot outlet; in parallel flow both fluids approach the *same* temperature, so $T_{c,o}<T_{h,o}$ always. For the same terminal temperatures counterflow has a larger LMTD, therefore needs less area. A condenser (one fluid at constant $T$) makes the two arrangements equivalent.
+
+**Multipass and cross-flow: the correction factor.** $\dot Q=UAF\Delta T_{lm,CF}$, where $\Delta T_{lm,CF}$ is the counterflow value computed with the same four temperatures, and $F\le1$ comes from a chart in terms of
+$$P=\frac{t_2-t_1}{T_1-t_1},\qquad R=\frac{T_1-T_2}{t_2-t_1},$$
+where $T$ are the shell-side and $t$ the tube-side temperatures, subscript 1 for the inlet and 2 for the outlet. For a 1-shell, 2-tube-pass exchanger with $R\neq1$:
+$$F=\frac{\sqrt{R^2+1}}{R-1}\,\frac{\ln\frac{1-P}{1-PR}}{\ln\frac{2-P(R+1-\sqrt{R^2+1})}{2-P(R+1+\sqrt{R^2+1})}}.$$
+If $F<0.75$ the exchanger is poorly used (the design needs more passes). $F=1$ if one fluid has constant temperature (condensing or boiling, $R=0$).
+
+<Remember title="When to use LMTD">
+
+You know all four temperatures (or can find two of them from the energy balance) and want the area $A$ (sizing), or you know $UA$ and want $\dot Q$ for a case where the outlets are given. If an outlet is unknown, LMTD needs iteration: use $\varepsilon$–NTU.
+
+</Remember>
+
+## The effectiveness–NTU method
+
+Define the **capacity rates** $C_h=\dot m_hc_{p,h}$ and $C_c=\dot m_cc_{p,c}$; the smaller is $C_{min}$, the larger $C_{max}$. The stream with $C_{min}$ has the larger temperature change: it is "the limiting side". The **maximum possible heat transfer** would be reached in an infinitely long counterflow exchanger: the stream with $C_{min}$ changes by the full inlet difference,
+$$\dot Q_{max}=C_{min}(T_{h,i}-T_{c,i}).$$
+**Effectiveness** $\varepsilon=\dfrac{\dot Q}{\dot Q_{max}}$ (between 0 and 1). So once $\varepsilon$ is known, $\dot Q=\varepsilon C_{min}(T_{h,i}-T_{c,i})$ and the outlets follow from the energy balance. **The number of transfer units** $NTU=UA/C_{min}$ measures the size of the exchanger relative to the flow. The relations (depend only on $NTU$, $C_r=C_{min}/C_{max}$ and the arrangement):
+
+| Arrangement | $\varepsilon(NTU,C_r)$ | $NTU(\varepsilon,C_r)$ |
+|---|---|---|
+| Parallel | $\dfrac{1-e^{-NTU(1+C_r)}}{1+C_r}$ | $-\dfrac{\ln[1-\varepsilon(1+C_r)]}{1+C_r}$ |
+| Counter | $\dfrac{1-e^{-NTU(1-C_r)}}{1-C_re^{-NTU(1-C_r)}}$ | $\dfrac1{C_r-1}\ln\dfrac{\varepsilon-1}{\varepsilon C_r-1}$ |
+| Counter, $C_r=1$ | $\dfrac{NTU}{1+NTU}$ | $\dfrac\varepsilon{1-\varepsilon}$ |
+| 1-shell (2, 4... tube passes) | $2\left\{1+C_r+\sqrt{1+C_r^2}\,\dfrac{1+e^{-NTU\sqrt{1+C_r^2}}}{1-e^{-NTU\sqrt{1+C_r^2}}}\right\}^{-1}$ | $-\dfrac1{\sqrt{1+C_r^2}}\ln\dfrac{E-1}{E+1}$, $E=\dfrac{2/\varepsilon-(1+C_r)}{\sqrt{1+C_r^2}}$ |
+| Cross-flow, both unmixed | $1-\exp\!\left\{\dfrac{NTU^{0.22}}{C_r}\left[e^{-C_rNTU^{0.78}}-1\right]\right\}$ | (iterate) |
+| **Any type, $C_r=0$** (boiling/condensing) | $1-e^{-NTU}$ | $-\ln(1-\varepsilon)$ |
+
+**Reading the relations.** (1) $\varepsilon\to1$ only as $NTU\to\infty$ (long). Beyond $NTU\approx3$ extra area barely helps. (2) For the same $NTU$ and $C_r$, $\varepsilon_{counter}>\varepsilon_{parallel}$. (3) The parallel-flow effectiveness is bounded: $\varepsilon\to1/(1+C_r)$ as $NTU\to\infty$. (4) For $C_r=0$ all arrangements coincide: this is the condenser or boiler.
+
+<ToolLink tool="hx">Heat-exchanger calculator: LMTD and ε–NTU, any type, outlets and area</ToolLink>
+<LabLink lab="exchanger">Exchanger lab: temperature profiles of both streams along the length</LabLink>
+
+## Worked example 1: sizing a counterflow oil cooler (LMTD)
+
+Hot oil ($\dot m=0.6$ kg/s, $c_p=2100$ J/kgK) enters at 140 °C and must leave at 80 °C. It is cooled by water ($\dot m=1.0$ kg/s, $c_p=4180$) entering at 20 °C. $U=350$ W/m²K. Find the area for counterflow and for parallel flow.
+
+1. **Heat duty:** $\dot Q=0.6(2100)(140-80)=75\,600$ W.
+2. **Water outlet:** $T_{c,o}=20+\dfrac{75\,600}{1.0(4180)}=38.09$ °C.
+3. **Counterflow:** $\Delta T_1=T_{h,i}-T_{c,o}=140-38.09=101.9$; $\Delta T_2=T_{h,o}-T_{c,i}=80-20=60$. $\Delta T_{lm}=\dfrac{101.9-60}{\ln(101.9/60)}=79.1$ K, so $A=\dfrac{\dot Q}{U\Delta T_{lm}}=\dfrac{75\,600}{350(79.1)}=\mathbf{2.73\ m^2}$.
+4. **Parallel:** $\Delta T_1=140-20=120$; $\Delta T_2=80-38.09=41.9$; $\Delta T_{lm}=74.2$ K and $A=\mathbf{2.91\ m^2}$, about 7 % more area for parallel flow.
+
+## Worked example 2: rating an existing exchanger ($\varepsilon$–NTU)
+
+Hot water ($1.0$ kg/s) enters at 90 °C; cold water ($0.5$ kg/s) enters at 20 °C; $UA=1200$ W/K, counterflow. Outlets?
+
+1. $C_h=4180$, $C_c=2090$ W/K, so $C_{min}=2090$ (cold side), $C_r=0.5$. $NTU=\dfrac{1200}{2090}=0.574$.
+2. $\varepsilon=\dfrac{1-e^{-0.574(0.5)}}{1-0.5e^{-0.574(0.5)}}=\dfrac{1-0.7505}{1-0.3752}=\mathbf{0.399}$.
+3. $\dot Q_{max}=2090(70)=146\,300$ W; $\dot Q=0.399(146\,300)=58\,436$ W.
+4. $T_{c,o}=20+\dfrac{58\,436}{2090}=\mathbf{47.96\ ^\circ C}$, $T_{h,o}=90-\dfrac{58\,436}{4180}=\mathbf{76.02\ ^\circ C}$.
+5. **Check with LMTD:** $\Delta T_1=90-47.96=42.04$, $\Delta T_2=76.02-20=56.02$, $\Delta T_{lm}=48.7$ K, $UA\,\Delta T_{lm}=1200(48.7)=58\,440$ W ✓ (the two methods agree).
+
+*Same hardware in parallel flow: $\varepsilon=0.385$, $\dot Q=56.3$ kW: a loss of about 4 %.*
+
+## Worked example 3: shell-and-tube with a correction factor
+
+Hot water 100 °C → 60 °C heats cold water 20 °C → 50 °C in a 1-shell-pass, 2-tube-pass exchanger. 
+
+1. $R=\dfrac{100-60}{50-20}=1.333$; $P=\dfrac{50-20}{100-20}=0.375$.
+2. $F=0.891$ (formula above). Counterflow LMTD: $\Delta T_1=100-50=50$; $\Delta T_2=60-20=40$; $\Delta T_{lm,CF}=44.81$ K.
+3. Effective: $F\Delta T_{lm,CF}=0.891(44.81)=39.9$ K, so the area needed is $A=\dfrac{\dot Q}{UF\Delta T_{lm,CF}}$: about 12 % more than a true counterflow exchanger.
+
+<Trap title="Four classic slips">
+
+1. Using $\Delta T_1,\Delta T_2$ for parallel flow in a counterflow problem (or the reverse). Draw the temperature diagram first.
+2. Taking $C_{min}$ as the smaller **mass flow** rather than the smaller $\dot mc_p$; the fluid with the smaller $\dot mc_p$ is $C_{min}$ (a large flow of air still has a small $C$ because air's $c_p$ is only about a quarter of water's).
+3. Putting $UA$ in the LMTD formula with $A$ for the wrong side: $U_iA_i=U_oA_o$ always; the product is the same, the separate values are not.
+4. Using the arithmetic mean of $\Delta T_1$ and $\Delta T_2$ — only accurate if they differ by less than about 40 %.
+
+</Trap>
+
+<Examined>
+The final exam has one heat-exchanger problem: a double-pipe or shell-and-tube with a heat balance to find an unknown outlet, then either area by LMTD or the rating by $\varepsilon$–NTU. Check the formula sheet you are given for the effectiveness relations and the $F$ chart; learn the counterflow and $C_r=0$ cases by heart.
+</Examined>
+
+## Check yourself
+
+1. Condensing steam at 100 °C heats water 20 °C → 60 °C; $\varepsilon$? *($(60-20)/(100-20)=0.5$, since $C_r=0$; $NTU=-\ln(0.5)=0.693$.)*
+2. Why might a counterflow exchanger have $T_{c,o}>T_{h,o}$? *(The cold fluid, leaving at the hot end, meets the hottest hot fluid; temperature cross is possible only in counterflow.)*
+3. Doubling area at $NTU=3$: how much does $\varepsilon$ gain? *(Little; $\varepsilon$ is already 0.95 at $C_r=0$ and flattening.)*
+4. $C_r=1$ counterflow with $NTU=2$: $\varepsilon$? *($2/3$.)*

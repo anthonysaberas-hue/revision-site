@@ -1,0 +1,156 @@
+<p className="eyebrow">Chapter 11 · constant-area flow with heat transfer</p>
+
+# Rayleigh flow
+
+<p className="lede">Now take away friction and add heat instead: a combustor, a heat exchanger, or the burning zone behind a detonation. Heat raises T₀, and like friction it drives the flow toward M = 1. Add too much and the flow thermally chokes. Two surprises are waiting: heating can *cool* the gas, and the maximum temperature is not at M = 1.</p>
+
+## Setting up: what is conserved
+
+Constant area, no friction, heat $q$ [J/kg] added through the wall (or released by combustion and modelled as heat):
+
+$$
+\rho_1 V_1 = \rho_2 V_2, \qquad p_1 + \rho_1 V_1^2 = p_2 + \rho_2 V_2^2, \qquad q_{1-2} = h_{02} - h_{01} = c_p\,(T_{02} - T_{01})
+$$
+
+The momentum equation has **no force term**: a straight frictionless pipe cannot push on the gas. Heat goes straight into **stagnation temperature**, so $T_0$ is no longer a constant reference. That is why the sonic state $T_0^*$ takes over that role.
+
+<Remember title="Combustion as heat addition">
+
+Burning fuel in air is not literally heat transfer from outside, but air is about 80% inert nitrogen, so the gas properties barely change. The notes therefore model a combustor as a calorically perfect gas receiving heat $q$. That is the basis of the ramjet and detonation problems.
+
+</Remember>
+
+## Effect of heating
+
+Combining the differential equations (as for area change and friction) gives:
+
+$$
+\frac{dV}{V} = \frac{1}{1 - M^2}\,\frac{dq}{c_p T}, \qquad \frac{dT}{T} = \frac{1 - \gamma M^2}{1 - M^2}\,\frac{dq}{c_p T}
+$$
+
+- **Subsonic ($M$ less than 1):** heating accelerates the flow toward $M = 1$, and $p$ falls.
+- **Supersonic:** heating decelerates the flow toward $M = 1$, and $p$ and $T$ rise.
+- **Cooling** ($dq$ negative) does the opposite. It behaves like a diverging area.
+
+So heating, like a converging area and like friction, **drives the flow toward Mach 1**. It can't take you through it.
+
+<Idea title="Heating that cools the gas: 0.845 < M < 1">
+
+Look at the numerator $1 - \gamma M^2$. Static temperature peaks at
+
+$$
+M_{T_\text{max}} = \frac{1}{\sqrt{\gamma}} = 0.845 \quad (\gamma = 1.4), \qquad \left(\frac{T}{T^*}\right)_\text{max} = \frac{(\gamma+1)^2}{4\gamma} = 1.0286
+$$
+
+Between $M = 0.845$ and $M = 1$, **adding heat lowers the static temperature**. The heat, plus some of the gas's own thermal energy, goes into accelerating the flow. $T_0$ still rises: the energy shows up as kinetic energy. On a T–s diagram this is the part of the Rayleigh line above the "nose", where $T$ falls while $s$ still rises toward the M = 1 point.
+
+</Idea>
+
+| | $M$ less than $1/\sqrt\gamma$ | $1/\sqrt\gamma$ to 1 | $M$ greater than 1 |
+|---|---|---|---|
+| heating: $M$ | ↑ | ↑ | ↓ |
+| heating: $T$ | ↑ | **↓** | ↑ |
+| heating: $p$ | ↓ | ↓ | ↑ |
+| heating: $T_0$ | ↑ | ↑ | ↑ |
+| heating: $p_0$ | ↓ | ↓ | ↓ |
+
+## Working relations
+
+Between any two stations (from momentum, continuity and the equation of state):
+
+$$
+\frac{p_2}{p_1} = \frac{1 + \gamma M_1^2}{1 + \gamma M_2^2}, \qquad
+\frac{T_2}{T_1} = \frac{M_2^2\,(1 + \gamma M_1^2)^2}{M_1^2\,(1 + \gamma M_2^2)^2}
+$$
+
+Set $M_2 = 1$ to get the Table A5 columns, all relative to the sonic state of the **same** Rayleigh line:
+
+$$
+\frac{T_0}{T_0^*} = \frac{2(\gamma+1)M^2\left(1 + \frac{\gamma-1}{2}M^2\right)}{(1 + \gamma M^2)^2} \qquad
+\frac{T}{T^*} = \frac{(1+\gamma)^2 M^2}{(1 + \gamma M^2)^2} \qquad
+\frac{p}{p^*} = \frac{1+\gamma}{1 + \gamma M^2}
+$$
+
+$$
+\frac{p_0}{p_0^*} = \frac{\gamma+1}{1 + \gamma M^2}\left[\frac{2\left(1 + \frac{\gamma-1}{2}M^2\right)}{\gamma+1}\right]^{\frac{\gamma}{\gamma-1}}, \qquad
+\frac{V}{V^*} = \frac{\rho^*}{\rho} = \frac{(\gamma+1)M^2}{1 + \gamma M^2}
+$$
+
+The heat that just chokes the flow:
+
+$$
+q^* = c_p\,(T_0^* - T_{01}) \qquad\text{and in general}\qquad \frac{T_{02}}{T_0^*} = \frac{T_{01}}{T_0^*} + \frac{q}{c_p T_0^*}
+$$
+
+**The recipe:** $T_{01}$ from isentropic relations → $T_0^*$ from A5 at $M_1$ → check $q$ against $q^*$ → $T_{02} = T_{01} + q/c_p$ → $T_{02}/T_0^*$ → A5 (same branch) → $M_2$ → every other ratio through the star state.
+
+### The notes' example (§11.2.1)
+
+Air at $M_1 = 0.7$, 300 K and 1 atm in a frictionless duct, with $c_p = 1.0035$ kJ/kg·K.
+
+From A2 at $M = 0.7$: $T/T_0 = 0.91075 \Rightarrow T_{01} = 329.4$ K, and $p/p_0 = 0.72092 \Rightarrow p_{01} = 1.387$ atm.
+
+**(a) Heat to reach sonic.** <T>A5 @ M = 0.7: T₀/T₀* = 0.90850</T>, so $T_0^* = 329.4/0.9085 = 362.6$ K and
+
+$$
+q^* = c_p\,(T_0^* - T_{01}) = 1.0035\,(362.6 - 329.4) = 33.3\ \text{kJ/kg}
+$$
+
+The same row gives $T/T^* = 0.99289 \Rightarrow T^* = 302$ K, $p/p^* = 1.4235 \Rightarrow p^* = 0.702$ atm, and $p_0/p_0^* = 1.0431 \Rightarrow p_0^* = 1.330$ atm. Notice that $T^* = 302$ K is barely above the inlet 300 K: the temperature rose past the 0.845 peak and then fell again.
+
+**(b) Exit at M = 0.5 instead.** $T_0/T_0^* = 0.69136 \Rightarrow T_{02} = 250.7$ K, so $q = 1.0035\,(250.7 - 329.4) = -79.0$ kJ/kg. That is **cooling**, which pushes the flow away from $M = 1$. Then $T_2 = 0.79012 \times 302 = 238.6$ K, $p_2 = 1.7778 \times 0.702 = 1.248$ atm, and $p_{02} = 1.1140 \times 1.330 = 1.48$ atm. **$p_0$ went up**: removing heat lowers the gas's entropy.
+
+Set the sim to $M_1 = 0.7$ and $q/(c_p T_{01}) = 0.10$ (this is $q^*$). Watch the static temperature climb, peak at $M = 0.845$, and fall again:
+
+<RayleighHeatSim M1={0.7} q={0.1} />
+
+## Thermal choking
+
+Once $q^*$ has been added, the exit is sonic and **no more heat can be added without changing the inlet flow**.
+
+**Subsonic inflow, $q > q^*$.** The inlet Mach number **decreases** (with $T_{01}$ fixed) until the new $q^*$ equals the heat you are adding. **The mass flow falls.** This is the third kind of choking: area (A*), friction (L*) and heat (q*). In Quiz 2 W2024 P2, $M_1 = 0.75$ can take only $q^* = 21.3$ kJ/kg. Adding 50 kJ/kg forces $T_{01}/T_0^* = 333.7/383.7 = 0.8697$, so $M_\text{in} = 0.65$.
+
+**Supersonic inflow, $q > q^*$.** A normal shock forms **upstream of the heated section, in the nozzle**. It does *not* sit in the heated duct, as it did in the Fanno duct. Why not? A shock is adiabatic, so it doesn't change $T_0$. It also conserves $\rho V$ and $p + \rho V^2$, so it connects two points on the **same Rayleigh line**, with the same $T_0^*$. A shock at the duct inlet therefore doesn't change $q^*$ at all (PS8 P3: 235 kJ/kg with or without it). Only pushing the shock into the diverging nozzle lowers the duct's inlet Mach number enough to accept more heat. More heat drives it to the throat, and after that the flow is subsonic throughout and $\dot m$ drops.
+
+<Idea title="The shock and the Rayleigh line">
+
+The same argument as in Fanno flow applies: a normal shock lies on both the Fanno line (same $\rho V$, same $T_0$) and the Rayleigh line (same $\rho V$, same $p + \rho V^2$) through the upstream state. **The two lines cross at exactly two points, and those two points are the two sides of the normal shock.** The jump goes from the supersonic to the subsonic branch, with entropy rising by $-R\ln(p_{0y}/p_{0x})$.
+
+</Idea>
+
+<FannoRayleighTsSim M={2} />
+
+Try a supersonic inlet with too much heat. The duct's entry becomes subsonic because the shock has moved up into the nozzle:
+
+<RayleighHeatSim M1={2.5} q={0.5} />
+
+## Where Rayleigh flow shows up: ramjets and detonations
+
+**Ramjet (Final B P3).** Air at $M_\infty = 3$ is slowed through a shock to $M \approx 0.34$ in the combustor. Burning adds $q = 500$ kJ/kg. Rayleigh A5 gives the combustor exit $M = 0.52$ and the $p_0$ loss, and a nozzle with a fresh throat $A^*$ then expands the hot gas to $p_\infty$. The combustor can take at most $q^* = c_p(T_0^* - T_{01}) \approx 964$ kJ/kg. If the pilot over-fuels to 1000 kJ/kg, the combustor **thermally chokes**. The subsonic combustor entry must slow down, so more $p_0$ must be lost: the shock is pushed upstream and out of the inlet. **The inlet unstarts**, and you get spillage and a loss of thrust.
+
+<RamjetSectionFigure />
+
+**Detonation (Final A P1).** In the wave's frame, a detonation is a **normal shock followed by Rayleigh heat release that thermally chokes at the end** (the Chapman–Jouguet condition). Because the shock sits on the same Rayleigh line, you can apply $q = c_p(T_0^* - T_{01})$ directly at the *upstream* Mach number:
+
+$$
+\frac{q}{c_p T_1} = \frac{(M_1^2 - 1)^2}{2(\gamma + 1)M_1^2}
+$$
+
+This is the PS8 P1 formula. With $q = 4000$ kJ/kg, $c_p = 3$ kJ/kg·K and $T_1 = 300$ K, it gives $M_1 = 4.83$. The notes also mention "pathological" detonations: heat release followed by endothermic reactions lets the flow pass smoothly through $M = 1$ in a constant-area zone. That is heating to sonic, then cooling to supersonic.
+
+<Examined>
+
+- **[Quiz 2 W2024 P2](#/mech430/exam/q2-w2024)** (30 pts): subsonic heating with $q$ less than $q^*$, then $q > q^*$ forces a lower inlet Mach (0.65).
+- **[Final B P3](#/mech430/exam/final-b)**: a ramjet with a Rayleigh combustor, nozzle sizing and over-fuelling. Watch out: both student solutions used the A2 $A/A^*$ column in place of the A5 $p_0/p_0^*$.
+- **[Final A P1](#/mech430/exam/final-a)**: a detonation as shock + Rayleigh to thermal choking, giving $M = 4.83$.
+- **[Problem Set 8](#/mech430/ps/ps08)**: P1 derives $q_\text{max}$, P2 is subsonic heating, P3 is supersonic choking with and without a shock, and P4 is nozzle + heating + shock (T* invariance).
+
+</Examined>
+
+## Check yourself
+
+1. Is heating a subsonic flow at $M = 0.9$ going to raise its static temperature? → No. Between 0.845 and 1, heating lowers $T$ (while $T_0$ rises).
+2. You add more than $q^*$ to a subsonic duct fed from a fixed reservoir. What gives? → The inlet Mach and $\dot m$ drop, so that $q$ becomes the new $q^*$.
+3. You add more than $q^*$ to a supersonic duct. Where does the shock go? → Upstream into the nozzle, not into the heated duct. A shock on the same Rayleigh line can't change $T_0^*$.
+4. Which quantities are the same on both sides of a normal shock in a Rayleigh duct? → $T_0$, $T_0^*$, $T^*$, $p^*$ (and $\rho V$, $p + \rho V^2$). $p_0$ drops.
+5. Where does the Fanno line through a supersonic state cross the Rayleigh line through it? → At the state itself and at the post-shock state $M_y$.

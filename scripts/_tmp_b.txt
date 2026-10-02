@@ -1,0 +1,9 @@
+**(b)** Maximum heat: $Q_{max}=\rho Vc_p(T_i-T_\infty)$ with $V=\pi r_0^2H=\pi(0.03)^2(0.06)=1.696\times10^{-4}$ m³ (the **actual** half-body): $8530(1.696\times10^{-4})(380)(95)=52\,240$ J.
+
+Fractions of the maximum for each 1-D solution, with the centre values $\theta_{0,w}=1.0066\,e^{-0.3346}=0.7204$ and $\theta_{0,c}=0.2607$:
+- wall: $q_w=1-\theta_{0,w}\dfrac{\sin\lambda_1}{\lambda_1}=1-0.7204(0.9934)=0.2844$;
+- cylinder: $q_c=1-2\theta_{0,c}\dfrac{J_1(\lambda_1)}{\lambda_1}=1-2(0.2607)(0.4975)=0.7406$.
+
+Combining the two one-dimensional solutions:
+$$\frac Q{Q_{max}}=q_w+q_c(1-q_w)=0.2844+0.7406(0.7156)=0.8143,\qquad Q=0.8143(52\,240)=\mathbf{42.5\ kJ}.$$
+

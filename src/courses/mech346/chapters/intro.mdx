@@ -1,0 +1,174 @@
+<p className="eyebrow">Chapter 1 · Introduction and basic concepts · Midterm 1</p>
+
+# Introduction: energy balance and the three modes of heat transfer
+
+<div className="lede">
+
+Thermodynamics tells you **how much** heat moves when a system goes from one equilibrium state to another. Heat transfer tells you **how fast**, and what the temperatures are on the way. The whole course is three rate laws (Fourier, Newton, Stefan–Boltzmann), an energy balance, and the habit of drawing every problem as a **thermal circuit**. This chapter gives you the vocabulary and the three laws so that the next twelve chapters are just different ways of finding the same two numbers: a resistance and a temperature difference.
+
+</div>
+
+<Idea title="The 30-second version">
+
+1. Heat flows from hot to cold, never the other way, and stops when the temperatures are equal.
+2. There are three modes. **Conduction** through a solid (or still fluid): $\dot Q=-kA\,dT/dx$. **Convection** between a surface and a moving fluid: $\dot Q=hA_s(T_s-T_\infty)$. **Radiation** between surfaces, with no medium needed: $\dot Q=\varepsilon\sigma A_s(T_s^4-T_{surr}^4)$.
+3. Every steady problem has the same shape: $\dot Q=\dfrac{\Delta T}{R_{total}}$, where the resistances add like electrical resistors.
+4. Unsteady or generating problems add one term to the same energy balance: $\dot Q_{in}-\dot Q_{out}+\dot E_{gen}=dE/dt$.
+
+</Idea>
+
+## Why a thermodynamics course cannot answer a heat-transfer question
+
+Take a thermos of hot coffee. Thermodynamics will tell you that the coffee ends at room temperature and how much energy it gives up. It cannot tell you whether that takes ten minutes or ten hours, and that is what you actually care about. **Heat transfer is the science of rates.** Two kinds of problem appear in practice:
+
+- **Rating problems:** the equipment exists, find the heat rate (or the outlet temperature) for given conditions. Example: what power can this transistor dissipate before its case reaches 70 °C?
+- **Sizing problems:** find the size (area, thickness, length) needed to move a specified amount of heat. Example: how thick must the insulation be to cut the heat loss by 90 %?
+
+Both are answered by the same equations; rating problems are usually a direct calculation, sizing problems an equation solved for the unknown.
+
+## Energy, heat and the first law
+
+Heat is the energy that crosses a boundary **because of a temperature difference**. Two quantities you need to keep straight:
+
+| Quantity | Symbol, units | Meaning |
+|---|---|---|
+| heat transfer rate | $\dot Q$ [W = J/s] | energy per unit time through a surface |
+| heat flux | $q''=\dot Q/A$ [W/m²] | rate per unit area, **normal** to the flow |
+| heat (energy) | $Q=\dot Qt$ [J] | when $\dot Q$ is constant |
+
+**Specific heat** $c$ is the energy needed to raise one kilogram by one kelvin. For an incompressible solid or liquid, $c_p=c_v=c$, and $\Delta U=mc\,\Delta T$. For a gas flowing through a device, the energy carried by the stream is the **enthalpy**: $\dot Q=\dot m c_p\Delta T$ with $\dot m=\rho VA_c$. (Internal energy $u$ is the energy of a fluid at rest; $h=u+Pv$ is the energy of a fluid on the move, because it includes the flow work.)
+
+The **first law** in rate form is the backbone of every problem:
+
+$$\dot E_{in}-\dot E_{out}=\frac{dE_{sys}}{dt}.$$
+
+In heat transfer we treat the conversion of electrical, chemical or nuclear energy into heat as **heat generation** $\dot E_{gen}$ (W), so
+
+$$\dot Q_{in}-\dot Q_{out}+\dot E_{gen}=\frac{dE_{thermal}}{dt}\qquad\text{(steady: right side}=0).$$
+
+Three versions of it recur:
+
+- **Closed system, no work:** $Q=mc\,\Delta T$.
+- **Steady flow:** $\dot Q=\dot m c_p(T_{out}-T_{in})$.
+- **Surface energy balance:** a surface has no volume, so it can store nothing: $\dot E_{in}=\dot E_{out}$, with no generation term. If you do not know the directions, assume every interaction flows **toward** the surface and write $\sum\dot E_{in}=0$; the ones that actually flow outward come out negative. Every boundary condition in Chapters 2–4 is a surface energy balance.
+
+<Trap title="Heat flux is per unit area normal to the flow">
+
+If the heat spreads over a larger area as it goes (cylinders, spheres, fins), the heat **rate** $\dot Q$ is constant in steady state but the **flux** $q''$ is not. Always write the area with the quantity.
+
+</Trap>
+
+## Mode 1: conduction
+
+**Mechanism.** In a solid, energy moves by lattice vibrations and, in metals, by free electrons; in a gas or liquid, by molecular collisions. There is no bulk motion. The rate through a plane layer is proportional to the area and the temperature difference and inversely proportional to the thickness:
+
+$$\dot Q_{cond}=kA\frac{T_1-T_2}{\Delta x}\;\longrightarrow\;\boxed{\dot Q_{cond}=-kA\frac{dT}{dx}}\quad\text{(Fourier's law)}.$$
+
+The minus sign makes heat flow positive in the direction of **decreasing** temperature (the gradient $dT/dx$ is negative when $T$ falls with $x$). $A$ is the area **normal** to the flow.
+
+**Thermal conductivity** $k$ [W/m·K] is the heat that flows through a unit thickness per unit area per kelvin. Rough orders of magnitude to carry in your head:
+
+| Material | $k$ (W/m·K) | Why |
+|---|---|---|
+| diamond, silver, copper | 2300, 429, 401 | free electrons / stiff lattice |
+| aluminium, iron | 237, 80 | metals |
+| glass, brick, concrete | ~1 | non-metals |
+| water | 0.6 | liquid |
+| wood, rubber, fibreglass | 0.1–0.2 | cellular, poorly bonded |
+| air | 0.026 | gas: few collisions |
+| rigid foam | 0.03–0.04 | trapped air |
+
+Metals are the best conductors, gases and foams the best insulators, and the whole range spans four orders of magnitude. An alloy conducts *worse* than either pure metal (the impurities scatter the electrons).
+
+**Thermal diffusivity** $\alpha=\dfrac{k}{\rho c_p}$ [m²/s] is conduction relative to storage: how fast a temperature change spreads. High $k$ or low heat capacity means a large $\alpha$ (copper $1.1\times10^{-4}$, water $1.4\times10^{-7}$). It controls every transient problem (Chapter 4).
+
+## Mode 2: convection
+
+**Mechanism.** Conduction into a fluid layer **plus** the carrying-away of that energy by the fluid's motion. The faster the fluid moves, the thinner the layer that must conduct and the more heat is carried:
+
+$$\boxed{\dot Q_{conv}=hA_s(T_s-T_\infty)}\quad\text{(Newton's law of cooling)}.$$
+
+$h$ [W/m²·K] is **not a property of the fluid**: it depends on the geometry, the flow, the fluid properties and the velocity. It is the number you will spend Chapters 6–9 learning to calculate. Orders of magnitude to remember:
+
+| Situation | $h$ (W/m²·K) |
+|---|---|
+| natural convection, gases | 2–25 |
+| natural convection, liquids | 10–1000 |
+| forced convection, gases | 25–250 |
+| forced convection, liquids | 50–20 000 |
+| boiling, condensation | 2500–100 000 |
+
+- **Forced convection:** the fluid is driven by a fan, pump or wind. **Natural (free) convection:** buoyancy from temperature-induced density differences moves the fluid (the warm air rising above a radiator).
+- Boiling and condensation count as convection, because the motion of bubbles and droplets does the carrying.
+- With **no** bulk motion near the surface the heat transfer is pure conduction in the fluid, $h=k_{fluid}/\delta$.
+
+*Real-world:* wind chill is just a larger $h$. Wind raises the convection coefficient on your skin several-fold, so the same heat loss that needs air at 20 °C in a gale needs much colder still air (assignment 1-127: windy 20 °C air "feels like" still air at 6 °C).
+
+## Mode 3: radiation
+
+**Mechanism.** Every surface above absolute zero emits electromagnetic radiation because of changes in the electronic configurations of its atoms. No medium is needed: the Sun warms the Earth across a vacuum, at the speed of light and without attenuation. For solids and opaque liquids radiation is a **surface** phenomenon (gases and semi-transparent solids emit throughout their volume).
+
+The most a surface at absolute temperature $T$ can emit is the **blackbody** rate, $E_b=\sigma T^4$ with $\sigma=5.670\times10^{-8}$ W/m²K⁴. A real surface emits
+
+$$\dot Q_{emit}=\varepsilon\sigma A_sT_s^4,\qquad 0\le\varepsilon\le1\ (\varepsilon=1\text{ blackbody}).$$
+
+**Emissivity** $\varepsilon$ says how close the surface is to a blackbody. **Absorptivity** $\alpha_{abs}$ is the fraction of incident radiation it absorbs. **Kirchhoff's law:** at a given temperature and wavelength $\varepsilon=\alpha_{abs}$, so a good emitter is a good absorber.
+
+For a small surface completely enclosed by a much larger one at $T_{surr}$ the **net** exchange is
+
+$$\boxed{\dot Q_{rad}=\varepsilon\sigma A_s\left(T_s^4-T_{surr}^4\right)}\quad(\text{temperatures in kelvin}).$$
+
+<Trap title="Radiation needs kelvin; convection and conduction need only a difference">
+
+$T_s-T_\infty$ is the same in °C or K. $T_s^4-T_{surr}^4$ is **not**: convert to kelvin first. It is the commonest arithmetic slip in the whole chapter.
+
+</Trap>
+
+A trick that saves algebra: write the radiation as a convection-like term with a **radiation coefficient**
+
+$$\dot Q_{rad}=h_{rad}A_s(T_s-T_{surr}),\qquad h_{rad}=\varepsilon\sigma(T_s+T_{surr})(T_s^2+T_{surr}^2).$$
+
+For a body at 310 K in a room at 290 K with $\varepsilon=0.9$, $h_{rad}=5.5$ W/m²K, the same size as the natural-convection coefficient: that is why radiation matters even indoors.
+
+## Simultaneous mechanisms and the thermal circuit
+
+A surface that is hot usually loses heat by convection **and** radiation **in parallel** to two different sinks. A solid wall passes heat by conduction **in series** with convection on both faces. The two combination rules are those of electrical circuits:
+
+- **In series** (same $\dot Q$ through each): resistances add.
+- **In parallel** (same $\Delta T$ across each): conductances add; heat rates add.
+
+The resistances are
+
+$$R_{cond}=\frac{L}{kA},\qquad R_{conv}=\frac1{hA},\qquad R_{rad}=\frac1{h_{rad}A},$$
+
+and $\dot Q=\Delta T/R_{total}$. Chapter 3 builds every steady problem this way.
+
+<ToolLink tool="resistance">Build a resistance network and read the heat rate</ToolLink>
+
+## Worked examples (assignment 1)
+
+**1. House infiltration** (1-19). A 200 m² × 3 m house at 22 °C, outdoors at 5 °C, 0.7 air changes per hour at 89.6 kPa. 
+The air volume is 600 m³, replaced 0.7×24 = 16.8 times per day, so the mass flow is $\dot m=\dfrac{P\,(16.8\cdot600)}{R T_o}=\dfrac{89.6\cdot10\,080}{0.287\cdot278.15}=11\,314$ kg/day (the ideal-gas law at the **outdoor** state, because that is where the entering air is measured). Each kilogram is heated 17 K: 
+$\dot Q=\dot m c_p\Delta T=11\,314(1.007)(17)=193\,700$ kJ/day $=53.8$ kWh/day, i.e. USD 4.41 per day at 8.2 ¢/kWh.
+
+**2. The transistor** (1-71). A 0.6 cm × 0.4 cm cylinder: area (curved side + one end) $=\pi DL+\pi D^2/4=1.037$ cm². Convection to 55 °C air with $h=30$: $\dot Q=hA_s(T_s-T_\infty)=30(1.037\times10^{-4})(15)=0.047$ W. A tiny device, a tiny power: *this is why power transistors wear fins.*
+
+**3. Radiation from a person** (1-79, 1-94). Skin at 32 °C ($A=1.7$ m², $\varepsilon=0.5$) in a room whose walls are at 300 K: $\dot Q=0.5(5.67\times10^{-8})(1.7)[305^4-300^4]=26.7$ W. At 280 K walls: 120.8 W. A 20 K colder wall costs **4.5 times** the radiation, because of the fourth power. With $\varepsilon=0.9$, convection with $h=5$ and walls at 23 °C: $\dot Q_{rad}=84.8$ W, $\dot Q_{conv}=76.5$ W, total 161 W.
+
+**4. The iced-water tank** (1-98). A 3.02 m sphere of iced water at 0 °C (area 28.65 m²), air at 25 °C with $h=30$, walls at 15 °C, $\varepsilon=0.75$: $\dot Q_{conv}=30(28.65)(25)=21\,490$ W and $\dot Q_{rad}=0.75(5.67\times10^{-8})(28.65)(288^4-273^4)=1\,614$ W. Total 23.1 kW; per day 2.0 GJ; ice melted $=2.0\times10^6/333.7=5980$ kg. *Insulation would cut that to a fraction.*
+
+**5. The electric heater** (1-137). A 0.25 m² heater dissipates 500 W at 120 °C. Neglecting radiation, $h=500/[0.25(100)]=20$ W/m²K and 700 W gives $T_s=160$ °C. With radiation included ($\varepsilon=0.75$, walls at 10 °C) $h$ is only 12.6 and the 700 W surface temperature is **152.9 °C**: neglecting radiation was a 7 °C error. *Always test the assumption "radiation is negligible".*
+
+<Examined>
+
+- Midterm 1 opens with six "select the **wrong** statement" items (Oct 2021 and Oct 2023): contact resistance depends on roughness, materials, pressure/temperature and the trapped fluid **but not on convection**; radiation **does not** need an intervening medium; the statement "convection depends on the thermal conductivity of the solid" is the wrong one (convection depends on the fluid, the flow and the geometry; the solid's $k$ matters only through the surface temperature); the heat-conduction equation $\dfrac{\partial}{\partial z}\!\left(\dfrac{\partial T}{\partial z}\right)+\dfrac{\dot e_{gen}}{k}=\dfrac1\alpha\dfrac{\partial T}{\partial t}$ is **one-dimensional** and transient.
+- Assignment 1 (1-19, 1-53, 1-56, 1-71, 1-79, 1-80, 1-94, 1-98, 1-123, 1-127, 1-137) is the energy-balance warm-up; see <Asg n="01">the solved set</Asg>.
+
+</Examined>
+
+### Check yourself
+
+1. 100 W leaves a 0.5 m² surface at 50 °C into 20 °C air. What is $h$? *($h=100/[0.5(30)]=6.7$ W/m²K: natural convection.)*
+2. A box dissipating 100 W in a vacuum has 0.48 m² of surface with $\varepsilon=0.95$ and must stay under 55 °C. How cold must the surroundings be? *(296.3 K = 23.3 °C; assignment 1-80.)*
+3. Why is the radiation energy balance on a surface written with no generation term? *(A surface has no volume.)*
+4. A person feels colder next to a cold wall even when the air is warm. Which mode? *(Radiation, fourth power of the wall temperature.)*

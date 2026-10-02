@@ -1,0 +1,211 @@
+<p className="eyebrow">Practice set 11 · Chapter 11 · heat exchangers · original problems</p>
+
+# Practice 11: LMTD, ε–NTU, correction factors, fouling
+
+<div className="lede">
+
+Five original problems for <Ch slug="heat-exchangers">the heat-exchanger chapter</Ch>, in the Final-exam pattern: *energy balance for the unknown outlet → LMTD for the area, or ε–NTU for the rating*. Every number was recomputed independently.
+
+</div>
+
+<Problem id="P11-1" title="Sizing a water-to-water exchanger: counter vs parallel" tags="LMTD, energy balance">
+
+<Statement>
+
+Hot water ($\dot m=2$ kg/s, $c_p=4190$) is cooled from 80 °C to 50 °C by cold water ($\dot m=3$ kg/s, $c_p=4180$) entering at 20 °C. $U=900$ W/m²K. Find the cold outlet and the area for counterflow and parallel flow.
+
+</Statement>
+
+<Think>
+
+Heat duty from the hot stream, cold outlet from the cold-stream balance, then LMTD for each arrangement.
+
+</Think>
+
+<Steps>
+<Step title="1. Duty and cold outlet">
+
+$\dot Q=2(4190)(30)=251.4$ kW; $T_{c,o}=20+\dfrac{251\,400}{3(4180)}=40.05$ °C.
+
+</Step>
+<Step title="2. Counterflow">
+
+$\Delta T_1=T_{h,i}-T_{c,o}=80-40.05=39.95$; $\Delta T_2=T_{h,o}-T_{c,i}=50-20=30$. $\Delta T_{lm}=\dfrac{39.95-30}{\ln(39.95/30)}=34.74$ K. $A=\dfrac{251\,400}{900(34.74)}=8.04$ m².
+
+</Step>
+<Step title="3. Parallel flow">
+
+$\Delta T_1=80-20=60$; $\Delta T_2=50-40.05=9.95$. $\Delta T_{lm}=\dfrac{60-9.95}{\ln(60/9.95)}=27.86$ K; $A=\dfrac{251\,400}{900(27.86)}=10.03$ m².
+
+</Step>
+</Steps>
+
+<Answer>
+
+**$T_{c,o}=40.05$ °C; $A=8.04$ m² (counter) vs 10.03 m² (parallel): parallel flow needs 25 % more area.**
+
+</Answer>
+
+</Problem>
+
+<Problem id="P11-2" title="A steam condenser heating water (one stream at constant temperature)" tags="condenser, C_r = 0, hfg, ε = 1 − exp(−NTU)">
+
+<Statement>
+
+Saturated steam at 100 °C condenses on the outside of tubes in which water ($\dot m=2$ kg/s, $c_p=4180$) is heated from 20 °C to 60 °C. $U=2500$ W/m²K, $h_{fg}=2257$ kJ/kg. Find the area, the steam condensation rate and the effectiveness.
+
+</Statement>
+
+<Steps>
+<Step title="1. Duty">
+
+$\dot Q=2(4180)(40)=334.4$ kW.
+
+</Step>
+<Step title="2. LMTD (counter = parallel here)">
+
+$\Delta T_1=100-20=80$, $\Delta T_2=100-60=40$: $\Delta T_{lm}=\dfrac{80-40}{\ln2}=57.7$ K; $A=\dfrac{334\,400}{2500(57.7)}=2.32$ m².
+
+</Step>
+<Step title="2b. Steam rate">
+
+$\dot m_{steam}=\dfrac{334.4}{2257}=0.148$ kg/s.
+
+</Step>
+<Step title="3. ε–NTU check">
+
+$C_r=0$: $\varepsilon=\dfrac{60-20}{100-20}=0.5=1-e^{-NTU}\Rightarrow NTU=\ln2=0.693$; $NTU=\dfrac{UA}{C}=\dfrac{2500(2.32)}{8360}=0.693$ ✓.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**$A=2.32$ m², 0.148 kg/s of steam condensed, $\varepsilon=0.5$.**
+
+</Answer>
+
+</Problem>
+
+<Problem id="P11-3" title="Rating an oil cooler with ε–NTU (outlets unknown)" tags="ε–NTU, C_min on the oil side, counter vs parallel">
+
+<Statement>
+
+Oil ($\dot m=0.5$ kg/s, $c_p=2100$) enters at 120 °C; water ($\dot m=0.8$ kg/s, $c_p=4180$) enters at 25 °C. $UA=1500$ W/K. Find the outlet temperatures for a counterflow exchanger, and the loss if it were parallel flow.
+
+</Statement>
+
+<Think>
+
+The outlets are unknown, so LMTD would need iteration: use $\varepsilon$–NTU. $C_{min}$ is the **oil** (1050 W/K) even though its mass flow is smaller by only 38 %: $c_p$ matters.
+
+</Think>
+
+<Steps>
+<Step title="1. Capacity rates">
+
+$C_{oil}=1050$, $C_{water}=3344$ W/K: $C_{min}=1050$, $C_r=0.314$, $NTU=1500/1050=1.429$.
+
+</Step>
+<Step title="2. Counterflow effectiveness">
+
+$\varepsilon=\dfrac{1-e^{-NTU(1-C_r)}}{1-C_re^{-NTU(1-C_r)}}=\dfrac{1-e^{-0.980}}{1-0.314e^{-0.980}}=0.708$.
+
+</Step>
+<Step title="3. Heat and outlets">
+
+$\dot Q=\varepsilon C_{min}(120-25)=0.708(1050)(95)=70.6$ kW. Oil out: $120-\dfrac{70\,637}{1050}=52.7$ °C. Water out: $25+\dfrac{70\,637}{3344}=46.1$ °C.
+
+</Step>
+<Step title="4. Parallel flow for the same hardware">
+
+$\varepsilon=\dfrac{1-e^{-NTU(1+C_r)}}{1+C_r}=0.645$; $\dot Q=64.3$ kW: **9 % less**.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**Oil out 52.7 °C, water out 46.1 °C, $\dot Q=70.6$ kW (counter); parallel flow gives 64.3 kW.**
+
+</Answer>
+
+</Problem>
+
+<Problem id="P11-4" title="A 1-shell, 2-tube-pass exchanger: the correction factor" tags="F factor, R and P, area penalty">
+
+<Statement>
+
+Oil is cooled from 150 °C to 90 °C by water ($\dot m=1.5$ kg/s) heated from 25 °C to 70 °C in a 1-shell, 2-tube-pass exchanger with $U=400$ W/m²K. Find $F$ and the area, and compare with a true counterflow unit.
+
+</Statement>
+
+<Steps>
+<Step title="1. Duty">
+
+$\dot Q=1.5(4180)(45)=282.2$ kW.
+
+</Step>
+<Step title="2. $R$, $P$ and $F$">
+
+$R=\dfrac{150-90}{70-25}=1.333$; $P=\dfrac{70-25}{150-25}=0.36$. $F=\dfrac{\sqrt{R^2+1}}{R-1}\dfrac{\ln\frac{1-P}{1-PR}}{\ln\frac{2-P(R+1-\sqrt{R^2+1})}{2-P(R+1+\sqrt{R^2+1})}}=0.907$.
+
+</Step>
+<Step title="3. Counterflow LMTD">
+
+$\Delta T_1=150-70=80$; $\Delta T_2=90-25=65$; $\Delta T_{lm,CF}=\dfrac{80-65}{\ln(80/65)}=72.24$ K.
+
+</Step>
+<Step title="4. Areas">
+
+Shell-and-tube: $A=\dfrac{\dot Q}{UF\Delta T_{lm,CF}}=\dfrac{282\,150}{400(0.907)(72.24)}=10.77$ m². Counterflow: $\dfrac{282\,150}{400(72.24)}=9.76$ m². Penalty 10 %.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**$F=0.907$; $A=10.8$ m² (shell-and-tube) vs 9.8 m² (counterflow).**
+
+</Answer>
+
+</Problem>
+
+<Problem id="P11-5" title="Design questions: the NTU needed, the limit of a type, and fouling" tags="NTU from ε, maximum ε of an arrangement, overall U with fouling">
+
+<Statement>
+
+(a) A designer wants $\varepsilon=0.8$ with $C_r=0.5$. What NTU does a counterflow exchanger need? Can a 1-shell, 2-pass or a parallel-flow exchanger reach it? (b) A tube has $D_i=2$ cm, $D_o=2.4$ cm, $k=15$, $h_i=3000$, $h_o=800$ W/m²K; the fouling resistances are $R_{f,i}=2\times10^{-4}$ and $R_{f,o}=1\times10^{-4}$ m²K/W. Find $U_o$ clean and fouled.
+
+</Statement>
+
+<Steps>
+<Step title="1. (a) Counterflow">
+
+$NTU=\dfrac1{C_r-1}\ln\dfrac{\varepsilon-1}{\varepsilon C_r-1}=\dfrac1{-0.5}\ln\dfrac{-0.2}{-0.6}=2.197$.
+
+</Step>
+<Step title="2. (a) Limits of other types">
+
+Parallel flow: $\varepsilon_{max}=\dfrac1{1+C_r}=0.667<0.8$: **impossible**. 1-shell: $\varepsilon_{max}=\dfrac2{1+C_r+\sqrt{1+C_r^2}}=0.764<0.8$: **impossible** (use two shells or true counterflow).
+
+</Step>
+<Step title="3. (b) Resistance per metre length">
+
+$A_i'=\pi(0.02)=0.0628$, $A_o'=\pi(0.024)=0.0754$ m²/m. $\dfrac1{U_oA_o}=\dfrac1{3000A_i'}+\dfrac{R_{f,i}}{A_i'}+\dfrac{\ln(D_o/D_i)}{2\pi k}+\dfrac{R_{f,o}}{A_o'}+\dfrac1{800A_o'}$ $=0.00531+0.00318+0.00193+0.00133+0.01658=0.02833$ K·m/W, so $U_oA_o=35.3$ W/m·K and $U_o=\dfrac{35.3}{0.0754}=468$ W/m²K.
+
+</Step>
+<Step title="4. (b) Clean">
+
+Without the two fouling terms: $R=0.02382$, $U_o=557$ W/m²K.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**(a) $NTU=2.20$ (counter only; the other two cannot reach 0.8). (b) $U_o=468$ W/m²K fouled vs 557 clean: a 16 % loss.** The outside film (800) is the bottleneck: 59 % of the resistance.
+
+</Answer>
+
+</Problem>

@@ -1,0 +1,65 @@
+<p className="eyebrow">Exam toolkit · Midterm 2 · Ch 4, 6, 7</p>
+
+# Cheat sheet: Midterm 2
+
+<div className="lede">
+
+Q1 **lumped system**, Q2 **one-term / product solution** (Tables 4-2 and 4-3 provided), Q3 **external flow with a resistance network** (flat plate or cylinder). The sheet carries the lumped formula, the one-term formulas for the wall, cylinder and sphere, the $Q/Q_{max}$ and product rules, the plate correlations and Churchill–Bernstein. See <Ch slug="transient">Ch 4</Ch>, <Ch slug="convection-basics">Ch 6</Ch>, <Ch slug="external-flow">Ch 7</Ch>.
+
+</div>
+
+## 1 · Biot number decides everything
+
+$$Bi=\frac{hL_c}k=\frac{\text{internal conduction resistance}}{\text{surface convection resistance}}.$$
+
+- **$Bi\le0.1$:** lumped (uniform temperature). $L_c=V/A_s$ of the *actual body*: sphere $D/6$; long cylinder $D/4$; cube $a/6$; plate (both faces) half-thickness; finite cylinder: $V$ and the **whole** surface.
+- **$Bi>0.1$:** one-term solution with $Bi=hr_0/k$ (cylinder, sphere) or $hL/k$ (wall of thickness $2L$): **the radius or half-thickness, not $V/A$**.
+- Minimum $k$ for lumped: $k\ge hL_c/0.1$.
+
+## 2 · Lumped system
+
+$$\frac{T-T_\infty}{T_i-T_\infty}=e^{-bt},\quad b=\frac{hA_s}{\rho Vc_p}=\frac1\tau.$$
+Time: $t=\dfrac1b\ln\dfrac{T_i-T_\infty}{T-T_\infty}$. Total heat: $Q=\rho Vc_p(T_i-T_f)$. 99 % complete at $4.6\tau$. Checks: sphere $L_c=r/3$.
+
+## 3 · One-term solution ($Fo=\alpha t/L^2>0.2$)
+
+| | Plane wall | Cylinder | Sphere |
+|---|---|---|---|
+| Characteristic equation | $\lambda\tan\lambda=Bi$ | $\lambda J_1/J_0=Bi$ | $1-\lambda\cot\lambda=Bi$ |
+| Centre $\theta_0$ | $A_1e^{-\lambda_1^2Fo}$ | same | same |
+| Any point | $\theta_0\cos(\lambda_1x/L)$ | $\theta_0J_0(\lambda_1r/r_0)$ | $\theta_0\dfrac{\sin(\lambda_1r/r_0)}{\lambda_1r/r_0}$ |
+| Surface | $\theta_0\cos\lambda_1$ | $\theta_0J_0(\lambda_1)$ | $\theta_0\dfrac{\sin\lambda_1}{\lambda_1}$ |
+| $Q/Q_{max}$ | $1-\theta_0\dfrac{\sin\lambda_1}{\lambda_1}$ | $1-2\theta_0\dfrac{J_1(\lambda_1)}{\lambda_1}$ | $1-3\theta_0\dfrac{\sin\lambda_1-\lambda_1\cos\lambda_1}{\lambda_1^3}$ |
+
+$\theta=\dfrac{T-T_\infty}{T_i-T_\infty}$; $Q_{max}=\rho Vc_p(T_i-T_\infty)$ with the **actual** volume.
+
+- **Product solution** (short cylinder, bar, hemisphere on a table): $\theta_{short\ cyl}=\theta_{cyl}\times\theta_{wall}$; $\left(\dfrac Q{Q_{max}}\right)_{12}=\left(\dfrac Q{Q_{max}}\right)_1+\left(\dfrac Q{Q_{max}}\right)_2\left[1-\left(\dfrac Q{Q_{max}}\right)_1\right]$.
+- **Insulated base** = plane of symmetry: the body is half of a double body. Hemisphere on a table = half of a sphere (same $r_0$); short cylinder of height $H$ on a table = half of a cylinder of length $2H$ (wall half-thickness $H$).
+- **Semi-infinite solid:** $\dfrac{T-T_i}{T_s-T_i}=\mathrm{erfc}\dfrac x{2\sqrt{\alpha t}}$; $q''_s=\dfrac{k(T_s-T_i)}{\sqrt{\pi\alpha t}}$; penetration $2\sqrt{\alpha t}$; contact temperature $T_c=\dfrac{b_1T_1+b_2T_2}{b_1+b_2}$, $b=\sqrt{k\rho c_p}$.
+- **Sanity checks:** $0<Q/Q_{max}<1$; $T$ between $T_i$ and $T_\infty$; surface closer to $T_\infty$ than the centre.
+
+## 4 · Convection basics (Ch 6)
+
+- $h$ from the surface gradient: $h=\dfrac{-k_f\,\partial T/\partial y\vert_0}{T_s-T_\infty}$. $Nu=\dfrac{hL}{k_f}$; $Re=\dfrac{VL}\nu$; $Pr=\dfrac\nu\alpha$.
+- Blasius (laminar plate): $\delta=\dfrac{4.91x}{\sqrt{Re_x}}$, $C_{f,x}=\dfrac{0.664}{\sqrt{Re_x}}$, $Nu_x=0.332Re_x^{1/2}Pr^{1/3}$; $\delta_t/\delta=Pr^{-1/3}$. Average over $L$ = $2\times$ local at $L$.
+- Chilton–Colburn: $St\,Pr^{2/3}=C_f/2$, $St=\dfrac{Nu}{Re\,Pr}$.
+
+## 5 · External flow (Ch 7)
+
+- **Film temperature** $T_f=(T_s+T_\infty)/2$ for all properties (sphere: $T_\infty$, $\mu_s$ at $T_s$).
+- **Plate**, $Re_{cr}=5\times10^5$: laminar $\overline{Nu}=0.664Re^{1/2}Pr^{1/3}$; **combined** $\overline{Nu}=(0.037Re^{0.8}-871)Pr^{1/3}$; tripped/turbulent all along $0.037Re^{0.8}Pr^{1/3}$. **Say which regime and why.**
+- **Cylinder** (Churchill–Bernstein, $L_c=D$): $Nu=0.3+\dfrac{0.62Re^{1/2}Pr^{1/3}}{[1+(0.4/Pr)^{2/3}]^{1/4}}\left[1+\left(\dfrac{Re}{282\,000}\right)^{5/8}\right]^{4/5}$.
+- **Sphere** (Whitaker): $Nu=2+[0.4Re^{1/2}+0.06Re^{2/3}]Pr^{0.4}(\mu_\infty/\mu_s)^{1/4}$.
+- **Tube bank:** $V_{max}=\dfrac{S_T}{S_T-D}V$; $Nu=C\,Re_{max}^mPr^{0.36}(Pr/Pr_s)^{1/4}$; $T_e=T_s-(T_s-T_i)e^{-hA_s/\dot mc_p}$.
+- **Q3 template (flat plate with insulation):** $Re_L\to$ regime $\to\overline{Nu}\to h$; energy balance at the outer surface: $\dfrac{T_{in}-T_s}{\sum L/k}=h(T_s-T_\infty)\to L_{ins}$. Either forward or backward; backward (fix $T_s$ first) is easier.
+
+## 6 · The Midterm-2 checklist
+
+1. Q1: $L_c$ with the actual geometry; show $Bi$; units of $t$ (seconds); $Q$ (joules) is the **total** heat.
+2. Q2: Table 4-2 for each 1-D factor with its **own** $Bi$ and $Fo$; position factors; $V_{actual}$ for $Q_{max}$; check $Q<Q_{max}$.
+3. Q3: $Re$ first; correct formula; $h$ in W/m²K; resistance network or energy balance; properties at $T_f$.
+4. Errors seen on graded copies: $L_c$ half too small (sphere: it is $r/3$, not $r/6$); wrong volume in $Q_{max}$; forgetting the outward heat flow.
+
+<Examined>
+Papers: <Ex id="mt2-f2022">Nov 2022</Ex>, <Ex id="mt2-f2023">Nov 2023</Ex>. Assignments: <Asg n="04">4</Asg>, <Asg n="06">6</Asg>, <Asg n="07">7</Asg>.
+</Examined>

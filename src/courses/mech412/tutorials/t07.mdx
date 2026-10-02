@@ -1,0 +1,257 @@
+<p className="eyebrow">Tutorial 7 · Mar 2024 · Lectures 11–13</p>
+
+# Tutorial 7: DC motor analogy, two-mass analogs, an acoustic–mechanical–acoustic chain
+
+<div className="lede">
+
+This tutorial is the **template for MT2 Question 1**: draw the analog circuit, then write the equations (<Ch slug="analogies">Chapter 10</Ch>, <Ch slug="electromechanical">Chapter 11</Ch>, <Ch slug="acoustic-pneumatic">Chapter 12</Ch>). The instructor's sheet has a **sign error in Q1** (the motor transfer function) and an **algebra slip in Q3** (the elimination); Q2 stops half-way and is completed here.
+
+</div>
+
+<Problem id="T7 Q1" title="DC motor: electrical analogy and transfer function Ω(s)/E_i(s)" tags="armature-controlled, back emf, gyrator">
+
+<Statement>
+
+An armature-controlled DC motor (constant field current $I_F$; armature $R_A$, $L_A$; rotor inertia $J$, viscous friction $B$; load torque $\tau_L$; back emf $e_b$). Redraw it using an electrical analogy and find $\Omega(s)/E_i(s)$.
+
+</Statement>
+
+<Think>
+
+A DC motor is **two circuits glued by one law of nature**: current in the armature makes torque ($\tau_e=K_tI_Fi_A$) and speed makes a back-voltage ($e_b=K_b\omega$). Electrical power in ($e_bi_A$) equals mechanical power out ($\tau_e\omega$), so the glue is a transformer-like element. *Real life:* a cordless drill: press the trigger (voltage), the motor speeds up until the back emf nearly cancels the supply; load it ($\tau_L$) and the speed drops, drawing more current.
+
+</Think>
+
+<Plan>
+
+(1) Coupling laws. (2) Electrical KVL. (3) Mechanical Newton. (4) Eliminate $I_A$. (5) Transfer function. (6) Circuit. (7) Check limits.
+
+</Plan>
+
+<Steps>
+<Step title="1. The coupling">
+
+Field current constant, so torque is proportional to armature current: $\tau_e=K_tI_Fi_A$. The rotating armature generates a back emf: $e_b=K_b\omega$.
+
+</Step>
+<Step title="2. Electrical loop (KVL)">
+
+$e_i-R_Ai_A-L_A\dfrac{di_A}{dt}-e_b=0$. In Laplace: $E_i=(L_As+R_A)I_A+K_b\Omega$. *Meaning:* the back emf **subtracts** from the supply voltage.
+
+</Step>
+<Step title="3. Mechanical equation (Newton for rotation)">
+
+Net torque $=J\dot\omega$: $J\dot\omega+B\omega=\tau_e-\tau_L$. In Laplace with $\tau_L=0$: $(Js+B)\Omega=K_tI_FI_A$. *Meaning:* the electric torque **drives** the rotor.
+
+</Step>
+<Step title="4. Eliminate I_A">
+
+From the mechanical equation $I_A=\dfrac{(Js+B)\Omega}{K_tI_F}$. Substitute into the electrical equation:
+$$E_i=\Big[\frac{(L_As+R_A)(Js+B)}{K_tI_F}+K_b\Big]\Omega .$$
+
+</Step>
+<Step title="5. Transfer function">
+
+$$\frac{\Omega(s)}{E_i(s)}=\frac{K_tI_F}{(L_As+R_A)(Js+B)+K_bK_tI_F}.$$
+
+</Step>
+<Step title="6. Analog circuit">
+
+Electrical side: source $e_i\to R_A\to L_A\to$ primary of the coupling element (series loop). Mechanical side in the **mobility analog** (potential = $\omega$, flux = torque): $J$ is a **capacitor**, the friction $B$ a **resistor $1/B$**, in parallel across the $\omega$ node, fed by the coupling element: a transformer-like element with ratios $K_b$ (voltage to speed) and $K_tI_F$ (current to torque). Electrical series loop, mechanical parallel node.
+
+</Step>
+<Step title="7. Checks">
+
+DC ($s=0$): $\dfrac{\Omega}{E_i}=\dfrac{K_tI_F}{R_AB+K_bK_tI_F}$. With $B\to0$ this is $1/K_b$: the **no-load speed is $e_i/K_b$**, the classic constant-speed limit ✔. If $L_A$ is neglected the transfer function is a first-order lag with $\tau_m=\dfrac{R_AJ}{R_AB+K_bK_tI_F}$.
+
+</Step>
+</Steps>
+
+<Answer>
+
+$\dfrac{\Omega(s)}{E_i(s)}=\dfrac{K_tI_F}{(L_As+R_A)(Js+B)+K_bK_tI_F}$.
+
+</Answer>
+
+<Callout kind="warn" title="⚠ Instructor's sign error">
+
+He writes $(Js+B)\Omega+\tau_e=0$ (treating $\tau_e$ as a torque *opposing* the rotor), giving $\Omega/E_i=-K_tI_F/[(L_As+R_A)(Js+B)-K_bK_tI_F]$. The negative DC gain is impossible for a motor, and the denominator could vanish when $K_bK_tI_F=R_AB$ (an "unstable motor"), which a real motor never is. **Rule:** the back emf subtracts from the supply and the torque adds to the rotor, so the $K_bK_tI_F$ term is **positive** in the denominator. (Same convention slip as Anthony's MT2 crib note.)
+
+</Callout>
+
+<Traps>
+
+- $K_t$ and $K_b$ are numerically equal in SI units but are different physical constants: keep both symbols.
+- $J$ is a capacitor in the mobility analog but an inductor in the impedance analog: say which analog you use.
+
+</Traps>
+
+<Source>instructor ✘ (sign); digest ✔ (limits checked).</Source>
+
+</Problem>
+
+<Problem id="T7 Q2" title="Two-mass system: impedance and mobility analogs, X₁/F_a and X₂/F_a" tags="duals, shared damper, loop equations">
+
+<Statement>
+
+Mass $M_1$ (position $x_1$) rests on a surface with damper $B_1$ and spring $K_1$ and damper $B_3$ to the walls; mass $M_2$ (position $x_2$) sits on $M_1$, connected by a spring $K_2$ to the wall and by a damper $B_2$ to $M_1$; the force $f_a(t)$ acts on $M_2$. Outputs $x_1$, $x_2$: find the transfer functions and draw both analog circuits.
+
+</Statement>
+
+<Think>
+
+Two coupled mass–spring–damper blocks. **Mobility analog:** each mass is a capacitor to ground at its own velocity node, wall elements go to ground, elements between masses go between the nodes, the force is a **current source** (start with the force: crib-sheet rule). **Impedance analog:** each mass is an inductor in its own loop (current = velocity), the element shared by two masses is the element shared by two loops, the force is a voltage source in the loop of $M_2$.
+
+</Think>
+
+<Steps>
+<Step title="1. Mobility circuit (potential = velocity, flux = force)">
+
+Mass → capacitor $M_M$; spring → inductor $C_M=1/K$; damper → resistor $1/B$. Node $v_1$ (= $\dot x_1$): $M_1$, $K_1$, $B_1$, $B_3$ to ground (wall elements are in parallel), and $1/B_2$ from $v_1$ to node $v_2$. Node $v_2$: $M_2$ and $K_2$ to ground, plus the current source $f_a$.
+
+</Step>
+<Step title="2. Impedance circuit (potential = force, flux = velocity)">
+
+Two loops. Loop 1 (current $v_1$): $M_1$ (inductor), $B_1+B_3$ (resistors in series), $K_1$ (capacitor $1/K_1$). Loop 2 (current $v_2$): $M_2$, $K_2$, the force source $f_a$. The **shared element** is $B_2$: it carries $v_1-v_2$.
+
+</Step>
+<Step title="3. Loop equations">
+
+Loop 1: $(M_1s+B_1+B_3+K_1/s)V_1+B_2(V_1-V_2)=0$. Loop 2: $(M_2s+K_2/s)V_2-F_a+B_2(V_2-V_1)=0$.
+
+</Step>
+<Step title="4. Convert to displacements (V = sX)">
+
+Multiplying by $s$ and using $V=sX$:
+$$(M_1s^2+(B_1+B_2+B_3)s+K_1)X_1=B_2sX_2,\qquad (M_2s^2+B_2s+K_2)X_2-B_2sX_1=F_a .$$
+(The instructor's page agrees up to here.)
+
+</Step>
+<Step title="5. Solve (completed here)">
+
+From the first: $X_2=\dfrac{M_1s^2+(B_1+B_2+B_3)s+K_1}{B_2s}X_1$. Substitute into the second and multiply by $B_2s$:
+$$\frac{X_1}{F_a}=\frac{B_2s}{(M_2s^2+B_2s+K_2)(M_1s^2+(B_1+B_2+B_3)s+K_1)-B_2^2s^2},$$
+$$\frac{X_2}{F_a}=\frac{M_1s^2+(B_1+B_2+B_3)s+K_1}{\text{same denominator}} .$$
+The denominator is 4th order (two masses, two position states and two velocities); $-B_2^2s^2$ is the interaction through the shared damper.
+
+</Step>
+<Step title="6. Checks">
+
+(a) $B_2\to0$: the masses decouple, $X_2/F_a\to\dfrac1{M_2s^2+K_2}$ (a lone spring-mass) and $X_1/F_a\to0$ ✔. (b) DC: $X_2/F_a\to\dfrac{K_1}{K_2K_1}=\dfrac1{K_2}$ ✔ (the force just compresses $K_2$; $M_1$ stays at rest). (c) Both transfer functions share the characteristic polynomial ✔.
+
+</Step>
+</Steps>
+
+<Answer>
+
+As in step 5.
+
+*Real-world:* a car body ($M_2$) on a seat or sprung component ($M_1$) on the chassis; the shared damper $B_2$ is the shock absorber between them.
+
+</Answer>
+
+<Callout kind="note" title="Instructor's page is unfinished">
+
+It gives the two equations (✔) and stops; the transfer functions above are the digest's completion, with the limit checks.
+
+</Callout>
+
+<Traps>
+
+- Impedance and mobility give the **same** answer: the circuits are duals (series to parallel; mass inductor to capacitor; spring capacitor to inductor; force voltage source to current source).
+- A damper between two masses is a shared element between two loops (impedance) or a branch between two nodes (mobility), and it carries the *relative* velocity.
+
+</Traps>
+
+<Source>instructor ✔ equations, unfinished; final transfer functions by the digest.</Source>
+
+</Problem>
+
+<Problem id="T7 Q3" title="Acoustic–mechanical–acoustic chain: analog circuit and state-space model" tags="transformer, impedance + mobility, elimination">
+
+<Statement>
+
+An acoustic cavity $C_{A1}$ is driven by a pressure $p(t)$; a piston (area $S_1$) couples it to a mechanical subsystem (masses $M_{M1},M_{M2}$, spring $K$, damper $B$); a second piston (area $S_2$) drives an acoustic network (neck $M_{A1}\to$ cavity $C_{A2}$, neck $M_{A2}\to$ cavity $C_{A3}$). Draw the electrical analog and find a state-space model with the pressures in $C_{A2}$ and $C_{A3}$ as outputs.
+
+</Statement>
+
+<Think>
+
+Chain three subsystems with **transformers**: acoustic to mechanical (force $=S\cdot$pressure, velocity $=$ volume flow$/S$), then mechanical, then mechanical to acoustic. Each cavity is a capacitor (compliance $C_A$), each neck an inductor (acoustic mass $M_A$). The new idea is the **mixed analogs**: acoustic uses impedance (pressure = voltage, volume flow = current), mechanical uses mobility (velocity = voltage, force = current). Here the tutorial draws transformers $S_1:1$ and $1:S_2$ with the mobility analog on the mechanical side.
+
+</Think>
+
+<Steps>
+<Step title="1. Acoustic input loop">
+
+The source $p(t)$ drives $C_{A1}$ in series with the transformer primary: $p-\dfrac{1}{C_{A1}s}Q_1-P_A=0$, where $Q_1$ is the volume flow and $P_A$ the pressure at the piston.
+
+</Step>
+<Step title="2. Coupling">
+
+$F_A=S_1P_A$ (pressure times area is the force on the first piston); the piston velocity is $v_1=Q/S_1$.
+
+</Step>
+<Step title="3. Mechanical part (mobility analog; nodes v₁, v₂)">
+
+$M_{M1}$ and $M_{M2}$ are capacitors to ground, the damper a resistor $1/B$ and the spring an inductor $1/K$ between the nodes. Force balance at node 1 and node 2 (unit coefficients, $S_1=S_2=1$, multiplied by $s$):
+$$P_As+(s^2+s+1)V_1-(s+1)V_2=0\quad(1),\qquad (s^2+s+1)V_2-(s+1)V_1+F_Bs=0\quad(2),$$
+with $F_B=S_2P_B$ the force on the second piston.
+
+</Step>
+<Step title="4. Acoustic output">
+
+The second transformer turns $v_2$ into volume flows $Q_2,Q_3$ through the necks into the cavities: $P_2=\dfrac{Q_2}{C_{A2}s}$, $P_3=\dfrac{Q_3}{C_{A3}s}$ (a capacitor's voltage $=$ current$/(Cs)$).
+
+</Step>
+<Step title="5. Eliminate V₁">
+
+From (1): $V_1=\dfrac{(s+1)V_2-sP_A}{s^2+s+1}$. Insert in (2) and multiply by $(s^2+s+1)$:
+$$\big[(s^2+s+1)^2-(s+1)^2\big]V_2=-(s+1)sP_A-s(s^2+s+1)F_B .$$
+Expand the bracket: $(s^4+2s^3+3s^2+2s+1)-(s^2+2s+1)=s^4+2s^3+2s^2=s^2(s^2+2s+2)$. So
+$$V_2=-\frac{(s+1)P_A+(s^2+s+1)F_B}{s\,(s^2+2s+2)} .$$
+
+</Step>
+<Step title="6. Reading the result">
+
+A pole at $s=0$ (the rigid-body drift of two free masses: the pair's velocity can wander) and the *relative* mode $s^2+2s+2=0$ (poles $-1\pm j$) from the spring and damper between them (reduced mass $\tfrac12$, so $\tfrac12s^2+s+1$) ✔.
+
+</Step>
+<Step title="7. State-space assembly (structure)">
+
+States: $q_1$ (volume in $C_{A1}$), $v_1$, $v_2$, the spring deflection $d=\int(v_1-v_2)dt$, the volumes $q_2,q_3$ in $C_{A2},C_{A3}$ (and the two neck flows if the acoustic masses are kept). Outputs $y=[P_2,P_3]=[q_2/C_{A2},\,q_3/C_{A3}]$. Each state equation is read from one circuit element: a capacitor gives $\dot{(\text{charge})}=\text{current}$, an inductor gives $L\dot i=\text{voltage}$. The result has the standard form $\dot x=Ax+Bp(t)$, $y=Cx$; the signs of the piston forces follow the arrows in the figure.
+
+</Step>
+</Steps>
+
+<Answer>
+
+$V_2=-\dfrac{(s+1)P_A+(s^2+s+1)F_B}{s(s^2+2s+2)}$ (unit coefficients); circuit = acoustic loop, $S_1:1$ transformer, mobility network for the masses, $1:S_2$ transformer, necks and cavities.
+
+*Real-world:* a loudspeaker-like chain: pressure wave, diaphragm, mass–spring suspension, second diaphragm, ducts and cavities (a muffler or a hearing-aid receiver).
+
+</Answer>
+
+<Callout kind="warn" title="⚠ Instructor's final elimination has two slips">
+
+His final line reads $[(s^4+s^3+s^2+s^3+s^2+s+s^2+s+1)+(s^2+2s+1)]V_2=(s^2+s)p_A-(s^3+s^2+s)p_B$. (a) The substitution $V_1=[p_As-(s+1)V_2]/(s^2+s+1)$ has the **wrong sign** on both terms; (b) the term $(s+1)^2$ must be **subtracted**, not added, when eliminating $V_1$. The correct bracket is $s^2(s^2+2s+2)$ as above. His equations (1) and (2) are right.
+
+</Callout>
+
+<Traps>
+
+- Both sides of a transformer must use the same analog; with different analogs you need a gyrator. The unit coefficients here hide the area ratios $S_1,S_2$.
+- Always check units: $F=S\cdot p$.
+- A cavity is a **shunt** capacitor (one terminal to ground); a neck is a **series** inductor.
+
+</Traps>
+
+<Source>instructor ✔ equations (1)–(2), ✘ final elimination (corrected); state-space assembly follows from the circuit.</Source>
+
+</Problem>
+
+<Examined>
+
+Draw-the-analog questions are **Q1 of every MT2** (W2009, W2010, W2011, W2012, W2019, F2022, W2024); motor transfer function: $\text{MT2 W2019}$, $\text{final F2009}$; mixed acoustic–mechanical chains: $\text{MT2 W2012}$.
+
+</Examined>

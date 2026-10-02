@@ -1,0 +1,185 @@
+<p className="eyebrow">Chapter 15</p>
+
+# Method of characteristics (2-D steady flow)
+
+<p className="lede">Information in a supersonic flow travels only along Mach lines. On each Mach line one number stays constant: ν + θ on one family, ν − θ on the other. Find where two lines meet and you know the flow there, using nothing but addition, subtraction and Table A6. That is the whole method. The rest is bookkeeping.</p>
+
+<Idea title="The picture to keep">
+
+Imagine dipping a finger into a supersonic stream at a point P. The disturbance cannot go upstream. It spreads downstream along the two Mach lines through P, one running off to the right (down) and one to the left (up). Each line carries one piece of information about P. A downstream point where a "right" line from A meets a "left" line from B receives one number from each, and two numbers fix the flow (θ and ν, hence M). The notes put it this way: *this is how Nature itself solves a compressible flow*. The characteristics are real: scratches on a wind-tunnel wall make them visible in a schlieren photo.
+
+</Idea>
+
+## Why supersonic flow has characteristics
+
+For 2-D, steady, **irrotational** flow, the velocity is the gradient of a potential, $\vec V = \nabla\phi$. Substitute this into continuity, use momentum to eliminate ρ ($d\rho = dp/c^2 = -\rho\, d(V^2/2)/c^2$), and you get the **velocity-potential equation** (notes eq. 15.3):
+
+$$
+\left(1-\frac{u^2}{c^2}\right)\phi_{xx} - \frac{2uv}{c^2}\,\phi_{xy} + \left(1-\frac{v^2}{c^2}\right)\phi_{yy} = 0
+$$
+
+This has the form $A\phi_{xx} + 2B\phi_{xy} + C\phi_{yy} = 0$. Second-order PDEs of this form are classified by $B^2 - AC$, and for this flow:
+
+$$
+B^2 - AC = \frac{u^2+v^2}{c^2} - 1 = M^2 - 1
+$$
+
+| $M$ | $B^2 - AC$ | type | behaviour |
+|---|---|---|---|
+| $M<1$ | $< 0$ | elliptic (like Laplace) | every boundary is felt everywhere; smooth solutions |
+| $M=1$ | $= 0$ | parabolic | |
+| $M>1$ | $> 0$ | **hyperbolic** (like the wave equation) | zones of influence; jumps (shocks) possible; **characteristics exist** |
+
+<Remember title="Assumptions behind everything in this chapter">
+
+2-D (planar), steady, inviscid, **isentropic and irrotational**, **supersonic** everywhere. A curved shock makes the flow rotational (Crocco's theorem links vorticity to entropy gradients), so this version of MOC cannot be used behind one.
+
+</Remember>
+
+## The characteristic directions: Mach lines
+
+Along certain lines the derivatives in the PDE become indeterminate (zero divided by zero). Setting the determinant to zero gives (notes p. 150):
+
+$$
+\left(\frac{dy}{dx}\right)_{\text{char}} = \tan(\theta \mp \mu), \qquad \mu = \sin^{-1}\frac{1}{M}
+$$
+
+Here θ is the local flow angle. The notes write the Mach angle as α. These lines are exactly the **Mach lines** of Chapter 4.
+
+<CharacteristicsAtPointFigure M={2} theta={12} />
+
+| name in the course | also called | slope | runs | invariant carried |
+|---|---|---|---|---|
+| **C_I** | right-running, C⁻ | $\tan(\theta-\mu)$ | down and to the right | $C_I = \nu + \theta$ |
+| **C_II** | left-running, C⁺ | $\tan(\theta+\mu)$ | up and to the right | $C_{II} = \nu - \theta$ |
+
+## Compatibility: what is carried along them
+
+The numerator of the indeterminate derivative must also vanish along the characteristic. After "considerable manipulation" that gives an ODE valid only along the line:
+
+$$
+d\theta = \mp\sqrt{M^2-1}\,\frac{dV}{V}
+$$
+
+The "−" applies along C_I and the "+" along C_II. You have already integrated the right-hand side: it is the Prandtl–Meyer function of [Chapter 13](#/mech430/ch/prandtl-meyer), $d\nu = \sqrt{M^2-1}\,dV/V$. So the compatibility relations become **algebraic**:
+
+$$
+C_I = \nu(M) + \theta = \text{const along right-running characteristics}
+$$
+
+$$
+C_{II} = \nu(M) - \theta = \text{const along left-running characteristics}
+$$
+
+<Trap title="Sign convention (this course)">
+
+The course, the PS10 solutions and both practice finals use **C_I = ν + θ on right-running lines** and **C_II = ν − θ on left-running lines**. θ is positive counter-clockwise (flow turning up). Anderson writes the same thing with $K_\mp = \theta \pm \nu$. If you mix the conventions, every wall point comes out wrong. Anthony's tablet header is the safest mnemonic: "**Right: ν + θ · left: ν − θ · ν = (C_I + C_II)/2 · θ = (C_I − C_II)/2**".
+
+</Trap>
+
+A quick sanity check: a P-M expansion fan around a convex corner on an upper wall consists of right-running waves. Along each left-running line crossing it, ν − θ is constant, so turning the flow by Δθ = +δ raises ν by δ. That is exactly ν₂ = ν₁ + δ from Chapter 13.
+
+## Point procedures
+
+### Interior point (notes §15.3.1)
+
+Point 3 sits where the **right-running** line from point 1 (upstream, above) meets the **left-running** line from point 2 (upstream, below):
+
+$$
+\theta_3 = \frac{(C_I)_1 - (C_{II})_2}{2}, \qquad \nu_3 = \frac{(C_I)_1 + (C_{II})_2}{2} \;\to\; \text{A6} \to M_3,\ \mu_3
+$$
+
+**The notes' example.** Point 1 has M = 2, θ = 20°, so ν₁ = 26.38° and μ₁ = 30°. That gives (C_I)₁ = 46.38° and (C_II)₁ = 6.38°. Point 2 has M = 2.1, θ = 5°, so ν₂ = 29.07° (the notes' table value; exact 29.10°) and (C_II)₂ = 24.07°. Then:
+
+$$
+\theta_3 = \frac{46.38 - 24.07}{2} = 11.15^\circ, \qquad \nu_3 = \frac{46.38 + 24.07}{2} = 35.22^\circ \;\Rightarrow\; M_3 = 2.34,\ \mu_3 = 25.30^\circ
+$$
+
+M₃ is larger than M₁ and M₂, which makes sense: the flow between 1 and 2 is diverging (θ falls from 20° to 5°), and supersonic flow accelerates when it diverges.
+
+**Where is point 3?** Intersect two straight lines: from 1 at angle $\theta-\mu$ and from 2 at angle $\theta+\mu$. For a better location, redo this with the average angles of the two end points, e.g. $\tfrac12(\theta_1+\theta_3) = 15.58^\circ$. Only the *position* changes in this iteration. The flow values at point 3 stay the same.
+
+### Wall point (notes §15.3.2)
+
+At a wall only **one** characteristic arrives. The wall supplies the second piece of information instead: the flow must be parallel to it, so $\theta = \theta_\text{wall}$.
+
+$$
+\text{upper wall (a left-running line arrives):}\quad \nu = C_{II} + \theta_\text{wall}
+$$
+
+$$
+\text{lower wall (a right-running line arrives):}\quad \nu = C_I - \theta_\text{wall}
+$$
+
+In the notes' example, the left-running line from point 1 carries C_II = 6.38° to a wall at 13°. So ν₄ = 6.38 + 13 = 19.38°, which gives **M₄ = 1.75**. (The notes' text says "the C_I characteristic" there, but the figure and the arithmetic use the left-running line and its C_II.)
+
+<InteriorPointFigure />
+
+## The bookkeeping table
+
+Higgins's advice: *constructing a table is often essential*. The main difficulty is keeping the bookkeeping straight. Use one row per point:
+
+| Point | from | C_I = ν + θ | C_II = ν − θ | θ | ν | M | μ | θ + μ | θ − μ | p |
+|---|---|---|---|---|---|---|---|---|---|---|
+
+- Values fixed *a priori* (initial line, wall θ) go in first.
+- Values carried along a characteristic are copied from the parent point.
+- Any **two** of (C_I, C_II, ν, θ) fix the other two.
+- M, μ, θ ± μ are only needed to draw the net; **p** is what the exam asks for.
+- The flow is isentropic, so $p_0$ is the same everywhere: $p = p_\text{ref}\,\dfrac{(p/p_0)_M}{(p/p_0)_{M_\text{ref}}}$.
+
+<Trap title="Both practice-final students forgot the pressures">
+
+Final A P4 and Final B P5 both ask for "Mach number **and pressure**". Both student solutions stop at M. Always add the p column.
+
+</Trap>
+
+## Worked example: Mach 3 into a channel converging at 10° (notes §15.5.1)
+
+The flow enters at M = 3 between walls converging at 10°: the upper wall slopes down at −10° and the lower wall slopes up at +10°. The flow is parallel to the walls at the walls and horizontal on the centre line. Three points start the march on the datum line: 1 (upper wall, θ = −10°), 2 (centre, θ = 0) and 3 (lower wall, θ = +10°), all with ν(3) = 49.757°.
+
+| Point | type | C_I | C_II | θ | ν | M | μ |
+|---|---|---|---|---|---|---|---|
+| 1 | initial (upper) | 39.757 | 59.757 | −10° | 49.757 | 3.00 | 19.47° |
+| 2 | initial (centre) | 49.757 | 49.757 | 0° | 49.757 | 3.00 | 19.47° |
+| 3 | initial (lower) | 59.757 | 39.757 | +10° | 49.757 | 3.00 | 19.47° |
+| 4 | C_I from 1, C_II from 2 | 39.757 | 49.757 | −5° | 44.757 | 2.753 | 21.3° |
+| 5 | C_I from 2, C_II from 3 | 49.757 | 39.757 | +5° | 44.757 | 2.753 | 21.3° |
+| 6 | upper wall, C_II from 4 | 29.757 | 49.757 | −10° | 39.757 | 2.527 | 23.31° |
+| 7 | C_I from 4, C_II from 5 | 39.757 | 39.757 | 0° | 39.757 | 2.527 | 23.31° |
+| 8 | lower wall, C_I from 5 | 49.757 | 29.757 | +10° | 39.757 | 2.527 | 23.31° |
+
+The notes print C_I = 27.755° for point 6. That is a typo: ν − 10 = 39.757 − 10 = **29.757°**. The notes stop at point 7; point 8 is its mirror image.
+
+The flow is converging and supersonic, so it **decelerates** (M: 3 → 2.75 → 2.53), as 1-D area–Mach intuition predicts. The problem is symmetric, so the centre line could be replaced by a straight wall. That is exactly the one-wall channel of PS10 and the finals.
+
+<MOCChannelSim preset="notes" />
+
+## When the method breaks down (notes §15.6)
+
+The march can continue until one of two things happens:
+
+1. **Characteristics of the same family cross.** Two C_I lines from different points would then carry two different values of ν + θ to the same place, so the solution becomes multivalued. Physically the waves have merged into a finite wave: **an oblique shock** (Ch. 13 showed the same coalescence on a smoothly curved compression corner). Across it the flow is no longer isentropic or irrotational. A weak shock can sometimes be "got away with" by treating it as a characteristic, but the bookkeeping breaks.
+2. **The flow becomes sonic or subsonic.** ν → 0 and μ → 90°; there are no real characteristics because the equation is no longer hyperbolic. In a table this shows up as **ν < 0** at the next point. A negative C_I or C_II is fine (θ can be negative). A negative **ν** is the red flag.
+
+Compression (converging walls, concave turns) is what causes the trouble. The Mach angle grows as M falls, so downstream waves are steeper than upstream ones and they converge. Pick "Concave ramp" in the sim above to watch neighbouring waves cross, or "PS10 P4 extended" to see the ν < 0 failure.
+
+<Examined>
+
+**One MOC table problem per final** (20 % of the exam), always in the same format: a channel with one straight wall and one wall whose angle is given at each wall point, 2 or 3 initial points at the inlet Mach number, and "present your answers in a table".
+
+- [PS10 P3–P4](#/mech430/ps/ps10): M = 2, diverging and converging 10° walls, points 1–8, plus "when does MOC break down?".
+- [Final A P4](#/mech430/exam/final-a): M = 2, curved upper wall (15°, 5°, 0°, −5°), points 3–12, M **and** p.
+- [Final B P5](#/mech430/exam/final-b): M = 3, converging wall (0°, −5°, −10°, −15°), points 3–11, plus the breakdown question.
+
+Recipe: the invariants of the initial points → interior: average and half-difference → wall: θ_wall, plus the single invariant that arrives → A6 for M → A2 for p → finish with one sentence on breakdown.
+
+</Examined>
+
+## Check yourself
+
+1. What is the slope of a left-running characteristic at M = 2, θ = 10°? → tan(θ + μ) = tan 40° = 0.839.
+2. A right-running line from a point with M = 2, θ = 0 meets a lower wall at θ_wall = −5°. Find M there. → ν = C_I − θ = 26.38 + 5 = 31.38° → M ≈ 2.19 (a diverging wall accelerates the flow).
+3. Why do two characteristics of the same family crossing mean a shock? → The two lines carry different values of the same invariant to one point, so the flow would be multivalued there. The waves have merged into a finite (non-isentropic) wave.
+4. Can you start a nozzle MOC at the sonic throat? → No: at M = 1, μ = 90° and the equation is parabolic. Start slightly supersonic (e.g. M = 1.1).
+5. In PS10 P3, why do points 7/8 have exactly the M of a single 20° P-M turn (2.83)? → The 10° expansion from the corner reflects from the straight wall as another expansion, so ν rises by 2 × 10° in total.

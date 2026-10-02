@@ -1,0 +1,170 @@
+<p className="eyebrow">Chapter 12 · Lectures 13–14 · HW6 Q1, Q3 · T07 Q3 · T08 Q2</p>
+
+# Acoustic and pneumatic systems, nozzle-flapper, pneumatic controllers
+
+<div className="lede">
+
+Sound in a pipe and air in a pressure line look nothing like a spring and a mass, but the same circuit elements describe them: a plug of air in a neck is an *inductor*, a closed air cavity is a *capacitor*, and a narrow slit is a *resistor*. This chapter gives you those three elements, the transformers that connect them to pistons and diaphragms, and the pneumatic **nozzle–flapper** controller that builds P, I, D from air and bellows (and that Anthony marked ⚠⚠).
+
+</div>
+
+<Idea title="The 30-second version">
+
+- **Acoustics:** potential = pressure $p$ (Pa), flux = **volume flow** $U$ (m³/s). Neck of air → inductor $M_A=\rho_0l/S$; closed cavity → capacitor $C_A=V/(\rho_0c_0^2)$; slit → resistor $R_A$. Use the **impedance** analog.
+- **Pneumatics** is the *low-frequency limit* of acoustics: the air in the pipes has negligible inertia ($M_A\approx0$), so it is just resistors and capacitors: $\dfrac{P_o}{P_i}=\dfrac1{RCs+1}$.
+- A **pneumatic controller** converts an error into pressure with a nozzle–flapper amplifier and feeds back through bellows and restrictions. In the high-gain limit the controller is the *inverse of the feedback path*: that is how it makes PD, PI and PID.
+
+</Idea>
+
+## Acoustic elements
+
+**Small-perturbation view.** Sound is a tiny ripple $p'$ (about 1 Pa) on top of the ambient pressure $p_0\approx101$ kPa: $p=p_0+p'$. You can measure it with a microphone without opening the system. Ambient air: $\rho_0\approx1.21$ kg/m³, $T_0\approx293$ K, $\gamma=1.4$, speed of sound $c_0=\sqrt{\gamma RT_0}\approx344$ m/s.
+
+**Volume velocity.** $U=\int u\cdot n\,dS$; for plug flow in a straight pipe $U=Su$.
+
+### Acoustic mass (the "neck")
+
+A slug of air of length $l$ in a tube of area $S$ has mass $\rho_0Sl$. Newton: $Sp'=(\rho_0Sl)\dot u$. The acoustic impedance is $\hat p/\hat U=j\omega\,\rho_0l/S$, so
+
+$$
+\boxed{M_A=\frac{\rho_0l}{S}}\qquad(\text{kg/m}^4:\ \text{an inductor}).
+$$
+
+### Acoustic compliance (the "cavity")
+
+A closed cavity of volume $V_0$ with a massless piston; adiabatic compression $pV^\gamma=\text{const}$ gives $dp=-\gamma p_0\,dV/V_0$, hence
+
+$$
+\boxed{C_A=\frac{V_0}{\gamma p_0}=\frac{V_0}{\rho_0c_0^2}}\qquad(\text{a capacitor to ground}).
+$$
+
+### Acoustic resistance
+
+$R_A=d(\Delta p)/dU$ at the operating point models absorption (viscous and thermal losses in a narrow slit or a porous plug).
+
+### Helmholtz resonator (blowing across a bottle)
+
+The neck is the inductor, the bottle the capacitor: $\omega_0=\dfrac1{\sqrt{M_AC_A}}$, $f=\dfrac1{2\pi}\dfrac1{\sqrt{M_AC_A}}$. *The note you hear when you blow across a bottle is exactly this.* Pour in water and $C_A$ shrinks, so the pitch rises.
+
+**Course convention:** acoustic systems are drawn in the **impedance** analog (pressure = voltage, volume flow = current); the lecture crosses out the acoustic *mobility* analog on every slide.
+
+## Coupling mechanical and acoustic: transformer and gyrator
+
+A piston of area $S$ pushing on air: force $f=Sp$ and velocity-to-flow $U=Su$.
+
+- Mechanical **impedance** circuit → acoustic impedance circuit: a **transformer $S:1$**. Mechanical impedance and acoustic impedance are related by $S^2$: $\hat Z_A=\hat Z_M/S^2$.
+- Mechanical **mobility** circuit → acoustic impedance circuit: a **gyrator $1/S$**.
+- Rule from Chapter 10: same analog on both sides ⇒ transformer; different analogs ⇒ gyrator.
+
+### Worked example: the three-stage chain (T07 Q3)
+
+An acoustic cavity $C_{A1}$ driven by a pressure $p$; a piston (area $S_1$) couples it to two masses with spring and damper; a second piston ($S_2$) drives acoustic necks and cavities. With the mechanical part in the mobility analog (nodes $v_1,v_2$):
+
+1. Input loop: $p-\dfrac{Q_1}{C_{A1}s}-P_A=0$.
+2. Force on piston 1: $F_A=S_1P_A$ and $v_1=Q/S_1$.
+3. Node 1: $F_A+M_1sV_1+B(V_1-V_2)+\tfrac Ks(V_1-V_2)=0$; node 2: $M_2sV_2+B(V_2-V_1)+\tfrac Ks(V_2-V_1)+F_B=0$.
+4. Unit coefficients and $S_1=S_2=1$: eliminate $V_1$. The bracket is $(s^2+s+1)^2-(s+1)^2=s^2(s^2+2s+2)$ — **subtract** $(s+1)^2$ (the official tutorial solution *adds* it, a sign slip). So
+ $$V_2=-\frac{(s+1)P_A+(s^2+s+1)F_B}{s\,(s^2+2s+2)}.$$
+5. *Reading:* a pole at $s=0$ (the pair of masses can drift) and the relative mode $s^2+2s+2$ (poles $-1\pm j$) from the spring–damper.
+
+## Pneumatic systems
+
+**Variables:** pressure $p$ (Pa), **mass** flow $q_m$ (kg/s).
+
+- **Pneumatic resistance:** $R_p=\dfrac{d(\Delta p)}{dq_m}\Big|_{q_0}$ (the $\Delta p$–$q$ curve is nonlinear, roughly $\Delta p\sim q^2$; $R_p$ is the slope).
+- **Pneumatic capacitance:** $C_p=\dfrac{dm}{dp}=V\dfrac{d\rho}{dp}=\dfrac V{\gamma RT}$ (adiabatic), in kg/Pa.
+- Relation to acoustics: $q=\rho_0U$, so $R_A=\rho_0R_p$ and $C_p=\rho_0C_A$ (mass flux versus volume flux).
+- **Restriction feeding a vessel:** $\dfrac{P_o}{P_i}=\dfrac1{R_pC_ps+1}$; the acoustic version has $R_A$ and $M_A$ in series: $\dfrac1{M_AC_As^2+R_AC_As+1}$; **pneumatics sets $M_A=0$.**
+
+*Real-life:* inflating a bike tyre through a thin valve: the valve is $R$, the tyre is $C$; the pressure rises like $1-e^{-t/RC}$.
+
+## The nozzle–flapper and pneumatic controllers
+
+The **nozzle–flapper** is the heart of old pneumatic controllers (still in refinery valves and mechanical thermostats): a flapper (a lever) moves a tiny distance $x$ over a nozzle and changes the back-pressure $P_b=K_1x$ a lot, so it is a **high-gain amplifier**. A **relay** boosts the flow: $P_c=K_2z$. A **bellows** turns a pressure into a force.
+
+**Geometry of the lever** (arms $a$ and $b$, input $e$ at one end, feedback $y$ at the other):
+
+$$
+x=\frac{b}{a+b}\,e-\frac{a}{a+b}\,y,\qquad P_b=K_1x,\qquad P_iA=k(x-z)\ (\text{bellows}).
+$$
+
+<BlockDiagram blocks={[{label:'b/(a+b)'},{label:'K',sub:'nozzle-flapper + relay'}]} feedback={{label:'a/(a+b) · (A/k) · F(s)',sub:'bellows path'}} input="E(s)" output="P_c(s)" caption="Pneumatic controller: error through the lever, high-gain amplifier K, bellows feedback F(s) (the pneumatic RC network). In the limit K → ∞ the controller is (b k / a A)/F(s)." />
+
+**Ideal controller limit.** With the loop gain $\gg1$:
+
+$$
+\frac{P_c}{E}=\frac{\frac b{a+b}K}{1+K\frac a{a+b}\frac Ak F(s)}\;\xrightarrow{K\to\infty}\;\frac{b\,k}{a\,A}\cdot\frac{1}{F(s)} .
+$$
+
+### Pneumatic PD (the bellows with a restriction)
+
+One bellows (area $A$, spring $k$) fed from $P_c$ through a restriction $R$, cavity $C$. Volume bookkeeping on the cavity:
+
+1. Gas that enters either compresses in the cavity or is displaced by the moving bellows: $C\dot p_0+A\dot y=\dfrac{p_c-p_0}{R}$.
+2. Massless piston force balance: $p_0A=ky\Rightarrow\dot y=\dfrac Ak\dot p_0$.
+3. Substitute: $R\Big(C+\dfrac{A^2}{k}\Big)\dot p_0+p_0=p_c$, i.e. $\dfrac{Y}{P_c}=\dfrac{A/k}{R\big(C+A^2/k\big)s+1}$.
+4. Ideal limit ($KK_1\gg1$): $\dfrac{P_c}{E}\approx\dfrac{bk}{aA}\Big[R\big(C+\tfrac{A^2}k\big)s+1\Big]$: **a P + D controller** with $K_p=\dfrac{bk}{aA}$ and $T_d=R\big(C+A^2/k\big)$.
+
+<Trap title="The effective cavity compliance is C + A²/k">
+
+The bellows volume changes with its displacement ($dV=A\,dy=A^2dp/k$), so the compliance seen by the pneumatic side is the gas compliance **plus** $A^2/k$ — not just $C$. Anthony wrote "$C+1/(KA^2)$" on his crib sheet. The L14–L15 quiz also lists "the change in cavity volume due to piston motion" as something the simple $X/P_i=(A/k)/(RCs+1)$ neglects.
+
+</Trap>
+
+### Pneumatic PI and PID
+
+- **PI:** the restriction is on the *positive* feedback bellows, giving $K_p\big(1+\tfrac1{T_is}\big)$.
+- **PID** (two restrictions $R_d$, $R_i$ with $R_i\gg R_d$, bellows $C$): the feedback path is the *difference* of two lags,
+
+$$
+F(s)=\frac1{R_dCs+1}-\frac1{R_iCs+1}=\frac{(R_i-R_d)Cs}{(R_dCs+1)(R_iCs+1)} .
+$$
+
+Inverting it gives (with $\tau_d=R_dC$, $\tau_i=R_iC$):
+
+$$
+\frac{P_c}{E}\approx\frac{bk_s}{aA}\cdot\frac{(\tau_ds+1)(\tau_is+1)}{(\tau_i-\tau_d)s}=K_p\Big(1+\frac1{T_is}+T_ds\Big),
+$$
+
+$$
+K_p=\frac{bk_s}{aA}\frac{\tau_i+\tau_d}{\tau_i-\tau_d},\quad T_i=\tau_i+\tau_d,\quad T_d=\frac{\tau_i\tau_d}{\tau_i+\tau_d}.
+$$
+
+For $R_i\gg R_d$: $K_p\approx bk_s/aA$, $T_i\approx R_iC$, $T_d\approx R_dC$ (a symbolic check confirms this exactly).
+
+<Callout kind="note" title="Errors on the pages">
+
+- Anthony's L14 page labels the PD controller $K_p(1+1/(T_ds))$; that is the **PI** form. The PD figure gives $K_p(1+RCs)$.
+- HW6 Q3: his closed-form line has the feedback bracket "−" while the drawn block has "+", and the denominator should read $1+K\,(\ldots)$, not $K+(\ldots)$. With a "+" the controller would not be PID.
+- The *standard analog circuit* (HW6 Q3's official answer) does **not** contain the amplification $p_c=Kx$; add it as a separate equation. In it $k_s=2/C_{Mb}$ (two bellows in series) and $C=C_A/2$.
+
+</Callout>
+
+### T08 Q2 (Anthony's ⚠⚠): two bellows in series
+
+$P_c$ feeds $R_1$, bellows 1 (cavity $C_1$, pressure $P_1$), $R_2$, bellows 2 ($C_2$, $P_2$). Mass balance on each cavity:
+
+$$
+\frac{P_c-P_1}{R_1}=C_1sP_1+\frac{P_1-P_2}{R_2},\qquad \frac{P_1-P_2}{R_2}=C_2sP_2 .
+$$
+
+1. From the second: $P_1=(R_2C_2s+1)P_2$.
+2. Substitute: $P_2=P_c/D$ with $D=R_1R_2C_1C_2s^2+(R_1C_1+R_1C_2+R_2C_2)s+1$, and $P_1=(R_2C_2s+1)P_c/D$.
+3. The bellows push back with the *difference*: $y=\dfrac Ak(P_1-P_2)$ and $P_1-P_2=\dfrac{R_2C_2s}{D}P_c$.
+4. Closed loop: $\dfrac{P_c}{E}=\dfrac{\frac b{a+b}K}{1+K\frac a{a+b}\frac Ak\frac{R_2C_2s}{D}}$.
+5. Ideal limit: $\dfrac{P_c}{E}\to\dfrac{bk}{aA}\cdot\dfrac D{R_2C_2s}=\dfrac{bk}{aA}\Big[R_1C_1s+\Big(1+\tfrac{R_1}{R_2}+\tfrac{R_1C_1}{R_2C_2}\Big)+\dfrac1{R_2C_2s}\Big]$: **a PID controller**.
+
+<Examined>
+
+- Analog circuits with acoustic and hydro-pneumatic parts: <Hw n="6">HW6</Hw> Q1 (water-level tunable horn), $\text{MT2 W2009 Q1}$, $\text{W2010 Q1}$, $\text{W2011 Q1b}$, T07 Q3.
+- Pneumatic controllers: <Hw n="6">HW6</Hw> Q3, T08 Q2, the L14–L15 representative problem.
+- Helmholtz resonator and the transformer-vs-gyrator rule are standard conceptual questions.
+
+</Examined>
+
+### Check yourself
+
+1. Neck of length 5 cm and area 2 cm² (in air): $M_A$? *($1.21\cdot0.05/2\times10^{-4}=302$ kg/m⁴.)*
+2. Mechanical impedance circuit → acoustic impedance circuit: transformer or gyrator, ratio? *(Transformer $S:1$.)*
+3. Why is pneumatic $M_A\approx0$? *(Gas inertia in the lines is negligible at the low frequencies of process control.)*
+4. In the ideal pneumatic controller what appears in the numerator of $P_c/E$? *(The inverse of the feedback path.)*

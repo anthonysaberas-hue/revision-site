@@ -1,0 +1,149 @@
+<p className="eyebrow">Chapter 6 · Fundamentals of convection · Midterm 2</p>
+
+# Fundamentals of convection
+
+<div className="lede">
+
+Convection is conduction **plus** a moving fluid, and everything hard about it is hiding in one number, the convection coefficient $h$. This chapter explains where $h$ comes from. The key facts: a fluid sticks to a wall (the no-slip condition), so the heat leaving the wall is pure conduction through a thin stagnant film; that film is the **thermal boundary layer**; its thickness is set by the flow speed (Reynolds number) and the fluid (Prandtl number); and $h$ is nothing but the conductivity of the fluid divided by the thickness of that film, dressed up as a **Nusselt number**. The three chapters that follow (7, 8, 9) are just three catalogues of $Nu$ correlations for different geometries.
+
+</div>
+
+<Idea title="The 30-second version">
+
+1. At the wall the fluid is stationary, so $q''=-k_{fluid}\dfrac{\partial T}{\partial y}\Big\vert_{y=0}=h(T_s-T_\infty)$, giving $h=\dfrac{-k_{fluid}\,\partial T/\partial y|_0}{T_s-T_\infty}$.
+2. **Nusselt number** $Nu=\dfrac{hL}{k}$: the ratio of convective to purely conductive heat transfer across the same layer ($Nu=1$ means no convective enhancement).
+3. **Reynolds number** $Re=\dfrac{VL}{\nu}$ (inertia over viscosity) decides laminar or turbulent; **Prandtl number** $Pr=\dfrac\nu\alpha=\dfrac{\mu c_p}k$ (momentum diffusivity over heat diffusivity) decides how thick the thermal layer is compared with the velocity layer.
+4. Every correlation has the form $Nu=f(Re,Pr)$ (forced) or $Nu=f(Ra,Pr)$ (natural). Find $Nu$, then $h=Nu\,k/L$.
+5. Flat-plate laminar flow can be solved exactly (Blasius): $\delta=\dfrac{4.91x}{\sqrt{Re_x}}$, $C_{f,x}=\dfrac{0.664}{\sqrt{Re_x}}$, $Nu_x=0.332\,Re_x^{1/2}Pr^{1/3}$.
+
+</Idea>
+
+## The physical mechanism
+
+In a **solid** heat moves only by conduction. In a **fluid at rest** it also moves only by conduction. When the fluid **moves**, bulk motion carries energy: warm fluid swept toward the cold wall, cold fluid swept away, and the brisker the motion the steeper the temperature gradient at the wall and the larger the heat flux. So, in one sentence: **convection is conduction in a fluid whose motion keeps the gradient at the wall steep**. Conduction in a fluid is the $Re=0$ limit of convection.
+
+The **no-slip condition** is why this works. A viscous fluid in contact with a solid has the velocity of the solid (zero for a stationary wall). The layer touching the wall is motionless, so heat crosses it by conduction alone; farther out the fluid is moving and mixing:
+
+$$q''_{conv}=q''_{cond}\big\vert_{fluid\ at\ wall}\;\Longrightarrow\;h(T_s-T_\infty)=-k_{fluid}\frac{\partial T}{\partial y}\Big\vert_{y=0}.$$
+
+This is a *definition* of $h$ in terms of the temperature profile in the fluid. $h$ is **not** a fluid property: it depends on the geometry, the roughness, the flow type (laminar or turbulent, forced or natural), the velocity and all of $\mu,k,\rho,c_p$. And it usually **varies along the surface**: the local value $h_x$ is large near the leading edge (a thin boundary layer) and falls as the layer thickens. The average over a plate of length $L$ is
+
+$$\bar h=\frac1L\int_0^Lh_x\,dx.$$
+
+**Nusselt number** (dimensionless $h$): consider a fluid layer of thickness $L$ with a temperature difference $\Delta T$. By convection $q''_{conv}=h\Delta T$; by pure conduction $q''_{cond}=k\Delta T/L$. Their ratio is
+
+$$Nu=\frac{hL_c}{k}.$$
+
+$Nu=1$: no convective enhancement. $Nu=100$: convection moves a hundred times more heat than still-fluid conduction would. *(Forced air over a hot plate: $Nu\sim100$–1000. A still-air gap: $Nu=1$.)*
+
+<Trap title="Which $k$ and which $L$?">
+
+In $Nu=hL_c/k$, $k$ is the conductivity of the **fluid** (not the solid), evaluated at the **film temperature** $T_f=(T_s+T_\infty)/2$ unless the correlation says otherwise, and $L_c$ is the characteristic length of the correlation (plate length $L$, cylinder or tube diameter $D$, ...). The *solid's* $k$ appears in the Biot number, never in the Nusselt number.
+
+</Trap>
+
+## Classifying the flow
+
+| Question | Choices | Why it matters |
+|---|---|---|
+| **where is the fluid?** | external (unbounded: plate, cylinder) / internal (pipe, duct) | different correlations (Ch. 7 vs Ch. 8) |
+| **what drives it?** | forced (pump, fan, wind) / natural (buoyancy) | $Re$ vs $Ra$ (Ch. 9) |
+| **how orderly?** | laminar / transitional / turbulent | turbulent $h$ is much higher and different |
+| **steady in time?** | steady / unsteady | almost always steady |
+| **compressibility** | incompressible if $Ma<0.3$ (air below about 100 m/s) | we always assume it |
+
+## The velocity boundary layer
+
+Flow with uniform speed $V$ meets a flat plate. The fluid at the wall is stopped; layers above are slowed by viscosity; far enough away the fluid is unaware of the plate. The region where the velocity is reduced is the **velocity (hydrodynamic) boundary layer**, with thickness $\delta(x)$ conventionally defined where $u=0.99V$. Outside it the flow is inviscid (irrotational). $\delta$ grows with $x$: more and more fluid is slowed by the wall.
+
+**Wall shear and skin friction.** Newton's law of viscosity gives $\tau_w=\mu\,\dfrac{\partial u}{\partial y}\Big\vert_{y=0}$ and the **friction coefficient** $C_f$ is defined by
+
+$$\tau_w=C_f\frac{\rho V^2}{2},\qquad F_{drag}=C_f\,A_s\frac{\rho V^2}{2}\ (\text{plate parallel to the flow}).$$
+
+$C_f$ matters for heat transfer because it is tied to $h$ (the analogy below) and it sets the pumping power.
+
+**Reynolds number.** $Re_L=\dfrac{\rho VL}{\mu}=\dfrac{VL}{\nu}$ is the ratio of inertial to viscous forces. Small $Re$: viscosity wins, the flow stays in smooth layers (laminar). Large $Re$: inertia wins, velocity fluctuations grow, eddies form (turbulent). The transition happens at a **critical Reynolds number**: $5\times10^5$ for a flat plate (the course value), $2\times10^5$ for a cylinder or sphere, $2300$ in a pipe.
+
+## The thermal boundary layer and the Prandtl number
+
+Where a fluid at $T_\infty$ flows over a surface at $T_s$, the region in which the temperature changes is the **thermal boundary layer**, of thickness $\delta_t$ (where $T-T_s=0.99(T_\infty-T_s)$). The temperature gradient at the wall is roughly $(T_s-T_\infty)/\delta_t$, so $h\sim k/\delta_t$: **a thin thermal layer means a high $h$**.
+
+How thick is it compared with the velocity layer? That depends on how fast heat diffuses compared with momentum. The ratio is the **Prandtl number**
+
+$$Pr=\frac{\nu}{\alpha}=\frac{\mu c_p}{k}.$$
+
+| Fluid | $Pr$ | Consequence |
+|---|---|---|
+| liquid metals | 0.004–0.03 | heat diffuses far faster than momentum: $\delta_t\gg\delta$ |
+| gases | 0.7–1 | both layers about equally thick |
+| water | 1.7–13.7 | $\delta_t<\delta$ |
+| light organics | 5–50 | |
+| oils | 50–100 000 | $\delta_t\ll\delta$: a very thin thermal layer, very high local $h$ |
+
+For laminar flow over a plate, $\delta_t/\delta\approx Pr^{-1/3}$ (so $\delta_t\approx\delta$ for air; one half of $\delta$ for water at $Pr=7$; one fifth for $Pr=100$).
+
+## Turbulence and why it is so much better at moving heat
+
+In turbulent flow the velocity (and temperature) at a point fluctuate rapidly, $u=\bar u+u'$, $T=\bar T+T'$. Eddies carry blobs of fluid between the wall region and the core, **adding** to the molecular transport of momentum and heat:
+
+$$\tau_{total}=\rho(\nu+\nu_t)\frac{\partial\bar u}{\partial y},\qquad q''_{total}=-\rho c_p(\alpha+\alpha_t)\frac{\partial\bar T}{\partial y}.$$
+
+The eddy diffusivities $\nu_t,\alpha_t$ are flow properties (not fluid properties), vanish at the wall and in the core are hundreds or thousands of times the molecular values. Hence turbulent $h$ and turbulent skin friction are far higher than laminar. Turbulent layers are also thicker, but have much **steeper gradients at the wall**: the thin viscous sublayer is where the whole temperature drop is concentrated. (Practical consequence: turbulent $h$ falls like $x^{-0.2}$ along a plate, a slow decrease, while laminar $h$ falls like $x^{-0.5}$.)
+
+## Where the correlations come from: the boundary-layer equations
+
+For steady, two-dimensional, incompressible, constant-property flow, a mass, momentum and energy balance on a small element give
+
+$$\underbrace{\frac{\partial u}{\partial x}+\frac{\partial v}{\partial y}=0}_{\text{continuity}},\qquad\underbrace{u\frac{\partial u}{\partial x}+v\frac{\partial u}{\partial y}=\nu\frac{\partial^2u}{\partial y^2}-\frac1\rho\frac{dP}{dx}}_{x\text{-momentum}},\qquad\underbrace{u\frac{\partial T}{\partial x}+v\frac{\partial T}{\partial y}=\alpha\frac{\partial^2T}{\partial y^2}}_{\text{energy}}.$$
+
+(Boundary-layer approximations: $\partial/\partial y\gg\partial/\partial x$, pressure constant across the layer. Over a flat plate $dP/dx=0$.) **Read them as stories:** momentum — *"fluid carried along (left side) = diffusion of momentum by viscosity"*; energy — *"energy carried along = diffusion of heat by conduction."* The momentum and energy equations have the **same form** when $\nu=\alpha$ (that is, $Pr=1$): the temperature profile then equals the velocity profile, and heat transfer can be inferred from friction (the Reynolds analogy). When viscous heating matters (very viscous oil at high speed, hypersonic flight) a dissipation term $\mu\Phi$ is added to the energy equation; in this course it is neglected.
+
+**The exact solution for laminar flow over a flat plate (Blasius).** Introducing the similarity variable $\eta=y\sqrt{V/(\nu x)}$ turns the momentum PDE into one ODE, $2f'''+ff''=0$, with $f(0)=f'(0)=0$, $f'(\infty)=1$, solved numerically (the value $f''(0)=0.332$ is the number that matters). Consequences:
+
+$$\delta=\frac{4.91x}{\sqrt{Re_x}},\qquad C_{f,x}=\frac{0.664}{\sqrt{Re_x}},\qquad\bar C_f=\frac{1.328}{\sqrt{Re_L}}\ (=2C_{f,L}).$$
+
+The thickness grows as $\sqrt x$; the wall shear **falls** as $x^{-1/2}$. Solving the energy equation with the same method for an isothermal plate and $Pr\gtrsim0.6$:
+
+$$\boxed{Nu_x=\frac{h_xx}{k}=0.332\,Re_x^{1/2}\,Pr^{1/3}},\qquad\bar{Nu}_L=0.664\,Re_L^{1/2}\,Pr^{1/3}.$$
+
+The average is **twice** the local value at the end of the plate, because $h_x\propto x^{-1/2}$ and $\bar h=\frac1L\int_0^Lh_x\,dx=2h_L$. These are the first two lines of every external-flow formula sheet (Chapter 7).
+
+### Dimensional analysis (why correlations have the form they do)
+
+The solutions depend on $x$ only through $Re_x$ and on the fluid only through $Pr$: $\;Nu=f(Re,Pr)$. Experimentalists fit this to data for geometries that cannot be solved analytically (cylinders, tubes, spheres, tube banks); that is all the correlations of Chapters 7–9 are. For buoyancy-driven flow the velocity is not given and $Re$ is replaced by the Grashof/Rayleigh number.
+
+## Heat and momentum analogy
+
+Because momentum and energy transport obey similar equations, friction and heat transfer are linked. The **Reynolds analogy** (exact at $Pr=1$) is $\dfrac{C_f}2=St$ with the **Stanton number** $St=\dfrac{h}{\rho c_pV}=\dfrac{Nu}{Re\,Pr}$. The **Chilton–Colburn** modification covers $0.6<Pr<60$:
+
+$$\boxed{St\,Pr^{2/3}=\frac{C_f}2}\;\Longleftrightarrow\;Nu=\frac{C_f}2\,Re\,Pr^{1/3}.$$
+
+Check on the laminar solution: $\dfrac{C_{f,x}}2Re_xPr^{1/3}=0.332Re_x^{1/2}Pr^{1/3}$ ✔. Use it to get $h$ from a measured drag force, or the pressure-drop-and-heat-transfer analogy in tubes (Chapter 8).
+
+## Worked examples
+
+**1. Boundary layer on a plate.** Air at 27 °C ($\nu=1.575\times10^{-5}$ m²/s, $k=0.0264$ W/m·K, $Pr=0.707$) flows at $V=20$ m/s over a plate, evaluate at $x=0.2$ m. 
+$Re_x=20(0.2)/1.575\times10^{-5}=2.54\times10^5<5\times10^5$: **laminar**. 
+$\delta=4.91x/\sqrt{Re_x}=4.91(0.2)/504=\mathbf{1.95}$ mm; $\delta_t=\delta\,Pr^{-1/3}=2.19$ mm. 
+$h_x=0.332\dfrac kxRe_x^{1/2}Pr^{1/3}=0.332\dfrac{0.0264}{0.2}(504)(0.891)=\mathbf{19.7}$ W/m²K; the average over the first 0.2 m is $2h_x=39.3$ W/m²K. 
+Wall shear: $C_{f,x}=0.664/\sqrt{Re_x}=0.00132$, $\tau_w=C_f\rho V^2/2=0.00132(1.177)(200)=0.31$ Pa. 
+*Check by the analogy:* $\dfrac{C_f}2Re_xPr^{1/3}\dfrac kx=0.00066(2.54\times10^5)(0.891)(0.132)=19.7$ ✔.
+
+**2. Reading $h$ from a temperature profile.** The temperature just above a heated plate at $T_s=80$ °C in water at 20 °C is measured to fall at $\partial T/\partial y\big\vert_0=-4.5\times10^4$ K/m at the wall. With $k_{water}=0.61$: $q''=-k\,\partial T/\partial y=0.61(4.5\times10^4)=27\,450$ W/m², so $h=q''/(T_s-T_\infty)=27\,450/60=\mathbf{457}$ W/m²K. *(The definition of $h$ in action: the steeper the wall gradient, the better the convection.)*
+
+**3. Why oil needs a thin thermal layer.** Engine oil has $Pr\approx10^4$ and water $Pr\approx7$. For the same flow, $\delta_t/\delta\propto Pr^{-1/3}$ is 0.05 for oil and 0.52 for water. The oil's thermal layer is a tenth as thick *relative to* the velocity layer, so the temperature gradient at the wall is steeper and the local $h$ relatively larger **per unit of conductivity**; but oil's tiny $k$ means its $h$ is still small in absolute terms (the correlation $Nu\propto Pr^{1/3}$ times $k/L$).
+
+<Examined>
+
+- **MT2 Q3 (external flow)** only needs the correlations (next chapter) but expects you to know *which regime* applies: compute $Re_L$, compare with $5\times10^5$, choose laminar or the mixed-flow formula. You are also asked, in the MCQ-type items, about the Prandtl number, the Nusselt number's meaning and the boundary-layer definitions.
+- The formula sheet gives the integrated forms; you derive nothing. But the **physics of the hierarchy** ($Pr$, $Re_{cr}$, no-slip, $h\sim k/\delta_t$) is asked as a short question.
+- Assignment 6; see <Asg n="06">the practice set</Asg>.
+
+</Examined>
+
+### Check yourself
+
+1. Why is the heat flux at the wall of a convecting fluid given by *conduction* with the fluid's $k$? *(No-slip: the layer touching the wall is stationary.)*
+2. A plate gets twice as long and the flow stays laminar: how does the average $h$ change? *($\bar h\propto L^{-1/2}$: it drops by $1/\sqrt2=0.71$.)*
+3. What does $Nu=50$ mean? *(Convection moves 50 times as much heat as conduction across the same layer.)*
+4. For which fluid is the thermal boundary layer thicker than the velocity one? *(Liquid metals, $Pr\ll1$.)*

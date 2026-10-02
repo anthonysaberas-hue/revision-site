@@ -1,0 +1,456 @@
+<p className="eyebrow">Past exams · Final</p>
+
+# Final exam B
+
+<p className="lede">A supersonic inlet, a capillary tube choking into vacuum, a full ramjet (inlet shock + Rayleigh combustor + nozzle + thrust), a supersonic airfoil and a converging-channel MOC table. Again only student solutions exist. Every number below was recomputed with the site's library; the ramjet in particular corrects an error both students made.</p>
+
+<Callout kind="note" title="About the sources">
+
+Two sets of student solutions: a main one (tablet, same style as Final A, possibly Anthony's) for P1–P5, and a second student's graph-paper solutions for P1–P3. There is **no official solution**, and **the question photo of P4 is missing**: its statement below is reconstructed from the student's work. Corrections, all from the digest's exact re-check:
+
+- P2: both students wrote 4fL\*/D = **45.508**; the table value (which their L = 2.2704 m actually uses) is **45.408**. The second student's ṁ = "1.89 kg/s" should be **1.89 × 10⁻⁴ kg/s**.
+- P3: both students used the isentropic **A/A\* (Table A-2)** where the Rayleigh **p₀/p₀\* (Table A-5)** belongs. The correct exit area is **≈ 1.52 m²** (not 1.296 or 1.15), and the thrust, which neither computed, is **≈ 33 kN**.
+- P4: 215.3 × 0.02445/0.28449 = **18.5 kPa**, not 17.75.
+- P5: the pressures were asked for but never computed; they are added.
+
+</Callout>
+
+| Problem | Topic | Recipe |
+|---|---|---|
+| [P1](#final-b-p1) | Inlet: design ratio, starting Mach, unstarted ṁ | [Inlet starting](#/mech430/page/recipes#2-inlet-starting) |
+| [P2](#final-b-p2) | Tank → 1 mm tube → vacuum (Fanno choking) | [Nozzle + Fanno](#/mech430/page/recipes#1-nozzle--fanno-pipe--back-pressure) |
+| [P3](#final-b-p3) | Ramjet: nozzle sizing, thrust, over-fuelling | [Combined engine](#/mech430/page/recipes#7-combined-engine-ramjet) |
+| [P4](#final-b-p4) | Supersonic wedge airfoil (reconstructed) | [Shock-expansion airfoil](#/mech430/page/recipes#5-shock-expansion-airfoil) |
+| [P5](#final-b-p5) | MOC in a converging channel | [MOC table](#/mech430/page/recipes#6-moc-table) |
+
+<Problem id="Final B P1" title="Supersonic inlet: design area ratio, starting Mach, unstarted mass flow (20 pts)" tags="inlet, normal shock, Kantrowitz, spillage">
+
+<Statement>
+
+A supersonic inlet is designed to decelerate an incoming flow of air at **M∞ = 1.4** isentropically (scenario a).
+
+(a) Find the **inlet-to-throat area ratio** for the isentropic solution. This ratio stays fixed for the rest of the problem.
+
+(b) To what value must the **incoming flow Mach number** be increased to *start* the inlet by forcing a normal shock into the inlet (scenario b)?
+
+(c) Before the inlet is started, a normal shock stands in front of the inlet and some of the approaching air is diverted around it. For **M∞ = 1.4**, what is the **ratio of the mass flow rate** through the unstarted inlet (c) to the mass flow when the inlet is started at the same Mach number (a)?
+
+</Statement>
+
+<Think>
+
+The [inlet-starting](#/mech430/ch/inlets) family, same as [W2019 P1](#/mech430/exam/q2-w2019#w2019-p1) and [W2023 P1](#/mech430/exam/q2-w2023#w2023-p1). Three one-liners:
+
+- design: $A_{in}/A_t = A/A^*(M_d)$;
+- start by overspeeding: the shock must sit at the lip *and* the post-shock flow must still squeeze through the throat, so $A_{in}/A_t = A/A^*(M_y)$ on the **subsonic** branch;
+- unstarted: the throat still chokes, but on the post-shock $p_0$, so $\dot m \propto p_0$ and the ratio is $p_{0y}/p_{0x}$.
+
+</Think>
+
+<Plan>
+
+(a) A2 at 1.4. (b) A2 subsonic at the same ratio → $M_y$ → A3 inverse → $M_x$. (c) A3 at 1.4: $p_{0y}/p_{0x}$.
+
+<InletPanelsFigure />
+
+</Plan>
+
+<Steps>
+<Step title="1. (a) Design ratio">
+
+<T>A2 @ M = 1.4: A/A* = 1.1149</T>. So $A_{in}/A_t = 1.1149$. — <CalcLink calc="isentropic" q="in=M&v=1.4">check</CalcLink>
+
+</Step>
+<Step title="2. (b) Starting Mach">
+
+With the shock at the lip, the throat is the sonic throat of the **post-shock** flow: <T>A2 (sub) @ A/A* = 1.1149: M_y = 0.67</T> (exact 0.6735). Then <T>A3 @ M_y = 0.67: Mₓ = 1.59</T> (exact 1.583). — <CalcLink calc="normal" q="in=My&v=0.6735">check</CalcLink>
+
+</Step>
+<Step title="3. (c) Unstarted mass flow">
+
+$\dot m = A_t \dfrac{p_0}{\sqrt{T_0}}\sqrt{\dfrac{\gamma}{R}}\,\dfrac{1}{1.2^3}$ at the choked throat. Same throat, same $T_0$, M = 1 in both cases: only $p_0$ changes. <T>A3 @ 1.4: p₀y/p₀ₓ = 0.9582</T>.
+
+</Step>
+</Steps>
+
+<Answer>
+
+- (a) $A_{in}/A_t = 1.115$.
+- (b) $M_\infty = 1.59$ (exact 1.583).
+- (c) $\dot m_{unstarted}/\dot m_{started} = 0.958$.
+- Both students are correct to table precision.
+
+</Answer>
+
+<InletStartSim initialM={1.4} initialRatio={0.897} />
+
+<Traps>
+
+- (b) needs the **subsonic** A/A\* root. The supersonic one gives nonsense.
+- (c) Everything in the choked-flow formula cancels except $p_0$. Don't redo the whole formula.
+
+</Traps>
+
+<Source>main and alternate student solutions · digest exam-Final-B.md · lib/inlet.ts</Source>
+
+</Problem>
+
+<Problem id="Final B P2" title="Tank to vacuum through a long capillary: Fanno choking; halve the length for twice the flow (20 pts)" tags="Fanno, choking, mass flow">
+
+<Statement>
+
+A tank of air (MW = 28.9 kg/kmol) at **1000 kPa and 300 K** is connected to a downstream tank held at near-perfect vacuum ($p_{back} \approx 0$) by a vacuum pump. Because of the low back pressure, the flow in the tube will always choke. The connection is a **10 m** long tube of diameter **D_H = 1 mm** with friction coefficient **f = 0.005**.
+
+(a) Compute the **mass flow rate** of air from the tank **[g/s]**. (Remember to convert the tube diameter into cross-sectional area.)
+
+(b) To **double** the mass flow rate with the same reservoir and back conditions, the tube must be **shortened to what length [m]**?
+
+</Statement>
+
+<Think>
+
+[Fanno](#/mech430/ch/fanno) with a vacuum downstream: the exit is sonic, so the **whole tube is one $L^*$**. The tube length therefore fixes the inlet Mach number, and the isentropic entry from the tank fixes $\dot m$. This is Anthony's recipe R4 ([F2023 P2](#/mech430/exam/q2-f2023#f2023-p2) is its twin).
+
+</Think>
+
+<Plan>
+
+$4fL/D$ → A4 (sub) → $M_{in}$ → $\dot m = A\frac{p_0}{\sqrt{T_0}}\sqrt{\gamma/R}\,M/(1+0.2M^2)^3$. For (b): double $M/(1+0.2M^2)^3$ → new $M_{in}$ → A4 → new $L$.
+
+<VacuumTubeSim />
+
+</Plan>
+
+<Steps>
+<Step title="1. (a) Inlet Mach from the tube length">
+
+$4fL/D = 4(0.005)(10)/10^{-3} = 200 = 4fL^*/D$. <T>A4 @ 4fL*/D ≈ 200: M = 0.06</T> (the table row 0.06 reads 193.0; exact $M_{in} = 0.0590$). — <CalcLink calc="fanno" q="in=fL&v=200&b=sub">check</CalcLink>
+
+</Step>
+<Step title="2. (a) Mass flow">
+
+$A = \pi(10^{-3})^2/4 = 7.854 \times 10^{-7}$ m², $R = 287.7$ J/kg·K.
+
+$$
+\dot m = 7.854\times10^{-7}\,\frac{10^6}{\sqrt{300}}\sqrt{\frac{1.4}{287.7}}\;\frac{0.06}{(1+0.2\times0.06^2)^3} = 1.894\times10^{-4}\ \text{kg/s} = 0.189\ \text{g/s}
+$$
+
+(With the exact $M_{in} = 0.0590$: 0.186 g/s.)
+
+</Step>
+<Step title="3. (b) New inlet Mach for twice the flow">
+
+$\dot m \propto M/(1+0.2M^2)^3$, nearly linear at low M. Solve $M/(1+0.2M^2)^3 = 2 \times 0.05987 = 0.1197$: $M_{in} = 0.1208$.
+
+</Step>
+<Step title="4. (b) New length">
+
+<T>A4 @ M = 0.12: 4fL*/D = 45.408</T> → $L = 45.408 \times 10^{-3}/(4 \times 0.005) = 2.27$ m.
+
+</Step>
+</Steps>
+
+<Answer>
+
+- (a) **ṁ ≈ 0.189 g/s** (1.89 × 10⁻⁴ kg/s), with $M_{in} \approx 0.06$.
+- (b) **L ≈ 2.27 m** (exact chain 2.32 m; the difference is the table rounding of $M_{in}$).
+- Corrections: both students wrote **45.508**, but their own L = 2.2704 m comes from the correct table value **45.408**. The alternate student's "1.89 kg/s" is a units error: **1.89 × 10⁻⁴ kg/s**. Their "shock at exit" wording is also wrong: the exit is sonic, and there is no shock.
+
+</Answer>
+
+<Traps>
+
+- Convert D = 1 mm to $A = \pi D^2/4$, and answer in **g/s**.
+- ṁ uses the **tube-inlet** Mach number with the tube area, not M = 1.
+- Halving the length does not double the flow: you need about a quarter of the friction length (200 → 45) because $4fL^*/D \approx 1/(\gamma M^2)$ at low M.
+
+</Traps>
+
+<Source>main and alternate student solutions · digest exam-Final-B.md · lib/fanno.ts, isentropic.ts</Source>
+
+</Problem>
+
+<Problem id="Final B P3" title="Ramjet: inlet shock, Rayleigh combustor, nozzle sizing, thrust, over-fuelling (20 pts)" tags="ramjet, normal shock, Rayleigh, thrust, unstart">
+
+<Statement>
+
+A supersonic ramjet is designed to fly at **Mach 3**, where the approaching air is at **T∞ = 250 K, p∞ = 10 kPa**. The inlet area is **1 m²**, and the shock wave sits where **A_shock = 0.4 m²**. After the shock the flow expands to **A_combustor = 0.6 m²**, where **Δq = 500 kJ/kg** is added by combustion. Use **c_p = 1 kJ/kg·K** and **MW_air = 28.9 kg/kmol**. Finally a nozzle expands the heated flow to generate thrust.
+
+(a) If the exit nozzle isentropically expands the flow to match the ambient pressure $p_\infty = 10$ kPa, what are the **throat area $A_{throat}$ and exit area $A_{exit}$** of the nozzle [m²]?
+
+(b) Enclosing the entire ramjet in a control volume, compute the **thrust** [N].
+
+(c) If the pilot increases the heat addition to **1000 kJ/kg** by increasing the fuel rate, describe **what happens to the operation of the engine**. (Detailed calculations not required.)
+
+*Figure: inlet (1 m²) converging to an inlet throat (M = 1), supersonic, a normal shock at 0.4 m², subsonic diffuser to the combustor (0.6 m², flame Δq), converging to the nozzle throat and diverging to the exit; a dashed control volume encloses it all.*
+
+</Statement>
+
+<Think>
+
+The [combined-engine recipe](#/mech430/page/recipes#7-combined-engine-ramjet): march station by station and hand on M, $p_0$, $T_0$ at every junction.
+
+- inlet: isentropic to $M = 1$, so $A_t^* = A_{in}/(A/A^*)(3)$;
+- shock: position fixes $M_x$ via $A_{shock}/A^*$; $p_0$ drops, $T_0$ stays, $A^*$ grows;
+- diffuser: isentropic subsonic with the new $A^*_y$;
+- combustor: [Rayleigh](#/mech430/ch/rayleigh), $T_0$ rises by Δq/c_p, $p_0$ falls (Table **A-5**);
+- nozzle: choked throat, then expand to $p_\infty$.
+
+This is where both students tripped: in the Rayleigh step **$p_0/p_0^*$ comes from A-5, not A-2**.
+
+</Think>
+
+<Plan>
+
+$M_\infty$ → $A^*_x$ → $M_x$ → $p_{0y}$, $A^*_y$ → $M_{c}$ → (A-5) $T_0^*$, $p_0^*$ → $T_{02}$ → $M_2$ → $p_{02}$ → $A_t = A_c/(A/A^*)(M_2)$ → $M_e$ from $p_{02}/p_\infty$ → $A_e$ → thrust.
+
+<RamjetSim preset="finalB" />
+
+</Plan>
+
+<Steps>
+<Step title="1. Inlet throat and free-stream stagnation state">
+
+<T>A2 @ M = 3: A/A* = 4.2346, p/p₀ = 0.02722, T/T₀ = 0.3571</T> → $A^*_x = 1/4.2346 = 0.2361$ m², $p_{0x} = 10/0.02722 = 367.4$ kPa, $T_0 = 700$ K.
+
+</Step>
+<Step title="2. Shock strength from its position">
+
+$A_{shock}/A^*_x = 0.4/0.2361 = 1.694$ → <T>A2 (sup) @ 1.69: M = 2.0</T> (exact 2.004). <T>A3 @ Mₓ = 2: M_y = 0.5774, p₀y/p₀ₓ = 0.7209</T> → $p_{0y} = 264.8$ kPa, $T_{0y} = 700$ K.
+
+</Step>
+<Step title="3. Diffuser to the combustor">
+
+$A^*_y = A^*_x/0.7209 = 0.3276$ m². $A_c/A^*_y = 0.6/0.3276 = 1.832$ → <T>A2 (sub) @ 1.83: M = 0.34</T> (exact 0.339).
+
+</Step>
+<Step title="4. Rayleigh combustor">
+
+$T_{02} = 700 + 500/1 = 1200$ K. <T>A5 @ M = 0.34: T₀/T₀* = 0.4206, p₀/p₀* = 1.1822</T> → $T_0^* = 1664$ K, $p_0^* = 264.8/1.1822 = 224.0$ kPa.
+
+Check choking: $\Delta q^* = c_p(T_0^* - T_{01}) = 964$ kJ/kg > 500 ✓.
+
+$T_{02}/T_0^* = 1200/1664 = 0.721$ → <T>A5 (sub) @ T₀/T₀* = 0.72: M = 0.52, p₀/p₀* = 1.1059</T> → $p_{02} = 224.0 \times 1.1059 = 247.7$ kPa. — <CalcLink calc="rayleigh" q="in=M&v=0.34&b=sub">check</CalcLink>
+
+<Trap title="The error both students made">
+
+They used **1.8229**, the isentropic $A/A^*$ at M = 0.34, as if it were $p_0/p_0^*$ (and 1.3034, the A/A\* at 0.52, at the exit). That gave $p_{02}$ = 189 kPa (main) and 167 kPa (alternate) instead of 248 kPa. Both columns sit side by side in the printed tables; read the column header.
+
+</Trap>
+
+</Step>
+<Step title="5. (a) Nozzle throat">
+
+<T>A2 @ M = 0.52: A/A* = 1.3034</T> → $A_{throat} = 0.6/1.3034 = 0.460$ m² (both students got this right).
+
+</Step>
+<Step title="6. (a) Nozzle exit">
+
+$p_\infty/p_{02} = 10/247.7 = 0.0404$ → <T>A2 @ p/p₀ = 0.0404: M = 2.74, A/A* = 3.31</T> → $A_{exit} = 3.31 \times 0.460 = 1.52$ m². — <CalcLink calc="isentropic" q="in=p&v=0.0404&b=sup">check</CalcLink>
+
+</Step>
+<Step title="7. (b) Thrust from a control volume around the engine">
+
+The inlet is started, so it captures its full stream tube: $V_\infty = 3\sqrt{1.4 \times 287.7 \times 250} = 951.9$ m/s, $\rho_\infty = 10^4/(287.7 \times 250) = 0.139$ kg/m³, $\dot m = \rho_\infty V_\infty A_{in} = 132.4$ kg/s.
+
+Exit: $T_e = 1200/(1 + 0.2 \times 2.74^2) = 480$ K, $V_e = 2.74\sqrt{1.4 \times 287.7 \times 480} = 1204$ m/s. With $p_e = p_\infty$ the pressure term vanishes and, neglecting the fuel mass:
+
+$$
+F = \dot m(V_e - V_\infty) + (p_e - p_\infty)A_e = 132.4 \times (1204 - 952) \approx 3.3\times10^4\ \text{N}
+$$
+
+</Step>
+<Step title="8. (c) What over-fuelling does">
+
+**Quick exam argument.** At the design combustor-entry Mach (0.34) the most heat the combustor can take is $\Delta q^* \approx 964$ kJ/kg (exact 970). Asking for 1000 kJ/kg would **thermally choke** it, so the flow upstream must change: the combustor-entry Mach must drop. With the fixed nozzle throat (0.46 m²), the extra heat also needs a higher $p_{02}$ (the choked mass flow $\dot m \propto p_{02}A_t/\sqrt{T_{02}}$ is fixed). The only way to get both is for the **normal shock to move upstream** toward the inlet throat, where it is weaker. Fuel it hard enough and the shock is pushed out of the throat: the inlet **unstarts**, a bow shock stands ahead, air spills and thrust collapses.
+
+**What the full fixed-geometry calculation says** (the sim above, lib/ramjet.ts): at 1000 kJ/kg this particular engine survives. The shock moves forward from 0.40 m² to 0.31 m² ($M_x$ 2.00 → 1.65), the combustor-entry Mach drops to 0.27 and $p_{02}$ rises to 294 kPa. The unstart comes at about **1470 kJ/kg**, when the shock reaches the inlet throat. The main student's argument ("A\* required becomes larger than the exit A\* we have") is the right mechanism, but "a normal shock will be created" should read "the existing shock is pushed upstream, towards unstart".
+
+</Step>
+</Steps>
+
+<Answer>
+
+| Station | M | p₀ (kPa) | T₀ (K) | A (m²) |
+|---|---|---|---|---|
+| free stream | 3 | 367.4 | 700 | 1 |
+| inlet throat | 1 | 367.4 | 700 | 0.236 |
+| shock x → y | 2.00 → 0.577 | 367.4 → 264.8 | 700 | 0.4 |
+| combustor in | 0.34 | 264.8 | 700 | 0.6 |
+| combustor out | 0.52 | 247.7 | 1200 | 0.6 |
+| nozzle throat | 1 | 247.7 | 1200 | **0.46** |
+| exit | 2.74 | 247.7 | 1200 | **1.52** |
+
+- (a) $A_{throat} \approx 0.46$ m², **$A_{exit} \approx 1.52$ m²**. The students' 1.296 m² and 1.15 m² are wrong (A-2 used instead of A-5).
+- (b) **F ≈ 33 kN** (digest calculation; neither student finished it).
+- (c) The extra heat exceeds Δq\* at the design entry state, so the shock is pushed upstream (weaker, toward the throat). Too much fuel expels it: the inlet unstarts, spills air and loses thrust. For this geometry the limit is about 1470 kJ/kg.
+
+</Answer>
+
+<RayleighHeatSim M1={0.34} q={0.714} />
+
+<Traps>
+
+- **A-5, not A-2, for $p_0/p_0^*$.** This one error cost both students part (a).
+- The shock does not change $T_0$ but grows $A^*$: $A^*_y = A^*_x\,p_{0x}/p_{0y}$.
+- Thrust: use the **captured** ṁ = ρ∞V∞A_in (started inlet), and remember the pressure term if $p_e \neq p_\infty$.
+- Over-fuelling: think "required nozzle $A^*$ grows" and "the shock moves forward". It ends in unstart, not a new shock.
+- The [semester project](#/mech430/page/recipes#7-combined-engine-ramjet) RJ43-9 ramjet is the same chain; switch the sim preset to see it.
+
+</Traps>
+
+<Source>main and alternate student solutions · digest exam-Final-B.md (A-5 error, exit area and thrust corrected) · lib/ramjet.ts</Source>
+
+</Problem>
+
+<Problem id="Final B P4" title="Supersonic wedge airfoil, shock-expansion pressures (20 pts) — statement RECONSTRUCTED" tags="oblique shock, Prandtl–Meyer, reconstructed">
+
+<Statement>
+
+<Trap title="Reconstructed statement: the question photo is missing">
+
+This statement was rebuilt from the student's sketch and numbers, and it may differ from the real paper. It is **not** the same problem as Final A P3. The chord, span and exactly what was asked (lift and drag?) are unknown.
+
+</Trap>
+
+An airfoil whose **upper surface is a 20° wedge** (leading-edge angle 20°, a single shoulder) and whose **lower surface is flat** is at **5° angle of attack** in a **Mach 2** flow at **p∞ = 100 kPa** (inferred from $p_A = 2.153 \times p_\infty = 215.3$ kPa). Find the pressures on the upper front face (A), the upper rear face (B) and the lower surface (C).
+
+</Statement>
+
+<Think>
+
+Shock-expansion again. Turning angles: upper front face $20 - 5 = 15^\circ$ (compression); the shoulder turns the flow from +15° to −25°, an **expansion of 40°**; the flat lower surface meets the flow at 5° (compression).
+
+</Think>
+
+<Plan>
+
+A: θ-β-M (δ = 15°) → A3. B: ν(M_A) + 40° → A6 → p via $p_0$. C: θ-β-M (δ = 5°) → A3.
+
+<AirfoilFigure variant="wedge" />
+
+</Plan>
+
+<Steps>
+<Step title="1. Surface A (δ = 15°)">
+
+σ = 45.3° (student's chart: 45°). $M_{xn} = 1.422$ → $p_A = 219.5$ kPa (student 215.3 with σ = 45°), $M_A = 1.446$. — <CalcLink calc="oblique" q="M=2&in=delta&v=15&b=weak">check</CalcLink>
+
+</Step>
+<Step title="2. Surface B (40° expansion)">
+
+ν(1.446) = 10.31° → 50.31° → $M_B = 3.03$. $p_B = p_A\,(p/p_0)(3.03)/(p/p_0)(1.446) = 19.4$ kPa.
+
+With the student's own numbers: $215.3 \times 0.02445/0.28449 = 18.50$ kPa. They wrote **17.75**, an arithmetic slip (it matches a wrong table row, p/p₀ ≈ 0.02345).
+
+</Step>
+<Step title="3. Surface C (δ = 5°)">
+
+σ = 34.3° (student: 35°, the same chart slip as Final A P3), $p_C = 131.5$ kPa (student 137.6), $M_C = 1.82$.
+
+</Step>
+</Steps>
+
+<Answer>
+
+| Surface | turn | M | p exact (kPa) | student |
+|---|---|---|---|---|
+| A upper front | 15° shock, σ = 45.3° | 1.45 | 219.5 | 215.3 |
+| B upper rear | 40° fan | 3.03 | 19.4 | 17.75 → should be **18.5** |
+| C lower | 5° shock, σ = 34.3° | 1.82 | 131.5 | 137.6 |
+
+Lift and drag were not computed (the geometry is unknown). If the chord were c with span 1 m, use face lengths and the face angles exactly as in [Final A P3](#/mech430/exam/final-a#final-a-p3).
+
+</Answer>
+
+<ObliqueShockSim initialM={2} initialDelta={15} />
+
+<Traps>
+
+- The expansion at the shoulder is the full change in surface direction: here 15° up to 25° down = 40°.
+- Read σ carefully at small δ: 34.3°, not 35°.
+
+</Traps>
+
+<Source>main student solution p8–10 (reconstructed statement) · digest exam-Final-B.md · lib/obliqueShock.ts, prandtlMeyer.ts</Source>
+
+</Problem>
+
+<Problem id="Final B P5" title="Method of Characteristics in a converging channel; when does MOC break down? (20 pts)" tags="MOC, compression, table">
+
+<Statement>
+
+A supersonic flow enters a converging channel at **Mach 3** and **100 kPa**.
+
+(a) Using the characteristics initialized at points 1, 2 and 3, solve for the **flow Mach number and pressure at the remaining points 3–11**. The wall angles where the characteristics meet the wall are given. Present the answers in **table format**.
+
+(b) If you extend the calculation, the standard MOC may break down. **What scenario causes the MOC to stop working?**
+
+*Sketch: straight lower wall (θ = 0°). Upper wall horizontal at 1, then turning down: −5° at 4, −10° at 7, −15° at 10. Point 2 at the lower-left wall, 3 interior. Right-running 1→3→5, 4→6→8, 7→9→11; left-running 2→3→4, 5→6→7, 8→9→10.*
+
+</Statement>
+
+<Think>
+
+Same bookkeeping as [Final A P4](#/mech430/exam/final-a#final-a-p4), but the upper wall turns **into** the flow: each wall point loses ν, so M falls. That is a compression: characteristics of the same family converge, and where they cross a shock forms.
+
+</Think>
+
+<Plan>
+
+ν(3) = 49.76°. Upper-wall points: ν = $C_{II}$ + θ_wall. Lower-wall points: ν = $C_I$. Interior: the half-sum and half-difference.
+
+<MOCChannelFigure variant="B" />
+
+</Plan>
+
+<Steps>
+<Step title="1. Points 3–6">
+
+3 = 49.757/49.757 → M = 3. 4 (upper, −5°): ν = 49.757 − 5 = 44.757 → M = 2.75. 5 (lower): $C_I$ = 49.757 → M = 3. 6: $C_I$ = 39.757 (from 4), $C_{II}$ = 49.757 (from 5) → ν = 44.757, θ = −5.
+
+</Step>
+<Step title="2. Points 7–11">
+
+7 (upper, −10°): ν = 49.757 − 10 = 39.757 → M = 2.53. 8 (lower): $C_I$ = 39.757 → M = 2.53. 9: $C_I$ = 29.757 (7), $C_{II}$ = 39.757 (8) → ν = 34.757, θ = −5 → M = 2.32. 10 (upper, −15°): ν = 39.757 − 15 = 24.757 → M = 1.94. 11 (lower): $C_I$ = 29.757 → M = 2.12.
+
+</Step>
+<Step title="3. Pressures">
+
+$p = 100 \times (p/p_0)(M)/(p/p_0)(3)$, with $(p/p_0)(3) = 0.02722$. Example point 10: $(p/p_0)(1.942) = 0.1399$ → $p = 514$ kPa.
+
+</Step>
+</Steps>
+
+<Answer>
+
+| Point | $C_I$ | $C_{II}$ | ν (°) | θ (°) | M | p (kPa) |
+|---|---|---|---|---|---|---|
+| 1, 2, 3 | 49.757 | 49.757 | 49.757 | 0 | 3.000 | 100 |
+| 4 | 39.757 | 49.757 | 44.757 | −5 | 2.753 | 145.4 |
+| 5 | 49.757 | 49.757 | 49.757 | 0 | 3.000 | 100 |
+| 6 | 39.757 | 49.757 | 44.757 | −5 | 2.753 | 145.4 |
+| 7 | 29.757 | 49.757 | 39.757 | −10 | 2.527 | 206.1 |
+| 8 | 39.757 | 39.757 | 39.757 | 0 | 2.527 | 206.1 |
+| 9 | 29.757 | 39.757 | 34.757 | −5 | 2.319 | 285.2 |
+| 10 | 9.757 | 39.757 | 24.757 | −15 | 1.942 | 514.0 |
+| 11 | 29.757 | 29.757 | 29.757 | 0 | 2.125 | 386.4 |
+
+- (b) In a compressive channel, **characteristics of the same family converge and eventually cross**. There the solution would be multivalued: physically **a shock forms**, the flow is no longer isentropic, and MOC stops. It also stops if the flow becomes subsonic (no real characteristics).
+- The student's invariants and Mach numbers are all correct; the p column was left empty.
+
+</Answer>
+
+<MOCChannelSim preset="finalB" />
+
+<Traps>
+
+- Converging upper wall (θ more negative) = compression = M falls downstream.
+- Upper-wall points use the $C_{II}$ arriving from the interior; lower-wall points use $C_I$.
+- Fill in the pressure column.
+
+</Traps>
+
+<Source>main student table p11–12 · digest exam-Final-B.md (pressures computed by the digest author) · lib/prandtlMeyer.ts</Source>
+
+</Problem>

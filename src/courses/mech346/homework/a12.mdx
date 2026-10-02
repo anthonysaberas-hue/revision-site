@@ -1,0 +1,201 @@
+<p className="eyebrow">Practice set 12 · Chapters 12–13 · radiation · original problems</p>
+
+# Practice 12: blackbody bands, view factors, concentric spheres, shields, three-surface networks
+
+<div className="lede">
+
+Five original problems for <Ch slug="radiation-basics">radiation fundamentals</Ch> and <Ch slug="radiation-exchange">radiation exchange</Ch>, in the pattern of the textbook examples the Final is drawn from: *spectrum bands, view-factor algebra, a series two-surface formula, shields, then the radiosity network of three surfaces (one possibly reradiating)*. Every number was recomputed independently, including a numerical integration of Planck's law for the band fractions.
+
+</div>
+
+<Problem id="P12-1" title="Band emission of a tungsten filament" tags="Wien, Stefan–Boltzmann, f_λ">
+
+<Statement>
+
+A tungsten filament at 3000 K is treated as a blackbody. Find the peak wavelength, the total emissive power, the fraction of the emission that is visible (0.4–0.7 µm), and the fraction in the 1–5 µm infrared band. Repeat the last two for a 1500 K heater element.
+
+</Statement>
+
+<Steps>
+<Step title="1. Peak and total">
+
+$\lambda_{max}=\dfrac{2897.8}{3000}=0.966$ µm (near-IR). $E_b=\sigma T^4=5.67\times10^{-8}(3000)^4=4.59\times10^6$ W/m².
+
+</Step>
+<Step title="2. Visible fraction at 3000 K">
+
+$\lambda_1T=1200$ µm·K and $\lambda_2T=2100$ µm·K: $f_{0.4-0.7}=f(2100)-f(1200)=0.0808$ (8.1 %: a 3000 K filament is better than a 2800 K one, 6 %, but still wastes more than 90 % as heat).
+
+</Step>
+<Step title="3. 1–5 µm fraction at 3000 K">
+
+$f(15\,000)-f(3000)=0.696$: 69.6 % of the power is in the near/mid IR.
+
+</Step>
+<Step title="4. 1500 K element">
+
+$E_b=2.87\times10^5$ W/m², $\lambda_{max}=1.93$ µm; the 1–5 µm band carries $82$ %; the visible part (0.4–0.7 µm, $\lambda T=600$–1050 µm·K) is only $5.6\times10^{-4}$ of the power (0.06 %): a dull red glow.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**3000 K: 0.97 µm, 4.59 MW/m², visible 8.1 %, 1–5 µm 69.6 %. 1500 K: 287 kW/m², 1–5 µm 82 %.**
+
+</Answer>
+
+</Problem>
+
+<Problem id="P12-2" title="View-factor algebra without integrating" tags="reciprocity, summation, symmetry, disks, triangle duct">
+
+<Statement>
+
+(a) Inside a cube, find the view factor from one face to another. (b) A hemispherical dome of radius $r$ sits on a flat floor: find the factor from dome to floor and dome to itself. (c) Two coaxial disks of radius 10 cm are 20 cm apart: find $F_{12}$. (d) A long triangular duct with sides 3, 4 and 5 m: find all factors from side 1 (3 m).
+
+</Statement>
+
+<Steps>
+<Step title="1. (a) Cube">
+
+Six faces, none sees itself ($F_{ii}=0$), the five others are equivalent by symmetry: $5F_{12}=1\Rightarrow F_{12}=0.2$.
+
+</Step>
+<Step title="2. (b) Dome">
+
+Floor sees only the dome: $F_{floor\to dome}=1$. Reciprocity: $A_{dome}F_{dome\to floor}=A_{floor}F_{floor\to dome}$ so $F=\dfrac{\pi r^2}{2\pi r^2}=0.5$. Summation for the dome: $F_{dome\to dome}=1-0.5=0.5$ (a concave surface sees itself).
+
+</Step>
+<Step title="3. (c) Disks">
+
+$R=r/L=0.5$: $S=1+\dfrac{1+R^2}{R^2}=1+\dfrac{1.25}{0.25}=6$; $F_{12}=\tfrac12\left[S-\sqrt{S^2-4}\right]=\tfrac12\left[6-\sqrt{32}\right]=0.1716$.
+
+</Step>
+<Step title="4. (d) Triangle duct">
+
+For a long three-sided duct (crossed strings): $F_{ij}=\dfrac{L_i+L_j-L_k}{2L_i}$. Side 1 (3 m): $F_{12}=\dfrac{3+4-5}{6}=\dfrac13$, $F_{13}=\dfrac{3+5-4}{6}=\dfrac23$, $F_{11}=0$ (sum = 1 ✓). Reciprocity gives $F_{21}=\dfrac{3(1/3)}4=0.25$.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**(a) 0.2; (b) 0.5 and 0.5; (c) 0.1716; (d) $F_{12}=1/3$, $F_{13}=2/3$, $F_{21}=0.25$.**
+
+</Answer>
+
+</Problem>
+
+<Problem id="P12-3" title="Concentric spheres (a cryogenic vessel)" tags="two-surface enclosure, small F_21 ratio">
+
+<Statement>
+
+A sphere of diameter 20 cm ($\varepsilon_1=0.1$, 500 K) sits concentrically inside a sphere of diameter 40 cm ($\varepsilon_2=0.8$, 300 K). Find the net radiation heat transfer.
+
+</Statement>
+
+<Steps>
+<Step title="1. Formula">
+
+$\dot Q_{12}=\dfrac{A_1\sigma(T_1^4-T_2^4)}{\dfrac1{\varepsilon_1}+\dfrac{1-\varepsilon_2}{\varepsilon_2}\left(\dfrac{r_1}{r_2}\right)^2}$ with $A_1=4\pi(0.1)^2=0.1257$ m².
+
+</Step>
+<Step title="2. Evaluate">
+
+Denominator: $10+0.25(0.25)=10.0625$. Numerator: $0.1257(5.67\times10^{-8})(500^4-300^4)=0.1257(5.67\times10^{-8})(5.44\times10^{10})=387.6$ W. $\dot Q=\dfrac{387.6}{10.0625}=38.5$ W.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**38.5 W from inner to outer.** The inner emissivity (0.1) controls: 99.4 % of the resistance is the inner surface term; the outer sphere's emissivity barely matters because $A_1/A_2=0.25$. (Shiny inner sphere is the point of a Dewar flask.)
+
+</Answer>
+
+</Problem>
+
+<Problem id="P12-4" title="Radiation shields between parallel plates" tags="shields, shield temperature, N shields">
+
+<Statement>
+
+Two large parallel plates at 800 K ($\varepsilon=0.7$) and 400 K ($\varepsilon=0.5$). Find the heat flux with no shield, with one thin shield ($\varepsilon=0.1$ on both sides), and with two. Find the temperature of the single shield.
+
+</Statement>
+
+<Steps>
+<Step title="1. No shield">
+
+$q=\dfrac{\sigma(800^4-400^4)}{1/0.7+1/0.5-1}=\dfrac{5.67\times10^{-8}(4.096\times10^{11}-2.56\times10^{10})}{2.4286}=\dfrac{21\,772}{2.4286}=8965$ W/m².
+
+</Step>
+<Step title="2. With $N$ shields">
+
+Add $N(2/\varepsilon_s-1)=19N$ to the denominator: $N=1$: $\dfrac{21\,772}{21.43}=1016$ W/m² (11.3 %); $N=2$: $\dfrac{21\,772}{40.43}=538.5$ W/m² (6.0 %).
+
+</Step>
+<Step title="3. Shield temperature ($N=1$)">
+
+The flux passes through plate 1 → shield: $q=\dfrac{\sigma(T_1^4-T_3^4)}{1/\varepsilon_1+1/\varepsilon_s-1}$, so $T_3^4=T_1^4-\dfrac{q(1/0.7+10-1)}{\sigma}=4.096\times10^{11}-\dfrac{1016(10.43)}{5.67\times10^{-8}}=2.227\times10^{11}$, $T_3=687$ K.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**8965 W/m² → 1016 W/m² (one shield) → 538 W/m² (two); the single shield sits at 687 K** (the circuit divides the **$T^4$ difference** in proportion to the resistances, 10.43 on the hot side and 11.0 on the cold side, so $T_3^4$ is nearly halfway between $T_1^4$ and $T_2^4$; in plain temperature that looks closer to the hot plate).
+
+</Answer>
+
+</Problem>
+
+<Problem id="P12-5" title="Two plates in a big room, and the same plates with a reradiating room" tags="three-surface network, radiosity, reradiating surface">
+
+<Statement>
+
+Two parallel square plates ($1\times1$ m, 1 m apart) are in a large room at 300 K (treat the room as a black surface 3). Plate 1: 800 K, $\varepsilon_1=0.8$. Plate 2: 500 K, $\varepsilon_2=0.6$. $F_{12}=0.1998$. Find the net heat rates of the three surfaces. Then repeat assuming the surroundings are an insulated (reradiating) surface instead.
+
+</Statement>
+
+<Think>
+
+Three nodes $J_1,J_2,J_3$; the black room has $J_3=E_{b3}$ (no surface resistance, huge area). View factors: $F_{13}=F_{23}=1-F_{12}=0.8002$. Resistances (m⁻²): $R_1=\dfrac{0.2}{0.8}=0.25$, $R_2=\dfrac{0.4}{0.6}=0.667$, $R_{12}=\dfrac1{0.1998}=5.004$, $R_{13}=R_{23}=\dfrac1{0.8002}=1.250$.
+
+</Think>
+
+<Steps>
+<Step title="1. Potentials">
+
+$E_{b1}=\sigma800^4=23\,224$, $E_{b2}=\sigma500^4=3544$, $E_{b3}=\sigma300^4=459$ W/m².
+
+</Step>
+<Step title="2. Node equations (room black)">
+
+$\dfrac{E_{b1}-J_1}{0.25}=\dfrac{J_1-J_2}{5.004}+\dfrac{J_1-459}{1.250}$; $\dfrac{E_{b2}-J_2}{0.667}=\dfrac{J_2-J_1}{5.004}+\dfrac{J_2-459}{1.250}$. Solution: $J_1=18\,804$, $J_2=3776$ W/m².
+
+</Step>
+<Step title="3. Heat rates">
+
+$\dot Q_1=\dfrac{E_{b1}-J_1}{R_1}=17.68$ kW; $\dot Q_2=\dfrac{E_{b2}-J_2}{R_2}=-0.349$ kW (plate 2 is slightly **heated** by plate 1: it is only at 500 K); $\dot Q_3=-17.33$ kW (the room absorbs). Check: $\dot Q_1+\dot Q_2+\dot Q_3=0$ ✓. Plate 1 → plate 2 directly: 3.00 kW; plate 1 → room 14.68 kW; plate 2 → room 2.65 kW.
+
+</Step>
+<Step title="4. Reradiating surroundings">
+
+Now $\dot Q_3=0$, so $J_3=E_{b3}$ is unknown: a third node equation $\dfrac{J_3-J_1}{R_{13}}+\dfrac{J_3-J_2}{R_{23}}=0$. Solution: $J_1=21\,320$, $J_2=8622$, $J_3=14\,971$ W/m²; the surroundings' temperature $T_3=(14\,971/\sigma)^{1/4}=717$ K. $\dot Q_1=7.62$ kW and $\dot Q_2=-7.62$ kW: plate 1 now gives **all** its net heat to plate 2 (through the reradiating room).
+
+</Step>
+</Steps>
+
+<Answer>
+
+**Cold room: 17.7 kW from plate 1, −0.35 kW for plate 2, −17.3 kW to the room. Reradiating room: 7.62 kW from plate 1 to plate 2 and the room floats at 717 K.**
+
+</Answer>
+
+<Traps>
+
+The two answers differ by a factor 2.3 for $\dot Q_1$ because a cold room is an enormous heat sink, while a reradiating surface is only a conduit.
+
+</Traps>
+
+</Problem>

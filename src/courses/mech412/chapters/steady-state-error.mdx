@@ -1,0 +1,109 @@
+<p className="eyebrow">Chapter 15 · Lecture 17 · HW7 Q3 · MT2 W2019 Q3</p>
+
+# System type and error constants
+
+<div className="lede">
+
+After the transient dies, how far is the output from where you asked it to be? That *steady-state error* is the first thing a customer measures. The answer turns out to depend on one integer — the **type** of the loop, the number of free integrators in it — and on three constants, $K_p$, $K_v$, $K_a$, that you read off the loop transfer function in one line.
+
+</div>
+
+<Idea title="The 30-second version">
+
+For unity feedback with loop gain $G(s)$ and error $E=R-Y$:
+
+$$
+E(s)=\frac{R(s)}{1+G(s)},\qquad e_{ss}=\lim_{s\to0}sE(s)\quad(\text{valid only if the closed loop is stable}).
+$$
+
+Count the integrators: type 0, 1, 2. **Each integrator buys you one more input order with zero error**: type 0 follows a step with a constant offset, type 1 follows a step exactly and a ramp with a constant lag, type 2 also follows a ramp exactly and a parabola with a constant lag.
+
+</Idea>
+
+## A picture: tracking a satellite
+
+A radar dish follows a satellite moving at constant angular speed (a **ramp** input). If the dish loop has no integrator it lags by an ever-growing angle. With one integrator it lags by a *constant* angle $1/K_v$ — and the bigger the velocity constant, the smaller that lag. With two integrators it eventually points exactly at the satellite. The type number is the number of integrators in the loop.
+
+## Open versus closed loop (the first comparison)
+
+Open loop: $E=(1-G)R$; closed loop (unity feedback): $E=\dfrac{R}{1+G}$. Unit step $R=1/s$ with $G=K/(\tau s+1)$:
+
+$$
+e_{open}=1-K,\qquad e_{closed}=\frac1{1+K}.
+$$
+
+Open loop demands $K=1$ exactly; closed loop only needs $K$ large (Chapter 14 quantified this).
+
+## System type and the error constants
+
+Write the loop gain as
+
+$$
+G(s)=\frac{K(T_as+1)(T_bs+1)\cdots}{s^{N}(T_1s+1)(T_2s+1)\cdots},\qquad N=\text{type}.
+$$
+
+Higher type means **more accuracy but less stability** (Chapters 16–21 are about getting both).
+
+| Constant | Definition | Test input |
+|---|---|---|
+| position $K_p$ | $\lim_{s\to0}G(s)H(s)$ | step $A/s$ |
+| velocity $K_v$ | $\lim_{s\to0}sG(s)H(s)$ | ramp $A/s^2$ |
+| acceleration $K_a$ | $\lim_{s\to0}s^2G(s)H(s)$ | parabola $A/s^3$ |
+
+| Type | Step $A/s$ | Ramp $A/s^2$ | Parabola $A/s^3$ |
+|---|---|---|---|
+| 0 | $\dfrac A{1+K_p}$ | $\infty$ | $\infty$ |
+| 1 | 0 | $\dfrac A{K_v}$ | $\infty$ |
+| 2 | 0 | 0 | $\dfrac A{K_a}$ |
+
+*(Anthony's page 68 has "type 2: $K_v=0$, $e_{ss}=\infty$" for the ramp; the correct statement is $K_v=\infty$ and $e_{ss}=0$.)* His cartoon: below the staircase "the system is too smart" (zero error); above it "the input is too smart" (infinite error); on the diagonal, a finite error.
+
+### Worked examples
+
+**1. Choosing the type and the gain** ($\text{MT2 W2019 Q3a}$). $G=\dfrac{K(s^2+3s+30)}{s^n(s+5)}$, unity feedback; the error to the ramp $10\,t$ must be $1/6000$.
+
+1. A finite, non-zero ramp error means **type 1**: $n=1$.
+2. $K_v=\lim_{s\to0}sG=\dfrac{K\cdot30}{5}=6K$.
+3. $e_{ss}=\dfrac A{K_v}=\dfrac{10}{6K}=\dfrac1{6000}\Rightarrow K=10\,000$.
+
+(The official page writes "$K(36)/5$" in the limit; the constant term of $s^2+3s+30$ is **30**, which is what $K_v=6K$ uses. The answer is unaffected.)
+
+**2. A servo needing 3 % error** ($\text{F2009 P5}$). Plant $\dfrac{1}{s^2+3s+3}$, PD controller, step input. $e_{ss}=1-T(0)=\dfrac3{3+K_p}<0.03\Rightarrow K_p>97$. Choose $K_p=100$.
+
+**3. The type-2 PI loop** ($\text{HW7 Q3}$). Plant $\dfrac1{s(s+15)(s+25)}$ with a PI controller $K_p+K_I/s$: $G$ has two integrators ⇒ **type 2**. Position and velocity errors are 0. For a parabola $R=1/s^3$: $K_a=\lim s^2G=K_I/375$, so $e_{ss}=\dfrac{375}{K_I}=2.18$ for $K_I=172$ — **not zero**. (The official solution file claims all three are zero by confusing the *derivatives of the error for a step* with the velocity and acceleration errors.)
+
+## A warning about the Final Value Theorem
+
+$\lim_{s\to0}sE(s)$ gives the *right* answer only if $sE(s)$ has all its poles in the open left half-plane, i.e. **the closed loop must be stable first**. For an unstable loop the FVT happily returns a finite number that means nothing.
+
+<Trap title="Non-unity feedback">
+
+The table assumes the *error* is measured at the summing junction, $E=R-HY$, and uses $GH$. If the problem defines the error as $R-Y$ with $H\ne1$ (the tachometer problems), compute $E/R$ directly from the diagram and apply the FVT; do not apply the table blindly.
+
+</Trap>
+
+## Disturbance errors
+
+The same machinery gives the error from a disturbance entering after the controller: set $R=0$ and find $E/T_d$ (Chapter 14). A step disturbance leaves an offset unless the controller has an integrator *before* the entry point.
+
+<ToolLink tool="bode">Read $K_p$, $K_v$ from a Bode plot</ToolLink> — the low-frequency asymptote of the Bode plot *is* the error constant: a horizontal line at $20\log K_p$ for type 0; a $-20$ dB/dec line through $20\log K_v$ at $\omega=1$ for type 1.
+
+## Stability words (preview of the next chapter)
+
+- **BIBO stable:** bounded input ⇒ bounded output ⇔ all poles of $T(s)$ in the open LHP.
+- **Marginal:** simple poles on the $j\omega$ axis, e.g. $(s+10)(s^2+16)$ has $\pm4j$. Repeated $j\omega$ poles are *unstable*.
+- **Absolute** stability (yes/no) versus **relative** stability (how far from the axis, how well damped).
+
+<Examined>
+
+- $\text{MT2 W2019 Q3}$ (choose $n$ and $K$), $\text{F2009 P5}$, <Hw n="7">HW7</Hw> Q3, <Hw n="9">HW9</Hw> Q1 (ramp error 0.0069 B for the antenna).
+- Final-crib favourites: type table, $K_v$ from the transfer function, FVT with a stability check.
+
+</Examined>
+
+### Check yourself
+
+1. $G=\dfrac{50}{s(s+5)}$: type, $K_v$, ramp error for $r=2t$? *(Type 1, $K_v=10$, $e=0.2$.)*
+2. Type 0, $K_p=9$: step error? *($\tfrac1{10}$.)*
+3. Why must you check stability before using the FVT? *(An unstable response never settles; the limit is meaningless.)*
+4. Type 2 and a ramp input: error? *(Zero.)*

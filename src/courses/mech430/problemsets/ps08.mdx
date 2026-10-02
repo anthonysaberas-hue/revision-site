@@ -1,0 +1,342 @@
+<p className="eyebrow">Problem Set 8 · Winter 2025</p>
+
+# Rayleigh flow
+
+<p className="lede">Four problems on frictionless constant-area flow with heat addition: a derivation of the choking heat, a subsonic heater, supersonic thermal choking with and without a shock, and a nozzle + heater + shock problem that turns on T* being the same across the shock. Use Table A5 (and A2, A3) with γ = 1.4 and c_p = 1.005 kJ/kg·K. Theory: <NoteRef ch="rayleigh">Chapter 11</NoteRef>.</p>
+
+<Remember title="Rayleigh in two lines">
+
+- $q = c_p(T_{02} - T_{01})$, and the maximum (choking) heat is $q^* = c_p(T_0^* - T_{01})$.
+- A normal shock conserves $\rho V$, $p + \rho V^2$ and $T_0$, so it connects two points on the **same Rayleigh line**: $T_0^*$, $T^*$ and $p^*$ are unchanged. Only $p_0$ drops.
+
+</Remember>
+
+<Problem id="PS8 P1" title="Maximum heat addition: q_max/(c_p T₁) = (M₁² − 1)² / (2M₁²(γ + 1))" tags="derivation, thermal choking">
+
+<Statement>
+
+Show that for constant-area, frictionless, steady 1-D flow of a perfect gas, the maximum heat that can be added to a flow initially at $M_1$ is
+
+$$
+\frac{q_\text{max}}{c_p T_1} = \frac{(M_1^2 - 1)^2}{2M_1^2(\gamma + 1)}.
+$$
+
+Solve this for $M_1$ as a function of $q_\text{max}/(c_pT_1)$, and find the limit as $M_1 \to \infty$.
+
+</Statement>
+
+<Think>
+
+"Maximum heat" means heat until thermal choking: the exit reaches $M = 1$, so $q_\text{max} = c_p(T_0^* - T_{01})$. Everything else is algebra with two known ratios: isentropic $T_{01}/T_1$ and Rayleigh $T_{01}/T_0^*$. The inverse is a quadratic in $M_1^2$. This formula reappears in the Final A detonation problem.
+
+</Think>
+
+<Plan>
+
+$q_\text{max}/(c_pT_1) = (T_{01}/T_1)(T_0^*/T_{01} - 1)$ → substitute both ratios → simplify → quadratic in $M_1^2$ → limit.
+
+<QmaxPlotFigure />
+
+</Plan>
+
+<Steps>
+<Step title="1. Write the heat in terms of ratios">
+
+$$
+\frac{q_\text{max}}{c_p T_1} = \frac{T_0^* - T_{01}}{T_1} = \frac{T_{01}}{T_1}\left(\frac{T_0^*}{T_{01}} - 1\right)
+$$
+
+with $\dfrac{T_{01}}{T_1} = 1 + \frac{\gamma-1}{2}M_1^2$ and $\dfrac{T_{01}}{T_0^*} = \dfrac{2(\gamma+1)M_1^2\left(1 + \frac{\gamma-1}{2}M_1^2\right)}{(1 + \gamma M_1^2)^2}$.
+
+</Step>
+<Step title="2. Substitute and simplify">
+
+The $\left(1 + \frac{\gamma-1}{2}M_1^2\right)$ factor cancels in the first term:
+
+$$
+\frac{q_\text{max}}{c_p T_1} = \frac{(1 + \gamma M_1^2)^2}{2(\gamma+1)M_1^2} - \left(1 + \frac{\gamma-1}{2}M_1^2\right)
+$$
+
+Put everything over $2(\gamma+1)M_1^2$. The numerator is $1 + 2\gamma M_1^2 + \gamma^2M_1^4 - 2(\gamma+1)M_1^2 - (\gamma^2-1)M_1^4 = M_1^4 - 2M_1^2 + 1$:
+
+$$
+\boxed{\frac{q_\text{max}}{c_p T_1} = \frac{(M_1^2 - 1)^2}{2M_1^2(\gamma+1)}}
+$$
+
+</Step>
+<Step title="3. Invert for M₁">
+
+Let $\alpha = (\gamma+1)\,q_\text{max}/(c_pT_1)$. Then $M_1^4 - 2(1+\alpha)M_1^2 + 1 = 0$, so
+
+$$
+M_1 = \sqrt{1 + \alpha \pm \sqrt{(1+\alpha)^2 - 1}}
+$$
+
+The + root is the supersonic inlet and the − root the subsonic one. Their $M_1^2$ values are reciprocals (the product of the roots is 1).
+
+</Step>
+<Step title="4. Limit M₁ → ∞">
+
+$$
+\frac{q_\text{max}}{c_pT_1} = \frac{M_1^2}{2(\gamma+1)} - \frac{1}{\gamma+1} + \frac{1}{2(\gamma+1)M_1^2} \;\to\; \infty
+$$
+
+</Step>
+</Steps>
+
+<Answer>
+
+- $q_\text{max}/(c_pT_1) = (M_1^2 - 1)^2/(2M_1^2(\gamma+1))$.
+- $M_1 = \sqrt{1 + \alpha \pm \sqrt{(1+\alpha)^2 - 1}}$ with $\alpha = (\gamma+1)q_\text{max}/(c_pT_1)$.
+- $q_\text{max}/(c_pT_1) \to \infty$ as $M_1 \to \infty$: "an infinite amount of heat can be added".
+
+</Answer>
+
+<Traps>
+
+- The limit is infinite only because the heat is divided by the **static** $T_1$, which becomes tiny compared with $T_{01}$ at high Mach. Divided by $T_{01}$ it levels off at $1/(\gamma^2 - 1) = 1.042$ (see the plot). This is our own addition; it isn't in the official solution.
+- Anthony's derivation is correct. Two copying slips: "$x^2 + 2x + 1$" should be $x^2 - 2x + 1$, and one line has $(\gamma - 1)$ where it should have $(\gamma + 1)$. His l'Hôpital limit $\sim 2M_1^2$ has the wrong coefficient (the exact leading term is $M_1^2/(2(\gamma+1))$), but the conclusion is right.
+- At $M_1 = 1$, no heat can be added without changing the upstream state.
+
+</Traps>
+
+<Source>official 2025 solution · Anthony's tablet solution PS08-mine</Source>
+
+</Problem>
+
+<Problem id="PS8 P2" title="Subsonic heating: M₁ = 0.15, 200 kPa, 20 °C, q = 60 kJ/kg" tags="Rayleigh, subsonic, T₀/T₀*">
+
+<Statement>
+
+Air enters a constant-area duct at Mach 0.15, 200 kPa and 20 °C. Heat is added at 60 kJ per kg of air. The flow is steady and wall friction can be ignored. Find the temperature, pressure and Mach number at which the air leaves the duct.
+
+</Statement>
+
+<Think>
+
+A standard Rayleigh march using the $T_0/T_0^*$ column. Check first that $q$ is less than $q^*$ (no choking). At such a low Mach number most of the heat simply warms the gas, so expect a modest rise in M and a tiny drop in p. The closed-form ratios beat the table here, because $T/T^*$ is a small number at low M.
+
+</Think>
+
+<Plan>
+
+$T_{01}$ → A5: $T_0^*$ → $q^*$ check → $T_{02}$ → $T_{02}/T_0^*$ → $M_2$ → closed-form $T_2/T_1$ and $p_2/p_1$.
+
+<FannoDuctSetupFigure heat Min={0.15} Mout={0.166} inlet="M₁ = 0.15 | 200 kPa, 293 K" exit="M₂ = ?" duct="frictionless, constant area" caption="Heat added through the wall of a straight duct." />
+
+</Plan>
+
+<Steps>
+<Step title="1. Stagnation temperature at the inlet">
+
+$$
+T_{01} = T_1\left(1 + \tfrac{\gamma-1}{2}M_1^2\right) = 293\,(1 + 0.2 \times 0.15^2) = 294.3\ \text{K}
+$$
+
+</Step>
+<Step title="2. Sonic reference and the choking check">
+
+<T>A5 @ M = 0.15: T₀/T₀* = 0.10196</T> — <CalcLink calc="rayleigh" q="in=M&v=0.15">check</CalcLink>. So $T_0^* = 294.3/0.10196 = 2887$ K and $q^* = 1.005\,(2887 - 294) = 2605$ kJ/kg, far more than 60 ✓ (no choking).
+
+</Step>
+<Step title="3. Exit stagnation temperature and Mach number">
+
+$T_{02} = 294.3 + 60/1.005 = 354.0$ K, so $T_{02}/T_0^* = 354.0/2887 = 0.1226$.
+
+<T>A5 (sub) @ T₀/T₀* = 0.1226: M₂ = 0.166</T> — <CalcLink calc="rayleigh" q="in=T0&v=0.1226&b=sub">check</CalcLink> (exact 0.1655).
+
+</Step>
+<Step title="4. Exit temperature and pressure (closed form)">
+
+$$
+\frac{T_2}{T_1} = \frac{M_2^2(1 + \gamma M_1^2)^2}{M_1^2(1 + \gamma M_2^2)^2} = 1.2013 \Rightarrow T_2 = 352.2\ \text{K}
+$$
+
+$$
+\frac{p_2}{p_1} = \frac{1 + \gamma M_1^2}{1 + \gamma M_2^2} = 0.9934 \Rightarrow p_2 = 198.7\ \text{kPa}
+$$
+
+</Step>
+</Steps>
+
+<Answer>
+
+- $M_2 \approx 0.166$, $T_2 \approx 352$ K, $p_2 \approx 198.7$ kPa.
+
+</Answer>
+
+<RayleighHeatSim M1={0.15} q={0.2029} />
+
+<Traps>
+
+- Always check $q$ against $q^*$ first. Anthony did this extra check: 2603 kJ/kg ≫ 60.
+- Anthony used $c_p = 1.0035$ and nearest-row values for $T/T^*$, giving $T_2 = 350.5$ K, about 2 K low. At low M the closed-form ratio is more accurate than reading $T/T^*$ (a small number) from the table.
+- At low Mach, heat mostly raises $T$ (+59 K), and $p$ barely drops (−0.7%).
+
+</Traps>
+
+<Source>official 2025 solution · Anthony's tablet solution PS08-mine</Source>
+
+</Problem>
+
+<Problem id="PS8 P3" title="Supersonic thermal choking at M = 2.5, without and with a shock at the entrance" tags="Rayleigh, thermal choking, normal shock">
+
+<Statement>
+
+Air enters a constant-area duct at Mach 2.5, stagnation temperature 300 °C and stagnation pressure 12 atm. The flow is choked at the duct exit because of heat added to a section of the duct. Find the stagnation pressure and temperature at the exit and the heat transferred per unit mass [kJ/kg]. Then repeat for a normal shock at the entrance to the duct, just before the heat-transfer section.
+
+</Statement>
+
+<Think>
+
+"Choked at the exit" means $M_2 = 1$, so the exit state is the * state: $T_{02} = T_0^*$, $p_{02} = p_0^*$ and $q = q^*$. Part (b) is the deep question. The shock conserves $T_0$ and lies on the **same Rayleigh line**, so $T_0^*$, and therefore $q^*$, must come out the same. Any difference is table rounding.
+
+</Think>
+
+<Plan>
+
+(a) A5 at 2.5 → $T_0^*$, $p_0^*$, $q^*$. (b) A3 at 2.5 → $M_y$, $p_{0y}$ → A5 at $M_y$ → $T_0^*$, $p_0^*$, $q^*$.
+
+<TsPathFigure kind="rayleigh" segments={[[2.5, 1], [0.513, 1]]} shock={[2.5, 0.513]} dots={[{ M: 2.5, label: '1 (x)' }, { M: 0.513, label: '1y' }]} caption="(a) Heating along the supersonic branch from M = 2.5 to *. (b) The shock jumps to the subsonic branch of the same line, and heating then climbs to the same * from below. Same T₀*, same q." />
+
+</Plan>
+
+<Steps>
+<Step title="1. (a) Sonic state of the inlet's Rayleigh line">
+
+<T>A5 @ M = 2.5: T₀/T₀* = 0.71005, p₀/p₀* = 2.2218</T> — <CalcLink calc="rayleigh" q="in=M&v=2.5">check</CalcLink>.
+
+$$
+T_0^* = \frac{573}{0.71005} = 807.0\ \text{K}, \qquad p_0^* = \frac{12}{2.2218} = 5.40\ \text{atm}
+$$
+
+</Step>
+<Step title="2. (a) Heat to choke">
+
+$$
+q = c_p\,(T_0^* - T_{01}) = 1.005\,(807.0 - 573) = 235.2\ \text{kJ/kg}
+$$
+
+</Step>
+<Step title="3. (b) Through the shock">
+
+<T>A3 @ Mx = 2.5: My = 0.513, p₀y/p₀x = 0.499</T> — <CalcLink calc="normal" q="in=Mx&v=2.5">check</CalcLink>. So $p_{0y} = 5.988$ atm, and $T_{0y} = T_{0x} = 573$ K (the shock is adiabatic).
+
+</Step>
+<Step title="4. (b) Heating the subsonic flow to choking">
+
+<T>A5 @ M = 0.513: T₀/T₀* = 0.70581, p₀/p₀* = 1.1099</T>. So $T_0^* = 573/0.70581 = 811.8$ K, $p_0^* = 5.988/1.1099 = 5.395$ atm, and $q = 1.005\,(811.8 - 573) = 240.1$ kJ/kg.
+
+</Step>
+<Step title="5. Compare">
+
+Exactly, $T_0/T_0^*$ at $M_y = 0.51299$ equals 0.710059, the **same** as at $M_x = 2.5$. So $T_0^* = 807.0$ K, $p_0^* = 5.401$ atm and $q = 235.1$ kJ/kg in **both** cases. The table values differ only because $M_y$ was rounded to 0.513.
+
+</Step>
+</Steps>
+
+<Answer>
+
+- (a) $T_{0,\text{exit}} = 807$ K, $p_{0,\text{exit}} = 5.40$ atm, $q = 235$ kJ/kg.
+- (b) Tables: 812 K, 5.395 atm, 240 kJ/kg. Exact: **identical to (a)**, i.e. 807 K, 5.40 atm, 235 kJ/kg.
+
+</Answer>
+
+<RayleighHeatSim M1={2.5} q={0.408} />
+
+<Traps>
+
+- **807 vs 812 K is table rounding, not physics.** The shock connects two points on the same Rayleigh line, so the choking heat and the exit state are the same with or without it. Anthony concluded the same thing ("same amount of heat, +3 kJ/kg").
+- Compute $q$ from $T_{01} = 573$ K in both parts: $T_0$ doesn't change across the shock.
+- The big $p_0$ loss (12 → 5.4 atm) happens either way: through supersonic heating in (a), mostly through the shock in (b).
+- Slide $q$ past 0.408 in the sim: the shock is forced up into the nozzle and the duct inlet becomes subsonic.
+
+</Traps>
+
+<Source>official 2025 solution · Anthony's tablet solution PS08-mine</Source>
+
+</Problem>
+
+<Problem id="PS8 P4" title="C-D nozzle (A/A* = 4) → heated duct → normal shock at the duct end with T_y = 560 K" tags="Rayleigh, normal shock, T* invariance, root choice">
+
+<Statement>
+
+Air enters a converging–diverging nozzle with stagnation conditions of 35 atm and 450 K. The nozzle area ratio is 4.0. After the nozzle, the flow enters a duct where heat is added. At the end of the duct there is a normal shock, after which the static temperature is 560 K. Find the Mach number after the shock and the heat added [kJ/kg]. Would your answers change if the normal shock were at the entrance of the duct?
+
+</Statement>
+
+<Think>
+
+A shock at the duct end needs supersonic flow there, so the nozzle runs on its supersonic branch. The key: **$T^*$ is the same on both sides of the shock** (same Rayleigh line). So $T_y/T^*$, with $T^*$ computed from the *inlet*, locates the post-shock state directly. Watch the root: $T/T^*$ has more than one Mach number for a given value.
+
+</Think>
+
+<Plan>
+
+A2 (sup) at 4 → $M_1$, $T_1$ → A5: $T^*$, $T_0^*$ → $T_y/T^*$ → $M_y$ (subsonic root) → A3: $M_x$ → A5: $T_{0x}$ → $q$.
+
+</Plan>
+
+<Steps>
+<Step title="1. Nozzle exit = duct inlet">
+
+<T>A2 @ A/A* = 4.0 (sup): M₁ = 2.94, T/T₀ = 0.36648</T> — <CalcLink calc="isentropic" q="in=A&v=4&b=sup">check</CalcLink>. So $T_1 = 164.9$ K.
+
+</Step>
+<Step title="2. Rayleigh reference state">
+
+<T>A5 @ M = 2.94: T₀/T₀* = 0.65961, T/T* = 0.29007</T>, so
+
+$$
+T^* = \frac{164.9}{0.29007} = 568.5\ \text{K}, \qquad T_0^* = \frac{450}{0.65961} = 682.2\ \text{K}
+$$
+
+</Step>
+<Step title="3. Post-shock state from T*">
+
+$T_y/T^* = 560/568.5 = 0.985$. On the **subsonic** branch: <T>A5 (sub) @ T/T* = 0.985: M_y = 0.686</T> — <CalcLink calc="rayleigh" q="in=T&v=0.985&b=sub">check</CalcLink> (exact 0.6859).
+
+</Step>
+<Step title="4. Pre-shock state">
+
+<T>A3 @ My = 0.686: Mx = 1.544, Ty/Tx = 1.35</T>, so $T_x = 560/1.35 = 414.8$ K.
+
+</Step>
+<Step title="5. Heat added">
+
+<T>A5 @ M = 1.544: T₀/T₀* = 0.8981</T>, so $T_{02} = 0.8981 \times 682.2 = 612.7$ K and
+
+$$
+q = c_p\,(T_{02} - T_{01}) = 1.005\,(612.7 - 450) = 163.5\ \text{kJ/kg}
+$$
+
+</Step>
+<Step title="6. Shock at the entrance instead?">
+
+The shock would take $M = 2.94$ to its subsonic partner on the **same** Rayleigh line (same $T^*$, $T_0^*$). Subsonic heating then climbs to the state with $T/T^* = 0.985$ on the subsonic branch. That is the same end state ($M = 0.686$, $T_0 = 612.7$ K), so the same $q$. The path and the $p_0$ losses differ, but the answers don't.
+
+</Step>
+</Steps>
+
+<Answer>
+
+- $M_y \approx 0.686$, $q \approx 163.5$ kJ/kg (exact 0.6859 and 163.5 kJ/kg).
+- No, the answers would be the same with the shock at the entrance (Anthony: "stagnation conditions don't change across normal shock"). The official solution leaves this part unanswered.
+
+</Answer>
+
+<TsPathFigure kind="rayleigh" segments={[[2.94, 1.544]]} shock={[1.544, 0.686]} dots={[{ M: 2.94, label: '1' }, { M: 1.544, label: '2x' }, { M: 0.686, label: '2y' }]} caption="Heating moves state 1 along the supersonic branch to 2x. The shock jumps (entropy up) to 2y on the subsonic branch of the same line." />
+
+<RayleighNozzleShockFigure />
+
+<Traps>
+
+- **Root choice:** $T/T^* = 0.985$ also has a supersonic solution ($M \approx 1.04$). There is none between 0.845 and 1, because $T/T^*$ exceeds 1 there. Post-shock flow is subsonic, so take 0.686.
+- Read the nozzle's $A/A^* = 4$ on the **supersonic** branch: a shock downstream needs supersonic flow.
+- Anthony went straight from $T^*$ to $M_y$, which is valid because $T^*$ is shared. Then he used A2 at $M = 0.69$ to get $T_{02} = 613.8$ K and $q \approx 164$ kJ/kg.
+
+</Traps>
+
+<Source>official 2025 solution · Anthony's tablet solution PS08-mine</Source>
+
+</Problem>

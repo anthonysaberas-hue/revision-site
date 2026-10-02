@@ -1,0 +1,367 @@
+<p className="eyebrow">Midterm 2 · Fall 2022 (Nov 3, 2022) · covers Lectures 9–16 · 30 + 20 + 25 + 25 = 100 marks</p>
+
+# Midterm 2, Fall 2022: pivoted bar, hydraulic dashpot, hydraulic controller, nonlinear circuit, voice coil
+
+<div className="lede">
+
+A **collage of homework and tutorial problems**: Q1a is <Hw n="5">HW5 Q5</Hw> (lever with transformers), Q1b is <Hw n="6">HW6 Q2</Hw> (hydraulic dashpot), Q2 the hydraulic controller family, Q3 is the circuit of $\text{T4 Q2}$ (identical), Q4 an electromechanical transducer (<Ch slug="electromechanical">Chapter 11</Ch>). If you can do those, you can do this exam. Two flags: the **impedance-analog capacitor in Q1a is mislabelled** (stiffness instead of compliance), and **Q1b and Q2 use the dashpot in two different ways** (cylinder free vs fixed): re-derive which end is fixed. Allowed: two handwritten 8½×11 pages and a calculator.
+
+</div>
+
+<Problem id="MT2 F2022 Q1a" title="Pivoted bar with spring, damper and force: equivalent circuit leaving transformers in (15 marks)" tags="lever = transformer, parallel axis, mobility and impedance">
+
+<Statement>
+
+A uniform bar of mass $m$ and length $L$ rotates about a pivot $O$ located $L/4$ from its left end. At the left end a spring $k$ (to the ceiling). At the right end ($3L/4$ from $O$) a damper $c$ (to the floor) and the downward force $F(t)$. Draw a valid equivalent electrical circuit; identify each lumped element and the potential and flux. Hint: use kinematic relations and moments about $O$.
+
+</Statement>
+
+<Think>
+
+A pivoted bar is a **lever**: the spring sits on the short arm ($L/4$), the damper and force on the long arm ($3L/4$). A lever converts forces and velocities between arms exactly like a transformer. Two valid strategies: (i) refer everything to the rotation $\theta$ about $O$ (no transformers; arm ratios appear *squared* inside elements); (ii) keep the real translations $x$ (left end) and $y$ (right end) and put **transformers** with the arm ratio in between. Same problem as <Hw n="5">HW5 Q5</Hw>.
+
+</Think>
+
+<Steps>
+<Step title="1. Inertia about O (parallel-axis theorem)">
+
+The centre of mass is $L/2-L/4=L/4$ from $O$: $I_O=I_G+m\big(\tfrac L4\big)^2=\dfrac{mL^2}{12}+\dfrac{mL^2}{16}=\dfrac{7mL^2}{48}$.
+
+</Step>
+<Step title="2. Kinematics">
+
+Small rotation $\theta$: left end $x=\tfrac L4\theta$, right end $y=\tfrac{3L}4\theta$, so $\dot y=3\dot x$.
+
+</Step>
+<Step title="3. Moments about O">
+
+Spring force $kx$ at arm $L/4$; damper force $c\dot y$ and applied force $F$ at arm $3L/4$:
+$$I_O\ddot\theta=-c\Big(\tfrac{3L}4\Big)^2\dot\theta-k\Big(\tfrac L4\Big)^2\theta+F\tfrac{3L}4\;\Rightarrow\;\frac{7mL^2}{48}\ddot\theta+\frac{9cL^2}{16}\dot\theta+\frac{kL^2}{16}\theta=\frac{3L}4F .$$
+Each stiffness or damping is multiplied by the arm **squared** (once for displacement to force, once for force to moment); the source carries only the **first** power.
+
+</Step>
+<Step title="4. Mobility analog (potential = θ̇, flux = torque)">
+
+A **current source** of torque $3FL/4$ drives one node ($\dot\theta$). Three parallel elements to ground: **capacitor** $\dfrac{7mL^2}{48}$ (inertia), **resistor** $\dfrac{16}{9cL^2}$ (damper: $1/$torsional damping), **inductor** $\dfrac{16}{kL^2}$ (spring: $C_M=1/k_t$).
+
+</Step>
+<Step title="5. Impedance analog (potential = torque, flux = θ̇)">
+
+The dual: a **voltage source** $3FL/4$ in one series loop with **resistor** $\dfrac{9cL^2}{16}$, **inductor** $\dfrac{7mL^2}{48}$ and **capacitor** $\dfrac{16}{kL^2}$ (the compliance $1/k_t$, with $k_t=kL^2/16$).
+
+</Step>
+<Step title="6. The version with transformers (real translations)">
+
+Referred to the left end ($\dot y=3\dot x$): $\dfrac{7m}3\ddot x+9c\dot x+kx=3F$, where $\dfrac{7m}{3}=m+\dfrac{16I_G}{L^2}$. As a circuit: the force source drives a transformer with ratio $3:1$ (velocity $\dot y:\dot x$) between the damper side and the spring side; the bar's inertia sits at the pivot node.
+
+</Step>
+<Step title="7. Checks">
+
+Static: $\dfrac{kL^2}{16}\theta=\dfrac{3L}4F\Rightarrow\theta=\dfrac{12F}{kL}$. $\omega_n^2=\dfrac{kL^2/16}{7mL^2/48}=\dfrac{3k}{7m}$ and $2\zeta\omega_n=\dfrac{9cL^2/16}{7mL^2/48}$: dimensionally consistent ✔.
+
+</Step>
+</Steps>
+
+<CircuitBoard source={{kind:'Is',label:'3FL/4',sub:'torque source'}} sections={[{type:'shunt',stack:[{kind:'C',label:'7mL²/48',sub:'inertia about O'}],node:'θ̇'},{type:'shunt',stack:[{kind:'R',label:'16/(9cL²)',sub:'damper'}]},{type:'shunt',stack:[{kind:'L',label:'16/(kL²)',sub:'spring'}]}]} title="Mobility analog referred to the rotation about O" caption="One node (θ̇): all three elements in parallel; the lever ratios are inside the element values." />
+
+<Answer>
+
+EOM $\dfrac{7mL^2}{48}\ddot\theta+\dfrac{9cL^2}{16}\dot\theta+\dfrac{kL^2}{16}\theta=\dfrac{3L}4F$; mobility circuit above; impedance circuit the series dual.
+
+*Real-world:* a seesaw with a spring on one side and a shock absorber on the other: a push on the long arm gives less motion at the spring because of the lever ratio.
+
+</Answer>
+
+<Callout kind="warn" title="⚠ Official impedance-analog label">
+
+The sketch labels the capacitor "$kL^2/16$". In the impedance analog a spring is a **capacitor of value = compliance $1/k_t=16/(kL^2)$**, not the stiffness. The EOM, $I_O=7mL^2/48$ and the mobility circuit are right.
+
+</Callout>
+
+<Traps>
+
+- Forgetting the **parallel-axis term** (using $mL^2/12$ about the centre).
+- Squaring the arms in the elements but also in the source (the source has the first power).
+- Mixing analogs: in the mobility analog the spring is a **parallel inductor** of value $1/k$.
+
+</Traps>
+
+<Source>official ✔ (EOM 5 marks, circuit 10); values recomputed.</Source>
+
+</Problem>
+
+<Problem id="MT2 F2022 Q1b" title="Hydraulic dashpot: circuit with four-pole elements; Z/Y for massless parts (15 marks)" tags="washout, T = RρA²/k, relative velocity">
+
+<Statement>
+
+Identical to <Hw n="6">HW6 Q2</Hw>: piston mass $m_p$, cylinder mass $m_c$, spring $k$ (cylinder to wall), orifice resistance $R$ (mass flux), density $\rho$, positions $y$ (piston) and $z$ (cylinder). (a) Draw a standard circuit connecting the hydraulic and mechanical parts with four-pole elements. (b) Neglecting the masses show $Z/Y$ is a unity-feedback diagram with $1/(Ts)$, $T=RA^2\rho/k$.
+
+</Statement>
+
+<Think>
+
+Everything depends on the **relative** velocity $\dot y-\dot z$: oil can only pass through the orifice when the piston moves relative to the cylinder.
+
+</Think>
+
+<Steps>
+<Step title="1. Flow through the orifice">
+
+$U=A(\dot y-\dot z)$ (volume rate).
+
+</Step>
+<Step title="2. Orifice law">
+
+$P_2-P_1=\rho R\,U=\rho RA(\dot y-\dot z)$.
+
+</Step>
+<Step title="3. Massless cylinder">
+
+The pressure force on the cylinder balances the spring: $A(P_2-P_1)=kz$.
+
+</Step>
+<Step title="4. Combine and transform">
+
+$kz=\rho RA^2(\dot y-\dot z)$, so with $T=\dfrac{\rho RA^2}{k}$: $z=T(\dot y-\dot z)$; Laplace: $Z=Ts(Y-Z)\Rightarrow$
+$$\frac ZY=\frac{Ts}{Ts+1}\quad\Longleftrightarrow\quad Z=Y-\frac{1}{Ts}Z\ \text{(unity feedback with }1/(Ts)).$$
+
+</Step>
+<Step title="5. Circuit (mobility for mechanics, impedance for the fluid)">
+
+Mechanical node $\dot y$ with capacitor $m_p$ $\to$ a $1/A$ gyrator $\to$ fluid loop: the pressure difference $P_2-P_1$ across the orifice resistor $\rho R$, with the flux divider $U_y=U_z+U_{orifice}$ $\to$ a second $1/A$ gyrator $\to$ mechanical node $\dot z$ with capacitor $m_c$ in parallel with the spring (inductor $1/k$).
+
+</Step>
+<Step title="6. Check">
+
+Step in $y$: $Z=\dfrac{Ts}{Ts+1}\cdot\dfrac1s=\dfrac{T}{Ts+1}\Rightarrow z(t)=e^{-t/T}$: it jumps to 1 and decays (Fig. b of the paper) ✔.
+
+</Step>
+</Steps>
+
+<Answer>
+
+$\dfrac ZY=\dfrac{Ts}{Ts+1}$, $T=\dfrac{\rho RA^2}k$; circuit as described (full detail in HW6 Q2).
+
+</Answer>
+
+<Callout kind="note" title="Contrast with Q2 below">
+
+Here the **cylinder moves** and the spring is attached to it: $Z/Y=\dfrac{Ts}{Ts+1}$ (high-pass). In Q2 the **cylinder is fixed** and the spring is attached to the piston: $Z/Y=\dfrac{1}{Ts+1}$ (low-pass). Same $T$, opposite filters: always re-derive which end is fixed.
+
+</Callout>
+
+<Source>official ✔ (circuit 8 marks, transfer function 7).</Source>
+
+</Problem>
+
+<Problem id="MT2 F2022 Q2" title="Hydraulic controller (servo with dashpot feedback): block diagram and Y/E (20 marks)" tags="servo as integrator, lag feedback, PD in the high-gain limit">
+
+<Statement>
+
+A hydraulic controller: a lever with arms $a$ (above the pilot-valve connection) and $b$ (below), input $e$ at the top, valve displacement $x$ at the middle, the power-piston output $y=\tfrac Ksx$; the feedback goes through a dashpot–spring unit (cylinder with orifice $R$, spring $k$, piston area $A$, oil density $\rho$) with displacement $z$. (a) Block diagram in terms of $A,k,b,a,R,\rho,K$. (b) $Y(s)/E(s)$. Neglect piston masses, oil compressibility and pilot-valve dynamics; state assumptions.
+
+</Statement>
+
+<Think>
+
+The servo (valve to piston) is an **integrator**: any valve opening makes the piston move forever. The lever feeds the output back to the valve; the dashpot–spring in the feedback path is a **lag** (it passes slow changes but not fast ones). A high-gain loop with that feedback gives the **inverse** of the feedback, which is a **PD-type** controller.
+
+</Think>
+
+<Steps>
+<Step title="1. Lever geometry">
+
+$x=\dfrac{b}{a+b}e-\dfrac{a}{a+b}z$.
+
+</Step>
+<Step title="2. Power piston">
+
+$y=\dfrac Ksx$ (given).
+
+</Step>
+<Step title="3. Feedback unit with the cylinder fixed">
+
+Spring force $k(y-z)=A(P_2-P_1)$; flow through the orifice $U=\dfrac{P_2-P_1}{\rho R}$; oil displaced equals the swept volume: $U\,dt=A\,dz$. Eliminating $P_2-P_1$: $y-z=\dfrac{A}{k}(P_2-P_1)=\dfrac AkR\rho\,U=\dfrac{\rho RA^2}{k}\dot z$, so
+$$y=z+T\dot z,\quad T=\frac{\rho RA^2}k\;\Rightarrow\;\frac ZY=\frac1{Ts+1}.$$
+
+</Step>
+<Step title="4. Block diagram">
+
+$E\to\dfrac b{a+b}\to\oplus(+)\to\dfrac Ks\to Y$; feedback: $Y\to\dfrac1{Ts+1}\to\dfrac a{a+b}\to\oplus(-)$.
+
+</Step>
+<Step title="5. Closed loop">
+
+$$\frac YE=\frac{\dfrac b{a+b}\dfrac Ks}{1+\dfrac a{a+b}\dfrac Ks\dfrac1{Ts+1}}=\frac{bK(Ts+1)}{(a+b)s(Ts+1)+aK}$$
+(multiply top and bottom by $s(Ts+1)(a+b)$).
+
+</Step>
+<Step title="6. Ideal limit (K large)">
+
+The $(a+b)s(Ts+1)$ term is negligible: $\dfrac YE\approx\dfrac ba(Ts+1)$: a **proportional plus derivative** controller with gain $b/a$ and derivative time $T=\rho RA^2/k$.
+
+</Step>
+<Step title="7. Check">
+
+Static ($s\to0$): $\dfrac YE=\dfrac{bK}{aK}=\dfrac ba$ ✔ (the output tracks the input scaled by the lever ratio, independent of $K$, as for any high-gain servo).
+
+</Step>
+</Steps>
+
+<Answer>
+
+$\dfrac YE=\dfrac{bK(Ts+1)}{(a+b)s(Ts+1)+aK}\approx\dfrac ba(Ts+1)$, $T=\dfrac{\rho RA^2}k$.
+
+*Real-world:* an aircraft flap or excavator-arm servo: a small lever input commands a large hydraulic force and the dashpot feedback adds damping (derivative action) so the surface does not overshoot.
+
+</Answer>
+
+<Callout kind="note" title="Official remark">
+
+"This is slightly different from 1b: the cylinder is fixed and the spring is not." Hence the lag $\tfrac1{Ts+1}$ here against the washout $\tfrac{Ts}{Ts+1}$ in Q1b.
+
+</Callout>
+
+<Traps>
+
+- Using Q1b's form instead of the lag $1/(Ts+1)$: re-derive which end is fixed.
+- The loop's first pole is at the origin (the integrator): do not forget $K/s$ inside the loop.
+
+</Traps>
+
+<Source>official ✔ (block diagram, $T$, closed-loop form; (a) 8 marks, (b) 12).</Source>
+
+</Problem>
+
+<Problem id="MT2 F2022 Q3" title="Circuit with a nonlinear resistor: operating point, linearised equation, linearised circuit (25 marks)" tags="Taylor, incremental resistance 1/8 Ω, battery drops out">
+
+<Statement>
+
+Source $e_i(t)=4+\hat e_i(t)$; a $\tfrac14\,\Omega$ resistor **in parallel with** a $\tfrac12$ H inductor between the source and a node; from the node: a $\tfrac12\,\Omega$ resistor in series with a 12 V battery to ground, a 2 F capacitor, and a nonlinear resistor $i_o=|e_o|e_o$. The given nonlinear equation is
+$$2\ddot e_o+6\dot e_o+2e_o+\frac{d}{dt}\big(|e_o|e_o\big)=4\dot e_i+2e_i .$$
+(a) Find $\bar e_o$ and $\bar\imath_o$. (b) Linearise to relate $\hat e_o$ and $\hat e_i$. (c) Draw the linearised circuit. (Identical to $\text{T4 Q2}$.)
+
+</Statement>
+
+<Think>
+
+Operating point: all derivatives zero. Linearise **only the nonlinear term** by Taylor: $\dfrac{d}{de}(|e|e)=2|e|$ for all $e$ (not just $e>0$). In the incremental circuit a constant source (the 12 V battery) is a **short circuit**.
+
+</Think>
+
+<Steps>
+<Step title="(a) Steady state">
+
+All derivatives zero, $e_i=\bar e_i=4$: $2\bar e_o=2\bar e_i\Rightarrow\bar e_o=4$ V, then $\bar\imath_o=|\bar e_o|\bar e_o=16$ A.
+
+</Step>
+<Step title="(b) 1. Linearise the nonlinear term">
+
+$|e_o|e_o\approx16+2|\bar e_o|\hat e_o=16+8\hat e_o$ (the constant 16 has zero derivative): $\dfrac{d}{dt}(|e_o|e_o)\approx8\dot{\hat e}_o$.
+
+</Step>
+<Step title="(b) 2. Substitute e_o = 4 + ê_o">
+
+$2\ddot{\hat e}_o+6\dot{\hat e}_o+2\hat e_o+8\dot{\hat e}_o=4\dot{\hat e}_i+2\hat e_i\Rightarrow\ddot{\hat e}_o+7\dot{\hat e}_o+\hat e_o=2\dot{\hat e}_i+\hat e_i$.
+$$\frac{\hat E_o}{\hat E_i}=\frac{2s+1}{s^2+7s+1},\quad\text{DC gain }1,\ \text{poles }-0.146,\,-6.85.$$
+
+</Step>
+<Step title="(c) Linearised circuit">
+
+Since $\hat\imath_o=8\hat e_o$, the nonlinear resistor acts as a **linear resistor $R=\hat e_o/\hat\imath_o=\tfrac18\ \Omega$** (the slope of the $i_o$–$e_o$ curve at the operating point). Replace it by $\tfrac18\ \Omega$; the 12 V battery drops out (a constant source is a short for small signals); keep the source $\hat e_i$, $\tfrac14\,\Omega\parallel\tfrac12$ H, the $\tfrac12\,\Omega$ to ground and the 2 F capacitor.
+
+</Step>
+<Step title="Extra credit: derive the given equation">
+
+KCL at the node: current in from the source branch $=\dfrac{e_i-e_o}{1/4}+2\!\int(e_i-e_o)dt$; current out $=\dfrac{e_o-12}{1/2}+2\dot e_o+i_o$. So $4(e_i-e_o)+2\!\int(e_i-e_o)dt=2e_o-24+2\dot e_o+i_o$. Differentiate (this removes the integral and the constant 24): $4\dot e_i-4\dot e_o+2(e_i-e_o)=2\dot e_o+2\ddot e_o+\dfrac{di_o}{dt}$, i.e. $2\ddot e_o+6\dot e_o+2e_o+\dfrac{di_o}{dt}=4\dot e_i+2e_i$ ✔. (The 12 V battery only fixes the inductor's DC current: at the operating point it is $2\bar e_o-24+\bar\imath_o=8-24+16=0$.)
+
+</Step>
+</Steps>
+
+<Answer>
+
+$\bar e_o=4$ V, $\bar\imath_o=16$ A; $\ddot{\hat e}_o+7\dot{\hat e}_o+\hat e_o=2\dot{\hat e}_i+\hat e_i$; the nonlinear resistor linearises to $\tfrac18\ \Omega$.
+
+*Real-world:* any square-law element (a fan, a flow restriction, a diode in the quadratic region) looks like a resistor whose value depends on the operating point: here $\tfrac18\ \Omega$ at 4 V.
+
+</Answer>
+
+<Traps>
+
+- $\dfrac{d}{de}(|e|e)=2|e|$ for all $e$, not $2e$ only for positive $e$.
+- Leave the DC battery out of the incremental circuit.
+- Do not use Laplace or impedances **before** linearising.
+
+</Traps>
+
+<Source>official ✔ (all parts and the extra-credit derivation reproduced); marks (a) 5, (b) 15, (c) 5, extra credit 5.</Source>
+
+</Problem>
+
+<Problem id="MT2 F2022 Q4" title="Electromechanical transducer (voice coil): transfer function from voltage to mass velocity (25 marks)" tags="coupling Bl, back emf, extra damping">
+
+<Statement>
+
+A moving mass $m$ (spring $k$, damper $b$) in a magnetic field; a coil with resistance $R$ and inductance $L$ driven by $v(t)$; the electromechanical constant is $Bl$. Find the transfer function between the mass velocity $\dot x$ and the input voltage $v(t)$.
+
+</Statement>
+
+<Think>
+
+Same "two circuits plus a coupling" as the DC motor: current in the coil produces a force on the mass ($F=Bl\,i$) and the moving mass generates a back-voltage ($e_f=Bl\,\dot x$). Both constants are $Bl$ (energy conservation).
+
+</Think>
+
+<Steps>
+<Step title="1. Mechanical side (Newton)">
+
+$m\ddot x+b\dot x+kx=Bl\,i\Rightarrow(ms^2+bs+k)X=Bl\,I$ (E1).
+
+</Step>
+<Step title="2. Electrical side (KVL)">
+
+$v=Ri+L\dfrac{di}{dt}+e_f$ with $e_f=Bl\,\dot x$: $V=(Ls+R)I+Bl\,sX$ (E2).
+
+</Step>
+<Step title="3. Eliminate the current">
+
+From (E1) $I=\dfrac{(ms^2+bs+k)X}{Bl}$; into (E2): $V=\Big[\dfrac{(Ls+R)(ms^2+bs+k)}{Bl}+Bl\,s\Big]X$.
+
+</Step>
+<Step title="4. Solve for the velocity">
+
+With $U_x=sX$, divide numerator and denominator by $s$ (using $\dfrac{ms^2+bs+k}{s}=ms+b+\dfrac ks$):
+$$\frac{U_x(s)}{V(s)}=\frac{Bl}{(Ls+R)\big(ms+b+\tfrac ks\big)+(Bl)^2}.$$
+
+</Step>
+<Step title="5. Checks">
+
+DC ($s\to0$): $k/s$ dominates, so $U_x/V\to0$ (a spring holds the mass: no steady velocity) ✔. If $k=0$ (a free mass) the DC gain is $\dfrac{Bl}{Rb+(Bl)^2}$, the same structure as the DC motor $\dfrac{K_t}{R_AB+K_bK_t}$ ✔. The back-emf term $(Bl)^2$ enters with a **plus** sign: the electrical damping adds to the mechanical damping.
+
+</Step>
+</Steps>
+
+<Answer>
+
+$\dfrac{U_x}{V}=\dfrac{Bl}{(Ls+R)\big(ms+b+k/s\big)+(Bl)^2}$.
+
+*Real-world:* a loudspeaker or seismic shaker: voltage, coil current, force, cone motion; the motion pushes a voltage back (which is why a speaker can also be a microphone).
+
+</Answer>
+
+<Traps>
+
+- A wrong sign on the back emf would make the system unstable (compare the sign error in $\text{T7 Q1}$).
+- The force constant and the back-emf constant are both $Bl$.
+
+</Traps>
+
+<Source>official ✔ (25 marks, no split).</Source>
+
+</Problem>
+
+<Examined>
+
+Compare <Hw n="5">HW5</Hw>, <Hw n="6">HW6</Hw>, $\text{T4 Q2}$, $\text{T7 Q1}$ and the 2024 paper, <Ch slug="electromechanical">Chapter 11</Ch>, <Ch slug="hydraulic-thermal">Chapter 13</Ch>. A pivoted bar, a dashpot with fixed cylinder and a transducer reappear nowhere in $\text{MT2 W2024}$, so they remain good practice.
+
+</Examined>

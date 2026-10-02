@@ -1,0 +1,516 @@
+<p className="eyebrow">Final examination · Fall 2010 (Dynamics of Systems) · P1 10, P2 20, P3 15, P4 13, P5 12, P6 15, P7 15 = 100 marks</p>
+
+# Final, Fall 2010: stability, torsional transmission, loudspeaker, rocket attitude, pole matching, nonlinear RLC, feedback gain
+
+<div className="lede">
+
+Seven problems, **no official solution in the archive**: every answer is the digest author's, derived step by step and checked numerically. P2 and P3 are modelling problems (rotation with a viscous coupling, a loudspeaker), P4 is a **PD stabilisation of an unstable plant**, P5 is the classic "match the poles to the responses" question, P6 a nonlinear RLC and P7 a root-locus question that contains a **built-in inconsistency**: part (c)'s gain makes the system unstable (flagged below).
+
+</div>
+
+<Problem id="Final F2010 P1" title="Stability and initial-condition response of a state model (10 marks)" tags="eigenvalues, double root">
+
+<Statement>
+
+$\dot x_1=x_2$; $\dot x_2=-25x_1-10x_2+f(t)$. (a) Is the system stable? (b) The response of $x_2$ to $x_1(0)=1$, $x_2(0)=0.2$.
+
+</Statement>
+
+<Think>
+
+Stability: eigenvalues of $A$ (roots of $\det(sI-A)$). For a **repeated** real root the free response is $(c_1+c_2t)e^{\lambda t}$, not cos/sin.
+
+</Think>
+
+<Steps>
+<Step title="(a) Eigenvalues">
+
+$A=\begin{bmatrix}0&1\\-25&-10\end{bmatrix}$, $\det(sI-A)=s^2+10s+25=(s+5)^2$: a **double pole at $-5$**, both in the open left half-plane, so **asymptotically stable** (critically damped: $\omega_n=5$, $\zeta=1$).
+
+</Step>
+<Step title="(b) 1. One equation (f = 0)">
+
+$\ddot x_1+10\dot x_1+25x_1=0$ with $x_1(0)=1$, $\dot x_1(0)=x_2(0)=0.2$.
+
+</Step>
+<Step title="(b) 2. Double root form">
+
+$x_1=(c_1+c_2t)e^{-5t}$. $x_1(0)=c_1=1$. $\dot x_1=[c_2-5(c_1+c_2t)]e^{-5t}$, so $\dot x_1(0)=c_2-5=0.2\Rightarrow c_2=5.2$.
+
+</Step>
+<Step title="(b) 3. Result">
+
+$x_1=(1+5.2t)e^{-5t}$ and $x_2=\dot x_1=(0.2-26t)e^{-5t}$.
+
+</Step>
+<Step title="(b) 4. Checks">
+
+$x_2(0)=0.2$ ✔, $x_1(0)=1$ ✔. Non-oscillatory: $x_2$ starts at 0.2, crosses zero once at $t=0.2/26=7.7$ ms, dips slightly negative and decays to zero.
+
+</Step>
+</Steps>
+
+<Answer>
+
+(a) stable (double pole at $-5$); (b) $x_2(t)=(0.2-26t)e^{-5t}$.
+
+*Real-world:* a critically damped door closer: no oscillation, the fastest non-oscillatory return.
+
+</Answer>
+
+<Traps>
+
+- Using cos/sin forms for a repeated real root.
+- The initial condition on $\dot x_1$ is the *state* $x_2(0)$.
+
+</Traps>
+
+<Source>digest derivation.</Source>
+
+</Problem>
+
+<Problem id="Final F2010 P2" title="Torsional transmission with a viscous coupling: transfer function, ω_n and ζ, settling time, steady-state speed (20 marks)" tags="rotational EOM, speed output cancels the integrator, superposition">
+
+<Statement>
+
+Disc $J_1$ is attached to ground by a torsional spring $k$ and to disc $J_2$ through a viscous device $b$; torque $T(t)$ acts on $J_2$; $J_1=1.0$, $J_2=1.5$ kg·m², $k=1000$ N·m/rad, $b=40$ N·m/(rad/s); a Bode plot with a peak near 21 rad/s is given. (a) Transfer function with $\dot\theta_2$ as the output and $T$ as the input. (b) Given the characteristic roots $-4.6646\pm j21.0553$ and $-57.3374$, find the undamped natural frequency and damping ratio of the second-order component. (c) Settling time of the step response. (d) Steady-state speed $\dot\theta_2$ if $T=20+10\sin2t$ N·m.
+
+</Statement>
+
+<Think>
+
+Newton for each disc; Laplace; eliminate $\Theta_1$. The output is the **velocity** $\Omega_2=s\Theta_2$, so the free integrator cancels (the angle itself has no steady state under a constant torque, the speed does). The root values given in the question confirm the model.
+
+</Think>
+
+<Steps>
+<Step title="(a) 1. Equations of motion">
+
+Disc 1: $J_1\ddot\theta_1+k\theta_1+b(\dot\theta_1-\dot\theta_2)=0$. Disc 2: $J_2\ddot\theta_2+b(\dot\theta_2-\dot\theta_1)=T$.
+
+</Step>
+<Step title="(a) 2. Laplace">
+
+$(J_1s^2+bs+k)\Theta_1=bs\Theta_2$ and $(J_2s^2+bs)\Theta_2-bs\Theta_1=T$.
+
+</Step>
+<Step title="(a) 3. Eliminate Θ₁">
+
+$\Theta_2\Big[(J_2s^2+bs)-\dfrac{b^2s^2}{J_1s^2+bs+k}\Big]=T\Rightarrow\dfrac{\Theta_2}{T}=\dfrac{J_1s^2+bs+k}{s[J_1J_2s^3+b(J_1+J_2)s^2+kJ_2s+kb]}$.
+
+</Step>
+<Step title="(a) 4. Speed output">
+
+$\Omega_2=s\Theta_2$ cancels the factor $s$:
+$$\frac{\Omega_2}{T}=\frac{J_1s^2+bs+k}{J_1J_2s^3+b(J_1+J_2)s^2+kJ_2s+kb}=\frac{s^2+40s+1000}{1.5s^3+100s^2+1500s+40000}.$$
+
+</Step>
+<Step title="(a) 5. Checks">
+
+The roots of the cubic are $-57.34$ and $-4.66\pm j21.06$: exactly the given roots ✔. DC gain $1000/40000=0.025$ rad/s per N·m. Physical check: in steady rotation the spring holds disc 1 still ($\omega_1=0$) and the whole torque goes through the damper, $T=b\omega_2\Rightarrow\omega_2=T/b=1/40=0.025$ ✔.
+
+</Step>
+<Step title="(b) ω_n and ζ">
+
+The pair is $-\sigma\pm j\omega_d$ with $\sigma=4.6646$, $\omega_d=21.0553$: $\omega_n=\sqrt{\sigma^2+\omega_d^2}=21.566$ rad/s and $\zeta=\sigma/\omega_n=0.2163$ (equivalently the quadratic $s^2+9.329s+465.1$).
+
+</Step>
+<Step title="(c) Settling time">
+
+The real pole $-57.3$ dies out 12× faster, so the oscillatory pair dominates: $t_s\approx4/\sigma=4/4.6646\approx0.86$ s (2%).
+
+</Step>
+<Step title="(d) 1. Superposition">
+
+The response to $20+10\sin2t$ is the DC response plus the sinusoidal response. DC: $20\times G(0)=20\times0.025=0.5$ rad/s.
+
+</Step>
+<Step title="(d) 2. Sinusoid">
+
+$G(j2)=\dfrac{-4+80j+1000}{-12j-400+3000j+40000}=\dfrac{996+80j}{39600+2988j}$: $|G(j2)|=0.02516$, phase $+0.28^\circ$.
+
+</Step>
+<Step title="(d) 3. Result and check">
+
+$$\dot\theta_{2,ss}(t)=0.5+0.2516\sin(2t+0.28^\circ)\ \text{rad/s}.$$
+2 rad/s is far below the resonance (21.6 rad/s) so the response is quasi-static: same gain 0.025 and no phase shift ($10\times0.025=0.25$ ✔).
+
+</Step>
+</Steps>
+
+<Answer>
+
+(a) $\dfrac{s^2+40s+1000}{1.5s^3+100s^2+1500s+40000}$; (b) $\omega_n=21.57$ rad/s, $\zeta=0.216$; (c) $t_s\approx0.86$ s; (d) $0.5+0.252\sin2t$ rad/s.
+
+*Real-world:* a shaft with a viscous coupling: under a constant torque it spins at $T/b$; ripples in the torque are barely noticed at low frequency but would excite a 21 rad/s resonance.
+
+</Answer>
+
+<Traps>
+
+- Forgetting that $\dot\theta_2$ (not $\theta_2$) is the output: the free integrator cancels.
+- Using $\omega_d$ as $\omega_n$.
+
+</Traps>
+
+<Source>digest derivation (the roots given in the question are reproduced).</Source>
+
+<ToolLink tool="bode">See the 21 rad/s peak in the Bode tool</ToolLink>
+
+</Problem>
+
+<Problem id="Final F2010 P3" title="Loudspeaker: mathematical model and X(s)/V(s) (15 marks)" tags="electromechanical coupling K₁, K₂, 4th order">
+
+<Statement>
+
+Source $V$ in series with $R$ to node A; a capacitor $C$ from A to ground; then an inductor $L$ (voice-coil inductance) carrying $i_2$ and the voice coil, whose induced voltage is $e_b=K_2\dot x$; $i_1$ flows through $R$. The cone (mass $m$) has a spring $k$ and damper $c$; the coupling force is $F=K_1i_2$. (a) Derive a mathematical model. (b) Find $X(s)/V(s)$ in standard form.
+
+</Statement>
+
+<Think>
+
+An electromechanical transducer: the coil current pushes the cone ($F=K_1i_2$), the cone's motion induces a back-voltage ($e_b=K_2\dot x$). Write one electrical KVL/KCL set and one Newton equation, couple them by $K_1,K_2$, then eliminate.
+
+</Think>
+
+<Steps>
+<Step title="(a) The four equations">
+
+(1) source loop $V=Ri_1+v_A$; (2) node A $i_1=C\dot v_A+i_2$; (3) voice-coil branch $v_A=L\dfrac{di_2}{dt}+K_2\dot x$; (4) cone $m\ddot x+c\dot x+kx=K_1i_2$. Four unknowns ($i_1,v_A,i_2,x$), four equations: order 4.
+
+</Step>
+<Step title="(b) 1. Laplace, zero ICs">
+
+$V=RI_1+V_A$; $I_1=CsV_A+I_2$; $V_A=LsI_2+K_2sX$; $PX=K_1I_2$ with $P(s)=ms^2+cs+k$.
+
+</Step>
+<Step title="(b) 2. Express everything in X">
+
+$I_2=PX/K_1$; $V_A=\Big(\dfrac{LsP}{K_1}+K_2s\Big)X$.
+
+</Step>
+<Step title="(b) 3. Source equation">
+
+$V=R(CsV_A+I_2)+V_A=(RCs+1)V_A+RI_2$.
+
+</Step>
+<Step title="(b) 4. Substitute and multiply by K₁">
+
+$K_1V=\big\{(RCs+1)[LsP+K_1K_2s]+RP\big\}X=\big\{P(RLCs^2+Ls+R)+K_1K_2s(RCs+1)\big\}X$:
+$$\frac{X}{V}=\frac{K_1}{(ms^2+cs+k)(RLCs^2+Ls+R)+K_1K_2s(RCs+1)} .$$
+
+</Step>
+<Step title="(b) 5. Standard form and expansion">
+
+Dividing by $kR$ makes the constant term 1: $\dfrac XV=\dfrac{K_1/(kR)}{\big[\tfrac mks^2+\tfrac cks+1\big]\big[LCs^2+\tfrac LRs+1\big]+\tfrac{K_1K_2}{kR}s(RCs+1)}$, a **fourth-order** system with DC gain $K_1/(kR)$. Expanded denominator:
+$mRLC\,s^4+(mL+cRLC)s^3+(mR+cL+kRLC+K_1K_2RC)s^2+(cR+kL+K_1K_2)s+kR$.
+
+</Step>
+<Step title="(b) 6. Checks">
+
+(i) DC: a constant voltage gives $i_2=V/R$ (the inductor is a short, the capacitor open), force $K_1V/R$, deflection $K_1V/(kR)$ ✔. (ii) $K_1=K_2=0$ (no coupling): the denominator factors into the mechanical times the electrical polynomial ✔. (iii) The coupling term $K_1K_2$ appears in the $s^1$ and $s^2$ coefficients: extra **damping** (the speaker's electrical braking).
+
+</Step>
+</Steps>
+
+<Answer>
+
+$\dfrac{X(s)}{V(s)}=\dfrac{K_1}{(ms^2+cs+k)(RLCs^2+Ls+R)+K_1K_2s(RCs+1)}$; DC gain $K_1/(kR)$.
+
+*Real-world:* a loudspeaker or voice-coil actuator: the electrical filter ($R,C,L$) and the mechanical resonator ($m,c,k$) are coupled by $K_1,K_2$; the coupling electrically damps the cone.
+
+</Answer>
+
+<Traps>
+
+- Forgetting the capacitor current ($i_1\ne i_2$).
+- A wrong sign on the back emf would give negative damping.
+
+</Traps>
+
+<Source>digest derivation.</Source>
+
+</Problem>
+
+<Problem id="Final F2010 P4" title="Attitude control of a rocket (unstable inverted-pendulum model) (13 marks)" tags="PD stabilisation, K_p must beat gravity">
+
+<Statement>
+
+For small angles $ML\ddot\theta-(M+m)g\theta=f$, with $f$ the side-thruster force. Design a control law to keep $\theta$ near zero with damping ratio 0.707 and settling time 8 s. $M=40$ slugs, $m=8$ slugs, $L=20$ ft, $g=32.2$ ft/s².
+
+</Statement>
+
+<Think>
+
+Balancing a broomstick: left alone it falls (the model has a **positive** "spring" term: a pole at $s=+1.39$ rad/s). Feed back the angle (a restoring push strong enough to beat gravity's toppling) and the angular rate (damping): $f=-K_p\theta-K_d\dot\theta$.
+
+</Think>
+
+<Steps>
+<Step title="1. Open loop">
+
+$MLs^2\Theta-(M+m)g\Theta=F\Rightarrow s^2=\dfrac{(M+m)g}{ML}=\dfrac{48\cdot32.2}{800}=1.932\Rightarrow s=\pm1.39$ rad/s: one pole in the right half-plane, **unstable**.
+
+</Step>
+<Step title="2. Control law (PD)">
+
+$f=-K_p\theta-K_d\dot\theta$ gives $ML\ddot\theta+K_d\dot\theta+[K_p-(M+m)g]\theta=0$, i.e. $800\ddot\theta+K_d\dot\theta+(K_p-1545.6)\theta=0$.
+
+</Step>
+<Step title="3. Specifications">
+
+$t_s=4/(\zeta\omega_n)=8\Rightarrow\zeta\omega_n=0.5$; with $\zeta=0.707$: $\omega_n=0.7071$ rad/s, $\omega_n^2=0.5$; desired poles $-0.5\pm j0.5$.
+
+</Step>
+<Step title="4. Match coefficients">
+
+$\omega_n^2=\dfrac{K_p-1545.6}{800}=0.5\Rightarrow K_p=1545.6+400=1945.6$; $2\zeta\omega_n=\dfrac{K_d}{800}=1.0\Rightarrow K_d=800$.
+
+</Step>
+<Step title="5. Control law and check">
+
+$$f=-1945.6\,\theta-800\,\dot\theta$$
+(lb per rad and lb·s per rad). Closed-loop polynomial $800s^2+800s+400=800(s^2+s+0.5)$: roots $-0.5\pm0.5j$ ✔; $\zeta=0.707$, $t_s=4/0.5=8$ s ✔.
+
+</Step>
+</Steps>
+
+<Answer>
+
+$f=-1945.6\,\theta-800\,\dot\theta$.
+
+*Real-world:* balancing a rocket (or a Segway): the thrusters must push harder than gravity's toppling torque; the rate feedback is the damping.
+
+</Answer>
+
+<Traps>
+
+- $K_p$ must first overcome the destabilising term $(M+m)g=1545.6$; $K_p<1545.6$ leaves the system unstable.
+- A plain proportional law (no damping) gives undamped oscillation.
+
+</Traps>
+
+<Source>digest derivation.</Source>
+
+<LabLink lab="pendulum">Balance the pendulum with PD feedback</LabLink>
+
+</Problem>
+
+<Problem id="Final F2010 P5" title="Matching free responses to pole locations (12 marks)" tags="pole location to response, rules not plots">
+
+<Statement>
+
+Twelve pole locations (assume $-b<-a<0$, $r>0$, $\omega_2>\omega_1$): 1. $s=0$; 2. $s=j\omega_1$; 3. $s=-b+j\omega_2$; 4. $s=-b$; 5. $s=r+j\omega_1$; 6. $s=-a$; 7. $s=r+j\omega_2$; 8. $s=-b+j\omega_1$; 9. $s=r$; 10. $s=-a+j\omega_1$; 11. $s=j\omega_2$; 12. $s=-a+j\omega_2$. Match them with twelve printed free-response plots (same scale). (The plots are thumbnails in the scan; the **rules** are given so the matching can be done on the plots.)
+
+</Statement>
+
+<Think>
+
+A pole at $s=\sigma+j\omega$ contributes $e^{\sigma t}\cos\omega t$: the **real part** sets growth or decay, the **imaginary part** sets the oscillation frequency. Left half-plane decays; imaginary axis keeps constant amplitude; right half-plane grows.
+
+</Think>
+
+<Steps>
+<Step title="Rule table">
+
+| Pole | Free response | Description |
+|---|---|---|
+| 1. $s=0$ | constant | **flat line** |
+| 2. $s=j\omega_1$ | $\sin\omega_1t$ | sustained oscillation, **low** frequency |
+| 11. $s=j\omega_2$ | $\sin\omega_2t$ | sustained oscillation, **high** frequency |
+| 4. $s=-b$ | $e^{-bt}$ | **fast** monotone decay ($b>a$) |
+| 6. $s=-a$ | $e^{-at}$ | **slower** monotone decay |
+| 9. $s=r$ | $e^{rt}$ | monotone **growth** |
+| 8. $s=-b+j\omega_1$ | $e^{-bt}\cos\omega_1t$ | **quickly decaying** oscillation, low frequency (few visible cycles) |
+| 3. $s=-b+j\omega_2$ | $e^{-bt}\cos\omega_2t$ | quickly decaying, **high** frequency |
+| 10. $s=-a+j\omega_1$ | $e^{-at}\cos\omega_1t$ | **slowly decaying** oscillation, low frequency |
+| 12. $s=-a+j\omega_2$ | $e^{-at}\cos\omega_2t$ | slowly decaying, **high** frequency (many cycles) |
+| 5. $s=r+j\omega_1$ | $e^{rt}\cos\omega_1t$ | **growing** oscillation, low frequency |
+| 7. $s=r+j\omega_2$ | $e^{rt}\cos\omega_2t$ | growing oscillation, **high** frequency |
+
+</Step>
+<Step title="Strategy">
+
+First sort the plots into flat / decay / growth / oscillation; within each group order by speed ($b>a$) and frequency ($\omega_2>\omega_1$). On the same scale, the faster the decay the shorter the visible transient.
+
+</Step>
+</Steps>
+
+<Answer>
+
+The table above.
+
+</Answer>
+
+<Traps>
+
+- Confusing which of $-a$, $-b$ decays faster ($-b$ is farther left, so faster).
+- Assuming $s=j\omega_1$ decays (it is a pure sinusoid).
+
+</Traps>
+
+<Source>digest rules (the matching itself is done on the plots).</Source>
+
+<Ch slug="time-response">Chapter 4 has an interactive pole playground</Ch>
+
+</Problem>
+
+<Problem id="Final F2010 P6" title="Nonlinear RLC circuit: model, linearisation, solution (15 marks)" tags="incremental resistance 450√i, partial fractions with a double pole">
+
+<Statement>
+
+A series RLC circuit with source $v$, inductor $L$, capacitor $C$ and a nonlinear resistor $v_R=300\,i^{3/2}$. (a) Derive the nonlinear model. (b) Linearise about the equilibrium $i_e=5$ mA. (c) Solve the linear model for $i$ with $v=te^{-3t}$, $L=0.1$ H, $C=0.002$ F.
+
+</Statement>
+
+<Think>
+
+KVL around the loop, differentiate to remove the integral, then linearise the resistor by its **slope** $dv_R/di$ (the incremental resistance). The source in the differentiated equation is $\dot v$, not $v$.
+
+</Think>
+
+<Steps>
+<Step title="(a) 1. KVL">
+
+$v=L\dfrac{di}{dt}+300\,i^{3/2}+\dfrac1C\!\int i\,dt$.
+
+</Step>
+<Step title="(a) 2. Differentiate">
+
+$\dfrac d{dt}\big(300\,i^{3/2}\big)=450\,i^{1/2}\dot i$, so
+$$L\ddot i+450\,i^{1/2}\,\dot i+\frac iC=\dot v .$$
+
+</Step>
+<Step title="(b) Linearise">
+
+$\dfrac{dv_R}{di}\Big|_{i_e}=450\sqrt{i_e}=450\sqrt{0.005}=31.82\ \Omega=R_{eq}$ (the **incremental resistance**). Linearised model: $L\ddot{\hat\imath}+R_{eq}\dot{\hat\imath}+\hat\imath/C=\dot{\hat v}$. (Strictly a series RLC with a capacitor has zero steady current, so $i_e=5$ mA is an operating point imposed by the source; the incremental model is valid near it.)
+
+</Step>
+<Step title="(c) 1. Numbers">
+
+$L=0.1$, $R_{eq}=31.82$, $1/C=500$: $0.1\ddot{\hat\imath}+31.82\dot{\hat\imath}+500\hat\imath=\dot v$.
+
+</Step>
+<Step title="(c) 2. Transform (zero ICs, v = te^{−3t})">
+
+$V=\dfrac{1}{(s+3)^2}$, $sV=\dfrac{s}{(s+3)^2}$: $\hat I(s)=\dfrac{s}{(s+3)^2(0.1s^2+31.82s+500)}=\dfrac{10s}{(s+3)^2(s^2+318.2s+5000)}$. The quadratic has roots $-16.58$ and $-301.6$ (overdamped).
+
+</Step>
+<Step title="(c) 3. Partial fractions (computed)">
+
+Residues: at $-3$ (simple part) $0.003036$; at $(s+3)^2$: $-0.007399$; at $-16.58$: $-0.003155$; at $-301.6$: $0.000119$.
+
+</Step>
+<Step title="(c) 4. Result and check">
+
+$$\hat\imath(t)=(0.003036-0.007399\,t)e^{-3t}-0.003155\,e^{-16.58t}+0.000119\,e^{-301.6t}\ \text{A}.$$
+$\hat\imath(0)=0.003036-0.003155+0.000119=0$ ✔. Magnitude: the source derivative $\dot v=e^{-3t}(1-3t)$ has peak 1 V/s, and the circuit is dominated by $R_{eq}$ and the capacitor, giving currents of a few milliamps ✔.
+
+</Step>
+</Steps>
+
+<Answer>
+
+(a) $L\ddot i+450\sqrt i\,\dot i+i/C=\dot v$; (b) $R_{eq}=31.8\ \Omega$; (c) the expression above (a few mA).
+
+*Real-world:* a circuit with a nonlinear (lamp-like or ionised-gas) resistor: near the operating point it behaves like a 31.8 Ω resistor.
+
+</Answer>
+
+<Traps>
+
+- The linearised equation has $\dot v$, not $v$: do not forget to differentiate the source.
+- $i_e=5$ mA is 0.005 A.
+
+</Traps>
+
+<Source>digest derivation (residues computed numerically).</Source>
+
+<ToolLink tool="pfe">Check the partial fractions with the double pole</ToolLink>
+
+</Problem>
+
+<Problem id="Final F2010 P7" title="Stabilising an unstable plant with a gain K in the feedback path (15 marks)" tags="root locus, stability range, break-in, inconsistent part (c)">
+
+<Statement>
+
+Plant $\dfrac{s+3}{s^2-2s+10}$ in the forward path with a gain $K$ in the feedback path (Fig. 7a). The root locus (Fig. 7b): open-loop poles at $1\pm j3$ (right half-plane), zero at $-3$, the locus swings left and joins the real axis near $-8$. (a) Minimum $K$ for stability; annotate the root locus. (b) Maximum $K$ for the response to remain oscillatory. (c) $K$ to achieve a steady-state response of 0.6 to the step $r(t)=3\cdot1(t)$.
+
+</Statement>
+
+<Think>
+
+Closed loop $\dfrac{G}{1+KG}$: the denominator is a second-order polynomial, so "stable" just means **both coefficients positive**; "oscillatory" means a negative discriminant; the steady value is $3\,T(0)$ **if the system is stable**.
+
+</Think>
+
+<Steps>
+<Step title="(a) 1. Closed loop">
+
+$\dfrac CR=\dfrac{G}{1+KG}=\dfrac{s+3}{s^2-2s+10+K(s+3)}=\dfrac{s+3}{s^2+(K-2)s+(10+3K)}$.
+
+</Step>
+<Step title="(a) 2. Stability">
+
+Both coefficients positive: $K-2>0$ and $10+3K>0\Rightarrow K>2$. **Minimum $K=2$** (marginal: poles $\pm j4$, $\omega=\sqrt{10+3K}=\sqrt{16}$). On the root locus this is where the branches **cross the imaginary axis at $s=\pm j4$**; for $K>2$ the poles are in the left half-plane.
+
+</Step>
+<Step title="(b) 1. Discriminant">
+
+Complex poles iff $(K-2)^2-4(10+3K)<0\Rightarrow K^2-4K+4-40-12K<0\Rightarrow K^2-16K-36<0\Rightarrow K\in(-2,18)$.
+
+</Step>
+<Step title="(b) 2. Result">
+
+**Maximum $K=18$**: there the poles are a double real pole at $s=-8$, the **break-in point** on the locus ($\approx-8$ in Fig. 7b); above it both poles are real (overdamped).
+
+</Step>
+<Step title="(c) 1. DC gain">
+
+$T(0)=\dfrac3{10+3K}$; steady output $3T(0)=\dfrac9{10+3K}=0.6\Rightarrow10+3K=15\Rightarrow K=\tfrac53\approx1.67$.
+
+</Step>
+<Step title="(c) 2. But it is unstable">
+
+$K=1.67<2$ is **unstable** by part (a): the closed-loop poles are $0.167\pm j3.87$, so there is **no steady state**. The requested value 0.6 cannot be achieved with a stable system in this structure: the question is inconsistent with (a) (a trap or an exam error). The closest stable choices: $K=2$ (marginal) gives $9/16=0.5625$; $K=5$ gives $9/25=0.36$.
+
+</Step>
+<Step title="Verification">
+
+Roots for $K=1.67,\,2,\,5,\,18$: $0.17\pm j3.87$; $\pm j4$; $-1.5\pm j4.77$; $-8,-8$ ✔.
+
+</Step>
+</Steps>
+
+<Answer>
+
+(a) $K_{min}=2$ (crossing at $\pm j4$); (b) $K_{max}=18$ (double pole at $-8$); (c) $K=5/3$ would give 0.6 **but is unstable**: no valid answer.
+
+*Real-world:* stabilising an unstable thrust or lift-off mode with a rate sensor: you must exceed a *minimum* gain; too much eliminates oscillation but lowers the output.
+
+</Answer>
+
+<Callout kind="warn" title="⚠ Part (c) is inconsistent with part (a)">
+
+Quoting $K=5/3$ without checking stability is the trap. The steady-state formula only applies to a stable closed loop.
+
+</Callout>
+
+<Traps>
+
+- The DC gain depends on $K$ through the feedback structure; do not use the open-loop DC gain.
+- Check stability **before** using a final-value argument.
+
+</Traps>
+
+<Source>digest derivation (roots computed for the four gains).</Source>
+
+<ToolLink tool="root-locus">Plot the locus of this loop</ToolLink>
+
+</Problem>
+
+<Examined>
+
+Stability and free responses: <Ch slug="time-response">Chapter 4</Ch>, <Ch slug="routh">Chapter 16</Ch>; modelling: <Ch slug="mech-models">Chapter 3</Ch>, <Ch slug="electromechanical">Chapter 11</Ch>; PD stabilisation: <Ch slug="pid">Chapter 17</Ch>; root locus: <Ch slug="root-locus">Chapter 18</Ch>.
+
+</Examined>

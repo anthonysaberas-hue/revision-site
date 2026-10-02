@@ -1,0 +1,43 @@
+<p className="eyebrow">Exam toolkit · errata</p>
+
+# Errata: mistakes and ambiguities in the exams, graded copies and printed solutions
+
+<div className="lede">
+
+Every number on this site was recomputed independently. This page lists where the recomputation **disagrees** with a printed solution, a graded copy, or the wording of a question, so you do not "correct" a right answer or copy a wrong one. Items are ranked by how likely they are to matter on an exam. (Rounding differences in the last digit are not listed unless they change a conclusion.)
+
+</div>
+
+## Graded student copies
+
+| # | Where | What the copy says | Correct | Why it matters |
+|---|---|---|---|---|
+| 1 | <Ex id="mt2-f2023">MT2 Nov 2023, Q1</Ex> | $L_c=0.025$ m for the 30 cm sphere; $k_{min}=18.75$, $t=3143$ s, $Q=25.7$ MJ, 8176 W | $L_c=D/6=0.05$ m; $k_{min}=37.5$ W/mK; $t=6285$ s; $Q=41.2$ MJ; 6554 W | The factor 2 in $L_c$ propagates into every part. |
+| 2 | <Ex id="mt2-f2023">MT2 Nov 2023, Q2(c)</Ex> | $Q=31\,401$ kJ with $Q_{max}=58$ MJ | $Q=9420$ kJ with $Q_{max}=17.4$ MJ (hemisphere volume $\tfrac23\pi r_0^3$) | The copy's $Q$ exceeds the body's whole heat content: always check $Q<Q_{max}$. |
+| 3 | <Ex id="mt2-f2023">MT2 Nov 2023, Q3</Ex> | RM volume $2\pi L(r_3-r_2)=1.257$ m³; generation = oil heat only | $V=\pi L(r_3^2-r_2^2)=0.2073$ m³; $\dot e=(\dot Q_{oil}+\dot Q_{air})/V=8570$ kW/m³ | Shell volume needs the mean radius; heat leaves in **both** directions. |
+| 4 | <Ex id="mt1-f2023">MT1 Oct 2023, Q1(ii)</Ex> | Two options circled | One answer is wanted: (b) insulating the tip is physically wrong | If two look false, pick the physically impossible one. |
+| 5 | <Ex id="mt1-w2024">MT1 Feb 2024, Q3 (own attempt)</Ex> | Marked 5/8; margin note "need more BCs" on (d); a red stroke on (a) | All four answers (132.3 °C, 211.2 °C, $4.00\times10^6$ W/m³, 15.5 W/mK) are correct; the third condition used in (d) is independent of $k$ | The regrade request is justified by the physics; keep your method explicit on the page. |
+
+## Printed solutions and exam wording
+
+| # | Where | Issue | Resolution |
+|---|---|---|---|
+| 6 | <Asg n="07">Assignment 7, 7-88</Asg> | The printed second iteration (viscosity at 136.9 °C) gives 139.6 °C, "a difference of 2.7 °C" | We get 137.8 °C (a change of 0.9 °C): at 139.6 °C the energy balance sums to 91.9 W instead of 90 W. The first-pass 136.9 °C is adequate. |
+| 7 | <Asg n="03">Assignment 3, 3-75</Asg> | Printed 572 W per section, 263 °C | 570 W, 261 °C with exact resistances: the printed values round $R_E$ to 0.05 (exact 0.0476) and $R_{B}$. |
+| 8 | <Asg n="03">Assignment 3, 3-67</Asg> | 685 W for the single 0.75 mm layer | 683 W with exact resistances (rounding of $5R_{fabric}$). |
+| 9 | <Ex id="mt2-f2022">MT2 Nov 2022, Q2</Ex> | $k=90$ W/mK with $\alpha=33.9\times10^{-6}$ m²/s for brass of $\rho c_p=3.24\times10^6$ | These satisfy $\alpha=k/\rho c_p$ only for $k\approx110$. Using the printed numbers gives 42.5 °C; with $k=110$, 48.8 °C. Use the data as printed and say so. |
+| 10 | <Ex id="mt2-f2023">MT2 Nov 2023, Q2</Ex> | $k=2$ W/mK with the same $\alpha$ | Same inconsistency ($k\approx110$ would make the lumped model valid). Intended: $Bi=0.9$ and the sphere one-term solution. |
+| 11 | <Ex id="mt2-f2023">MT2 Nov 2023, Q3</Ex> | Oil conductivity $k=5$ W/mK (real oil $\approx0.15$) | Internally consistent with $Nu=79.15$ and $h=1319$: use the printed value. |
+| 12 | <Ex id="mt2-f2022">MT2 Nov 2022, Q1(c)</Ex> | "total rate of heat transfer ... (in Joules)" | Asks for the total heat $Q=\rho Vc_p\Delta T$ (joules), not a rate in watts. |
+| 13 | <Ex id="mt1-f2021">MT1 Oct 2021</Ex> and <Ex id="mt1-f2023">Oct 2023</Ex>, Q2 | The thin-fin form $m=\sqrt{2h/kt}$ (16.81 m⁻¹) vs the exact perimeter $p=2(w+t)$ (16.87 m⁻¹) | Both accepted; answers agree to 0.3 %. |
+| 14 | <Asg n="03">Assignment 3, 3-145</Asg> | The printed solution selects a heat sink from a catalogue table not available here | Method only: required $R\le(T_{case}-T_\infty)/\dot Q=1.75$ K/W. |
+
+## Self-corrections made while building this site
+
+- The first draft of the conduction-equation notes said the heat flux "drops at the interface" between a fuel rod and its steel tube. That is **wrong**: the flux is continuous at $r_1$ (same heat, same area) and falls gradually as $1/r$ through the tube. Fixed in <Ch slug="conduction-eq">Chapter 2</Ch> and the October 2021 paper.
+- An early claim that the brass-cylinder answer was insensitive to $k$ was wrong (item 9); corrected after a numerical check.
+- Wind-chill coefficients were removed from <Ch slug="intro">Chapter 1</Ch> because no source value could be verified.
+
+<Examined>
+How to use this page: when your answer differs from a printed one, check items 6–8 first (rounding), then 1–3 (the common student errors), then 9–11 (property inconsistencies).
+</Examined>

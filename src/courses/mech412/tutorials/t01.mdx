@@ -1,0 +1,225 @@
+<p className="eyebrow">Tutorial 1 · Jan 9, 2024 · Lectures 2–3</p>
+
+# Tutorial 1: ODE time responses, second-order parameters, rod with spring and damper
+
+<div className="lede">
+
+Laplace practice (<Ch slug="laplace">Chapter 2</Ch>) and the first mechanical model (<Ch slug="mech-models">Chapter 3</Ch>). The instructor's tablet solution has **two real errors**: it says the cubic in Q2 cannot be factored (it can), and the exponential coefficients in Q3 break the initial condition. Both are fixed below, and every answer was recomputed.
+
+</div>
+
+<Problem id="T1 Q1" title="Three ODEs: time response, steady state, ζ and ω_n" tags="Laplace, partial fractions, damping">
+
+<Statement>
+
+For each: find the time response, the steady-state solution, the damping ratio and natural frequency; sketch.
+(i) $\ddot x+2\dot x+x=\delta(t-\tau)$; (ii) $\ddot x+2\dot x+2x=1$; (iii) $\ddot x+3\dot x+2x=\sin t$. (All initial conditions zero.)
+
+</Statement>
+
+<Think>
+
+All three have the **same recipe**: transform with zero initial conditions, write $X(s)=\dfrac{\text{input}}{\text{characteristic polynomial}}$, do partial fractions, invert. Read $\omega_n^2$ from the constant term and $2\zeta\omega_n$ from the $s$ coefficient of the characteristic polynomial $s^2+2\zeta\omega_ns+\omega_n^2$.
+
+</Think>
+
+<Steps>
+<Step title="(i) Transform">
+
+$\mathcal L\{\delta(t-\tau)\}=e^{-s\tau}$, so $X=\dfrac{e^{-s\tau}}{s^2+2s+1}=\dfrac{e^{-s\tau}}{(s+1)^2}$.
+
+</Step>
+<Step title="(i) Invert">
+
+$\mathcal L^{-1}\{1/(s+1)^2\}=te^{-t}$; the factor $e^{-s\tau}$ delays it by $\tau$: $\;x(t)=(t-\tau)e^{-(t-\tau)}H(t-\tau)$.
+
+</Step>
+<Step title="(i) Parameters">
+
+$s^2+2s+1$: $\omega_n^2=1\Rightarrow\omega_n=1$; $2\zeta\omega_n=2\Rightarrow\zeta=1$ (**critically damped**, double pole at $-1$). $x_{ss}=0$. *Picture:* a door damper hit by a hammer at $t=\tau$: it moves, peaks at $t-\tau=1$ and returns to rest without oscillating.
+
+</Step>
+<Step title="(ii) Transform and PFE">
+
+$X=\dfrac{1}{s(s^2+2s+2)}=\dfrac{A}{s}+\dfrac{Bs+C}{s^2+2s+2}$. Multiply out: $1=A(s^2+2s+2)+(Bs+C)s$. Constant: $2A=1\Rightarrow A=0.5$. $s^2$: $A+B=0\Rightarrow B=-0.5$. $s^1$: $2A+C=0\Rightarrow C=-1$.
+
+</Step>
+<Step title="(ii) Invert">
+
+$\dfrac{-0.5s-1}{(s+1)^2+1}=-\dfrac{0.5(s+1)+0.5}{(s+1)^2+1}\Rightarrow x(t)=0.5-e^{-t}\big(0.5\cos t+0.5\sin t\big)$. Check: $x(0)=0.5-0.5=0$ ✔.
+
+</Step>
+<Step title="(ii) Parameters">
+
+$\omega_n^2=2$, $\omega_n=\sqrt2$; $2\zeta\omega_n=2\Rightarrow\zeta=1/\sqrt2=0.707$ (underdamped, poles $-1\pm j$). $x_{ss}=0.5$ (it is $1/\omega_n^2$, the DC gain times the input 1). Overshoot $=100e^{-\pi\zeta/\sqrt{1-\zeta^2}}=100e^{-\pi}=4.3\%$ ✔ (peak $0.5\cdot1.043=0.52$). *Picture:* a spring-mass-damper released to a new rest position at 0.5.
+
+</Step>
+<Step title="(iii) Transform and PFE">
+
+$X=\dfrac{1}{(s^2+1)(s+1)(s+2)}$ (since $s^2+3s+2=(s+1)(s+2)$). Real poles by cover-up: at $s=-1$: $\dfrac{1}{(1+1)(-1+2)}=0.5$; at $s=-2$: $\dfrac{1}{(4+1)(-2+1)}=-0.2$. For the pair $\dfrac{As+B}{s^2+1}$ evaluate the rest at $s=j$: $\dfrac1{(j+1)(j+2)}=\dfrac1{1+3j}=\dfrac{1-3j}{10}=0.1-0.3j$, so $B=0.1$ and $A=-0.3$.
+
+</Step>
+<Step title="(iii) Invert and read off">
+
+$x(t)=-0.3\cos t+0.1\sin t+0.5e^{-t}-0.2e^{-2t}$. Check $x(0)=-0.3+0.5-0.2=0$ ✔ and $\dot x(0)=0.1-0.5+0.4=0$ ✔. **Steady state is the sinusoid** $-0.3\cos t+0.1\sin t$ (the exponentials are the transient). $\omega_n=\sqrt2$, $2\zeta\omega_n=3\Rightarrow\zeta=\dfrac3{2\sqrt2}=1.06$ (overdamped, real poles $-1,-2$). *Picture:* a suspension driven by a sinusoidal road.
+
+</Step>
+</Steps>
+
+<Answer>
+
+(i) $x=(t-\tau)e^{-(t-\tau)}H(t-\tau)$, $\zeta=1$, $\omega_n=1$. (ii) $x=0.5-e^{-t}(0.5\cos t+0.5\sin t)$, $x_{ss}=0.5$, $\zeta=0.707$, $\omega_n=\sqrt2$. (iii) $x=-0.3\cos t+0.1\sin t+0.5e^{-t}-0.2e^{-2t}$, steady state a sinusoid, $\zeta=1.06$, $\omega_n=\sqrt2$.
+
+</Answer>
+
+<Traps>
+
+- In (iii) the steady-state answer is the **sinusoid**, not a constant.
+- Check $x(0)=0$ after every partial-fraction expansion; it catches most sign errors.
+
+</Traps>
+
+<Source>instructor's tablet solution ✔ (all three verified).</Source>
+
+<ToolLink tool="pfe">Check the partial fractions</ToolLink>
+
+</Problem>
+
+<Problem id="T1 Q2" title="Third-order system x‴ + 9x″ + 26x′ + 24x = u(t), unit step" tags="factoring a cubic, final value">
+
+<Statement>
+
+(a) Can the time response be determined? (b) Steady-state value for a unit step?
+
+</Statement>
+
+<Think>
+
+Look for **integer roots** first: the divisors of the constant term 24. Negative roots (all coefficients are positive, so any real root is negative).
+
+</Think>
+
+<Steps>
+<Step title="1. Try integer roots">
+
+$s=-2$: $-8+36-52+24=0$ ✔. Divide: $s^3+9s^2+26s+24=(s+2)(s^2+7s+12)=(s+2)(s+3)(s+4)$.
+
+</Step>
+<Step title="2. Partial fractions">
+
+$X=\dfrac{1}{s(s+2)(s+3)(s+4)}$, by cover-up: at $0$: $\dfrac1{2\cdot3\cdot4}=\dfrac1{24}$; at $-2$: $\dfrac{1}{(-2)(1)(2)}=-\dfrac14$; at $-3$: $\dfrac1{(-3)(-1)(1)}=\dfrac13$; at $-4$: $\dfrac1{(-4)(-2)(-1)}=-\dfrac18$.
+
+</Step>
+<Step title="3. Invert and check">
+
+$x(t)=\dfrac1{24}-\dfrac14e^{-2t}+\dfrac13e^{-3t}-\dfrac18e^{-4t}$. $x(0)=\dfrac1{24}-\dfrac6{24}+\dfrac8{24}-\dfrac3{24}=0$ ✔. Final value $x_{ss}=\lim_{s\to0}sX=\dfrac1{24}$ ✔ (all poles in the LHP, so the theorem applies).
+
+</Step>
+</Steps>
+
+<Answer>
+
+(a) Yes: $x(t)=\tfrac1{24}-\tfrac14e^{-2t}+\tfrac13e^{-3t}-\tfrac18e^{-4t}$. (b) $x_{ss}=1/24$.
+
+</Answer>
+
+<Callout kind="warn" title="⚠ Instructor's solution error">
+
+The tablet solution says "can't factor analytically" for (a). It does factor: $(s+2)(s+3)(s+4)$. Only (b) $x_{ss}=1/24$ was right.
+
+</Callout>
+
+<Traps>
+
+- Try integer roots (divisors of the constant term) before declaring a cubic unfactorable.
+
+</Traps>
+
+<Source>instructor ✘ on (a), ✔ on (b); recomputed.</Source>
+
+</Problem>
+
+<Problem id="T1 Q3" title="Rod with spring and damper: initial angle 1 rad, torque T(t) = sin 5t" tags="rotation about a pin, moment equation, initial conditions">
+
+<Statement>
+
+A rod ($m=2$ kg, $\ell=1$ m) is pinned at its left end, where the torque $T(t)$ acts; a spring ($4$ N/m) acts at $\ell/2$ and a damper ($2$ N·s/m) at $\ell$. $\theta(0)=1$ rad, $\dot\theta(0)=0$. Find $\theta(t)$ for $T=\sin5t$.
+
+</Statement>
+
+<Think>
+
+Rotation about a fixed pin: **sum of moments about the pin** $=J\ddot\theta$. A spring or damper at distance $r$ from the pin gives a *force* $k r\theta$ (small angles) at lever arm $r$, so a moment $kr^2\theta$.
+
+</Think>
+
+<Steps>
+<Step title="1. Inertia about the pin">
+
+$J=\tfrac13m\ell^2=\tfrac13\cdot2\cdot1=\tfrac23$ kg·m².
+
+</Step>
+<Step title="2. Moments">
+
+Spring at $\ell/2$: $4\left(\tfrac\ell2\right)^2\theta=\theta$. Damper at $\ell$: $2\ell^2\dot\theta=2\dot\theta$. Equation:
+$$\tfrac23\ddot\theta+2\dot\theta+\theta=\sin5t .$$
+
+</Step>
+<Step title="3. Transform with initial conditions">
+
+$\tfrac23\big(s^2\Theta-s\theta(0)-\dot\theta(0)\big)+2\big(s\Theta-\theta(0)\big)+\Theta=\dfrac5{s^2+25}$. With $\theta(0)=1$: $\big(\tfrac23s^2+2s+1\big)\Theta=\tfrac23s+2+\dfrac5{s^2+25}$.
+
+</Step>
+<Step title="4. Factor">
+
+$\tfrac23s^2+2s+1=\tfrac23(s^2+3s+1.5)=\tfrac23(s+2.366)(s+0.634)$ (roots $\frac{-3\pm\sqrt3}{2}$). **Keep the factor $\tfrac23$**: $\Theta=\dfrac{\tfrac23(s+3)}{\tfrac23(s+2.366)(s+0.634)}+\dfrac{5}{\tfrac23(s^2+25)(s+2.366)(s+0.634)}$. The homogeneous part is $\dfrac{s+3}{(s+2.366)(s+0.634)}=\dfrac{-0.366}{s+2.366}+\dfrac{1.366}{s+0.634}$.
+
+</Step>
+<Step title="5. Forced part (steady state)">
+
+Sinusoidal steady state: $\theta=\mathrm{Im}\,\dfrac{e^{j5t}}{-\frac23\cdot25+10j+1}=\mathrm{Im}\dfrac{e^{j5t}}{-15.67+10j}$. $|\cdot|=\dfrac1{18.6}=0.054$; the phase is $-147.5^\circ$: $\theta_{ss}=-0.029\cos5t-0.0454\sin5t$.
+
+</Step>
+<Step title="6. Sum and fix the constants with the initial conditions">
+
+The forced part is $-0.029\cos5t-0.0454\sin5t$: its value at $t=0$ is $-0.029$ and its slope is $-0.0454\cdot5=-0.227$. The exponentials must make up the difference so that $	heta(0)=1$ and $\dot	heta(0)=0$: with $	heta_{tr}=c_1e^{-0.634t}+c_2e^{-2.366t}$, $c_1+c_2=1.029$ and $-0.634c_1-2.366c_2=+0.227$. Solving gives $c_1=1.536$, $c_2=-0.5075$.
+
+</Step>
+<Step title="7. Result and checks">
+
+$$\theta(t)=1.536e^{-0.634t}-0.5075e^{-2.366t}-0.0290\cos5t-0.0454\sin5t .$$
+Check: $\theta(0)=1.536-0.5075-0.029=1.000$ ✔. $\dot\theta(0)=-0.974+1.201-0.227=0.000$ ✔. After about 7 s the transient has gone and the rod just follows the forcing with amplitude $0.054$ rad.
+
+</Step>
+</Steps>
+
+<Answer>
+
+$\theta(t)=1.536e^{-0.634t}-0.5075e^{-2.366t}-0.0290\cos5t-0.0454\sin5t$.
+
+*Real-world:* a hinged hatch with a return spring and damper being shaken by a motor torque at 5 rad/s.
+
+</Answer>
+
+<Callout kind="warn" title="⚠ Instructor's transient coefficients are wrong">
+
+The tablet answer is $-0.338e^{-2.366t}+1.025e^{-0.634t}-0.029\cos5t-0.045\sin5t$. The sinusoidal part is right, but $\theta(0)=0.658\ne1$: the factor $\tfrac23$ in $\tfrac23s^2+2s+1=\tfrac23(s+2.366)(s+0.634)$ was dropped when setting up the partial fractions. **Always check the initial condition at $t=0$.**
+
+</Callout>
+
+<Traps>
+
+- A spring or damper at distance $r$ from the pin contributes $kr^2$ or $cr^2$ to the rotational equation, not $k$ or $c$.
+- Keep the leading coefficient when factoring $J s^2+\dots$.
+
+</Traps>
+
+<Source>instructor ✘ (transient); digest sympy solution with $\theta(0)=1$, $\dot\theta(0)=0$ verified.</Source>
+
+</Problem>
+
+<Examined>
+
+First-week Laplace: $\text{MT1 W2019 Q1}$, $\text{MT1 W2009}$; pinned-rod model: $\text{HW2}$, $\text{MT1 F2011}$.
+
+</Examined>

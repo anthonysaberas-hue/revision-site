@@ -1,0 +1,333 @@
+<p className="eyebrow">Midterm 1 · Winter 2019 (Feb 14, 2019) · covers Lectures 1–9 · 4 × 25 = 100 marks</p>
+
+# Midterm 1, Winter 2019: two-axis state space, belt drive, bridged-T notch, step response of a notch
+
+<div className="lede">
+
+The richest MT1 paper. Q1 is a block diagram turned into state space with a full $\Phi(t)$; Q2 a belt-driven printer carriage; Q3 and Q4 the same **bridged-T network** (transfer function, Bode, then the step response). The official solution has several flaws, all flagged below: an incomplete $\Phi(t)$, a missing denominator phase term in Q3, and a **wrong overshoot (39 % instead of 40.7 %) and a wrong "no way to reduce it" conclusion in Q4(d)**. Handout: Laplace table and Method 1/2.
+
+</div>
+
+<Problem id="MT1 W2019 Q1" title="Two-axis coupled system: state equations, characteristic equation, Φ(t), transfer matrix (25 marks)" tags="block diagram to state space, Φ(t), transfer matrix">
+
+<Statement>
+
+A two-axis control system: reference $R_1\to\oplus\to K_1$ and $R_2\to\oplus\to K_2$. The output of $K_1$ enters $(+)$ the integrator producing $X_1=Y_1$ and also $(+)$ the integrator producing $X_2=Y_2$. The output of $K_2$ enters $(-)$ the first integrator and $(+)$ the second (a cross pattern). $Y_1$ and $Y_2$ are fed back negatively to their own reference junctions. (a) Obtain the state and output equations. (b) Find the characteristic equation from $A$. (c) Find $\Phi(t)$ for $K_1=1$, $K_2=2$. (d) Obtain the transfer matrix.
+
+</Statement>
+
+<Think>
+
+One state per integrator output. Write each integrator's input as a sum of the signals that reach its junction, with the correct signs. The cross-coupling is the whole point of the question: the first integrator gets $+K_1(\cdot)$ and **$-K_2(\cdot)$**, the second gets **both with plus signs**.
+
+</Think>
+
+<Steps>
+<Step title="(a) 1. Integrator inputs">
+
+$\dot x_1=K_1(r_1-x_1)-K_2(r_2-x_2)$, $\;\dot x_2=K_1(r_1-x_1)+K_2(r_2-x_2)$, outputs $y_1=x_1$, $y_2=x_2$.
+
+</Step>
+<Step title="(a) 2. Matrices">
+
+$$A=\begin{bmatrix}-K_1&K_2\\-K_1&-K_2\end{bmatrix},\quad B=\begin{bmatrix}K_1&-K_2\\K_1&K_2\end{bmatrix},\quad C=I_2,\ D=0 .$$
+
+</Step>
+<Step title="(b) Characteristic equation">
+
+$|sI-A|=\begin{vmatrix}s+K_1&-K_2\\K_1&s+K_2\end{vmatrix}=(s+K_1)(s+K_2)+K_1K_2$. For $K_1=1$, $K_2=2$: $(s+1)(s+2)+2=s^2+3s+4=\Delta(s)$. Poles $-1.5\pm j1.3229$.
+
+</Step>
+<Step title="(c) 1. Φ(s)">
+
+$\Phi(s)=(sI-A)^{-1}=\dfrac1\Delta\begin{bmatrix}s+2&2\\-1&s+1\end{bmatrix}$ (inverse of a $2\times2$: swap the diagonal, flip the signs of the off-diagonal, divide by the determinant).
+
+</Step>
+<Step title="(c) 2. Invert each entry">
+
+Complete the square: $\Delta=(s+1.5)^2+\omega^2$, $\omega=\sqrt7/2=1.3229$. $\dfrac{s+2}{\Delta}=\dfrac{s+1.5}{\Delta}+\dfrac{0.5}{\Delta}\Rightarrow e^{-1.5t}\big(\cos\omega t+\tfrac{0.5}{\omega}\sin\omega t\big)$ with $\tfrac{0.5}\omega=\tfrac1{\sqrt7}$. Similarly $\dfrac{s+1}{\Delta}\Rightarrow e^{-1.5t}(\cos\omega t-\tfrac1{\sqrt7}\sin\omega t)$, $\dfrac2\Delta\Rightarrow\dfrac2\omega e^{-1.5t}\sin\omega t=\dfrac4{\sqrt7}e^{-1.5t}\sin\omega t$, $\dfrac{-1}\Delta\Rightarrow-\dfrac{2}{\sqrt7}e^{-1.5t}\sin\omega t$.
+
+</Step>
+<Step title="(c) 3. Result and check">
+
+$$\Phi(t)=e^{-1.5t}\begin{bmatrix}\cos\omega t+\tfrac{1}{\sqrt7}\sin\omega t&\tfrac4{\sqrt7}\sin\omega t\\-\tfrac2{\sqrt7}\sin\omega t&\cos\omega t-\tfrac1{\sqrt7}\sin\omega t\end{bmatrix}.$$
+At $t=0.5$: $\begin{bmatrix}0.4824&0.4387\\-0.2193&0.2631\end{bmatrix}$, identical to the matrix exponential $e^{A\cdot0.5}$ computed independently; $\Phi(0)=I$ ✔.
+
+</Step>
+<Step title="(d) Transfer matrix">
+
+$G=C\Phi B=\dfrac1\Delta\begin{bmatrix}s+2&2\\-1&s+1\end{bmatrix}\begin{bmatrix}1&-2\\1&2\end{bmatrix}=\dfrac1{\Delta(s)}\begin{bmatrix}s+4&-2s\\s&2s+4\end{bmatrix}.$ Sanity: $G(0)=\dfrac14\begin{bmatrix}4&0\\0&4\end{bmatrix}=I$ (unity DC gain on each axis, no static cross-coupling) ✔.
+
+</Step>
+</Steps>
+
+<Answer>
+
+$A,B,C$ as above; $\Delta=s^2+3s+4$; $\Phi(t)$ as above; $G=\dfrac1{s^2+3s+4}\begin{bmatrix}s+4&-2s\\s&2s+4\end{bmatrix}$.
+
+*Real-world:* a two-axis camera gimbal where axis 2 is dragged by axis 1: the poles $-1.5\pm1.32j$ mean a lightly damped ($\zeta=0.75$) response, and the off-diagonal terms of $G$ show the cross-talk.
+
+</Answer>
+
+<Callout kind="warn" title="⚠ Presentation slips in the official solution">
+
+(i) In (b) the matrix $sI-A$ is written with the off-diagonal signs the wrong way round ($[s+K_1\ \ K_2;\,-K_1\ \ s+K_2]$ instead of $[s+K_1\ \ -K_2;\,K_1\ \ s+K_2]$); the determinant and $\Phi(s)$ are unaffected. (ii) $\Phi(t)$ is **incomplete**: the sheet inverts only the $(s+1)$ entry; a full answer needs all four entries (above).
+
+</Callout>
+
+<Traps>
+
+- Cross-coupling signs: the first integrator gets $+K_1(r_1-x_1)$ and $-K_2(r_2-x_2)$; the second gets both with plus signs. Getting the $K_2$ sign wrong flips $A_{12}$ and $B_{12}$.
+- Complete the square carefully: $s+2=(s+1.5)+0.5$.
+
+</Traps>
+
+<Source>official solution (15 + 3 + 4 + 3 marks) ✔ for $A,B,\Delta,G$; $\Phi(t)$ completed here and verified.</Source>
+
+<ToolLink tool="state-space">Check $\Phi(t)$ in the state-space tool</ToolLink>
+
+</Problem>
+
+<Problem id="MT1 W2019 Q2" title="Laser-printer belt drive and DC motor: EOM, state space, Simulink (25 marks)" tags="belt tension, velocity feedback, chosen states">
+
+<Statement>
+
+A DC motor (shaft angle $\theta$, inertia $J$, torsional damping $b$, torque $T_m$) drives a pulley of radius $r$; a belt with two springs of stiffness $k$ (tensions $T_1$ upper, $T_2$ lower) connects to an idler (massless) and to the carriage $m$ (position $y$). Sensor $v_1=k_1y$; controller $v_2=-k_2\dot v_1$ applied to the motor, $T_m=\dfrac{K_m}{R}v_2$. (a) Equation of motion of the mechanical elements. (b) One state-space representation with $x_1=r\theta-y$, $x_2=\dot y$, $x_3=\dot\theta$. (c) Complete the Simulink diagram.
+
+</Statement>
+
+<Think>
+
+The belt springs stretch by the **difference** between the belt motion at the pulley ($r\theta$) and the carriage ($y$): that is exactly the state $x_1$. The controller $v_2=-k_2\,d(k_1y)/dt=-k_1k_2\dot y$ is **velocity feedback**: it acts as an electrical damper on the carriage.
+
+</Think>
+
+<Steps>
+<Step title="(a) 1. Belt tensions">
+
+$T_1=k(r\theta-y)=kx_1$ pulls the carriage forward; $T_2=k(y-r\theta)=-kx_1$ pulls it backward.
+
+</Step>
+<Step title="(a) 2. Carriage">
+
+$m\ddot y=T_1-T_2=2k(r\theta-y)=2kx_1$.
+
+</Step>
+<Step title="(a) 3. Motor shaft">
+
+The belt reaction torque on the shaft is $r(T_1-T_2)=2krx_1$ (opposing the rotation): $J\ddot\theta+b\dot\theta=T_m-2krx_1$.
+
+</Step>
+<Step title="(b) 1. Substitute the controller">
+
+$v_2=-k_2\dot v_1=-k_1k_2\dot y=-k_1k_2x_2$, so $T_m=\dfrac{K_m}{R}v_2=-\dfrac{K_mk_1k_2}{R}x_2$.
+
+</Step>
+<Step title="(b) 2. State equations">
+
+$\dot x_1=r\dot\theta-\dot y=rx_3-x_2$; $\;\dot x_2=\dfrac{2k}{m}x_1$; $\;\dot x_3=\dfrac1J\Big[-\dfrac{K_mk_1k_2}{R}x_2-2krx_1-bx_3\Big]$.
+
+$$A=\begin{bmatrix}0&-1&r\\2k/m&0&0\\-2kr/J&-K_mk_1k_2/(JR)&-b/J\end{bmatrix},\qquad B=0\ (T_d=0).$$
+
+</Step>
+<Step title="(c) Simulink">
+
+Input torque path $(T_d+T_m)\to$ gain $1/J\to$ summing junction with feedback gains $b/J$ (from $X_3$) and $2kr/J$ (from $X_1$) $\to\int\to X_3\to$ gain $r\to$ sum junction (with $-X_2$) $\to\int\to X_1$ (scope). Top path: $X_1\to$ gain $2k/m\to\int\to X_2\to$ gains $k_2k_1\to V_2\to K_m/R\to T_m$ (back to the left junction with the sign realising $v_2=-k_1k_2x_2$).
+
+</Step>
+</Steps>
+
+<Answer>
+
+$m\ddot y=2k(r\theta-y)$; $J\ddot\theta+b\dot\theta=T_m-2kr(r\theta-y)$; $A$ as above.
+
+*Real-world:* stiff belts give a fast oscillation; the velocity-feedback controller adds electrical damping (the $K_mk_1k_2/(JR)$ term), which is how the carriage stops without ringing.
+
+</Answer>
+
+<Traps>
+
+- The controller is **velocity** feedback: $A$ carries $k_1k_2$ and the negative sign.
+- $\dot x_3$'s coefficient on $x_1$ is $-2kr/J$ (the belt springs pull back on the shaft).
+- If $T_d\neq0$ it enters $\dot x_3$ as $1/J$.
+- No output equation is given; $y=r\theta-x_1$ is not a state-only output, so choose $x_1$ or $v_1=k_1y$ consistently with the diagram (the scope reads $X_1$).
+
+</Traps>
+
+<Source>official solution (12 + 8 + 5 marks) ✔; coefficients re-derived from the free bodies. One entry (last in the middle row) reads "JR" in the sheet; $R$ is required by $T_m=K_mv_2/R$.</Source>
+
+</Problem>
+
+<Problem id="MT1 W2019 Q3" title="Bridged-T network: transfer function, sinusoidal TF, Bode (25 marks)" tags="nodal analysis, notch filter, Bode">
+
+<Statement>
+
+A bridged-T network: top rail from $V_{in}$ (node ①) through capacitor $C$ to node ②, then capacitor $C$ to node ③ ($V_o$, open); resistor $R_2$ bridges ① to ③; resistor $R_1$ from ② to ground. (a) Transfer function. (b) Sinusoidal transfer function. (c) Sketch the Bode gain for $R_1=0.5$, $R_2=1$, $C=0.5$ (the phase is printed on the paper).
+
+</Statement>
+
+<Think>
+
+Two internal nodes ⇒ two KCL equations; eliminate node ②. Use $a=R_1Cs$, $b=R_2Cs$ to keep the algebra short. This is a **notch filter**: the numerator has a lightly damped complex pair of zeros that digs a dip.
+
+</Think>
+
+<Steps>
+<Step title="(a) 1. KCL at node ②">
+
+$Cs(V_2-V_1)+Cs(V_2-V_3)+\dfrac{V_2}{R_1}=0\Rightarrow V_2\Big(2Cs+\dfrac1{R_1}\Big)=Cs(V_1+V_3)\Rightarrow V_2=\dfrac{a\,(V_1+V_3)}{2a+1}$.
+
+</Step>
+<Step title="(a) 2. KCL at node ③ (output open, no load current)">
+
+$Cs(V_3-V_2)+\dfrac{V_3-V_1}{R_2}=0$; multiply by $R_2$: $(b+1)V_3-bV_2-V_1=0$.
+
+</Step>
+<Step title="(a) 3. Eliminate V₂">
+
+$(b+1)V_3-\dfrac{ab(V_1+V_3)}{2a+1}-V_1=0\Rightarrow V_3[(b+1)(2a+1)-ab]=V_1[(2a+1)+ab]$. Since $(b+1)(2a+1)-ab=ab+2a+b+1$:
+$$\frac{V_o}{V_{in}}=\frac{1+2a+ab}{1+2a+b+ab}=\frac{R_1R_2C^2s^2+2R_1Cs+1}{R_1R_2C^2s^2+(2R_1+R_2)Cs+1}.$$
+For $R_1=0.5,R_2=1,C=0.5$: $\dfrac{s^2/8+s/2+1}{s^2/8+s+1}=\dfrac{s^2+4s+8}{s^2+8s+8}$.
+
+</Step>
+<Step title="(b) Sinusoidal TF">
+
+$s=j\omega$: $\hat G(j\omega)=\dfrac{(1-\omega^2/8)+j\omega/2}{(1-\omega^2/8)+j\omega}$. Magnitude $\dfrac{\sqrt{(1-\omega^2/8)^2+\omega^2/4}}{\sqrt{(1-\omega^2/8)^2+\omega^2}}$; phase $=\tan^{-1}\dfrac{\omega/2}{1-\omega^2/8}-\tan^{-1}\dfrac{\omega}{1-\omega^2/8}$ (numerator angle **minus** denominator angle, taking the proper quadrant for $\omega>\sqrt8$).
+
+</Step>
+<Step title="(c) Poles and zeros">
+
+Poles: $s^2+8s+8=0\Rightarrow s=-4\pm2\sqrt2=-1.17,\,-6.83$ (corner frequencies 1.17 and 6.83 rad/s). Zeros: $s^2+4s+8=0\Rightarrow-2\pm2j$: a complex pair with $\omega_n=\sqrt8=2.83$ rad/s, $\zeta=0.707$.
+
+</Step>
+<Step title="(c) Asymptotic Bode gain">
+
+0 dB until 1.17; slope $-20$ dB/dec from 1.17; at 2.83 the complex zero pair adds $+40$ dB/dec (net $+20$); at 6.83 the second pole restores slope 0. At $\omega=\sqrt8$ the numerator is purely imaginary $j\sqrt8/2$ and the denominator $j\sqrt8$, so $|\hat G|=\tfrac12=-6.02$ dB **exactly** and the phase is $0^\circ$ there. The asymptote predicts $-20\log(2.83/1.17)=-7.7$ dB; the lightly damped zero lifts the dip by 1.7 dB.
+
+</Step>
+<Step title="(c) Exact values to plot">
+
+| $\omega$ (rad/s) | 0.1 | 1 | 1.17 | 2 | 2.83 | 4 | 6.83 | 10 | 50 |
+|---|---|---|---|---|---|---|---|---|---|
+| gain (dB) | −0.03 | −2.40 | −3.00 | −5.31 | −6.02 | −5.31 | −3.01 | −1.69 | −0.08 |
+| phase (°) | −2.9 | −19.1 | −19.5 | −12.5 | 0 | +12.5 | +19.5 | +17.5 | — |
+
+Phase extremes $-19.5^\circ$ at 1.17 rad/s and $+19.5^\circ$ at 6.84 rad/s.
+
+</Step>
+</Steps>
+
+<Answer>
+
+$G(s)=\dfrac{s^2+4s+8}{s^2+8s+8}$; a dip of $-6.02$ dB at $\omega=2.83$ rad/s with $0^\circ$ phase there; corners at 1.17, 2.83, 6.83 rad/s.
+
+*Real-world:* an analog notch filter that kills a narrow band around 2.8 rad/s (a mains hum or a mechanical resonance) while passing low and high frequencies.
+
+</Answer>
+
+<Callout kind="warn" title="⚠ Official solution flaws">
+
+(i) The sinusoidal-TF phase formula keeps **only the numerator angle**, $\tan^{-1}\dfrac{\omega}{2(1-\omega^2/8)}$; the denominator angle must be subtracted. (ii) The notch has $\zeta=0.707\neq0$, so the dip is shallow ($-6$ dB), not infinite. (iii) *Unresolved:* the printed phase plot on the question page, as read from the scan, seems to reach about $-30^\circ$ and $+37^\circ$ whereas the exact phase of this TF is $\pm19.5^\circ$; the plot may have been generated for different component values. Flagged, not resolved.
+
+</Callout>
+
+<Traps>
+
+- Corner frequencies $-1.17$ and $-6.83$ are in rad/s, not Hz.
+- The phase is numerator minus denominator, with the right quadrant above $\sqrt8$.
+
+</Traps>
+
+<Source>official solution (15 + 5 + 5 marks): TF ✔; poles, zeros, dip verified numerically.</Source>
+
+<ToolLink tool="bode">Plot it in the Bode tool</ToolLink>
+
+</Problem>
+
+<Problem id="MT1 W2019 Q4" title="Same filter: pole-zero map, state variables, peak time, undershoot, and how to reduce it (25 marks)" tags="input derivative, step response with D = 1, numerator effect">
+
+<Statement>
+
+For the same transfer function and values: (a) sketch the pole-zero diagram. (b) Given the unit-step response (it starts at 1, dips to a minimum of $0.593$ at $t=0.311$ s, then rises monotonically back to 1), indicate the state variables you would choose to build a state-space model. (c) Estimate the peak time and the "overshoot". (d) How could you reduce the overshoot without changing the peak time much?
+
+</Statement>
+
+<Think>
+
+Equal degrees of numerator and denominator mean **unit feedthrough**: $D=1$, so the step response starts at **1**, not 0. The "overshoot" here is a one-sided *dip* below the final value, produced by the **numerator** (the complex zeros), not by the poles (which are real: no oscillation at all).
+
+</Think>
+
+<Steps>
+<Step title="(a) Pole-zero map">
+
+Poles $-1.17,\,-6.83$ (two real, negative); zeros $-2\pm2j$.
+
+</Step>
+<Step title="(b) 1. Method 2 (correct version)">
+
+$\dfrac{Z}{V_{in}}=\dfrac1{s^2+8s+8}$, $V_o=(s^2+4s+8)Z$; $x_1=z$, $x_2=\dot z$:
+$$\dot x=\begin{bmatrix}0&1\\-8&-8\end{bmatrix}x+\begin{bmatrix}0\\1\end{bmatrix}V_{in},\quad V_o=[0\ \ -4]x+V_{in}.$$
+Check: $V_o=\ddot z+4\dot z+8z=(-8z-8\dot z+V_{in})+4\dot z+8z=-4\dot z+V_{in}$ ✔. Equivalently $C=[b_2-a_2b_0,\ b_1-a_1b_0]=[8-8,\ 4-8]=[0,\ -4]$, $D=1$.
+
+</Step>
+<Step title="(b) 2. Method 1 (for comparison)">
+
+$b_0=1,b_1=4,b_2=8$; $a_1=a_2=8$: $\beta_0=1$, $\beta_1=b_1-a_1\beta_0=-4$, $\beta_2=b_2-a_1\beta_1-a_2\beta_0=8+32-8=32$: $B=[-4;\,32]$, $C=[1\ 0]$, $D=1$.
+
+</Step>
+<Step title="(c) Step response">
+
+$\mathcal L^{-1}\Big\{\dfrac1s\dfrac{s^2+4s+8}{s^2+8s+8}\Big\}=1-0.707e^{-1.1716t}+0.707e^{-6.828t}$. Differentiate and set to zero: $0.8284e^{-1.1716t}=4.828e^{-6.828t}\Rightarrow t_p=0.3116$ s. The minimum value is **$0.5934$**, so the dip is $1-0.593=\mathbf{40.7\%}$.
+
+</Step>
+<Step title="(d) How to reduce the dip: look at the numerator too">
+
+With $\omega_n^2=1/(R_1R_2C^2)$ held fixed (peak time stays about the same) vary $m=R_2/R_1$. Pole damping $\zeta=\dfrac{2R_1+R_2}{2\sqrt{R_1R_2}}$ has its minimum $\sqrt2$ at $m=2$; but the dip also depends on the zero damping $\zeta_z=\sqrt{R_1/R_2}$:
+
+| $m=R_2/R_1$ | pole $\zeta$ | zero $\zeta_z$ | dip | peak time (s) |
+|---|---|---|---|---|
+| 0.5 | 1.768 | 1.414 | 17.1% | 0.285 |
+| 1 | 1.500 | 1.000 | 27.5% | 0.306 |
+| **2 (given)** | 1.414 | 0.707 | **40.7%** | **0.312** |
+| 4 | 1.500 | 0.500 | 55.0% | 0.306 |
+| 8 | 1.768 | 0.354 | 68.4% | 0.285 |
+| 16 | 2.250 | 0.250 | 79.2% | 0.253 |
+
+**Make $R_2/R_1$ smaller** at fixed $R_1R_2C^2$: $m=1$ gives 27.5% at $t_p=0.306$ s; $m=0.5$ gives 17% at 0.285 s.
+
+</Step>
+</Steps>
+
+<Answer>
+
+Poles $-1.17,-6.83$; zeros $-2\pm2j$; $y=1-0.707e^{-1.1716t}+0.707e^{-6.828t}$; $t_p=0.31$ s; dip $40.7\%$ ($v_{min}=0.593$); reduce it by lowering $R_2/R_1$ at fixed $R_1R_2C^2$.
+
+*Real-world:* a controller fed through this filter briefly sees only 59% of a step.
+
+</Answer>
+
+<Callout kind="warn" title="⚠ Official solution: four problems">
+
+(1) **v_max = 0.61, OS = 39 %** is wrong: the true minimum is $0.5934$ and the dip $40.7\%$ (the printed plot's own pencil values 0.593 and 0.3112 s agree). (2) Its Method 2 has numerator and denominator swapped and the constant 1 in place of 8 (the digit is hard to read). (3) "To reduce the overshoot reduce the damping ratio of the overdamped characteristic equation": the pole damping is minimised at $m=2$, **but the dip is a numerator effect**. (4) **"There is no way we can reduce the overshoot" is false**: the table shows a smaller $R_2/R_1$ cuts it from 40.7% to 17% with almost the same peak time.
+
+</Callout>
+
+<Traps>
+
+- Unit feedthrough $D=1$: $y(0^+)=1$, not 0.
+- "Overshoot" is the one-sided dip $1-v_{min}$.
+- Pole $\zeta\ge\sqrt2$: no oscillation at all; the dip is entirely from the zeros.
+- Handout Method 1 uses $a_1,a_2$ (not $a_0$).
+
+</Traps>
+
+<Source>official (10 + 8 + ~4 + 3 marks): poles/zeros ✔; (b), (c), (d) corrected here; checked numerically on the closed-form step response.</Source>
+
+</Problem>
+
+<Examined>
+
+Same circuit as $\text{HW3 Q2}$; same SS-from-diagram skills as <Hw n="4">HW4</Hw>. See <Ch slug="state-space">Chapter 7</Ch>, <Ch slug="frequency-basics">Chapter 6</Ch>, <Ch slug="circuits-opamps">Chapter 8</Ch>.
+
+</Examined>

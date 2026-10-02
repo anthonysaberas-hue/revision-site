@@ -1,0 +1,267 @@
+<p className="eyebrow">Chapter 10 · constant-area flow with friction</p>
+
+# Fanno flow
+
+<p className="lede">A long pipe behaves like a converging nozzle. Friction pushes the Mach number toward 1 from both sides, and it always costs stagnation pressure. Once you know where the fictitious sonic point L* is, every Fanno problem is one subtraction away. The most-examined problem in MECH 430, the nozzle + friction pipe + back pressure, is built on this chapter.</p>
+
+## Road map: three ways to change a 1-D flow
+
+The next two chapters keep the "one thing changes" idea of isentropic flow, but they swap the cause of the change. This is the notes' road-map table, with the conserved quantities added:
+
+| Type of flow | What drives the change | $p_0$ | $T_0$ | Conserved | Table |
+|---|---|---|---|---|---|
+| Isentropic | area change $dA$ | constant | constant | $\dot m$, $T_0$, $s$ | A2 |
+| **Fanno** | wall friction $f$ (constant $A$, adiabatic) | **falls** | constant | $\rho V = \dot m/A$, $T_0$ | **A4** |
+| **Rayleigh** | heating or cooling $q$ (constant $A$, frictionless) | changes (falls when heated) | **changes** | $\rho V$, $p + \rho V^2$ | **A5** |
+
+<Idea title="Each of these has a sonic reference state">
+
+In isentropic flow we measured everything against the throat state $A^*$. Fanno flow uses $L^*$, the length of pipe that would bring the flow to $M = 1$. Rayleigh flow uses $T_0^*$, the stagnation temperature that would bring it to $M = 1$. In each case the reference state usually doesn't exist in the real hardware. It is a bookkeeping device that lets one table cover every problem.
+
+</Idea>
+
+## Friction factor and hydraulic diameter
+
+The wall shear stress scales with the dynamic pressure, so the notes define the (Fanning) friction factor
+
+$$
+f = \frac{\tau_w}{\tfrac12 \rho V^2}, \qquad 0.001 \lesssim f \lesssim 0.05 \ \text{(aerospace, } Re > 10^6\text{)}
+$$
+
+The friction force acts on the wetted perimeter $P$. Dividing by the flow area gives the **hydraulic diameter**:
+
+$$
+D_H = \frac{4A}{P} \qquad\Rightarrow\qquad \text{circle: } D_H = D, \qquad \text{square of side } b\text{: } D_H = b
+$$
+
+A momentum balance on a slice $dx$ of pipe, with the friction force $\tau_w P\,dx$, gives the equation-sheet form:
+
+$$
+dp + \frac{4f}{D_H}\frac{\rho V^2}{2}\,dx + \frac{\rho V^2}{2}\frac{dV^2}{V^2} = 0
+$$
+
+<Remember title="Fanning, not Darcy">
+
+MECH 430 uses the **Fanning** factor. Every formula and table column carries the combination $4f$ (the Darcy factor is $4f$). The friction length always appears as the dimensionless group $4fL/D_H$, and that is what you look up in Table A4.
+
+</Remember>
+
+## Effect of friction: toward M = 1, always losing p0
+
+Combine the momentum equation with continuity ($\rho V$ = const), the energy equation ($T_0$ = const) and $p = \rho R T$. Then eliminate everything except $dM$:
+
+$$
+\frac{dM}{M} = \frac{\gamma M^2\left(1 + \frac{\gamma-1}{2}M^2\right)}{2(1 - M^2)}\,\frac{4f}{D_H}\,dx
+$$
+
+The right-hand side is positive for $M$ less than 1 and negative for $M$ greater than 1. So:
+
+| | subsonic, $M$ less than 1 | supersonic, $M$ greater than 1 |
+|---|---|---|
+| $M$, $V$ | **increase** (friction accelerates!) | decrease |
+| $p$, $T$, $\rho$ | decrease | increase |
+| $p_0$ | **decreases** | **decreases** |
+| $T_0$ | constant | constant |
+
+<Idea title="A friction pipe is a converging nozzle">
+
+Every trend except $p_0$ matches a converging isentropic nozzle. The boundary layers growing on the wall really do squeeze the core flow into an effectively converging channel. So subsonic flow speeds up toward $M = 1$ and supersonic flow slows down toward $M = 1$. **Friction can never take you through $M = 1$**, just as a converging duct can't.
+
+Why does friction *speed up* a subsonic gas? Anthony's March 12 notes put it this way: friction lowers $p$ (and $\rho$) along the pipe, and with $\rho V$ fixed, a falling density forces $V$ **up**. The pressure gradient needed to push the gas against friction is what accelerates it.
+
+</Idea>
+
+PS7 P7 makes this exact: for adiabatic, constant-area flow, $\dfrac{dp}{p} = -\left[\dfrac{1}{V} + \dfrac{V}{c_p T}\right] dV$, so **$p$ and $V$ always change in opposite directions**, even with friction. The entropy rises along the duct, so with $T_0$ fixed:
+
+$$
+\frac{s_2 - s_1}{R} = -\ln\frac{p_{02}}{p_{01}} \qquad (p_0 \text{ always falls})
+$$
+
+## Working relations
+
+Integrate $dM$ from the local Mach number $M$ to $M = 1$, over the length $L^*$ that friction needs to reach sonic. This is PS7 P1, by partial fractions:
+
+$$
+\frac{4fL^*}{D_H} = \frac{1 - M^2}{\gamma M^2} + \frac{\gamma + 1}{2\gamma}\ln\frac{(\gamma+1)M^2}{2\left(1 + \frac{\gamma-1}{2}M^2\right)}
+$$
+
+The other columns of Table A4 come from continuity, the energy equation and $p = \rho RT$:
+
+$$
+\frac{T}{T^*} = \frac{\gamma+1}{2 + (\gamma-1)M^2} \qquad
+\frac{p}{p^*} = \frac{1}{M}\sqrt{\frac{\gamma+1}{2 + (\gamma-1)M^2}} \qquad
+\frac{\rho}{\rho^*} = \frac{V^*}{V} = \frac{1}{M}\sqrt{\frac{2 + (\gamma-1)M^2}{\gamma+1}}
+$$
+
+$$
+\frac{p_0}{p_0^*} = \frac{1}{M}\left[\frac{2 + (\gamma-1)M^2}{\gamma+1}\right]^{\frac{\gamma+1}{2(\gamma-1)}}
+$$
+
+<FannoFLPlot mark={[0.5, 2, 3]} />
+
+### The "subtract L*" method
+
+To go from station 1 to station 2 down a pipe of length $L$, imagine extending the pipe until the flow is sonic. Both stations sit on the same flow, with the same sonic point:
+
+$$
+\left(\frac{4fL^*}{D}\right)_2 = \left(\frac{4fL^*}{D}\right)_1 - \frac{4fL}{D}
+$$
+
+Then read $M_2$ from that value (on the **same branch**) and form ratios through the star state: $p_2 = p_1\,\dfrac{(p/p^*)_2}{(p/p^*)_1}$. The star values $p^*, T^*, p_0^*$ are constants of the flow, like $p_0$ in isentropic flow.
+
+<FannoDuctSetupFigure nozzle="none" friction Min={0.5} Mout={0.61} inlet="M₁ = 0.5 | 1 atm, 300 K" exit="M₂ = 0.61" duct="D = 5 cm, f = 0.005, L = 1.5 m" extension="L₂* = 1.17 m" caption="The fictitious extension: the real pipe (1 → 2) plus a dashed piece of length L₂* that would bring the flow to M = 1. L₁* = L + L₂*." />
+
+### The notes' example (§10.2.1)
+
+Air enters a pipe at $M_1 = 0.5$, 1 atm, 300 K, with $D = 5$ cm and $f = 0.005$.
+
+**(a) Length to reach sonic.** <T>A4 @ M = 0.5: 4fL*/D = 1.0691</T>, so
+
+$$
+L^* = 1.0691\,\frac{D}{4f} = 1.0691 \times \frac{0.05}{0.02} = 2.67\ \text{m}
+$$
+
+The same row gives the star state: $T/T^* = 1.1429 \Rightarrow T^* = 262.5$ K, $p/p^* = 2.1381 \Rightarrow p^* = 0.468$ atm, and $p_{01} = 1.186$ atm with $p_0/p_0^* = 1.3399 \Rightarrow p_0^* = 0.885$ atm.
+
+**(b) Exit of a 1.5 m pipe.** $L_2^* = 2.67 - 1.5 = 1.17$ m, so $4fL_2^*/D = 0.468$. <T>A4 (subsonic) @ 4fL*/D = 0.468: M₂ = 0.61</T> (exact 0.606) — <CalcLink calc="fanno" q="in=fL&v=0.468&b=sub">check</CalcLink>. Then $T_2 = 1.1169 \times 262.5 = 293.2$ K, $p_2 = 1.7325 \times 0.468 = 0.811$ atm and $p_{02} = 1.1766 \times 0.885 = 1.041$ atm.
+
+| | ① inlet | ② exit | * (sonic, fictitious) |
+|---|---|---|---|
+| M | 0.5 | 0.61 | 1 |
+| p [atm] | 1 | 0.811 | 0.468 |
+| T [K] | 300 | 293.2 | 262.5 |
+| $p_0$ [atm] | 1.186 | 1.041 | 0.885 |
+
+The flow accelerated, its static pressure and temperature fell, and $p_0$ fell irreversibly by 12%.
+
+<Idea title="Anthony's 'discard the pipe' experiment">
+
+The flow above could have come from a reservoir at $p_0 = 1.186$ atm through a converging entry, exhausting to $p_b = 0.811$ atm. Remove the pipe and connect the same reservoir to the same back pressure: $p/p_0 = 0.6836$ gives $M = 0.76$ at the exit. With the pipe, the flow enters at only $M = 0.5$. **The friction pipe throttles the mass flow, yet accelerates the gas inside it.**
+
+</Idea>
+
+Play with it. Push the inlet Mach through 1 and watch friction drive both branches toward the sonic point on the T–s diagram:
+
+<FannoDuctSim M1={0.5} fL={0.6} pb={0.5} />
+
+## What if L is longer than L*? Frictional choking
+
+Ask the isentropic analogue first: what happens if you make a nozzle's exit area smaller than $A^*$? The answer depends on whether the flow is subsonic or supersonic. Fanno flow works the same way.
+
+**Subsonic inflow, $L > L^*$.** The pipe is "choked by friction". The extra length is communicated upstream (the flow is subsonic), so the inlet Mach number drops until the new $L^*$ equals $L$. **The mass flow falls.** This is just like squeezing a converging nozzle's exit below $A^*$: the new minimum area becomes the new $A^*$.
+
+**Supersonic inflow, $L > L^*$.** The supersonic flow can't "hear" that the pipe is too long. Instead, **a normal shock is forced into the duct** (the Fanno version of an inlet unstart). Unlike in a diverging nozzle, this shock is *stable*. It is a patch between supersonic flow upstream and subsonic flow downstream, and it sits exactly where the combined supersonic + subsonic friction lengths bring the flow to $M = 1$ at the exit. Lengthen the pipe more and the shock moves upstream, into the nozzle, and eventually to the throat. After that the flow is subsonic throughout and $\dot m$ falls.
+
+<Remember title="Supersonic flow chokes within 0.8215">
+
+As $M \to \infty$:
+
+$$
+\lim_{M\to\infty}\frac{4fL^*}{D} = -\frac{1}{\gamma} + \frac{\gamma+1}{2\gamma}\ln\frac{\gamma+1}{\gamma-1} = 0.8215 \quad (\gamma = 1.4)
+$$
+
+With $f = 0.002$ that is about 100 diameters: **no supersonic flow, however fast, survives more than about 100 diameters of pipe.** Subsonic flow below $M = 0.5$ needs *more* than 100 diameters to choke. This is why the subsonic flow behind a shock can always finish the pipe if the supersonic flow could: subsonic $L^*$ values are much longer (in PS7 P5, $L^*$ jumps from 22 to 62 diameters across the shock).
+
+</Remember>
+
+<Trap title="Higgins: you cannot subtract L* from L when L > L*">
+
+From the Quiz 2 W2019 solutions, in red, with a cartoon of an angry professor. If $4fL^*/D = 0.522$ but the pipe has $4fL/D = 1.2$, you might be tempted to compute $1.2 - 0.522 = 0.678$ and look it up. **WRONG.** "When we find an $L^*$ that is shorter than our actual channel, all you can say is that we have assumed the wrong flow conditions. There is nothing meaningful you can do with $L - L^*$." Subtracting is only valid when $L \le L^*$.
+
+</Trap>
+
+## Key insight: p* doesn't change across a shock in the duct
+
+A normal shock conserves $\rho V$ (continuity) and $T_0$ (energy). These are exactly the two things that define a Fanno line. So **the states just before and just after the shock lie on the same Fanno line**, and they share the same sonic state:
+
+$$
+T^* = \frac{2T_0}{\gamma+1}\ \text{same}, \quad V^* = \sqrt{\gamma R T^*}\ \text{same}, \quad \rho^* = \frac{\rho V}{V^*}\ \text{same}, \quad p^* = \rho^* R T^*\ \text{same}
+$$
+
+($p_0^* = p^*/0.5283$ is the same too.) Only $L^*$ jumps, from the short supersonic value to the long subsonic one.
+
+<Idea title="Two consequences that save you on the exam">
+
+1. **Choked exit.** If the exit is sonic, then $p_\text{exit} = p^*$, and $p^*$ can be computed from the supersonic inlet state alone: $p_\text{exit} = p^*_\text{supersonic}$, **independent of where the shock is**. (Quiz 2 W2019: $p_\text{exit} = p^* \approx 1.02$ bar, while $p_b = 1$ bar.)
+2. **Subsonic exit.** If the exit is subsonic, $p_\text{exit} = p_b$, so $p_b/p^*$ gives $M_\text{exit}$ directly from Table A4, without finding the shock (PS7 P5: $50/37.43 = 1.336 \Rightarrow M_\text{exit} = 0.775$). You still have to iterate if the question asks *where* the shock is.
+
+</Idea>
+
+Set $M_1 = 3$ and $4fL/D = 0.6$ (longer than $L^* = 0.522$). Slide $p_b/p^*$ below 1: the shock sits still and the exit stays at $p^*$. Raise $p_b$ above $p^*$ and the shock walks upstream.
+
+<FannoDuctSim M1={3} fL={0.6} pb={1.336} />
+
+## Effect of back pressure: the regime ladder
+
+For a C-D nozzle feeding a friction pipe with $L$ less than the supersonic $L^*$, march through four "test" flows. Each gives a rung of the ladder:
+
+1. Throat just sonic, subsonic everywhere: $p_\text{exit}$ (highest rung).
+2. Normal shock at the pipe **entrance**: $p_\text{exit}$ after a subsonic Fanno run behind the shock.
+3. Normal shock at the pipe **exit**: $p_y = p_\text{exit,sup} \times (p_y/p_x)$.
+4. Supersonic all the way: $p_\text{exit,sup}$.
+
+**Notes §10.4.1.** Flow enters a 3.5 m long, 30 cm pipe with $f = 0.005$ at $M = 2$ and 101.3 kPa ($p_0 = 792.6$ kPa, $4fL/D = 0.2333$), with $p_b = 350$ kPa.
+- $L^* = 0.30499 \times 0.3/0.02 = 4.575$ m, bigger than 3.5 m, so a supersonic run is possible. $L_2^* = 1.075$ m, so $4fL_2^*/D = 0.0717$ and $M_\text{exit} = 1.32$. With $p^* = 101.3/0.40825 = 248.1$ kPa, $p_\text{exit} = 0.71465 \times 248.1 = 177.3$ kPa.
+- **Shock at the exit:** $p_y = 1.866 \times 177.3 = 330.8$ kPa.
+- **Shock at the entrance:** $M_y = 0.5774$, $4fL^*/D = 0.5898$, exit $0.5898 - 0.2333 = 0.3565$, so $p/p^* = 1.645$. With the **same** $p^* = 248.1$, $p_\text{exit} = 408$ kPa.
+- **Shock at the throat (subsonic nozzle):** $M_1 = 0.372$, $p_\text{exit} = 700$ kPa.
+
+$p_b = 350$ kPa lies between 331 and 408, so **the shock is in the pipe**. Since the exit is subsonic, $p_\text{exit} = 350$ and $350/248.1 = 1.4095 \Rightarrow M_\text{exit} = 0.738$ directly. Trying the shock halfway gives 367.7 kPa, and interpolating puts the shock near 2.59 m (exact: 2.54 m).
+
+<BackPressureLadderFigure p0={792.6} levels={[700, 408, 331, 177]} pb={350} />
+
+<NozzlePipeSim AR={1.6875} fL={0.2333} pb={0.4416} p0={792.6} />
+
+## Exam template: nozzle + Fanno pipe + back pressure
+
+This problem was on Quiz 2 in 2019, 2023 and 2024, and it was an exam favourite. Work through it as a decision procedure. Each step is a hypothesis that you then check. The full list is in the [exam recipes](#/mech430/page/recipes).
+
+<Callout kind="note" title="Decision procedure">
+
+**0. Set up.** Draw reservoir → throat → ① pipe inlet → ② pipe exit → $p_b$. Compute $A_\text{pipe}/A_t$ (watch out for diameters: $(d_\text{pipe}/d_t)^2$) and the pipe's $4fL/D$. With $4f/D = 1\ \text{m}^{-1}$ (W2024), $4fL/D$ is numerically $L$ in metres.
+
+**1. Is the throat choked?** Assume a just-sonic throat with **subsonic** flow after it: $A/A^*$ (sub) → $M_1$ → a Fanno run of length $L$ → $p_\text{exit}$. If $p_b$ is at or above this value, the flow is subsonic everywhere and $p_\text{exit} = p_b$ (iterate on $M_1$). If $p_b$ is lower, the throat is choked and $\dot m = A_t\,\dfrac{p_0}{\sqrt{T_0}}\sqrt{\dfrac{\gamma}{R}}\left(\dfrac{\gamma+1}{2}\right)^{-\frac{\gamma+1}{2(\gamma-1)}}$ is fixed. (If even the subsonic pipe flow can't fit, i.e. $4fL^*/D(M_{1,\text{sub}})$ is less than $4fL/D$, the pipe chokes first and the throat never goes sonic.)
+
+**2. Supersonic into the pipe.** $A/A^*$ (sup) → $M_1$, $p_1$. Table A4: $4fL_1^*/D$ and $p^* = p_1/(p/p^*)_1$. **Write down $p^*$: it holds for the rest of the problem.**
+
+**3. Compare $L$ with $L^*$.**
+- **$L \le L^*$**: subtract, find $M_2$ and $p_{2,\text{sup}}$. Then $p_{b}$ for a shock at the exit is $p_{2,\text{sup}}\,(p_y/p_x)$. If $p_b$ is at or below that, the pipe is supersonic and the adjustment happens outside. Otherwise go to step 4.
+- **$L > L^*$**: **do not subtract.** A shock must be in the pipe (or upstream of it). Go to step 4.
+
+**4. Shock at the pipe entrance.** $M_y$ from Table A3, then a subsonic Fanno run of length $L$ from $M_y$. If $4fL^*/D(M_y)$ is less than $4fL/D$, even this can't fit, so the shock is in the nozzle. Otherwise you get $p_\text{exit}$ (using the same $p^*$). If $p_b$ is above this rung, the shock is in the diverging nozzle.
+
+**5. Shock inside the pipe.** Its position satisfies: supersonic run to $x_s$, jump, subsonic run for the rest of the pipe.
+- If the exit is subsonic, $p_\text{exit} = p_b$, and $M_\text{exit}$ follows **directly** from $p_b/p^*$.
+- If $p_b \le p^*$, the exit is choked: $M_\text{exit} = 1$ and $p_\text{exit} = p^*$, not $p_b$.
+- To locate the shock: guess $x_s$, march, compare $p_\text{exit}$ with $p_b$ (or check that the exit lands on $M = 1$), and bracket and interpolate. If $p_\text{exit}$ is too high, move the shock downstream. If the post-shock subsonic $L^*$ is shorter than the remaining pipe, that guess is impossible: move the shock upstream.
+
+</Callout>
+
+**Quiz 2 W2019 P3:** $A/A_t = 5$, $4fL/D = 1.2$, $p_b/p_0 = 0.1$. $M_1 = 3.2$, $L^* \approx 0.52$, much shorter than the pipe. The shock must sit very near the pipe entrance, the exit is choked, and $p_\text{exit} = p^* \approx 1.02$ bar (exact 1.06), which is **not** $p_b = 1$ bar.
+
+<NozzlePipeSim AR={5} fL={1.2} pb={0.1} p0={10} />
+
+**Quiz 2 W2023 P2:** $A/A_t = 3$, $4fL/D = 0.2$. The rungs are 153 kPa (shock at the exit), 177.6 kPa (shock at the entrance) and 483 kPa (throat just choked; $\dot m$ independent of $p_b$ below this).
+
+<NozzlePipeSim AR={3} fL={0.2} pb={0.33} p0={500} />
+
+**Quiz 2 W2024 P1:** $A/A_t = 4$, $4fL/D = 0.75$, $p_b/p_0 = 0.2$. $L^* = 0.513$, shorter than the pipe's 0.75, so there is a shock. With the shock at the entrance, $p_\text{exit} = 234$ kPa, still above 200. Moving it in to 0.2 m gives 168 kPa. Interpolating gives $x_s \approx 0.1$ m (exact 0.114 m), $M_\text{exit} \approx 0.7$.
+
+<NozzlePipeSim AR={4} fL={0.75} pb={0.2} p0={1000} />
+
+<Examined>
+
+- **Every Quiz 2:** [W2019 P3](#/mech430/exam/q2-w2019) (shock near the entrance, choked exit), [W2023 P2](#/mech430/exam/q2-w2023) (three critical back pressures), [W2024 P1](#/mech430/exam/q2-w2024) (choking check, ṁ, shock location to ±0.1 m), and [F2023](#/mech430/exam/q2-f2023) (tank-fed Fanno duct).
+- **Final B P2** (long capillary tube to vacuum: halve the length to get about twice the flow): [final-b](#/mech430/exam/final-b).
+- **Problem Set 7**: [all seven problems](#/mech430/ps/ps07). P1 derives $4fL^*/D$, P2–P3 use the subtract-L* method, P4–P6 are nozzle + pipe + shock, and P7 is the sign argument.
+- Marks go for: the supersonic-vs-$L^*$ comparison, using the **same $p^*$** after the shock, and stating "choked: $p_\text{exit} \ne p_b$".
+
+</Examined>
+
+## Check yourself
+
+1. Air at $M = 0.3$ enters a long pipe. Does friction slow it down? → No. It speeds up toward $M = 1$, while $p$, $T$ and $p_0$ fall.
+2. The pipe is 20% longer than $L^*$ for a supersonic inlet at $M = 2.5$. What happens? → A normal shock stands inside the pipe, positioned so that the exit is (at most) sonic.
+3. Across that shock, which of $L^*$, $p^*$, $p_0$ and $T_0$ change? → $L^*$ jumps up and $p_0$ drops. $p^*$ and $T_0$ (and $T^*$, $p_0^*$) are unchanged.
+4. $M_1 = 3$, $4fL/D = 1.2$. Can you subtract and look up $1.2 - 0.522$? → No. $L > L^*$ means the assumed flow is wrong, so put in a shock.
+5. Why is no supersonic Fanno duct longer than about $0.82\,D/(4f)$? → $4fL^*/D$ saturates at 0.8215 as $M \to \infty$.

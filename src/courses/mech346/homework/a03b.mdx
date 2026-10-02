@@ -1,0 +1,192 @@
+<p className="eyebrow">Practice set 3b · fins · original problems</p>
+
+# Practice 3b: fins (adiabatic tip, convective tip, arrays, temperature wells)
+
+<div className="lede">
+
+Fins are examined in **every** Midterm 1: (i) $m$, (ii) $Q_{fin}$ with an adiabatic tip, (iii) efficiency and effectiveness, (iv) the error of an approximation. These original problems reproduce that pattern (<Ch slug="fins">fins notes</Ch>). All numbers were recomputed independently.
+
+</div>
+
+<Problem id="P3b-1" title="Rectangular aluminum fin: three tip models compared" tags="adiabatic tip, convective tip, corrected length, efficiency, effectiveness">
+
+<Statement>
+
+A rectangular aluminum fin ($k=200$ W/mK) has thickness $t=3$ mm, width $w=10$ cm, length $L=3$ cm. The base is at 120 °C, the air at 25 °C, $h=40$ W/m²K. Find $m$, the heat rate with (a) an adiabatic tip, (b) a convective tip, (c) the corrected length with an adiabatic tip, (d) the infinitely-long-fin formula, and the efficiency and effectiveness.
+
+</Statement>
+
+<Think>
+
+$p=2(w+t)$, $A_c=wt$, $m=\sqrt{hp/kA_c}$, $\dot Q_{ad}=\sqrt{hpkA_c}\,\theta_b\tanh(mL)$. The corrected-length rule $L_c=L+A_c/p$ should reproduce the convective-tip result.
+
+</Think>
+
+<Steps>
+<Step title="1. Geometry and fin parameter">
+
+$A_c=0.1(0.003)=3\times10^{-4}$ m²; $p=2(0.1+0.003)=0.206$ m. $m=\sqrt{\dfrac{40(0.206)}{200(3\times10^{-4})}}=\sqrt{137.3}=11.72$ m⁻¹; $mL=0.352$ (a **short** fin).
+
+</Step>
+<Step title="2. The prefactor">
+
+$\sqrt{hpkA_c}\,\theta_b=\sqrt{40(0.206)(200)(3\times10^{-4})}\,(95)=\sqrt{0.4944}(95)=0.7031(95)=66.80$ W.
+
+</Step>
+<Step title="3. (a) Adiabatic tip">
+
+$\dot Q=66.80\tanh(0.352)=66.80(0.3377)=22.56$ W.
+
+</Step>
+<Step title="4. (b) Convective tip">
+
+With $\dfrac h{mk}=\dfrac{40}{11.72(200)}=0.01706$: $\dot Q=66.80\dfrac{\sinh mL+0.01706\cosh mL}{\cosh mL+0.01706\sinh mL}=23.57$ W.
+
+</Step>
+<Step title="5. (c) Corrected length">
+
+$L_c=L+\dfrac{A_c}p=0.03+0.001456=0.03146$ m: $\dot Q=66.80\tanh(11.72(0.03146))=23.57$ W: **identical** to the convective tip to four digits.
+
+</Step>
+<Step title="6. (d) Infinite fin">
+
+$\dot Q=66.80$ W: an **183 % over-estimate** of the correct value (23.6 W), because $mL<1$: this fin is much too short to be "infinite".
+
+</Step>
+<Step title="7. Efficiency and effectiveness (adiabatic-tip model)">
+
+$\eta=\dfrac{\tanh mL}{mL}=\dfrac{0.3377}{0.3516}=0.960$ (equivalently $\dot Q/(hpL\theta_b)$ with $pL=0.00618$ m²); $\varepsilon=\dfrac{\dot Q}{hA_c\theta_b}=\dfrac{22.56}{40(3\times10^{-4})(95)}=19.8$.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**$m=11.72$ m⁻¹; $\dot Q=22.6$ W (adiabatic), 23.6 W (convective tip = corrected length); infinite fin 66.8 W (wrong); $\varepsilon\approx20$.**
+
+</Answer>
+
+<Traps>
+
+- The infinite-fin formula needs $mL\gtrsim3$; always compute $mL$ first.
+- The corrected length reproduces the convective-tip result and avoids the long hyperbolic formula: in exams use it.
+
+</Traps>
+
+</Problem>
+
+<Problem id="P3b-2" title="Thermometer well: error from fin conduction" tags="fin as a measurement error, 1/cosh(mL)">
+
+<Statement>
+
+A steel rod (diameter 6 mm, $k=15$ W/mK, protruding 80 mm into a gas) is used as a thermometer well. The pipe wall is at 60 °C; the gas is at 200 °C with $h=100$ W/m²K. The tip is adiabatic. What temperature does a sensor at the tip read?
+
+</Statement>
+
+<Think>
+
+The well is a fin: heat flows down the rod to the cold wall, so the tip is a little cooler than the gas. For an adiabatic tip $\dfrac{T(L)-T_\infty}{T_b-T_\infty}=\dfrac1{\cosh mL}$.
+
+</Think>
+
+<Steps>
+<Step title="1. $m$ and $mL$">
+
+$m=\sqrt{\dfrac{4h}{kD}}=\sqrt{\dfrac{4(100)}{15(0.006)}}=66.67$ m⁻¹; $mL=66.67(0.08)=5.33$.
+
+</Step>
+<Step title="2. Tip temperature">
+
+$\cosh5.33=103.6$: $T_{tip}=200-\dfrac{200-60}{103.6}=198.65$ °C.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**Reads 198.6 °C: an error of 1.4 K.** To lower it: lengthen the well, use a poor conductor (smaller $k$) and thin walls, or insulate the pipe near the well (raise $T_b$).
+
+</Answer>
+
+</Problem>
+
+<Problem id="P3b-3" title="A finned heat sink: overall heat rate and effectiveness" tags="fin array, base area, efficiency">
+
+<Statement>
+
+A heat sink with a 10 cm × 10 cm base carries 11 thin rectangular fins ($k=180$ W/mK) of thickness 1.5 mm and height 2 cm, 10 cm long. Base 70 °C, air 25 °C, $h=60$ W/m²K. Find the total heat rate, and the ratio to the bare base.
+
+</Statement>
+
+<Think>
+
+Thin fin: $m=\sqrt{2h/kt}$. Use the corrected length $L_c=L+t/2$ for the tip. Total $=$ fins $+$ unfinned base.
+
+</Think>
+
+<Steps>
+<Step title="1. Fin parameter and efficiency">
+
+$m=\sqrt{\dfrac{2(60)}{180(0.0015)}}=21.08$ m⁻¹; $L_c=0.02+0.00075=0.02075$; $mL_c=0.4374$; $\eta=\dfrac{\tanh0.4374}{0.4374}=0.941$.
+
+</Step>
+<Step title="2. Areas">
+
+Fin area (both sides, corrected length): $A_{fin}=11(2)(0.1)(0.02075)=0.04565$ m². Unfinned base: $0.1(0.1)-11(0.0015)(0.1)=0.01-0.00165=0.00835$ m².
+
+</Step>
+<Step title="3. Heat">
+
+$\dot Q=h\Delta T(\eta A_{fin}+A_{unf})=60(45)(0.941\cdot0.04565+0.00835)=2700(0.05131)=138.5$ W. Bare base: $60(45)(0.01)=27$ W.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**$\dot Q=138$ W, 5.1× the bare base.**
+
+</Answer>
+
+<Traps>
+
+If the fins are crowded (spacing under about the boundary-layer thickness) $h$ drops: the extra area would not give a proportional gain.
+
+</Traps>
+
+</Problem>
+
+<Problem id="P3b-4" title="How long must a fin be?" tags="design, tanh(mL)">
+
+<Statement>
+
+For the fin of P3b-1 (m = 11.72 m⁻¹) what length makes it deliver 99 % of the heat of an infinitely long fin? Is it worth building it that long?
+
+</Statement>
+
+<Think>
+
+$\dot Q/\dot Q_\infty=\tanh(mL)=0.99\Rightarrow mL=\tanh^{-1}(0.99)=2.65$.
+
+</Think>
+
+<Steps>
+<Step title="1. Length">
+
+$L=\dfrac{2.65}{11.72}=0.226$ m.
+
+</Step>
+<Step title="2. Judgement">
+
+At $mL=1$ the fin already delivers 76 %, at $mL=2$ 96 %; but the material grows linearly with $L$ while the heat flattens. The **efficiency** falls: $\eta=\tanh(mL)/mL=0.37$ at $mL=2.65$. A short fin with high efficiency, or more fins, is a better use of metal.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**$L=22.6$ cm for 99 %, but a design near $mL\approx1$–$1.5$ is the practical optimum.**
+
+</Answer>
+
+</Problem>

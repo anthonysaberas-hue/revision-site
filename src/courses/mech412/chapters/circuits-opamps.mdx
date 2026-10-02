@@ -1,0 +1,145 @@
+<p className="eyebrow">Chapter 8 · Lectures 9–10 · HW3 Q2 · HW5 Q2 · T04 Q3</p>
+
+# Circuits, impedance, op-amps
+
+<div className="lede">
+
+Electrical circuits are the cleanest dynamic systems there are, and the course uses them in two ways: as problems in their own right (find $E_o/E_i$), and as the *language* into which every other physical system gets translated (Chapters 10–15). If you can write the transfer function of any resistor–capacitor–inductor–op-amp network quickly and without sign errors, half of every MT2 is in your pocket.
+
+</div>
+
+<Idea title="The 30-second version">
+
+Replace each element by its **impedance** — $R$, $\;1/(Cs)$, $\;Ls$ — and treat the circuit like a network of resistors. Voltage dividers, series/parallel rules, and Kirchhoff's laws then give transfer functions as ratios of polynomials in $s$. An **ideal op-amp** adds one rule: *its two inputs are at the same voltage and draw no current*, which gives $E_o/E_i=-Z_2/Z_1$. **Anthony's rule for anything hard: write KCL at every node.**
+
+</Idea>
+
+## The elements
+
+| Element | Time domain | Laplace | Impedance $Z=E/I$ |
+|---|---|---|---|
+| resistor | $e=iR$ | $E=RI$ | $R$ |
+| capacitor | $e=\tfrac1C\!\int i\,dt$, $i=C\dot e$ | $E=\dfrac{I}{Cs}$ | $\dfrac1{Cs}$ |
+| inductor | $e=L\dfrac{di}{dt}$ | $E=LsI$ | $Ls$ |
+
+*Stored energy:* $\tfrac12Ce^2$ and $\tfrac12Li^2$ (these are the circuit's state variables).
+
+**Sources.** An ideal voltage source has zero internal impedance (it holds its voltage whatever you draw); an ideal current source has infinite internal impedance. **Ideal transformer** (turns ratio $m$): $e_{34}=m\,e_{12}$, $i_b=i_a/m$, power in = power out. (Anthony's page 28 drops the $m$ in $e_{34}=e_{12}$; his MT2 sheet has it right.)
+
+<Remember title="Why you need a resistor next to an inductor">
+
+An ideal inductor driven by a current has the *improper* transfer function $Ls$ (numerator degree beats denominator degree). Real inductors have winding resistance $R+Ls$. That is Anthony's red note "add a resistor to avoid an improper function".
+
+</Remember>
+
+## Series, parallel and Kirchhoff
+
+- **Series:** $Z=\sum Z_i$ (same current). **Parallel:** $\dfrac1Z=\sum\dfrac1{Z_i}$ (same voltage).
+- **KVL:** the voltages around any loop add to zero. **Sign rule (his page 30):** going through an element from − to + (or against the current) is a *rise*; + to − (along the current) is a *drop*.
+- **KCL:** the currents into any node add to zero.
+
+**Two-loop example.** Sources $E_1$ (with $R_1$) and $E_2$ (with $R_2$) and a shared $R_3$. Writing KCL $i_1=i_2+i_3$ and KVL around the two loops gives
+$i_1=\dfrac{E_1(R_1+R_2)-E_2R_2}{R_1R_2+R_2R_3+R_3R_1}$ (his page's loop labels are ambiguous, so trust the algebra).
+
+## The voltage divider, and the one mistake everybody makes
+
+$$
+\frac{E_o}{E_i}=\frac{Z_2}{Z_1+Z_2},\qquad Z_2=\text{the element the output is taken across}.
+$$
+
+*Example, an RC low-pass:* $Z_1=R$, $Z_2=\dfrac1{Cs}$: $\dfrac{E_o}{E_i}=\dfrac{1}{RCs+1}$ (Anthony's page prints "$RCs+L$": that is a slip for "$+1$").
+
+<CircuitBoard source={{kind:'Vs',label:'e_i'}} sections={[{type:'series',el:{kind:'R',label:'R',sub:'Z₁'}},{type:'shunt',stack:[{kind:'C',label:'C',sub:'Z₂ = 1/(Cs)'}],node:'e_o'}]} title="RC low-pass divider" caption="Output across the capacitor: E_o/E_i = 1/(RCs + 1), corner at 1/RC." />
+
+<Trap title="Loading: a divider only works if nothing is drawn from the output">
+
+Connect a second RC stage after the first and the second stage **draws current from the first**. You cannot multiply the individual transfer functions. For two cascaded RC sections with *no* isolation
+
+$$
+\frac{E_o}{E_i}=\frac{1}{(R_1C_1s+1)(R_2C_2s+1)+R_1C_2s},
+$$
+
+where the extra term $R_1C_2s$ is the **coupling (loading) term**. Put an **isolating amplifier** (a buffer) between the stages and the loading term vanishes: $\dfrac{K}{(R_1C_1s+1)(R_2C_2s+1)}$. This is why headphones plugged into a weak output sound quieter, and why every active filter has op-amps between stages.
+
+</Trap>
+
+### The double divider (Anthony's ⚠ — his own page asks "e_out/e_in = ???")
+
+$Z_1$ series, $Z_2$ shunt, $Z_3$ series, $Z_4$ shunt. The first divider is **loaded by $(Z_3+Z_4)$**, so:
+
+1. Load on the first shunt: $Z_2\parallel(Z_3+Z_4)=\dfrac{Z_2(Z_3+Z_4)}{Z_2+Z_3+Z_4}$.
+2. Voltage at the middle node: $V_m=E_i\dfrac{Z_2\parallel(Z_3+Z_4)}{Z_1+Z_2\parallel(Z_3+Z_4)}$.
+3. Second divider: $E_o=V_m\dfrac{Z_4}{Z_3+Z_4}$.
+4. Combine:
+
+$$
+\boxed{\frac{E_o}{E_i}=\frac{Z_2Z_4}{Z_1(Z_2+Z_3+Z_4)+Z_2(Z_3+Z_4)}}
+$$
+
+*Check:* if $Z_3\to0$ and $Z_4\to\infty$ the structure collapses to a single divider $\dfrac{Z_2}{Z_1+Z_2}$ ✔.
+
+### A notch filter: the twin-T network (HW5 Q2d)
+
+Top path $C$–$C$ with a shunt $R/2$ at the middle, lower path $R$–$R$ with a shunt $2C$ at the middle, output across the far end. Node equations (call $a=RCs$) give
+
+$$
+\frac{E_o}{E_i}=\frac{R^2C^2s^2+1}{R^2C^2s^2+4RCs+1},
+$$
+
+zeros at $s=\pm j/RC$ (**the notch: it blocks exactly the frequency $1/RC$**), real poles at $(-2\pm\sqrt3)/RC$. Used to kill mains hum.
+
+## Sinusoidal response of a circuit
+
+Put $s=j\omega$: amplitude $A=|V_o/V_i|$ and phase $\varphi=\angle(V_o/V_i)$ (Chapter 6). Example, the RLC high-pass $\dfrac{LCs^2}{LCs^2+RCs+1}$ (series $R,C$, output across $L$): $\omega_n=1/\sqrt{LC}$, $\zeta=\tfrac R2\sqrt{C/L}$, gain 0 at DC, 1 at high frequency.
+
+## Op-amps
+
+The **ideal** op-amp: $e_o=K(e_+-e_-)$ with $K\to\infty$, no input current. With negative feedback this forces **$e_+\approx e_-$**. For the inverting stage with $e_+=0$ the inverting input is a **virtual ground**.
+
+<OpAmpFigure caption="Inverting stage. KCL at node a (V = 0, no current into the amplifier): e_i/Z₁ + e_o/Z₂ = 0, hence E_o/E_i = −Z₂/Z₁." />
+
+**Exact versus ideal** (R₁ in, R₂ feedback, finite gain $K$): $\dfrac{e_o}{e_i}=\dfrac{-R_2/R_1}{1+\frac1K(1+R_2/R_1)}\to-\dfrac{R_2}{R_1}$ as $K\to\infty$. $\text{MT2 W2019 Q4}$ asks for the **finite-$K$** answer first: $E_o/E_i=\dfrac{K\,R_1Cs/(R_1Cs+1)}{1+\beta K}$ with $\beta=\tfrac{R_3}{R_2+R_3}$, then the large-$K$ limit $\dfrac{R_1Cs}{\beta(R_1Cs+1)}$ — an AC-coupled non-inverting amplifier (high-pass, pass-band gain $1+R_2/R_3$).
+
+### The op-amp library
+
+| Circuit | $Z_1$ | $Z_2$ | $V_2/V_1$ |
+|---|---|---|---|
+| integrator | $R$ | $1/(Cs)$ | $-\dfrac1{RCs}$ |
+| differentiator | $1/(Cs)$ | $R$ | $-RCs$ |
+| PD ("differentiating circuit") | $R_1\parallel C$ | $R_2$ | $-\dfrac{R_2}{R_1}(R_1Cs+1)$ |
+| PID | $R_1\parallel C_1$ | $R_2+\dfrac1{C_2s}$ | $-\dfrac{(R_1C_1s+1)(R_2C_2s+1)}{R_1C_2s}$ |
+
+**The op-amp PID** ($\text{MT2 W2011 Q4}$): expand $-\dfrac{R_1R_2C_1C_2s^2+(R_1C_1+R_2C_2)s+1}{R_1C_2s}$ term by term:
+
+$$
+K_p=-\Big(\frac{C_1}{C_2}+\frac{R_2}{R_1}\Big),\qquad K_i=-\frac1{R_1C_2},\qquad K_d=-R_2C_1 .
+$$
+
+All three come out negative (the stage inverts); follow it with a unity inverting stage. *This is the analog PID of Chapter 17.* Also, this transfer function is **improper** (numerator degree 2, denominator 1), so a *pure* differentiator has no state-space model (T04 Q3).
+
+### Buffers: the isolating amplifier (MT2 W2009 Q3)
+
+A voltage follower copies its non-inverting input to the output, with almost infinite input impedance and almost zero output impedance. Put it after the filter and the load can't change the filter's transfer function. Example: the series $R_1$–$C$ and shunt $L$ filter gives $\dfrac{LCs^2}{LCs^2+R_1Cs+1}$ with or without the buffer, **but without it the load $Z_{load}$ in parallel with $L$ changes the answer**.
+
+### Multi-node op-amps: Anthony's rule
+
+For a circuit with several nodes (T-network feedback, multiple-feedback band-pass, current amplifier) write **KCL at every node, set $V_-=V_+=0$ where the rule says so, and eliminate.** Example: the multiple-feedback band-pass of $\text{MT2 W2019 make-up Q4}$ ($R_1=1.1$ kΩ, $R_2=1.2$ kΩ, $R_3=150$ kΩ, $C_1=C_2=10$ nF):
+
+1. KCL at the inverting node (virtual ground): $sC_1V_X=-V_{out}/R_3$.
+2. KCL at node X: $(V_X-V_{in})/R_1+V_X/R_2+sC_1V_X+sC_2(V_X-V_{out})=0$.
+3. Eliminate $V_X$: $\dfrac{V_{out}}{V_{in}}=-\dfrac{(C_1R_3/R_1)\,s}{C_1C_2R_3s^2+(C_1+C_2)s+(1/R_1+1/R_2)}$.
+4. Numbers: $\omega_0=10\,780$ rad/s (1.7 kHz), bandwidth 1333 rad/s, $Q=8.1$, centre gain $-68$: a narrow tone detector.
+
+<Examined>
+
+- Circuit TFs: <Hw n="3">HW3</Hw> Q2 (bridged-T), <Hw n="5">HW5</Hw> Q2 (four circuits), MT1 W2019.
+- Op-amps: $\text{MT2 W2011 Q4}$ (PID), $\text{W2012 Q4}$ (current amplifier), $\text{W2019 Q4}$, $\text{make-up Q4}$, $\text{W2009 Q3}$ (buffer), $\text{W2010 Q4}$ (multiple choice).
+
+</Examined>
+
+### Check yourself
+
+1. Find $E_o/E_i$ for a series $R$ then shunt $L$ (output across $L$). *($\dfrac{Ls}{R+Ls}$.)*
+2. Why can't you cascade two RC low-passes by multiplying? *(The second loads the first: extra term $R_1C_2s$.)*
+3. Op-amp with $Z_1=R$, $Z_2=1/(Cs)$: what does it do? *(Integrates: $-1/(RCs)$.)*
+4. In the double divider, what happens if Z4 goes to infinity? *(Dividing top and bottom by Z4 leaves the simple divider Z2/(Z1+Z2): an open-circuit output draws no current, so Z3 does nothing.)*

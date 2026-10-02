@@ -1,0 +1,151 @@
+<p className="eyebrow">Chapter 16</p>
+
+# Unsteady waves and shock tubes
+
+<p className="lede">Unsteady flow normally means PDEs. But a single shock can always be made steady by riding along with it, and in a uniform tube every smooth wave rides along a characteristic that carries one constant number. These two ideas explain pistons, gas guns and the shock tube, which is the course's last big machine.</p>
+
+<Idea title="The two tools">
+
+1. **Frame change.** A moving shock is a stationary normal shock seen by a runner. Jump into the shock frame, use Table A3, and jump back. Velocities change with the frame; temperature and sound speed do not.
+2. **Riemann invariants.** In 1-D isentropic unsteady flow, $u + \tfrac{2c}{\gamma-1}$ stays constant along every $u + c$ sound wave and $u - \tfrac{2c}{\gamma-1}$ along every $u - c$ wave. This is the same idea as ν ± θ in [Chapter 15](#/mech430/ch/moc), with time playing the role of the second space coordinate.
+
+</Idea>
+
+## Moving shocks: recap
+
+A piston is pushed at $V_p'$ into still gas (sound speed $c_x$). In the shock frame the gas arrives at $V_x = V_s'$ with $M_x = M_s$ and leaves at $V_y$. Back in the lab frame, the gas behind the shock moves with the piston: $V_p' = V_s' - V_y$. Divide by $c_x$, use $V_y/c_x = M_y\sqrt{T_y/T_x}$ and simplify (notes §8.4):
+
+$$
+\frac{V_p'}{c_x} = \frac{2}{\gamma+1}\left(\frac{M_s^2-1}{M_s}\right)
+\qquad\Longleftrightarrow\qquad
+M_s = \frac12\left[\frac{\gamma+1}{2}\frac{V_p'}{c_x} + \sqrt{\left(\frac{\gamma+1}{2}\frac{V_p'}{c_x}\right)^2 + 4}\,\right]
+$$
+
+Then all the A3 ratios apply with $M_x = M_s$. A strong shock moves only about 20 % faster than the piston in air ($M_s \approx 1.2\,V_p'/c_x$). The gas piles up to at most $(\gamma+1)/(\gamma-1) = 6$ times its density: Higgins's **snow plough**.
+
+**The notes' example** ($M_s = 3$ into air at 300 K, $c_x = 348$ m/s): $V_s' = 1044$ m/s, A3 gives $M_y = 0.4752$, $T_y = 804$ K, $p_y = 10.33$ atm, and $V_y = 270.7$ m/s. In the lab frame the gas behind moves at $V_p' = 773.3$ m/s with $c_y = 569.6$ m/s, so $M = 1.357$. *"But I thought flow was always subsonic after a shock?"* **Wrong!** That holds only in the shock-attached frame ([PS11 P1](#/mech430/ps/ps11): the lab flow goes supersonic for $M_s$ above 2.068).
+
+<MovingShockFramesFigure Ms={3} c1={348} T1={300} />
+
+## 1-D unsteady characteristics: Riemann invariants
+
+For constant-area, **homentropic** flow (isentropic, with the same entropy everywhere), we have mass and momentum:
+
+$$
+\frac{\partial\rho}{\partial t} + u\frac{\partial\rho}{\partial x} + \rho\frac{\partial u}{\partial x} = 0, \qquad
+\frac{\partial u}{\partial t} + u\frac{\partial u}{\partial x} + \frac{1}{\rho}\frac{\partial p}{\partial x} = 0
+$$
+
+Since $d\rho = dp/c^2$, multiply mass by $c/\rho$, then add and subtract momentum:
+
+$$
+\left(\frac{\partial u}{\partial t} \pm \frac{1}{\rho c}\frac{\partial p}{\partial t}\right) + (u \pm c)\left[\frac{\partial u}{\partial x} \pm \frac{1}{\rho c}\frac{\partial p}{\partial x}\right] = 0
+$$
+
+Each bracket is a derivative **along a path moving at $u \pm c$**, i.e. along a sound wave. With $F = \int dp/(\rho c) = 2c/(\gamma-1)$ for a perfect gas ([PS11 P3](#/mech430/ps/ps11)):
+
+$$
+C^+ = u + \frac{2c}{\gamma-1} = \text{const along } \frac{dx}{dt} = u + c, \qquad
+C^- = u - \frac{2c}{\gamma-1} = \text{const along } \frac{dx}{dt} = u - c
+$$
+
+Where a $C^+$ and a $C^-$ meet: $u = \tfrac12(C^+ + C^-)$ and $c = \tfrac{\gamma-1}{4}(C^+ - C^-)$.
+
+<RiemannXTFigure />
+
+## Simple waves and the centred expansion
+
+If all the waves of one family come from a **uniform** region, that family's invariant is the same everywhere. The other family's lines are then straight (u and c are constant along them). This is a **simple wave**. When it starts at a point (a piston that jumps to speed, a diaphragm that bursts), the straight lines fan out from the origin: a **centred expansion**.
+
+For a fan that runs **into** still gas $(p_0, c_0)$, the invariant carried across it from that gas gives the key relations:
+
+$$
+\frac{c}{c_0} = 1 - \frac{\gamma-1}{2}\frac{|u|}{c_0}, \qquad
+\frac{p}{p_0} = \left[1 - \frac{\gamma-1}{2}\frac{|u|}{c_0}\right]^{\frac{2\gamma}{\gamma-1}}, \qquad
+\frac{T}{T_0} = \left(\frac{c}{c_0}\right)^2
+$$
+
+Inside the fan, $x/t = u \pm c$ on each ray, so u varies linearly with $x/t$. The head moves at $\pm c_0$ (a sound wave into still gas). The tail moves at $u \pm c$ of the final state.
+
+<Trap title="Which invariant?">
+
+Use the invariant of the family that **crosses** the fan and comes from the undisturbed gas, not the family the fan is made of. A shock-tube driver fan is made of $u - c$ waves, so use $C^+ = 2c_4/(\gamma-1)$. A pulled piston's fan is made of $u + c$ waves, so use $C^- = -2c_1/(\gamma-1)$.
+
+</Trap>
+
+## Pistons pushed and pulled (Final A P5)
+
+A piston in air at 1 atm and 300 K ($c_1 = 347.2$ m/s) jumps to 200 m/s.
+
+- **Pushed in:** $V_p'/c_1 = 0.576$ gives $M_s = 1.404$, $T_y = 377$ K, $p_y = 2.13$ atm. The p(x) profile is a step that grows longer with time, from the piston at $x = 200t$ to the shock at $x = 487t$.
+- **Pulled out:** along the $C^-$ line from the still gas to the piston face, $-200 - 5c_p = -5(347.2)$, so $c_p = 307.2$ m/s, $T_p = 234.9$ K and $p_p = (234.9/300)^{3.5} = 0.4245$ atm. The fan's head runs right at $c_1 = 347$ m/s; its tail runs at $u_p + c_p = -200 + 307 = +107$ m/s, so it still moves right. The fan widens linearly in time.
+- **Pulled faster than $2c_1/(\gamma-1) = 5c_1 = 1736$ m/s:** $c_p$ would have to be negative. The gas cannot keep up, so it expands to **vacuum** and a gap opens at the piston face (cavitation). Its front moves at the escape velocity $-2c_1/(\gamma-1)$.
+
+<PistonXTSim up0={200} />
+
+## The projectile launcher: how fast can you shoot a bullet?
+
+A long column of gas $(p_0, T_0, c_0)$ pushes a projectile. Every $C^+$ characteristic that reaches the projectile base started in the still gas, so $u_p + \tfrac{2c}{\gamma-1} = \tfrac{2c_0}{\gamma-1}$ there. That gives the base pressure:
+
+$$
+\frac{p_p}{p_0} = \left[1 - \frac{\gamma-1}{2}\frac{u_p}{c_0}\right]^{\frac{2\gamma}{\gamma-1}}
+\qquad\Rightarrow\qquad
+u_\text{max} = \frac{2}{\gamma-1}\,c_0 = 5c_0 \ (\gamma = 1.4)
+$$
+
+At $u_\text{max}$ the base pressure is zero: *"if the projectile goes any faster, the gas cannot keep up!"* Compare this with the **steady** limit from expanding to vacuum through a nozzle, $V_\text{max} = \sqrt{2c_pT_0} = \sqrt{2/(\gamma-1)}\,c_0 = 2.24\,c_0$. The unsteady expansion does better because the gas does not have to carry its own enthalpy flux: it spends its internal energy pushing the projectile.
+
+<GasGunFigure />
+
+**Light-gas guns.** To launch fast you need a large $c_0 = \sqrt{\gamma R T_0/MW}$: a hot gas and a **small molecular weight**. A two-stage light-gas gun uses propellant to drive a heavy piston, which compresses (and heats) hydrogen or helium. The hot light gas then launches the projectile at **7–8 km/s**. For comparison, the lecture lists rail guns at about 6 km/s, coil guns at about 0.5 km/s, and the ram accelerator and SHARP-type distributed-injection launchers.
+
+## The shock tube
+
+A tube is split by a diaphragm. On one side is a high-pressure **driver** gas (4); on the other, a low-pressure **driven** (test) gas (1). This is "a piston made out of gas", and it is the classic **Riemann problem**. When the diaphragm bursts:
+
+- a **shock** runs into gas 1 and leaves region 2 behind it;
+- a **centred expansion fan** runs back into gas 4 and leaves region 3;
+- a **contact surface** separates the driver gas (3) from the driven gas (2). Pressure and velocity match across it ($p_3 = p_2$, $u_3 = u_2$); temperature and density do not. From the driven gas's point of view, it is the piston.
+
+<ShockTubeXTFigure p41={10} />
+
+### The shock-tube equation: four pieces
+
+1. Expansion (the fan, with $C^+$ from region 4): $\dfrac{p_3}{p_4} = \left[1 - \dfrac{\gamma_4-1}{2}\dfrac{u_3}{c_4}\right]^{\frac{2\gamma_4}{\gamma_4-1}}$
+2. Shock (the unsteady shock formula, with the contact as the piston): $\dfrac{u_2}{c_1} = \dfrac{2}{\gamma_1+1}\dfrac{M_s^2-1}{M_s}$, with $\dfrac{p_2}{p_1} = \dfrac{2\gamma_1M_s^2-(\gamma_1-1)}{\gamma_1+1}$
+3. $u_3 = u_2$
+4. $p_3 = p_2$
+
+Eliminate $u$ and $M_s$ ([PS11 P4–P5](#/mech430/ps/ps11)):
+
+$$
+\frac{p_4}{p_1} = \frac{p_2}{p_1}\left[1 - \frac{(\gamma_4-1)(c_1/c_4)(p_2/p_1-1)}{\sqrt{2\gamma_1\left[2\gamma_1+(\gamma_1+1)(p_2/p_1-1)\right]}}\right]^{-\frac{2\gamma_4}{\gamma_4-1}}
+$$
+
+A large $c_4/c_1$ (a light or hot driver) keeps the bracket close to 1, so a modest $p_4/p_1$ gives a strong shock. That is why research shock tubes use **helium (or hydrogen) drivers**. A heavy driver spends its internal energy accelerating itself; a light one spends it accelerating the test gas.
+
+### The reflected shock and the shock tunnel
+
+The incident shock hits the end wall. Seen from gas 2, the wall is a piston moving toward it at $u_2$, so a **reflected shock** obeys the same formula with $c_x = c_2$. It leaves gas 5 **at rest, hot and at high pressure**: a nearly instantaneous way to bring a gas mixture to a known state (chemical kinetics, [PS11 P6](#/mech430/ps/ps11)). Put a nozzle in the end wall and region 5 becomes the reservoir ($p_0 = p_5$, $T_0 = T_5$) of a short-duration hypersonic wind tunnel: the **shock tunnel**.
+
+<ReflectedShockFigure Ms={2.705} MR={2.019} />
+
+**Tailored interface.** The reflected shock eventually meets the contact surface. In general it is partly reflected again, which spoils the test time. If the acoustic impedances match, $\rho_3c_3 = \rho_2c_2$, the shock crosses the interface **without reflection** (Hertzberg's *tailored-interface shock tube*). You get this by choosing the driver gas mixture and temperature. The sim reports $\rho_2c_2/\rho_3c_3$; try He driving air and adjust T₄ until it reads about 1.
+
+<ShockTubeSim p41={10} driver="He" driven="air" />
+
+<Examined>
+
+- **Final A P5** (20 %): impulsive piston pushed at 200 m/s (shock: $M_s$, $T$, $p$, sketch p(x) at two times), then pulled at 200 m/s (Riemann invariant gives p and T at the face; sketch the fan with its head and tail).
+- **PS11** (not collected, but it is the practice set): lab-frame supersonic flow behind a shock (P1), water hammer (P2), deriving $F = 2c/(\gamma-1)$ (P3), the fan relation (P4), the shock-tube equation (P5), and a reflected-shock design with N₂ vs He drivers (P6).
+- Expect: a frame change plus A3, or one Riemann invariant plus the isentropic relations, and a sketch.
+
+</Examined>
+
+## Check yourself
+
+1. A piston pushes air ($c = 347$ m/s) at 100 m/s. Find $M_s$. → $k = 1.2 \times 100/347 = 0.346$; $M_s = (0.346 + \sqrt{0.346^2+4})/2 = 1.188$.
+2. Why can the gas behind a moving shock be supersonic? → Velocity depends on the frame: $V_p'/c_y$ exceeds 1 for $M_s$ above 2.068. Only in the shock frame is it always subsonic.
+3. What is the maximum speed of a helium-driven projectile at 300 K? → $c_0 = 1019$ m/s, $u_\text{max} = 2c_0/(\gamma-1) = 3c_0 \approx 3.06$ km/s ($\gamma = 5/3$).
+4. Which states are equal across the contact surface? → p and u. T, ρ, c and the gas itself differ.
+5. A student finds $p_4/p_1$ smaller than $p_2/p_1$. What went wrong? → Something: the driver expands *down* to $p_3 = p_2$, so $p_4$ must be larger than $p_2$ (this is the official PS11 P6 slip).

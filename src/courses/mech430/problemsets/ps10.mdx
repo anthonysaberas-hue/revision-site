@@ -1,0 +1,387 @@
+<p className="eyebrow">Problem set 10</p>
+
+# Prandtl–Meyer, diamond airfoils, MOC
+
+<p className="lede">Four problems that run from one corner to a whole flow field. P1 is a single Prandtl–Meyer turn. P2 combines shocks and fans into lift and drag. P3–P4 march the method of characteristics through a diverging and a converging channel, ending with the question of when MOC stops working.</p>
+
+All problems: air, γ = 1.4. Handout rule: always use the **weak** oblique-shock solution (chart for a first guess, then iterate tan δ). Theory in [Ch. 13](#/mech430/ch/prandtl-meyer), [Ch. 14](#/mech430/ch/airfoils) and [Ch. 15](#/mech430/ch/moc).
+
+<Problem id="PS10 P1" title="Mach 2 around a 20° expansion corner; maximum turning angle" tags="Prandtl–Meyer, A6, expansion to vacuum">
+
+<Statement>
+
+A supersonic flow at Mach 2 encounters an expansive corner of 20°. What is the Mach number of the flow after the corner? What is the ratio of the pressure downstream of the corner to the pressure upstream of it? What is the maximum angle δ_max through which the original flow can be turned?
+
+</Statement>
+
+<Think>
+
+A single centred Prandtl–Meyer fan. The key idea is that **ν(M) is the angle a flow has already turned since it was sonic**. Imagine a fictitious flow at M = 1 that expanded around an earlier corner by ν₁ to reach M = 2. The real corner adds 20° more. The expansion is isentropic, so p₀ is unchanged and the pressure ratio is a ratio of two A2 entries. The maximum turn is the ν that is still "left over" before M → ∞.
+
+</Think>
+
+<Plan>
+
+M₁ → (A6) ν₁ → ν₂ = ν₁ + δ → (A6) M₂ → (A2) p/p₀ at both Mach numbers → ratio. Then ν_max − ν₁.
+
+</Plan>
+
+<Steps>
+<Step title="1. Prandtl–Meyer function of the incoming flow">
+
+$$
+\nu(M) = \sqrt{\tfrac{\gamma+1}{\gamma-1}}\tan^{-1}\sqrt{\tfrac{\gamma-1}{\gamma+1}(M^2-1)} - \tan^{-1}\sqrt{M^2-1}
+$$
+
+<T>A6 @ M = 2.0: ν = 26.38°, μ = 30.00°</T> (exact 26.380°) — <CalcLink calc="pm" q="in=M&v=2">check</CalcLink>
+
+</Step>
+<Step title="2. Add the corner angle">
+
+Why: an expansion of δ raises ν by exactly δ.
+
+$\nu_2 = \nu_1 + \delta = 26.38 + 20 = 46.38°$ → <T>A6 @ ν = 46.38°: M₂ = 2.83</T> (exact 2.8306) — <CalcLink calc="pm" q="in=nu&v=46.38">check</CalcLink>
+
+</Step>
+<Step title="3. Pressure ratio through p₀">
+
+Why: the flow is isentropic, so p₀₂ = p₀₁.
+
+$$
+\frac{p_2}{p_1} = \frac{(p/p_0)_{M_2}}{(p/p_0)_{M_1}} = \left[\frac{1+\tfrac{\gamma-1}{2}M_1^2}{1+\tfrac{\gamma-1}{2}M_2^2}\right]^{\frac{\gamma}{\gamma-1}}
+$$
+
+<T>A2 @ M = 2.83: p/p₀ = 0.0352</T>, <T>A2 @ M = 2.0: p/p₀ = 0.1278</T> → $p_2/p_1 = 0.0352/0.1278 = 0.275$ (exact 0.27517)
+
+</Step>
+<Step title="4. Maximum turning angle">
+
+Why: as M → ∞, both arctangents → π/2:
+
+$$
+\nu_\text{max} = \frac{\pi}{2}\left(\sqrt{\tfrac{\gamma+1}{\gamma-1}} - 1\right) = 90(\sqrt6 - 1) = 130.45°
+$$
+
+The flow has already used 26.38° to reach M = 2, so $\delta_\text{max} = 130.45 - 26.38 = 104.07°$. Beyond that angle, a vacuum region would separate the flow from the wall.
+
+</Step>
+</Steps>
+
+<Answer>
+
+- $M_2 = 2.83$
+- $p_2/p_1 = 0.275$
+- $\delta_\text{max} = 104.07°$ (from ν_max = 130.45°)
+
+</Answer>
+
+<ExpansionFanSim initialM={2} initialTheta={20} />
+
+<Traps>
+
+- Extra turning available = ν_max − ν₁, **not** ν_max. A Mach 2 flow has already "spent" 26.38°.
+- At δ_max the flow reaches M → ∞, p → 0 and T → 0: an expansion to vacuum.
+- Anthony's original and his April redo both match the official solution (he once wrote "130,55", but the subtraction confirms 130.45).
+
+</Traps>
+
+<Source>official 2025 solution (pp. 8–9) · Anthony's PS10-mine p.1 and "Ps 10 again" p.1</Source>
+
+</Problem>
+
+<Problem id="PS10 P2" title="20° diamond airfoil at M∞ = 1.8: drag, lift, C_D, C_L at α = 0° and 5°" tags="shock-expansion theory, oblique shock, P-M, lift & drag">
+
+<Statement>
+
+A 20° symmetric diamond airfoil sits in a uniform air stream at M∞ = 1.8 and static pressure p∞ = 100 kPa. The airfoil is 1 m from leading edge to trailing edge.
+
+(a) Find the drag per unit span [N/m] at zero angle of attack.
+(b) The same airfoil is now at 5° angle of attack. Find the new drag [N/m] and the lift [N/m].
+(c) Find C_L and C_D in both cases.
+
+</Statement>
+
+<Think>
+
+Shock-expansion theory ([Ch. 14](#/mech430/ch/airfoils)). Each face sees one wave: an **oblique shock** at the leading edge (the face turns into the flow) and a **Prandtl–Meyer fan** at mid-chord (the face turns away by 2 × 10° = 20°, whatever α is). Find p on all four faces, then integrate the face-normal forces. The geometry trap is the face length: (c/2)/cos 10°, not c/2.
+
+At α = 5° the faces sit at 10 − 5 = 5° (upper front), 15° (upper rear), 15° (lower front) and 5° (lower rear) to the freestream.
+
+</Think>
+
+<Plan>
+
+For each surface: M∞ → (chart/θ-β-M) σ → $M_{n} = M_\infty\sin\sigma$ → (A3) p ratio and $M_{n2}$ → $M = M_{n2}/\sin(\sigma-\delta)$ → (A6) ν + 20° → M → (A2) p ratio. Then
+$D = \ell\sum p\sin\varphi$ and $L = \ell\sum \pm p\cos\varphi$ with $\ell = 0.5/\cos10°$ m, and $q_\infty = \tfrac12\gamma p_\infty M_\infty^2 = 226.8$ kPa.
+
+<DiamondRegionsFigure M={1.8} eps={10} alpha={5} />
+
+</Plan>
+
+<Steps>
+<Step title="(a) 1. Leading-edge shock, δ = 10°">
+
+<T>chart M = 1.8, δ = 10°: σ = 44.1°</T> (exact 44.06°) — <CalcLink calc="oblique" q="M=1.8&in=delta&v=10&b=weak">check</CalcLink>
+
+$M_{n\infty} = 1.8\sin44.1° = 1.25$ → <T>A3 @ Mₓ = 1.25: p_y/pₓ = 1.656, M_y = 0.8126</T> — <CalcLink calc="normal" q="in=Mx&v=1.25">check</CalcLink>
+
+$p_1 = 165.6$ kPa, and $M_1 = 0.8126/\sin(44.1-10) = 1.45$.
+
+</Step>
+<Step title="(a) 2. Mid-chord expansion, 20°">
+
+<T>A6 @ M = 1.45: ν = 10.438°</T> → ν₂ = 30.438° → <T>A6: M₂ = 2.15</T>
+
+<T>A2: p/p₀ = 0.29272 (M 1.45), 0.10113 (M 2.15)</T> → $p_2 = 165.6 \times 0.10113/0.29272 = 57.2$ kPa (exact 57.36)
+
+</Step>
+<Step title="(a) 3. Drag and C_D">
+
+Why: by symmetry the upper and lower faces carry the same pressures, so L = 0. Each front face pushes back with $p_1\ell\sin10°$, each rear face pushes forward with $p_2\ell\sin10°$:
+
+$$
+D = 2(p_1-p_2)\sin10°\,\frac{0.5}{\cos10°} = (p_1-p_2)\tan10° = (165.6-57.2)\tan10° = 19.11\ \text{kN/m}
+$$
+
+$$
+C_D = \frac{D}{\tfrac12\gamma p_\infty M_\infty^2 c} = \frac{19.11}{\tfrac12(1.4)(100)(1.8)^2(1)} = \frac{19.11}{226.8} = 0.0843
+$$
+
+</Step>
+<Step title="(b) 1. Upper front face: δ = 5° shock">
+
+<T>chart M = 1.8, δ = 5°: σ = 38.45°</T> — <CalcLink calc="oblique" q="M=1.8&in=delta&v=5&b=weak">check</CalcLink> → $M_n = 1.8\sin38.45° = 1.119$ → <T>A3: p_y/pₓ = 1.294, M_y = 0.897</T>
+
+$p_1 = 129.4$ kPa, and $M_1 = 0.897/\sin(33.45°) = 1.62$ (exact 1.628).
+
+</Step>
+<Step title="(b) 2. Upper rear face: 20° fan (corrected)">
+
+<T>A6 @ M = 1.62: ν = 15.45°</T> → ν₂ = 35.45° → <T>A6 @ ν = 35.45°: M₂ = 2.35</T> — <CalcLink calc="pm" q="in=nu&v=35.45">check</CalcLink>
+
+<T>A2: p/p₀ = 0.07396 (M 2.35), 0.2284 (M 1.62)</T> → $p_2 = 129.4 \times 0.07396/0.2284 = 42.0$ kPa (exact 41.99)
+
+The official solution reads M₂ = 2.31 here, but ν(2.31) = 34.53°. It is a table misread, and it gives p₂ = 44.7 kPa. Anthony's April redo has the correct **M₂ = 2.35, p₂ = 42 kPa**.
+
+</Step>
+<Step title="(b) 3. Lower front face: δ = 15° shock">
+
+<T>chart M = 1.8, δ = 15°: σ = 51.33°</T> — <CalcLink calc="oblique" q="M=1.8&in=delta&v=15&b=weak">check</CalcLink> → $M_n = 1.40$ → <T>A3 @ 1.40: p_y/pₓ = 2.120, M_y = 0.7397</T>
+
+$p_3 = 212.0$ kPa, and $M_3 = 0.7397/\sin36.33° = 1.25$. The shock is still attached, but δ_max(1.8) ≈ 19.2° is not far away.
+
+</Step>
+<Step title="(b) 4. Lower rear face: 20° fan">
+
+<T>A6 @ M = 1.25: ν = 4.83°</T> → 24.83° → <T>A6: M₄ = 1.94</T>; <T>A2: 0.14028 (1.94), 0.38606 (1.25)</T> → $p_4 = 212 \times 0.3634 = 77.0$ kPa
+
+</Step>
+<Step title="(b) 5. Forces">
+
+Why: face φ to the freestream has force $p\ell$ along its normal: drag component $p\ell\sin\varphi$, lift component $p\ell\cos\varphi$. Front faces push back and rear faces push forward; upper faces push down and lower faces push up. With ℓ = 1/(2 cos 10°) = 0.5077 m:
+
+$$
+D = \ell\left[(p_1-p_4)\sin5° + (p_3-p_2)\sin15°\right], \qquad
+L = \ell\left[(p_4-p_1)\cos5° + (p_3-p_2)\cos15°\right]
+$$
+
+With the corrected p₂ = 42.0 kPa:
+
+- $D = 0.5077[(129.4-77.0)(0.08716) + (212.0-42.0)(0.25882)] = 24.66$ kN/m
+- $L = 0.5077[(77.0-129.4)(0.99619) + (170.0)(0.96593)] = 56.8$ kN/m
+- $C_D = 24.66/226.8 = 0.109$ and $C_L = 56.8/226.8 = 0.250$
+
+</Step>
+</Steps>
+
+<Answer>
+
+- **(a) α = 0:** D = 19.11 kN/m = 19 110 N/m, L = 0; C_D = 0.0843, C_L = 0.
+- **(b) α = 5°:** D ≈ 24.7 kN/m, L ≈ 56.8 kN/m (Anthony's redo: 24.67 and 56.78).
+- **(c)** C_D ≈ 0.109, C_L ≈ 0.250 at α = 5°.
+
+| (b) | official | Anthony's redo (corrected M₂) | exact (γ = 1.4, no tables) |
+|---|---|---|---|
+| p₂ (kPa) | 44.7 (M₂ = 2.31 ✗) | 42 (M₂ = 2.35) | 41.99 |
+| D (kN/m) | 24.32 | **24.67** | 24.89 |
+| L (kN/m) | 55.6 | **56.78** | 57.84 |
+| C_D / C_L | 0.1072 / 0.2451 | 0.109 / 0.250 | 0.1097 / 0.2550 |
+
+The official answer is slightly off because of the M₂ misread. Anthony's April redo is closer to the exact result.
+
+</Answer>
+
+<DiamondAirfoilSim initialM={1.8} initialEps={10} initialAlpha={5} pInf={100} chord={1} />
+
+<Traps>
+
+- **"Don't forget the cos"** (Anthony's redo note): the face is the hypotenuse, ℓ = 0.5/cos 10°. At α = 0 it cancels into tan 10°.
+- Always check ν(M) back after reading A6. The official 35.45° → 2.31 is the textbook example of a misread.
+- Units: kPa × m = kN/m. The question asks for N/m: 19 110 N/m.
+- Anthony's original submission had p₄ = 93.2 kPa (wrong A2 entry at M ≈ 1.26; it should be p/p₀ ≈ 0.38), which gave L = 63 kN/m. The redo fixed it.
+- The lift sign: the official substituted line drops the minus on the first term, but its number (55.6) includes it.
+- Even with zero lift there is **wave drag**: a purely supersonic, inviscid effect.
+
+</Traps>
+
+<Source>official 2025 solution (pp. 1–6) · Anthony's PS10-mine pp. 2–7 · "Ps 10 again" pp. 2–6 (April 25, 2025 redo) · exact values recomputed in the digest</Source>
+
+</Problem>
+
+<Problem id="PS10 P3" title="MOC: Mach 2 in a channel with one wall diverging at 10°" tags="MOC, wall points, interior points, table">
+
+<Statement>
+
+Air at Mach 2 enters a channel. One wall is straight and the other diverges at 10°, and the initial flow is parallel to the walls. Using the method of characteristics, with one point initialized at each wall (points 1 and 2), solve for the Mach number and pressure over the region shown. Inflow: M = 2, p = 1 atm.
+
+</Statement>
+
+<Think>
+
+A coarse 2-point MOC net ([Ch. 15](#/mech430/ch/moc)). Expansion waves leave the diverging upper wall, reflect from the straight wall as expansions and return. So M should rise and p should fall. Only two rules are needed: the **interior point** (average and half-difference of C_I and C_II) and the **wall point** (θ = θ_wall plus the one invariant that arrives). Keep a table.
+
+</Think>
+
+<Plan>
+
+1 (upper wall, θ = 10°) and 2 (lower wall, θ = 0) → 3 = right-running from 1 meets left-running from 2 → 4 (upper wall) on the left-running line from 3 → 5 (lower wall) on the right-running line from 3 → 6 interior (from 4 and 5) → 7 (upper) and 8 (lower). Then p = p₁ (p/p₀)/(0.1278).
+
+<MOCNetFigure preset="ps10p3" />
+
+</Plan>
+
+<Steps>
+<Step title="1. Initial points">
+
+<T>A6 @ M = 2: ν = 26.38°</T>. Point 1: θ = 10 → C_I = 36.38, C_II = 16.38. Point 2: θ = 0 → C_I = C_II = 26.38.
+
+</Step>
+<Step title="2. Point 3 (interior)">
+
+C_I = 36.38 from 1, C_II = 26.38 from 2 → θ = (36.38 − 26.38)/2 = 5°, ν = (36.38 + 26.38)/2 = 31.38° → <T>A6: M = 2.19</T> → <T>A2: p/p₀ = 0.095</T> → p₃ = 0.095/0.1278 = 0.743 atm
+
+</Step>
+<Step title="3. Points 4 and 5 (walls)">
+
+Point 4, upper wall θ = 10: C_II = 26.38 from 3 → ν = 26.38 + 10 = 36.38° → <T>A6: M = 2.38</T>, <T>A2: 0.07057</T> → p = 0.552 atm. Point 5, lower wall θ = 0: C_I = 36.38 from 3 → ν = 36.38° → the same M = 2.38 and p = 0.552 atm.
+
+</Step>
+<Step title="4. Point 6, then 7 and 8">
+
+Point 6: C_I = 46.38 (from 4), C_II = 36.38 (from 5) → θ = 5°, ν = 41.38° → <T>A6: M = 2.6</T>, <T>A2: 0.05012</T> → 0.392 atm.
+Point 7 (upper wall): ν = 36.38 + 10 = 46.38°. Point 8 (lower wall): ν = 46.38 − 0 = 46.38°. Both give <T>A6: M = 2.83</T>, <T>A2: 0.0352</T> → 0.275 atm.
+
+</Step>
+</Steps>
+
+<Answer>
+
+| Point | C_I = ν+θ | C_II = ν−θ | θ (°) | ν (°) | M | μ (°) | p (atm) |
+|---|---|---|---|---|---|---|---|
+| 1 | 36.38 | 16.38 | 10 | 26.38 | 2 | 30.00 | 1 |
+| 2 | 26.38 | 26.38 | 0 | 26.38 | 2 | 30.00 | 1 |
+| 3 | 36.38 | 26.38 | 5 | 31.38 | 2.19 | 27.17 | 0.743 |
+| 4 | 46.38 | 26.38 | 10 | 36.38 | 2.38 | 24.85 | 0.552 |
+| 5 | 36.38 | 36.38 | 0 | 36.38 | 2.38 | 24.85 | 0.552 |
+| 6 | 46.38 | 36.38 | 5 | 41.38 | 2.6 | 22.62 | 0.392 |
+| 7 | 56.38 | 36.38 | 10 | 46.38 | 2.83 | 20.69 | 0.275 |
+| 8 | 46.38 | 46.38 | 0 | 46.38 | 2.83 | 20.69 | 0.275 |
+
+The exact inverse P-M gives M = 2.186, 2.385, 2.599, 2.831 and p = 0.748, 0.548, 0.393, 0.275 atm. The table readings above are what the exam expects.
+
+</Answer>
+
+<MOCChannelSim preset="ps10p3" />
+
+<Traps>
+
+- C_I = ν + θ travels on **right-running** lines (1→3→5, 4→6→8). C_II = ν − θ travels on **left-running** lines (2→3→4, 5→6→7). Anthony's labels "right" and "left" encode exactly this.
+- Points 7 and 8 reproduce P1 (M = 2.83, p/p₁ = 0.275). The 10° wave reflected from the straight wall as another expansion, giving 2 × 10° in total.
+- A coarse net gives a crude answer. More initial points give a finer, more accurate answer.
+
+</Traps>
+
+<Source>official 2025 solution p. 7 · Anthony's PS10-mine pp. 7–8 · "Ps 10 again" p. 7</Source>
+
+</Problem>
+
+<Problem id="PS10 P4" title="MOC in a converging channel; when does MOC break down?" tags="MOC, compression, breakdown, shock formation">
+
+<Statement>
+
+Repeat Problem 3, but now consider a converging channel with one wall at 10°. For how long can you extend this calculation? That is, when will the method of characteristics break down?
+
+</Statement>
+
+<Think>
+
+The same net with θ_wall = −10°. Now the waves are **compressions**: ν, and therefore M, falls at every step and p rises. The second question is the real lesson. MOC needs supersonic, isentropic, irrotational flow. Compression threatens both: same-family waves converge (heading toward a shock), and M heads toward 1.
+
+</Think>
+
+<Plan>
+
+Same procedure as P3 with θ = −10° on the upper wall. Then continue past point 8 until something fails.
+
+<MOCNetFigure preset="ps10p4ext" caption="PS10 P4 continued past point 8 (points 9–11 are not in the official solution). At point 10 the wall rule gives ν = 6.38 − 10 = −3.62°, which is impossible." />
+
+</Plan>
+
+<Steps>
+<Step title="1. Points 1–3">
+
+Point 1 (θ = −10): C_I = 16.38, C_II = 36.38. Point 2: 26.38 / 26.38.
+Point 3: θ = (16.38 − 26.38)/2 = −5°, ν = 21.38° → <T>A6: M = 1.82</T>, <T>A2: 0.16879</T> → p = 1.321 atm
+
+</Step>
+<Step title="2. Points 4–6">
+
+Point 4 (upper, θ = −10): ν = C_II + θ = 26.38 − 10 = 16.38° → <T>A6: M = 1.65</T>, <T>A2: 0.21839</T> → 1.709 atm. Point 5 (lower): ν = C_I = 16.38° → the same values.
+Point 6: C_I = 6.38, C_II = 16.38 → θ = −5°, ν = 11.38° → <T>A6: M = 1.48</T>, <T>A2: 0.28039</T> → 2.194 atm
+
+</Step>
+<Step title="3. Points 7–8">
+
+Point 7: ν = 16.38 − 10 = 6.38° (C_I = −3.62, which is fine: θ is negative). Point 8: ν = C_I = 6.38°. <T>A6: M = 1.31</T>, <T>A2: 0.35603</T> → 2.786 atm.
+
+</Step>
+<Step title="4. Push on: where it fails">
+
+Point 9: C_I = −3.62 (from 7), C_II = 6.38 (from 8) → θ = −5°, ν = 1.38° → M ≈ 1.10, p ≈ 3.65 atm.
+Point 10 (upper wall): ν = C_II + θ = 6.38 − 10 = **−3.62° below zero**. No supersonic Mach number has a negative ν: the flow would have to become subsonic, and the method stops.
+In reality the converging compression waves steepen (μ grows from 30° to about 50°) and would coalesce into an oblique shock around here or earlier.
+
+</Step>
+</Steps>
+
+<Answer>
+
+| Point | C_I | C_II | θ (°) | ν (°) | M | μ (°) | p (atm) |
+|---|---|---|---|---|---|---|---|
+| 1 | 16.38 | 36.38 | −10 | 26.38 | 2.0 | 30.00 | 1 |
+| 2 | 26.38 | 26.38 | 0 | 26.38 | 2.0 | 30.00 | 1 |
+| 3 | 16.38 | 26.38 | −5 | 21.38 | 1.82 | 33.33 | 1.321 |
+| 4 | 6.38 | 26.38 | −10 | 16.38 | 1.65 | 37.31 | 1.709 |
+| 5 | 16.38 | 16.38 | 0 | 16.38 | 1.65 | 37.31 | 1.709 |
+| 6 | 6.38 | 16.38 | −5 | 11.38 | 1.48 | 42.51 | 2.194 |
+| 7 | −3.62 | 16.38 | −10 | 6.38 | 1.31 | 49.76 | 2.786 |
+| 8 | 6.38 | 6.38 | 0 | 6.38 | 1.31 | 49.76 | 2.786 |
+
+**Breakdown** (official wording): MOC fails when the flow is no longer isentropic or irrotational. That happens when a shock forms, which shows up as two C_I (or two C_II) characteristics intersecting, or when the flow becomes subsonic. Here that is right after points 7/8: at point 10, ν would be negative.
+
+</Answer>
+
+<MOCChannelSim preset="ps10p4ext" />
+
+<Traps>
+
+- A negative **C_I** is not an error. A negative **ν** is.
+- In compression the Mach angle grows (30° → 50°), so the downstream characteristics are steeper and the same family converges. That is how a shock forms.
+- Anthony's answer is equivalent to the official one: "2 C_I or 2 C_II intersect ⇒ formation of a shock; or the flow goes subsonic."
+- The same question returns as Final B P5(b).
+
+</Traps>
+
+<Source>official 2025 solution pp. 8–9 · Anthony's PS10-mine p. 9 · points 9–10 computed in the digest</Source>
+
+</Problem>

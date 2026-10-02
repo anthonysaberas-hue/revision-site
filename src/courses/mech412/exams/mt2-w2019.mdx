@@ -1,0 +1,411 @@
+<p className="eyebrow">Midterm 2 · Winter 2019 (Mar 21, 2019) · covers Lectures 9–17 · 4 × 25 = 100 marks</p>
+
+# Midterm 2, Winter 2019: three analog circuits, hydraulic governor, steady-state error and sensitivity, op-amp amplifier
+
+<div className="lede">
+
+Q1 is the standard "draw the analogs" question (<Hw n="5">HW5</Hw>, <Hw n="6">HW6 Q1</Hw>); Q2 a hydraulic **speed governor** that turns out to be a PI controller; Q3 steady-state error plus sensitivity (in 2019 these were on MT2; in 2024 they are split between MT2 and the final); Q4 a finite-gain op-amp amplifier. Handout: the analogies table (handout 2) and a Laplace table. The official solution is essentially correct (one harmless numeric typo, "36" for "30", in Q3). Every answer below was re-derived.
+
+</div>
+
+<Problem id="MT2 W2019 Q1a" title="Two masses, two springs, one damper, two velocity generators: equivalent circuit (10 marks)" tags="mobility analog, velocity source = voltage source">
+
+<Statement>
+
+Mass $m_1$ hangs from the ceiling through a spring $k_1$ whose top end moves with a velocity generator $u_1$; a damper $b_1$ links $m_1$ to $m_2$; $m_2$ is held by a spring $k_2$ whose top end has a velocity generator $u_2$. $y_1,y_2$ are downward positions. Draw an equivalent circuit, label the elements, identify potential and flux.
+
+</Statement>
+
+<Think>
+
+**Mobility analog:** every velocity is a node voltage; masses are capacitors from their node to ground; a spring is an **inductor of value $1/k$**; a damper is a **resistor of value $1/b$**. A velocity generator (a specified velocity at the end of a spring) is a **voltage source in series with that spring's inductor**. **Impedance analog** (force = voltage, velocity = current) is the dual: masses are inductors in series loops, springs are capacitors of value $1/k$.
+
+</Think>
+
+<Steps>
+<Step title="1. Nodes">
+
+$\dot y_1$ and $\dot y_2$ plus ground (the fixed ceiling).
+
+</Step>
+<Step title="2. Masses">
+
+Capacitor $m_1$ from node $\dot y_1$ to ground; capacitor $m_2$ from node $\dot y_2$ to ground.
+
+</Step>
+<Step title="3. Damper between the masses">
+
+Resistor $1/b_1$ between node $\dot y_1$ and node $\dot y_2$ (it carries the *relative* velocity).
+
+</Step>
+<Step title="4. Springs with moving top ends">
+
+Spring $k_1$ with generator $u_1$: a voltage source $u_1$ in series with an inductor $1/k_1$ between ground and node $\dot y_1$ (the spring force is the "current" in it). Spring $k_2$ with $u_2$: voltage source $u_2$ in series with inductor $1/k_2$ between ground and node $\dot y_2$.
+
+</Step>
+<Step title="5. Labels">
+
+Potential = velocity ($u$, $\dot y$); flux = force.
+
+</Step>
+</Steps>
+
+<CircuitBoard source={{kind:'Vs',label:'u₁',sub:'velocity generator'}} sections={[{type:'series',el:{kind:'L',label:'1/k₁',sub:'spring k₁'}},{type:'shunt',stack:[{kind:'C',label:'m₁'}],node:'ẏ₁'},{type:'bridge',els:[{kind:'R',label:'1/b₁',sub:'damper'}]},{type:'shunt',stack:[{kind:'C',label:'m₂'}],node:'ẏ₂'},{type:'shunt',stack:[{kind:'L',label:'1/k₂',sub:'spring k₂'},{kind:'Vs',label:'u₂',sub:'velocity generator'}]}]} title="Mobility analog of Q1a" caption="Springs are inductors 1/k, the damper a resistor 1/b₁ between the two velocity nodes, masses capacitors to ground, velocity generators voltage sources." />
+
+<Answer>
+
+The circuit above. **Impedance analog (official sketch):** two series loops sharing the damper: loop 1 has a source for $u_1$, capacitor $1/k_1$, inductor $m_1$; the shared resistor $b_1$; loop 2 has inductor $m_2$, capacitor $1/k_2$ and the source $u_2$. Potential = force, flux = velocity.
+
+</Answer>
+
+<Traps>
+
+- A spring is an **inductor** in the mobility analog (not a capacitor).
+- The damper connects the two nodes (not to ground).
+
+</Traps>
+
+<Source>official ✔ (10 marks).</Source>
+
+</Problem>
+
+<Problem id="MT2 W2019 Q1b" title="Three tanks, five valves: liquid-level equivalent circuit (10 marks)" tags="tanks = capacitors, valves = resistors, junction node">
+
+<Statement>
+
+Tank 1 (area $C_1$, head $h_1$) receives $q_i$; valve $R_1$ connects it to a junction; from the junction valve $R_2$ feeds tank 2 ($C_2$, $h_2$, outlet valve $R_5$) and valve $R_3$ feeds tank 3 ($C_3$, $h_3$, outlet valve $R_4$). Draw an equivalent circuit.
+
+</Statement>
+
+<Think>
+
+Liquid level rule (<Ch slug="hydraulic-thermal">Chapter 13</Ch>): potential = head $h$, flux = volume flow $q$; a tank is a **capacitor $C_l=$ tank area** to ground; a valve is a **resistor $R_l=2\bar H/\bar Q$** (linearised).
+
+</Think>
+
+<Steps>
+<Step title="1. Source and tank 1">
+
+$q_i$ is a **current source** into node $h_1$; capacitor $C_1$ from $h_1$ to ground.
+
+</Step>
+<Step title="2. First valve and the junction">
+
+$R_1$ from $h_1$ to a **junction node** (a pipe tee has no storage, so no capacitor there).
+
+</Step>
+<Step title="3. The two branches">
+
+From the junction: $R_2$ to node $h_2$ (capacitor $C_2$ and resistor $R_5$ to ground, since tank 2 drains to atmosphere = ground); and $R_3$ to node $h_3$ (capacitor $C_3$ and resistor $R_4$ to ground).
+
+</Step>
+</Steps>
+
+<Answer>
+
+A tree: source $\to C_1\to R_1\to$ junction, then two parallel legs $R_2\to(C_2\parallel R_5)$ and $R_3\to(C_3\parallel R_4)$. Order of the system = number of tanks = 3.
+
+*Real-world:* three connected rain barrels with a manifold.
+
+</Answer>
+
+<Source>official ✔ (same topology, junction as an extra node).</Source>
+
+</Problem>
+
+<Problem id="MT2 W2019 Q1c" title="Liquid level coupled to a float on a spring and dashpot (5 marks)" tags="buoyancy, transformer A_c:1, mixed analogs">
+
+<Statement>
+
+A float (cross-section $A_c$, mass $M$) hangs from a spring $k$ and dashpot $b$ in a tank of capacitance (area) $C_l$; its bottom is at height $x$, the liquid height is $h$; inflow $q_i$, outflow $q_o$ through the load valve $R_l$. At equilibrium the weight is balanced by buoyancy plus the static spring force. Draw the equivalent circuit.
+
+</Statement>
+
+<Think>
+
+Two coupled equations: a **volume balance** for the liquid (the float displaces liquid) and **Newton for the float** (buoyancy pushes it up). Use pressure $p=\rho gh$ as the liquid potential.
+
+</Think>
+
+<Steps>
+<Step title="1. Volume balance">
+
+Liquid volume $V=C_lh-A_c(h-x)$ (the float displaces $A_c$ times its immersed depth $h-x$). So $q_i-q_o=\dot V=(C_l-A_c)\dot h+A_c\dot x$, with $q_o=h/R_l$.
+
+</Step>
+<Step title="2. Float dynamics (incremental, static balance removed)">
+
+$M\ddot x+b\dot x+kx=\rho gA_c(h-x)$: buoyancy grows as the float is pushed *into* the liquid.
+
+</Step>
+<Step title="3. Circuit">
+
+Liquid side, node $p$ (pressure): current source $q_i$; capacitor $\dfrac{C_l-A_c}{\rho g}$ to ground (so its current is $(C_l-A_c)\dot h$); resistor $R_l\rho g$ to ground (carrying $q_o$); and a transformer $A_c:1$ that takes the volume flux $A_c\dot x$ out of the node and sends the force $A_cp$ to the mechanical side. Mechanical side (impedance analog): a series loop with inductor $M$, resistor $b$, capacitor $1/k$ **and** a second capacitor $1/(\rho gA_c)$ (the buoyancy "spring": $-\rho gA_cx$ on the right of step 2 moves to the left as an extra stiffness).
+
+</Step>
+<Step title="4. Check">
+
+Node $p$: $q_i-q_o=\dfrac{C_l-A_c}{\rho g}\dot p+A_c\dot x$ ✔ (step 1). Loop: $A_cp=M\ddot x+b\dot x+(k+\rho gA_c)x$ ✔ (step 2). If $A_c=0$ the circuit collapses to one capacitor $C_l/\rho g$ and one resistor: the first-order tank ✔.
+
+</Step>
+</Steps>
+
+<CircuitBoard source={{kind:'Is',label:'q_i',sub:'inflow'}} sections={[{type:'shunt',stack:[{kind:'C',label:'(C_l−A_c)/ρg',sub:'liquid'}],node:'p'},{type:'shunt',stack:[{kind:'R',label:'R_lρg',sub:'load valve'}]},{type:'xfmr',ratio:'A_c : 1'},{type:'series',el:{kind:'L',label:'M',sub:'float mass'}},{type:'series',el:{kind:'R',label:'b',sub:'dashpot'}},{type:'series',el:{kind:'C',label:'1/k',sub:'spring'}},{type:'series',el:{kind:'C',label:'1/(ρgA_c)',sub:'buoyancy'}}]} title="Tank with a float: pressure node + transformer + mechanical loop" caption="Both equations of the model are satisfied (verified in the text). Series capacitors add stiffnesses: k + ρgA_c." />
+
+<Answer>
+
+The circuit above (liquid node, transformer $A_c:1$, mechanical impedance loop with the buoyancy spring).
+
+</Answer>
+
+<Callout kind="note" title="About the official sketch">
+
+The scan of the official circuit (p.12) is hard to read; it uses capacitors labelled $C_l/\rho g$ and $(C_l-A_c)/\rho g$ and a transformer $A_c:1$ to a loop $M,b,1/k$. The circuit above is derived from the two equations of the model and **checked against both**; use it, and label the transformer and the buoyancy spring.
+
+</Callout>
+
+<Traps>
+
+- The float's immersed volume reduces the effective tank capacitance to $C_l-A_c$.
+- Buoyancy acts as an extra spring $\rho gA_c$.
+
+</Traps>
+
+<Source>official (5 marks); the circuit here is the digest's derivation, verified against the two model equations.</Source>
+
+</Problem>
+
+<Problem id="MT2 W2019 Q2" title="Hydraulic speed governor (fly-ball): block diagram, Y/E, PI controller (25 marks)" tags="dashpot as high-pass, integral action, K_p = a₂/a₁, T_i = b/k">
+
+<Statement>
+
+Engine speed increases, the fly-ball sleeve rises, giving a positive error $e$ that moves the pilot valve and the power piston downward (displacement $y$), closing the fuel valve. The dashpot (position $z$, spring $k$, damper $b$) is the feedback; lever arms $a_1,a_2$; power piston $y=\tfrac Ksx$. (a) Block diagram in terms of $k,b,a_1,a_2,K$. (b) $Y/E$. (c) For $\Big|\dfrac{a_1}{a_1+a_2}\dfrac{bs}{bs+k}\dfrac Ks\Big|\gg1$ the system is a PI controller $K_p\Big(1+\dfrac1{T_is}\Big)$: find $K_p$ and $T_i$.
+
+</Statement>
+
+<Think>
+
+The power piston is an **integrator** (it keeps moving as long as the valve is open). The lever mixes the error with the **dashpot-spring feedback**; that feedback is a **high-pass** filter (passes fast changes, forgets slow ones). A high-gain loop with that feedback inverts it: the inverse of a high-pass $\dfrac{bs}{bs+k}$ is $\dfrac{bs+k}{bs}=1+\dfrac{k}{bs}$, which is **P + I**. That is how a governor removes steady speed error.
+
+</Think>
+
+<Steps>
+<Step title="1. Feedback element (massless junction z)">
+
+The spring pulls with $kz$, the damper with $b(\dot y-\dot z)$: $b(\dot y-\dot z)=kz\Rightarrow bsY-bsZ=kZ\Rightarrow\dfrac ZY=\dfrac{bs}{bs+k}$ (zero at the origin, pole at $-k/b$).
+
+</Step>
+<Step title="2. Lever">
+
+$x=\dfrac{a_2}{a_1+a_2}e-\dfrac{a_1}{a_1+a_2}z$.
+
+</Step>
+<Step title="3. Power piston">
+
+$\dfrac YX=\dfrac Ks$.
+
+</Step>
+<Step title="4. Block diagram">
+
+$E\to\dfrac{a_2}{a_1+a_2}\to\oplus(+)\to\dfrac Ks\to Y$; feedback $Y\to\dfrac{bs}{bs+k}\to Z\to\dfrac{a_1}{a_1+a_2}\to\oplus(-)$.
+
+</Step>
+<Step title="5. Closed loop">
+
+$$\frac YE=\frac{\dfrac{a_2}{a_1+a_2}\dfrac Ks}{1+\dfrac{a_1}{a_1+a_2}\dfrac{bs}{bs+k}\dfrac Ks}.$$
+In the loop term the $s$ of $bs$ cancels the $1/s$ of the integrator: loop term $=\dfrac{a_1bK}{(a_1+a_2)(bs+k)}$. Multiply top and bottom by $s(a_1+a_2)(bs+k)$:
+$$\frac YE=\frac{a_2K(bs+k)}{s\big[(a_1+a_2)(bs+k)+a_1bK\big]}.$$
+
+</Step>
+<Step title="6. Large-gain limit (part c)">
+
+The "1" in the denominator is negligible: $\dfrac YE\approx\dfrac{a_2/(a_1+a_2)}{\frac{a_1}{a_1+a_2}\frac{bs}{bs+k}}=\dfrac{a_2}{a_1}\dfrac{bs+k}{bs}=\dfrac{a_2}{a_1}\Big(1+\dfrac{k}{bs}\Big)$.
+
+</Step>
+<Step title="7. Match to K_p(1 + 1/(T_i s))">
+
+$$K_p=\frac{a_2}{a_1},\qquad\frac1{T_i}=\frac kb\Rightarrow T_i=\frac bk .$$
+Physical reading: the proportional gain is the lever ratio; the integral time is the dashpot–spring time constant; a stiffer damper (larger $b$) slows the integral action.
+
+</Step>
+<Step title="8. Check">
+
+Letting $b\to\infty$: $Z/Y\to1$ and $Y/E\to\dfrac{a_2K/(a_1+a_2)}{s+a_1K/(a_1+a_2)}$, a first-order lag ✔ sensible.
+
+</Step>
+</Steps>
+
+<Answer>
+
+$\dfrac YE=\dfrac{a_2K(bs+k)}{s[(a_1+a_2)(bs+k)+a_1bK]}\approx\dfrac{a_2}{a_1}\Big(1+\dfrac{k}{bs}\Big)$: $K_p=a_2/a_1$, $T_i=b/k$.
+
+*Real-world:* engine or turbine governors: if the load rises and speed drops, the integral term keeps adjusting the fuel valve until the speed is exactly back at the set point (zero steady-state error), which a P-only governor cannot do.
+
+</Answer>
+
+<Traps>
+
+- The dashpot force is $b$ times the **relative** velocity $\dot y-\dot z$, not $b\dot z$.
+- Do not put $K/s$ inside the loop twice.
+
+</Traps>
+
+<Source>official ✔ ($Z/Y$, $Y/E$, $K_p$, $T_i$; diagram 10, $Y/E$ 10, PI 5 marks).</Source>
+
+</Problem>
+
+<Problem id="MT2 W2019 Q3" title="Steady-state error and sensitivity (25 marks)" tags="system type, K_v, sensitivity chain rule">
+
+<Statement>
+
+$G(s)=\dfrac{K(s^2+3s+30)}{s^n(s+5)}$. (a) For unit negative feedback find $K$ and $n$ so that the steady-state error between the ramp input $10t\,1(t)$ and the output is $\dfrac1{6000}$. (b) Find the sensitivity of the closed-loop transfer function to a change in $K$.
+
+</Statement>
+
+<Think>
+
+A finite non-zero ramp error means **type 1** (one free integrator): $e_{ss}=\text{slope}/K_v$. Sensitivity answers: "how much does a 1 % change in $K$ change the closed-loop transfer function?"
+
+</Think>
+
+<Steps>
+<Step title="(a) 1. Choose n">
+
+Ramp error is finite and non-zero only for a type-1 system: $n=1$ ($n=0$: infinite ramp error; $n\ge2$: zero ramp error).
+
+</Step>
+<Step title="(a) 2. Velocity constant">
+
+$K_v=\lim_{s\to0}sG(s)=\lim\dfrac{K(s^2+3s+30)}{s+5}=\dfrac{30K}{5}=6K$.
+
+</Step>
+<Step title="(a) 3. Ramp error">
+
+$e_{ss}=\dfrac A{K_v}=\dfrac{10}{6K}=\dfrac1{6000}\Rightarrow K=10\,000$.
+
+</Step>
+<Step title="(b) 1. Chain rule">
+
+$S^T_K=S^T_G\,S^G_K$ ($T$ closed loop, $G$ open loop).
+
+</Step>
+<Step title="(b) 2. The two factors">
+
+For unity feedback $T=\dfrac G{1+G}$: $S^T_G=\dfrac1{1+G}=\dfrac{s^n(s+5)}{s^n(s+5)+K(s^2+3s+30)}$; and $G\propto K$, so $S^G_K=\dfrac KG\dfrac{\partial G}{\partial K}=1$.
+
+</Step>
+<Step title="(b) 3. Result (n = 1)">
+
+$$S^T_K=\frac{s(s+5)}{s(s+5)+K(s^2+3s+30)} .$$
+
+</Step>
+<Step title="(b) 4. Reading S">
+
+At low frequency $S\to0$ (large loop gain: the closed loop is insensitive to $K$). At high frequency $S\to\dfrac1{1+K}\approx10^{-4}$: tiny as well for $K=10\,000$. $S$ is largest near the closed-loop resonance. Note $S=\dfrac1{1+L}$, the same quantity that sets the ramp error.
+
+</Step>
+</Steps>
+
+<Answer>
+
+$n=1$, $K=10\,000$; $S^T_K=\dfrac{s(s+5)}{s(s+5)+K(s^2+3s+30)}$.
+
+*Real-world:* tracking a target at constant speed (radar antenna): the lag error is velocity divided by $K_v$; a large $K$ makes the loop tight and, as a bonus, insensitive to changes in $K$ (amplifier ageing).
+
+</Answer>
+
+<Callout kind="warn" title="⚠ Numeric typo on the official page (no effect on the answer)">
+
+The official page evaluates the limit as "$K(36)/5$" and then writes "$K_v=6K$". The constant term of $s^2+3s+30$ at $s=0$ is **30**, not 36. $K_v=6K$ and $K=10\,000$ are consistent with 30 ($36/5$ would give $K=12\,000$).
+
+</Callout>
+
+<Traps>
+
+- $n=2$ gives zero ramp error; $n=0$ gives infinite error.
+- Differentiating $T$ directly but forgetting the $K/T$ factor.
+
+</Traps>
+
+<Source>official ✔ ($K=10\,000$, $n=1$, sensitivity formula) with the "36" typo noted.</Source>
+
+</Problem>
+
+<Problem id="MT2 W2019 Q4" title="Operational feedback amplifier with a potentiometer in the feedback (25 marks)" tags="finite-gain op-amp, high-pass, desensitisation">
+
+<Statement>
+
+Op-amp of gain $K$ (non-inverting input at A, inverting at B). The input $e_i$ passes through a capacitor $C$ to node A, with a resistor $R_1$ from A to ground. The feedback is a potentiometer $R_2,R_3$ from the output to ground with node B at the divider: $\beta=\dfrac{R_3}{R_2+R_3}$. (a) Without simplification, find $E_o/E_i$ in terms of $K,R_1,R_2,R_3,C$. (b) Show it also follows from the given block diagram and identify the missing elements. (c) Approximate for large $K$.
+
+</Statement>
+
+<Think>
+
+The exam asks for the **finite-gain** result first; the ideal op-amp answer ($V^+=V^-$) is only the $K\to\infty$ limit. Input network = high-pass divider; feedback = voltage divider.
+
+</Think>
+
+<Steps>
+<Step title="(a) 1. Input network">
+
+$\dfrac{E_A}{E_i}=\dfrac{R_1}{R_1+1/(Cs)}=\dfrac{R_1Cs}{R_1Cs+1}$.
+
+</Step>
+<Step title="(a) 2. Feedback divider">
+
+$\dfrac{E_B}{E_o}=\dfrac{R_3}{R_2+R_3}=\beta$.
+
+</Step>
+<Step title="(a) 3. Op-amp with finite gain">
+
+$E_o=K(E_A-E_B)$.
+
+</Step>
+<Step title="(a) 4. Combine">
+
+$E_o=K\Big[\dfrac{R_1Cs}{R_1Cs+1}E_i-\beta E_o\Big]\Rightarrow E_o(1+\beta K)=\dfrac{KR_1Cs}{R_1Cs+1}E_i$:
+$$\frac{E_o}{E_i}=\frac{K\,R_1Cs/(R_1Cs+1)}{1+\beta K}.$$
+
+</Step>
+<Step title="(b) Block diagram">
+
+$E_i\to\Big[\dfrac{R_1Cs}{R_1Cs+1}\Big]$ (the first missing block) $\to E_A\to\oplus(+,-)\to[K]\to E_o$, with the feedback block $\beta$ (the second missing gain) from $E_o$ back to the junction. A single-loop formula (forward over $1+$forward×feedback) gives exactly (a).
+
+</Step>
+<Step title="(c) Large K">
+
+$\beta K\gg1\Rightarrow\dfrac K{1+\beta K}\to\dfrac1\beta=\dfrac{R_2+R_3}{R_3}=1+\dfrac{R_2}{R_3}$:
+$$\frac{E_o}{E_i}\approx\Big(1+\frac{R_2}{R_3}\Big)\frac{s}{s+1/(R_1C)} .$$
+
+</Step>
+<Step title="Interpretation">
+
+A **high-pass filter** with corner $1/(R_1C)$ and pass-band gain $1+R_2/R_3$: a non-inverting amplifier that blocks DC (AC-coupled). The larger $K$, the less the result depends on $K$ (feedback desensitises the gain: $S^T_K=\dfrac1{1+\beta K}$).
+
+</Step>
+</Steps>
+
+<Answer>
+
+(a) $\dfrac{E_o}{E_i}=\dfrac{K\,R_1Cs/(R_1Cs+1)}{1+\beta K}$; (c) $\approx\Big(1+\dfrac{R_2}{R_3}\Big)\dfrac{s}{s+1/(R_1C)}$.
+
+*Real-world:* a guitar or microphone preamplifier: coupling capacitor at the input, gain set by a resistor ratio.
+
+</Answer>
+
+<Traps>
+
+- Do not treat the op-amp as ideal from the start.
+- The feedback fraction is $R_3/(R_2+R_3)$, not $R_2/(R_2+R_3)$.
+
+</Traps>
+
+<Source>official ✔ (all three parts).</Source>
+
+</Problem>
+
+<Examined>
+
+Analogs: <Ch slug="analogies">Chapter 10</Ch>; liquid level and hydraulic governor: <Ch slug="hydraulic-thermal">Chapter 13</Ch>; steady-state error: <Ch slug="steady-state-error">Chapter 15</Ch>; sensitivity: <Ch slug="sensitivity">Chapter 14</Ch>; op-amps: <Ch slug="circuits-opamps">Chapter 8</Ch>. Same governor as $\text{HW6 Q3}$ style PI/PID from a feedback lag.
+
+</Examined>

@@ -1,0 +1,203 @@
+<p className="eyebrow">Tutorial 6 · Feb 2024 · Lectures 10–12</p>
+
+# Tutorial 6: Butterworth op-amp filter, shunt DC motor linearisation, maglev
+
+<div className="lede">
+
+A Sallen–Key filter solved with Anthony's rule "**always take $i$ at nodes**" (<Ch slug="circuits-opamps">Chapter 8</Ch>), a parallel-wound DC motor linearised about an operating point (<Ch slug="linearization">Chapter 9</Ch>, <Ch slug="electromechanical">Chapter 11</Ch>), and the magnetic-levitation train again. **The instructor's Q1 answer is wrong** (the damping term was lost, giving an undamped oscillator); it is recomputed below.
+
+</div>
+
+<Problem id="T6 Q1" title="Butterworth low-pass op-amp filter: 2nd-order Sallen–Key section, then a 3rd-order cascade" tags="op-amp, KCL at nodes, damping from gain">
+
+<Statement>
+
+A Sallen–Key section with $R=10\ \text{k}\Omega$, $C=0.352\ \mu\text{F}$ and a non-inverting op-amp of gain $K=1+R_f/R_1$ ($R_f=R_1=1$ kΩ, so $K=2$). Find the transfer function of the 2nd-order section and of the 3rd-order filter (the section cascaded with a first-order RC), the corner frequency, and sketch the Bode diagram.
+
+</Statement>
+
+<Think>
+
+Anthony's rule: **write KCL at every node**, never guess. Three nodes: A (between the two resistors and the feedback capacitor), $V^+$ (the resistor then capacitor to ground) and $V^-$ (the gain divider). The ideal op-amp forces $V^+=V^-$. A useful shorthand: $x=RCs$, so every capacitor current is $x/R$ times a voltage.
+
+</Think>
+
+<Steps>
+<Step title="1. KCL at node A">
+
+$\dfrac{V_A-V_{in}}{R}+\dfrac{V_A-V_{out}}{1/(Cs)}+\dfrac{V_A-V^+}{R}=0$. Multiply by $R$: $(V_A-V_{in})+x(V_A-V_{out})+(V_A-V^+)=0\Rightarrow(x+2)V_A-xV_{out}-V^+=V_{in}$.
+
+</Step>
+<Step title="2. KCL at V⁺">
+
+$\dfrac{V^+-V_A}{R}+V^+Cs=0\Rightarrow(V^+-V_A)+xV^+=0\Rightarrow V_A=(x+1)V^+$.
+
+</Step>
+<Step title="3. The op-amp">
+
+$V^-=\dfrac{R_1}{R_f+R_1}V_{out}=\dfrac{V_{out}}{K}$ with $K=1+\dfrac{R_f}{R_1}=2$, and the ideal op-amp gives $V^+=V^-=V_{out}/K$.
+
+</Step>
+<Step title="4. Combine">
+
+Substitute step 2 into step 1: $\big[(x+2)(x+1)-1\big]V^+-xV_{out}=V_{in}$. Now $(x+2)(x+1)-1=x^2+3x+1$, and $V^+=V_{out}/K$:
+$$\frac{x^2+3x+1}{K}V_{out}-xV_{out}=V_{in}\;\Rightarrow\;\frac{V_{out}}{V_{in}}=\frac{K}{x^2+(3-K)x+1}.$$
+With $K=2$: $\dfrac{V_{out}}{V_{in}}=\dfrac{2}{R^2C^2s^2+RCs+1}$.
+
+</Step>
+<Step title="5. Numbers">
+
+$RC=10^4\cdot0.352\times10^{-6}=3.52$ ms: $\;\dfrac{2}{1.239\times10^{-5}s^2+3.52\times10^{-3}s+1}$. So $\omega_n=1/RC=284$ rad/s ($f_0=45.2$ Hz), $2\zeta=3-K\Rightarrow\zeta=0.5$, DC gain 2 (6 dB). **Sallen–Key rule: the gain sets the damping**, $2\zeta=3-K$ (K = 1.586 would give the 2nd-order Butterworth $\zeta=0.707$).
+
+</Step>
+<Step title="6. The 3rd-order filter">
+
+A 3rd-order Butterworth needs a first-order section and a quadratic with $\zeta=0.5$ (exactly what we have). Cascade the first-order RC $\dfrac1{x+1}$:
+$$\frac{V_{out}}{V_{in}}=\frac{2}{(x+1)(x^2+x+1)}=\frac{2}{x^3+2x^2+2x+1}=\frac{2}{4.36\times10^{-8}s^3+2.48\times10^{-5}s^2+7.04\times10^{-3}s+1}.$$
+Poles: $-284$ and $-142\pm j246$: **all on the circle $|s|=284$ rad/s** (the Butterworth signature). $-3$ dB corner $=284$ rad/s (45.2 Hz), final slope $-60$ dB/dec.
+
+</Step>
+<Step title="7. The 2nd-order section alone">
+
+It is **not** maximally flat: with $\zeta=0.5$ it peaks about $+1.25$ dB above its DC level near $\omega_n\sqrt{1-2\zeta^2}=201$ rad/s, and its $-3$ dB point is at $1.272\omega_n=361$ rad/s.
+
+</Step>
+<Step title="8. Bode sketch">
+
+Flat at 6 dB up to $\omega_0\approx284$, then $-20$, $-40$, $-60$ dB/dec for 1st, 2nd, 3rd-order.
+
+</Step>
+</Steps>
+
+<Answer>
+
+2nd-order section $\dfrac{2}{R^2C^2s^2+RCs+1}$; 3rd-order $\dfrac{2}{(x+1)(x^2+x+1)}$ with $x=RCs$; corner 284 rad/s (45.2 Hz); slope $-60$ dB/dec.
+
+*Real-world:* an anti-aliasing filter before an ADC: flat to 45 Hz, then $-60$ dB per decade.
+
+</Answer>
+
+<Callout kind="warn" title="⚠ Instructor's answer is wrong">
+
+The tablet solution ends with $\dfrac{2000}{0.0105625\,s^2+2000}$ (2nd order) and $\dfrac{2000}{3.433\times10^{-5}s^3+1.056\times10^{-2}s^2+6.5s+2000}$. The 2nd-order result has **no $s$-term**: an undamped oscillator at 435 rad/s, which is wrong. The slip is in combining the node equations: he writes $R^2C^2s^2+2RCs+2$ where the correct polynomial is $(x+2)(x+1)-1=x^2+3x+1$.
+
+</Callout>
+
+<Traps>
+
+- The damping comes from the amplifier gain: $2\zeta=3-K$.
+- Odd-order Butterworth: cascade a first-order section with quadratics (3rd order needs $\zeta=0.5$).
+- The ideal op-amp isolates the stages, so cascading does not load the Sallen–Key section.
+
+</Traps>
+
+<Source>instructor ✘ (damping term lost); digest ✔ (poles on the circle $|s|=284$).</Source>
+
+</Problem>
+
+<Problem id="T6 Q2" title="Parallel-wound DC motor: linearised model, settling time, overshoot" tags="shunt motor, back emf, Taylor linearisation">
+
+<Statement>
+
+Field and armature windings are in parallel across $e_i(t)$ (resistances $R_F$, $R_A$; inductances negligible). Find a linearised model; with all parameters equal to 1 find the state model, the settling time and overshoot, and the block diagram.
+
+</Statement>
+
+<Think>
+
+Torque is the **product** of two currents, $\tau_e=K_mi_Fi_A$: both depend on $e_i$ (and $i_A$ also on the speed), so the model is nonlinear. Write the loop equations, get the nonlinear ODE, find the operating point, then linearise.
+
+</Think>
+
+<Steps>
+<Step title="1. Currents">
+
+Field: $i_F=e_i/R_F$. Armature loop: $e_i-i_AR_A-K_b\omega=0\Rightarrow i_A=\dfrac{e_i-K_b\omega}{R_A}$.
+
+</Step>
+<Step title="2. Mechanics">
+
+$J\dot\omega+B\omega=K_mi_Fi_A-\tau_L$, so
+$$J\dot\omega+B\omega+\frac{K_mK_b}{R_FR_A}\omega e_i=\frac{K_m}{R_FR_A}e_i^2-\tau_L .$$
+Two products ($\omega e_i$ and $e_i^2$) make it nonlinear.
+
+</Step>
+<Step title="3. All parameters 1; operating point">
+
+$\dot\omega+\omega+\omega e_i=e_i^2-\tau_L$. Operating point: $\bar e_i=1$, $\tau_L=0$, $\dot\omega=0$: $\bar\omega+\bar\omega\cdot1=1\Rightarrow\bar\omega=\tfrac12$.
+
+</Step>
+<Step title="4. Linearise each product">
+
+$\omega e_i\approx\bar\omega\bar e_i+\bar e_i\hat\omega+\bar\omega\hat e_i=\tfrac12+\hat\omega+\tfrac12\hat e_i$. $e_i^2\approx1+2\hat e_i$. Substitute and cancel the equilibrium terms ($\tfrac12+\tfrac12=1$ on the left, $1$ on the right):
+$$\dot{\hat\omega}+\hat\omega+\hat\omega+\tfrac12\hat e_i=2\hat e_i-\tau_L\;\Rightarrow\;\dot{\hat\omega}+2\hat\omega=1.5\,\hat e_i-\tau_L .$$
+
+</Step>
+<Step title="5. Time response">
+
+First-order with pole $-2$: **no overshoot**; $t_s(2\%)=4/2=2$ s. State model $\dot x=-2x+[1.5\;\;-1]\,[\hat e_i\;\;\tau_L]^T$, $y=x$. Block diagram: $1.5\hat e_i$ and $-\tau_L$ into a summer, then $\int$, with feedback gain 2.
+
+</Step>
+</Steps>
+
+<Answer>
+
+$\dot{\hat\omega}+2\hat\omega=1.5\hat e_i-\tau_L$; $\bar\omega=\tfrac12$; time constant $0.5$ s, $t_s=2$ s, no overshoot.
+
+*Real-world:* a shunt motor whose speed settles in about 2 time units, with sensitivity $1.5$ per unit of supply voltage and $-1$ to load torque.
+
+</Answer>
+
+<Traps>
+
+- Do not discard the product $\omega e_i$: it contributes the extra $+\hat\omega$ (damping) and $+\tfrac12\hat e_i$.
+- A first-order result means no overshoot.
+
+</Traps>
+
+<Source>tablet solution ✔.</Source>
+
+</Problem>
+
+<Problem id="T6 Q3" title="Magnetic levitation train: linearised relation between gap z and coil current i" tags="maglev, Taylor, gap measured upward">
+
+<Statement>
+
+$F_L=ki^2/z^2$ ($z$ = air gap) opposes the weight $mg$. Find the linearised relation near equilibrium. (Same problem as <Hw n="5">HW5 Q1</Hw>; see there for the full derivation.)
+
+</Statement>
+
+<Steps>
+<Step title="Instructor's start">
+
+Free-body diagram: weight $mg$ down, $F_L$ up. Taking $x$ vertical (up) with the track at $y=0$ so that the gap is $z=x-y=x$: $m\ddot z=F_L-mg=\dfrac{ki^2}{z^2}-mg$. (The sheet writes "$m\ddot z+mg=F_L$": the same equation; the page stops at "expand $f(i,z)=ki^2/z^2$ by a multivariable Taylor series".)
+
+</Step>
+<Step title="Completion">
+
+Equilibrium $i_0=z_0\sqrt{mg/k}$; $\Delta\ddot z=-\dfrac{2g}{z_0}\Delta z+\dfrac{2g}{i_0}\Delta i$; $\dfrac{\Delta Z}{\Delta I}=\dfrac{2g/i_0}{s^2+2g/z_0}$: an **undamped oscillator** (poles $\pm j\sqrt{2g/z_0}$).
+
+</Step>
+</Steps>
+
+<Answer>
+
+$\dfrac{\Delta Z}{\Delta I}=\dfrac{2g/i_0}{s^2+2g/z_0}$.
+
+</Answer>
+
+<Callout kind="note" title="Convention matters">
+
+With the gap measured **upward** the linear plant is an undamped oscillator; with $z$ measured downward (Anthony's HW5) one gets $-\dfrac{2g/i_0}{s^2-2g/z_0}$, a real right-half-plane pole. The tutorial's convention (gap measured upward, force growing as the gap shrinks) is the physically consistent one.
+
+</Callout>
+
+<Source>tablet solution (partial, completed); see HW5 Q1.</Source>
+
+</Problem>
+
+<Examined>
+
+Sallen–Key / op-amp node equations: $\text{MT2 W2012}$, $\text{W2009 Q3}$; nonlinear motor linearisation: $\text{MT2 W2019}$, $\text{MT2 W2024 Q3}$; maglev: $\text{MT2 F2022 Q3}$.
+
+</Examined>

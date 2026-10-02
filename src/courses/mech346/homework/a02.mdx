@@ -1,0 +1,192 @@
+<p className="eyebrow">Practice set 2 · Chapter 2 · the conduction equation and heat generation · original problems</p>
+
+# Practice 2: boundary conditions, generation, and the maximum-temperature location
+
+<div className="lede">
+
+No problem set with solutions was supplied for Chapter 2, so these four are **original problems written for the Midterm-1 style** ("conduction with heat generation: derive $T(r)$, apply the boundary conditions, find the centre temperature"). Each is solved from first principles and the numbers were recomputed independently. Background: <Ch slug="conduction-eq">Chapter 2 notes</Ch>.
+
+</div>
+
+<Problem id="P2-1" title="Electric heating wire in air" tags="cylinder with generation, convection boundary">
+
+<Statement>
+
+A nichrome wire of diameter 2 mm ($k=15$ W/mK) generates heat uniformly at $\dot e=5\times10^8$ W/m³ when carrying current. It sits in 30 °C air with $h=800$ W/m²K. Find the surface temperature and the centreline temperature in steady state.
+
+</Statement>
+
+<Think>
+
+Long wire, steady, uniform generation, 1-D radial: $\dfrac1r\dfrac d{dr}\left(r\dfrac{dT}{dr}\right)+\dfrac{\dot e}k=0$. Two boundary conditions: symmetry at the centre and convection at the surface. The surface temperature does not need the conduction solution at all: **energy balance on the whole wire** (generation = convection) fixes it.
+
+</Think>
+
+<Steps>
+<Step title="1. Energy balance on the wire (per unit length)">
+
+Generated $=\dot e\pi r_0^2$; lost $=h(2\pi r_0)(T_s-T_\infty)$. So $T_s=T_\infty+\dfrac{\dot er_0}{2h}=30+\dfrac{5\times10^8(0.001)}{2(800)}=30+312.5=342.5$ °C.
+
+</Step>
+<Step title="2. Temperature rise inside the wire">
+
+Integrating the equation with $dT/dr=0$ at $r=0$ and $T=T_s$ at $r_0$ gives $T(r)=T_s+\dfrac{\dot e}{4k}(r_0^2-r^2)$, so $T_0-T_s=\dfrac{\dot er_0^2}{4k}=\dfrac{5\times10^8(10^{-6})}{4(15)}=8.33$ K.
+
+</Step>
+<Step title="3. Centreline">
+
+$T_0=342.5+8.33=350.8$ °C.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**$T_s=342.5$ °C, $T_0=350.8$ °C.** The outside film (312 K drop) dominates over the internal conduction drop (8 K): the wire is nearly isothermal, so the lumped idea is valid ($Bi=hr_0/2k=0.027$).
+
+</Answer>
+
+<Traps>
+
+Do not use the wire's *surface-to-centre* formula $\dot er_0^2/4k$ for the temperature difference to the air: it only covers the interior.
+
+</Traps>
+
+</Problem>
+
+<Problem id="P2-2" title="A slab with generation and unequal face temperatures" tags="plane wall, asymmetric boundary conditions, location of the maximum">
+
+<Statement>
+
+A slab 10 cm thick ($k=2$ W/mK) generates heat uniformly at $\dot e=2\times10^5$ W/m³. Its faces are held at $T(0)=100$ °C and $T(L)=60$ °C. Find $T(x)$, the position and value of the maximum temperature, and the heat flux leaving each face.
+
+</Statement>
+
+<Think>
+
+$k\dfrac{d^2T}{dx^2}+\dot e=0$ is integrated twice; two Dirichlet conditions fix the constants. Because the faces are at different temperatures, the maximum is **not** at the centre: it is where $dT/dx=0$.
+
+</Think>
+
+<Steps>
+<Step title="1. General solution">
+
+$\dfrac{dT}{dx}=-\dfrac{\dot e}kx+C_1$; $T=-\dfrac{\dot e}{2k}x^2+C_1x+C_2$, with $\dfrac{\dot e}{2k}=\dfrac{2\times10^5}{4}=5\times10^4$ K/m².
+
+</Step>
+<Step title="2. Boundary conditions">
+
+$T(0)=100\Rightarrow C_2=100$. $T(L)=60$: $-5\times10^4(0.01)+C_1(0.1)+100=60\Rightarrow C_1(0.1)=460\Rightarrow C_1=4600$ K/m. So $T(x)=-5\times10^4x^2+4600x+100$.
+
+</Step>
+<Step title="3. Maximum">
+
+$dT/dx=0$: $x_m=\dfrac{C_1k}{\dot e}=\dfrac{4600(2)}{2\times10^5}=0.046$ m (4.6 cm: shifted toward the cold face). $T_{max}=100+4600(0.046)-5\times10^4(0.046)^2=100+211.6-105.8=205.8$ °C.
+
+</Step>
+<Step title="4. Heat fluxes at the faces">
+
+$q''=-k\,dT/dx$: at $x=0$: $-2(4600)=-9200$ W/m² (9200 W/m² flows out to the left); at $x=L$: $dT/dx=4600-2\times10^5(0.1)/2=-5400$, so $q''=+10\,800$ W/m² (out to the right).
+
+</Step>
+<Step title="5. Check">
+
+$9200+10\,800=20\,000=\dot eL$ ✓ (all the generated energy leaves through the two faces).
+
+</Step>
+</Steps>
+
+<Answer>
+
+**$T(x)=100+4600x-5\times10^4x^2$ (°C, $x$ in m); maximum 205.8 °C at $x=4.6$ cm; fluxes 9200 W/m² (left face) and 10 800 W/m² (right face).**
+
+</Answer>
+
+<Traps>
+
+If the temperatures on the two faces are equal the maximum is at $L/2$ and the fluxes are equal; here the hot face (100 °C) loses less because its gradient is smaller.
+
+</Traps>
+
+</Problem>
+
+<Problem id="P2-3" title="A radioactive sphere in a cooling bath" tags="sphere with generation, convection boundary">
+
+<Statement>
+
+A spherical capsule of radius 5 cm ($k=10$ W/mK) generates $\dot e=2\times10^6$ W/m³ and is cooled by 25 °C fluid ($h=100$ W/m²K). Find $T_s$, $T_0$ and the total heat rate.
+
+</Statement>
+
+<Think>
+
+Same plan as the wire with the sphere's numbers: energy balance for $T_s$, then the interior solution $T-T_s=\dfrac{\dot e}{6k}(r_0^2-r^2)$.
+
+</Think>
+
+<Steps>
+<Step title="1. Surface temperature">
+
+$\dot e\dfrac43\pi r_0^3=h4\pi r_0^2(T_s-T_\infty)\Rightarrow T_s=T_\infty+\dfrac{\dot er_0}{3h}=25+\dfrac{2\times10^6(0.05)}{300}=358.3$ °C.
+
+</Step>
+<Step title="2. Centre temperature">
+
+$T_0-T_s=\dfrac{\dot er_0^2}{6k}=\dfrac{2\times10^6(0.0025)}{60}=83.3$ K, so $T_0=441.7$ °C.
+
+</Step>
+<Step title="3. Heat rate">
+
+$\dot Q=\dot eV=2\times10^6\left(\dfrac43\pi(0.05)^3\right)=1047$ W.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**$T_s=358.3$ °C, $T_0=441.7$ °C, $\dot Q=1.05$ kW.**
+
+</Answer>
+
+<Traps>
+
+The sphere's interior drop uses the factor **6** ($r_0^2/6k$); cylinder 4, plane wall 2.
+
+</Traps>
+
+</Problem>
+
+<Problem id="P2-4" title="A plane wall with generation cooled on both faces by convection" tags="plane wall, symmetry, convection both sides">
+
+<Statement>
+
+A slab of total thickness 4 cm ($k=20$ W/mK) generates $\dot e=10^6$ W/m³ and is cooled on both faces by 40 °C air with $h=500$ W/m²K. Find the face temperature and the centre temperature.
+
+</Statement>
+
+<Think>
+
+Symmetric problem: half-thickness $L=2$ cm, adiabatic centre plane. Energy balance for half the wall: generated in the half $=\dot eL$ per m² equals $h(T_s-T_\infty)$.
+
+</Think>
+
+<Steps>
+<Step title="1. Surface temperature">
+
+$\dot eL=h(T_s-T_\infty)\Rightarrow T_s=40+\dfrac{10^6(0.02)}{500}=80$ °C.
+
+</Step>
+<Step title="2. Centre">
+
+$T_0-T_s=\dfrac{\dot eL^2}{2k}=\dfrac{10^6(4\times10^{-4})}{40}=10$ K, so $T_0=90$ °C.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**$T_s=80$ °C, $T_0=90$ °C.**
+
+</Answer>
+
+</Problem>

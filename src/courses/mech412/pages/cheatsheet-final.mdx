@@ -1,0 +1,80 @@
+<p className="eyebrow">Exam toolkit · Final (MT3) · Lectures 17–23 · three sheets plus the textbook</p>
+
+# Cheat sheet, Final: steady-state error, Routh, PID, root locus, Bode, lead/lag, Nyquist
+
+<div className="lede">
+
+Anthony's final sheet had five blocks (Lectures 17, 19, 20, 22 and the Nyquist rule). **It had no Bode drawing, no error-constants-from-Bode and no polar-plot content**, a gap he never filled; those are added here (section 5), because they are examined (<Hw n="8">HW8</Hw>, <Hw n="10">HW10</Hw>, finals F2009/F2010).
+
+</div>
+
+## 1 · Steady-state error (L17)
+
+$E=\dfrac{R}{1+G_cG}$ (closed), $(1-G)R$ (open). **Type** $N$ = number of free integrators in $G=\dfrac{K(T_as+1)\cdots}{s^N(T_1s+1)\cdots}$.
+
+| input | constant | type 0 | type 1 | type 2 |
+|---|---|---|---|---|
+| step $1/s$ | $K_p=\lim G$ | $\dfrac1{1+K_p}$ | 0 | 0 |
+| ramp $1/s^2$ | $K_v=\lim sG$ | $\infty$ | $\dfrac1{K_v}$ | 0 |
+| parabola $1/s^3$ | $K_a=\lim s^2G$ | $\infty$ | $\infty$ | $\dfrac1{K_a}$ |
+
+Final-value theorem **only for a stable loop**. A PI design (type 2) has **finite, non-zero** parabola error $1/K_a$ (e.g. $375/K_I=2.18$). More integrators: more accuracy, less stability.
+
+## 2 · Routh–Hurwitz (L17–L18)
+
+Rows: $a_0\ a_2\ a_4\ /\ a_1\ a_3\ a_5\ /\ b_1\ b_2\ \dots$, $b_1=\dfrac{a_1a_2-a_0a_3}{a_1}$, $b_2=\dfrac{a_1a_4-a_0a_5}{a_1}$. **Sign changes in the first column = RHP roots.** Parameter $K$: demand every first-column entry positive. Third order $a_0s^3+a_1s^2+a_2s+a_3$: all $>0$ and $a_1a_2>a_0a_3$.
+- Zero in the first column: replace by $\varepsilon$ (e.g. $s^3-3s+2$: 2 sign changes, 2 RHP roots).
+- Whole row of zeros: auxiliary $P(s)$ from the row above; $dP/ds$ gives the next row (symmetric roots, $j\omega$ pair).
+- Marginal gain $K_{cr}$: the $s^1$ row vanishes; $\omega$ from the auxiliary equation. Example $s(s+1)(s+5)+K$: $K_{cr}=30$, $\omega=\sqrt5$.
+
+## 3 · PID and Ziegler–Nichols (L19)
+
+$G_c=K_p\big(1+\tfrac1{T_is}+T_ds\big)=K_p+\tfrac{K_i}s+K_ds$, $K_i=K_p/T_i$, $K_d=K_pT_d$. P speeds, **I removes offset (raises the type, adds lag), D adds damping (amplifies noise)**.
+
+| | $K_p$ | $T_i$ | $T_d$ |
+|---|---|---|---|
+| **Method 1** (S-curve: delay $L=-b/a$, $T$) P | $T/L$ | | |
+| PI | $0.9T/L$ | $L/0.3$ | |
+| PID | $1.2T/L$ | $2L$ | $0.5L$ |
+| **Method 2** ($K_{cr}$ from Routh, $P_{cr}=2\pi/\omega$) P | $0.5K_{cr}$ | | |
+| PI | $0.45K_{cr}$ | $P_{cr}/1.2$ | |
+| PID | $0.6K_{cr}$ | $0.5P_{cr}$ | $0.125P_{cr}$ |
+
+PID Method 2: $G_c=0.075K_{cr}P_{cr}\dfrac{(s+4/P_{cr})^2}{s}$; Method 1: $0.6T\dfrac{(s+1/L)^2}{s}$. **Z–N gives 25–60 % overshoot: a first cut, not a design.** Pole placement: match $(s+a)(s+b)(s^2+2\zeta\omega_ns+\omega_n^2)$, put the PI zero near the origin, **state your free choice**, verify with a step response.
+
+## 4 · Root locus (L20): the ten steps
+
+For $1+KG=0$, $G=N/D$:
+1. Poles, zeros. 2. Real axis: left of an **odd** number of poles + zeros. 3. $n$ branches, $n-m$ to infinity. 4. **Centroid** $\sigma_a=\dfrac{\sum p-\sum z}{n-m}$. 5. **Asymptotes** $\dfrac{(2k+1)180^\circ}{n-m}$. 6. **Break points** $\dfrac d{ds}\dfrac ND=0$ (**reject if $K<0$**). 7. **Gain** $|KG(s_0)|=1$. 8. **Departure angle** at a complex pole: $180^\circ-\sum\angle(\text{other poles})+\sum\angle(\text{zeros})$. 9. **$j\omega$ crossing**: $D+KN=0$ at $s=j\omega$ (Routh). 10. **$K$ for $\zeta$**: point on the ray $\cos^{-1}\zeta$, then $K$ by magnitude.
+
+**Spec region:** $\sigma\ge4/T_s$; $OS\le X\%\Rightarrow\theta\le\tan^{-1}\dfrac{\pi}{\ln(100/X)}$ ($\zeta=\cos\theta$). **Check dominance** of the chosen pair (a slow real pole can dominate: L20 ex 3(ii) fails).
+
+**Compensator by the angle condition:** angle deficiency $AD=180^\circ-\sum\text{angles at }s_d$; use $K\dfrac{s+a}{s+b}$ with **$a$ cancelling a plant pole**; angle of the compensator $=-AD$ gives $b$; magnitude gives $K$ (L20 ex 1: $1.6\dfrac{s+2}{s+4}$ for $\dfrac5{s(0.5s+1)}$, poles $-2\pm j3.46$).
+
+## 5 · Bode, margins and error constants (L21) (added; missing from his sheet)
+
+Building blocks (each adds in dB and degrees): gain $K$: $20\log K$, $0^\circ$; $(j\omega)^{\pm N}$: $\pm20N$ dB/dec, $\pm90^\circ N$, through 0 dB at $\omega=1$; $\dfrac1{j\omega\tau+1}$: corner $1/\tau$, $-20$ dB/dec, $0\to-90^\circ$ ($-45^\circ$ at the corner, $\mp5.7^\circ$ at $\tfrac1{10},10\times$); $(j\omega\tau+1)$: mirror; quadratic $[1+2\zeta\tfrac{j\omega}{\omega_n}+(\tfrac{j\omega}{\omega_n})^2]^{\pm1}$: $\pm40$ dB/dec, $\pm180^\circ$, resonant peak for $\zeta<0.707$: $M_r=\dfrac1{2\zeta\sqrt{1-\zeta^2}}$ at $\omega_n\sqrt{1-2\zeta^2}$. High-frequency slope $-20(n-m)$ dB/dec, phase $-90^\circ(n-m)$.
+
+**From the plot:** type 0: low-frequency level $=20\log K_p$; type 1: the initial $-20$ dB/dec line crosses 0 dB at $\omega=K_v$; type 2: $-40$ dB/dec line crosses 0 dB at $\omega=\sqrt{K_a}$.
+
+**Margins:** $PM=180^\circ+\angle L(j\omega_{gc})$ at $|L|=1$; $GM=-20\log|L(j\omega_{pc})|$ at $\angle L=-180^\circ$. Both positive $\Rightarrow$ stable (minimum phase). Rule of thumb $\zeta\approx PM/100$ ($\zeta<0.7$), but 30–35° still means about 40 % overshoot. Example $K/[s(s+1)(s+5)]$: $K=10$: $PM=25.4^\circ$, $GM=9.5$ dB; $K=30$: marginal.
+
+## 6 · Lead and lag by Bode (L22)
+
+**Lead** $G_c=K_c\alpha\dfrac{Ts+1}{\alpha Ts+1}=K_c\dfrac{s+1/T}{s+1/(\alpha T)}$, $0<\alpha<1$: $\sin\varphi_m=\dfrac{1-\alpha}{1+\alpha}$ at $\omega_m=\dfrac1{T\sqrt\alpha}$, gain there $1/\sqrt\alpha$ (**$K_c\sqrt\alpha$ in the unnormalised form**). Steps: (1) $K$ from $K_v$ with $K_c\alpha=K$; (2) PM of $KG$; (3) $\varphi_m=PM_{need}-PM_{now}+5^\circ$; (4) $\alpha$; (5) $\omega_m$ where the plant gain is $-20\log\tfrac1{\sqrt\alpha}$; (6) $\tfrac1T=\omega_m\sqrt\alpha$, $\tfrac1{\alpha T}=\tfrac{\omega_m}{\sqrt\alpha}$, $K_c=K/\alpha$; (7) **verify**. Ogata 11-6: $41.7\dfrac{s+4.4}{s+18.4}$.
+**Lag** $G_c=K_c\beta\dfrac{Ts+1}{\beta Ts+1}$, $\beta>1$: $K_c\beta=1$ keeps $K_v$ ($K_c=K/\beta$). (1) $K$ from $K_v$; (2) find $\omega_c$ where the plant phase $=-180^\circ+PM+5^\circ$ to $10^\circ$; (3) $20\log\tfrac1\beta=-|G(j\omega_c)|_{dB}$; (4) zero a decade below $\omega_c$: $\tfrac1T=\tfrac{\omega_c}{10}$. Ogata 11-7: $K_c=0.5$, $\beta=10$, $T=10$: $G_c=5\dfrac{10s+1}{100s+1}$, $PM=41.6^\circ$, $GM=14.3$ dB. Lag leaves a slow closed-loop pole.
+**Lag-lead:** $K_c\dfrac{s+1/T_1}{s+\gamma/T_1}\dfrac{s+1/T_2}{s+1/(\beta T_2)}$, $\gamma=\beta$ usually; lag below $\omega_1=1/\sqrt{T_1T_2}$, lead above. **If $K_v$ is specified, include the loop gain** (HW10 Q3 needs 50).
+
+## 7 · Nyquist (L23)
+
+$Z=N+P$; $N$ = clockwise encirclements of $-1$; $P$ = open-loop RHP poles; $Z$ = closed-loop RHP poles; stable iff $Z=0$ ($P=0\Rightarrow N=0$; $P>0\Rightarrow N=-P$, i.e. $P$ counter-clockwise). **Include the infinite arc**; poles on the $j\omega$ axis: indent (type 1: $180^\circ$, type 2: $360^\circ$ clockwise arc at infinity). **Critical gain:** $1+KG(j\omega)=0$: multiply by the conjugate, $\mathrm{Im}=0\Rightarrow\omega$, $\mathrm{Re}=-1\Rightarrow K$. Examples: $\dfrac K{s(s^2+s+6)}$: crossing $-K/6$ at $\sqrt6$, $K<6$; $\dfrac K{s-1}$: stable for $K>1$; $\dfrac{K(s+1)}{s^2(s^2+6)}$: unstable for every $K$ (no $s^3$ term). Confirm with Routh when the polynomial is available.
+
+## 8 · Quick traps
+
+Z–N is not a design; the printed Dorf $K_v$ compensator needs a gain 50; $K_v$ is a property of the **whole** loop; PM at the gain crossover, GM at the phase crossover; reject break points with $K<0$; check the chosen poles are dominant; a type-2 loop has a finite parabola error; the final-value theorem needs stability.
+
+<Callout kind="note" title="True/false from the practice quizzes">
+
+Root loci *start at poles and end at zeros* of the open loop (the statement "start at zeros" is false); the root locus *measures the sensitivity of the poles to a parameter* (true); $L=K(s^2+5s+9)/[s^2(s+3)]$ with dominant $\zeta=0.5$: $K=4.5$ (roots $-4.5$ and $-1.5\pm j2.598$).
+
+</Callout>

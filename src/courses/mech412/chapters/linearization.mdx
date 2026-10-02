@@ -1,0 +1,143 @@
+<p className="eyebrow">Chapter 9 · Lecture 10 · T04 Q2 · T06 · HW5 Q1</p>
+
+# Nonlinear systems and linearisation
+
+<div className="lede">
+
+Nature is nonlinear: drag grows with speed squared, a magnet's pull with $1/\text{gap}^2$, a diode's current exponentially. Every method in this course (transfer functions, Bode, root locus) needs a *linear* system. **Linearisation** is the bridge: near a steady operating point every smooth curve looks like a straight line, and the slope of that line is all the dynamics you need. A nonlinear circuit with a linearisation step has been on **every** MT2, and Anthony flagged it ⚠⚠ on his crib sheet.
+
+</div>
+
+<Idea title="The 30-second version">
+
+1. Write the nonlinear state equations $\dot{\mathbf x}=f(\mathbf x,u)$.
+2. **Operating point:** set every derivative to zero and solve for $(\bar{\mathbf x},\bar u)$.
+3. **Taylor:** $f\approx f(\bar x,\bar u)+A(x-\bar x)+B(u-\bar u)$ with $A=\partial f/\partial x$, $B=\partial f/\partial u$ *evaluated at the operating point*.
+4. Work with the **perturbations** $\hat x=x-\bar x$, $\hat u=u-\bar u$. They obey a *linear* system $\dot{\hat x}=A\hat x+B\hat u$.
+5. A nonlinear *resistor* becomes an ordinary resistor of value $R=1/(di/de)$ at the operating point. **DC sources disappear from the incremental circuit.**
+
+</Idea>
+
+## A picture: the tangent line
+
+A car's cruise control designed around 100 km/h. The drag force $\propto v^2$ is a curve; near 100 km/h a straight line (the tangent) is an excellent substitute, and its *slope* is what matters for a small speed error. Far from 100 km/h (at standstill, say) the tangent is a poor stand-in; linearisation is only local.
+
+## Ideal op-amps are already "linearised"
+
+The circuits of Chapter 8 were linear. Everything below is the extra step needed when an element (a diode, a lamp, a square-law load) is not.
+
+## The method, in full
+
+For $\dot{\mathbf x}=f(\mathbf x,u)$, $y=g(\mathbf x,u)$:
+
+- **Equilibrium** $(\bar{\mathbf x},\bar u)$: $f(\bar{\mathbf x},\bar u)=0$ ("in the absence of perturbations the system does not move").
+- **Taylor series:** $f(\mathbf x,u)\approx f(\bar{\mathbf x},\bar u)+A(\mathbf x-\bar{\mathbf x})+B(u-\bar u)$ with $A=\left.\dfrac{\partial f}{\partial \mathbf x}\right|_{\bar{}}$ (the Jacobian) and $B=\left.\dfrac{\partial f}{\partial u}\right|_{\bar{}}$; likewise $C,D$ from $g$.
+- **Linear model:** $\dot{\hat{\mathbf x}}=A\hat{\mathbf x}+B\hat u$, $\hat y=C\hat{\mathbf x}+D\hat u$.
+- **Stability:** if all eigenvalues of $A$ have negative real parts, the *nonlinear* system is stable near the operating point. A positive eigenvalue means the operating point is unstable.
+
+<Trap title="Slope, not ratio">
+
+The incremental resistance is the **slope** $1/(di/de)$, not the DC ratio $\bar e/\bar i$. For $i=\tfrac14e^3$ at $\bar e=2$: $\bar i=2$ A so the DC ratio is $1\,\Omega$, but the slope is $di/de=\tfrac34e^2=3$ S so the small-signal resistor is $\tfrac13\,\Omega$. They differ by a factor of 3, and the question usually wants the second.
+
+</Trap>
+
+## The circuit recipe (do it in this order)
+
+1. **States** = capacitor voltages and inductor currents.
+2. **KCL at each capacitor node** and **KVL around each inductor** give the nonlinear state equations. Express the nonlinear element's current as a function of its voltage.
+3. **Operating point:** at DC capacitors are *open* ($\dot e=0$) and inductors are *short* ($\dot i=0$). Solve.
+4. **Linearise the nonlinear element:** $i=h(e)\Rightarrow\hat i=h'(\bar e)\,\hat e$, i.e. a resistor $R=1/h'(\bar e)$.
+5. **Linearised state equations** with that resistor, or draw the *incremental circuit*: replace the element by $R$, replace every constant source by a short (for a voltage source) or open (for a current source), keep the small-signal source $\hat e_i$.
+
+### Worked example 1: the MT2 W2024 Q3 circuit
+
+Source $e_i=8+\hat e_i$ → $R_1=1\,\Omega$ → node A (capacitor $C_A=\tfrac12$ F) → inductor $L=3$ H with $R_2=2\,\Omega$ → node B (capacitor $C_B=\tfrac16$ F) → nonlinear element $i_o=\tfrac14e_o^3$ to ground.
+
+**(a) State equations** ($e_A$, $e_o$, $i_L$):
+
+- Node A: $C_A\dot e_A=\dfrac{e_i-e_A}{R_1}-i_L\;\Rightarrow\;\dot e_A=2(e_i-e_A-i_L)$.
+- Node B: $C_B\dot e_o=i_L-i_o\;\Rightarrow\;\dot e_o=6\big(i_L-\tfrac14e_o^3\big)$.
+- Inductor branch: $e_A-e_o=R_2i_L+L\dfrac{di_L}{dt}\;\Rightarrow\;\dfrac{di_L}{dt}=\tfrac13(e_A-e_o-2i_L)$.
+
+**(b) Operating point** ($\bar e_i=8$, derivatives zero):
+
+1. Node A: $\bar i_L=8-\bar e_A$. Node B: $\bar i_L=\tfrac14\bar e_o^3$. Inductor: $\bar e_A=\bar e_o+2\bar i_L$.
+2. Substitute: $\bar e_o+\tfrac12\bar e_o^3=8-\tfrac14\bar e_o^3\Rightarrow\bar e_o+\tfrac34\bar e_o^3=8$.
+3. Try $\bar e_o=2$: $2+\tfrac34\cdot8=8$ ✔ (the function is monotonic, so it is the only real root).
+4. $\bar e_o=2$ V, $\bar i_L=2$ A, $\bar e_A=6$ V.
+
+**(c) Linearise:** $\hat i_o=\dfrac34\bar e_o^2\hat e_o=3\hat e_o\Rightarrow R=\tfrac13\,\Omega$. The linearised model:
+
+$$
+\dot{\hat e}_A=2(\hat e_i-\hat e_A-\hat i_L),\quad
+\dot{\hat e}_o=-18\hat e_o+6\hat i_L,\quad
+\dot{\hat i}_L=\tfrac13(\hat e_A-\hat e_o-2\hat i_L).
+$$
+
+Eigenvalues: $-1.39\pm0.55j$ and $-17.9$: all stable, so the DC operating point is stable.
+
+*Physical:* for ripples around 8 V the load behaves like a stiff $\tfrac13$ Ω resistor, so ripple on $e_o$ is small.
+
+### Worked example 2: the T04 Q2 / MT2 F2022 Q3 circuit
+
+Source $e_i=4+\hat e_i$, $\tfrac14\,\Omega\parallel\tfrac12$ H to node $e_o$, $\tfrac12\,\Omega$ with a 12 V battery, 2 F capacitor, and a nonlinear load $i_o=|e_o|e_o$. Differentiate the KCL to remove the integral and the battery:
+
+$$
+2\ddot e_o+6\dot e_o+2e_o+\frac{d}{dt}\big(|e_o|e_o\big)=4\dot e_i+2e_i .
+$$
+
+1. **Operating point:** all derivatives 0: $2\bar e_o=2\bar e_i\Rightarrow\bar e_o=4$ V, $\bar i_o=16$ A.
+2. **Linearise:** $\dfrac{d}{de}\big(|e|e\big)=2|e|$ **for every sign of $e$**, so $|e_o|e_o\approx16+8\hat e_o$ (slope 8 S, an incremental resistor of $\tfrac18\,\Omega$).
+3. **Substitute:** $2\ddot{\hat e}_o+6\dot{\hat e}_o+2\hat e_o+8\dot{\hat e}_o=4\dot{\hat e}_i+2\hat e_i$, so
+ $$\boxed{\dfrac{\hat E_o}{\hat E_i}=\dfrac{2s+1}{s^2+7s+1}}$$ (poles $-0.146$, $-6.85$; DC gain 1).
+4. **Linearised circuit:** the original circuit with the nonlinear element replaced by $\tfrac18\,\Omega$ and the 12 V battery shorted (it only fixes the DC level).
+
+<Trap title="Pitfalls">
+
+- *Never Laplace-transform or use impedances **before** linearising.* Linearise first, then everything in Chapter 8 applies to $\hat e,\hat i$.
+- $\tfrac{d}{de}|e|e=2|e|$, not $2e$ (only equal for $e>0$).
+- A constant source contributes nothing to small signals; the 12 V battery in example 2 disappears from the incremental circuit.
+- Don't linearise too early: first get $\bar e$ from the *full nonlinear* DC equations, then evaluate the slope there.
+
+</Trap>
+
+### Worked example 3: maglev train (HW5 Q1 / T06 Q3)
+
+The levitation force $F_L=k\,i^2/z^2$ ($z$ = air gap, $i$ = coil current) balances the weight $mg$.
+
+1. **EOM** (gap measured *upward*, as in T06): $m\ddot z=ki^2/z^2-mg$, i.e. $\ddot z=f(z,i)=\dfrac km\dfrac{i^2}{z^2}-g$.
+2. **Equilibrium** $\ddot z=0$: $k i_0^2/z_0^2=mg\Rightarrow i_0=z_0\sqrt{mg/k}$.
+3. **Partial derivatives** (use $ki_0^2/(mz_0^2)=g$): $\dfrac{\partial f}{\partial z}=-\dfrac{2ki_0^2}{mz_0^3}=-\dfrac{2g}{z_0}$, $\;\dfrac{\partial f}{\partial i}=\dfrac{2ki_0}{mz_0^2}=\dfrac{2g}{i_0}$.
+4. **Linear model:** $\Delta\ddot z=-\dfrac{2g}{z_0}\Delta z+\dfrac{2g}{i_0}\Delta i$, so
+ $$\frac{\Delta Z}{\Delta I}=\frac{2g/i_0}{s^2+2g/z_0}.$$
+ Poles $\pm j\sqrt{2g/z_0}$: an undamped oscillator (44 rad/s for a 10 mm gap).
+
+<Callout kind="note" title="Sign convention flips stable/unstable">
+
+Anthony measured $z$ **downward** ($m\ddot z=mg-ki^2/z^2$) and obtained $\Delta Z/\Delta I=-\dfrac{2g/i_0}{s^2-2g/z_0}$, a real right-half-plane pole. Both algebra chains are self-consistent; the course convention (T06: *gap measured upward*) gives the oscillator. State your convention at the start.
+
+</Callout>
+
+## Linearising the pendulum (stable vs unstable equilibria)
+
+A pendulum $\ddot\theta=-\tfrac g\ell\sin\theta$. Around $\theta=0$: $\sin\theta\approx\theta$, $\ddot\theta=-\tfrac g\ell\theta$, poles $\pm j\sqrt{g/\ell}$: stable (oscillates). Around $\theta=\pi$ (inverted): $\sin\theta\approx-(\theta-\pi)$, $\ddot{\hat\theta}=+\tfrac g\ell\hat\theta$, poles $\pm\sqrt{g/\ell}$: **one in the right half-plane: unstable.** The same ODE, two operating points, two answers.
+
+<LabLink lab="pendulum">Balance the unstable pendulum with PD feedback</LabLink>
+
+## Linearising $\Rightarrow$ transfer function
+
+After linearising a system with input $\hat u$ and output $\hat y$ you can take Laplace transforms of the perturbations and use every tool of the course (with zero initial conditions on the perturbations). Remember that the transfer function describes *small deviations* from the operating point; the absolute values add $\bar x,\bar y$ back.
+
+<Examined>
+
+- Every MT2 has one: $\text{W2024 Q3}$, $\text{F2022 Q3}$ (identical to T04 Q2), $\text{F2010 P6}$ (RLC with $v_R=300\,i^{3/2}$, $i_e=5$ mA: incremental resistance $450\sqrt{i_e}=31.8\,\Omega$), MT1 W2017 Q3.
+- T06 Q2 (a shunt motor with products of variables: $\dot\omega+\omega+\omega e_i=e_i^2-\tau_L$ linearises to $\dot{\hat\omega}+2\hat\omega=1.5\hat e_i-\tau_L$), HW5 Q1 (maglev).
+
+</Examined>
+
+### Check yourself
+
+1. $i=e^3/8$ at $\bar e=2$: incremental resistance? *($i'=\tfrac38e^2=1.5$, so $R=\tfrac23\Omega$; the ratio $\bar e/\bar i=2$.)*
+2. At DC, what do capacitors and inductors become? *(Open and short.)*
+3. Why is the DC battery absent from the incremental circuit? *(A constant source has zero small-signal value: a short.)*
+4. The linearised $A$ has eigenvalues $0.5\pm j$. What does it say about the nonlinear equilibrium? *(Unstable.)*

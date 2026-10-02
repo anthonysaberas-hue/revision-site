@@ -1,0 +1,276 @@
+<p className="eyebrow">Midterm 2 · Winter 2009 (Mar 19, 2009) · covers Lectures 8–15 · 30 + 20 + 30 + 20 = 100 marks</p>
+
+# Midterm 2, Winter 2009: dashpot circuit, state-transition matrix, op-amp buffer, short questions
+
+<div className="lede">
+
+Q1 is the **hydraulic dashpot** again (the physics of <Hw n="6">HW6 Q2</Hw>, $\text{MT2 F2022 Q1b}$ and $\text{MT2 W2024 Q2}$), here asked as a full mixed fluid–mechanical circuit with a reduction to "spring + resistor". Q2 is a small state-transition matrix; Q3 an op-amp buffer in front of an L–C–R filter; Q4 a bank of conceptual questions (one of them is **ill-posed** and everyone got the marks). The official solution is correct apart from a scan cut-off in Q3(c).
+
+</div>
+
+<Problem id="MT2 W2009 Q1" title="Dashpot: acoustic circuit, mechanics in vacuo, coupled circuit, reduction to spring + resistor (30 marks)" tags="transformer A_p, relative velocity, Maxwell element, R_M = ρR_fA_p²">
+
+<Statement>
+
+A piston (mass $M_p$, area $A_p$) moves in a cylinder (mass $M_c$) completely filled with fluid (density $\rho$); a hose connects the two ends of the cylinder through a flow valve of hydraulic resistance $R_f$ (the hose inertia lumped as one fluid-mass parameter $M_f$); the compressibility of the fluid in the two chambers is modelled by compliances $C_{f1}$, $C_{f2}$. The cylinder moves horizontally without friction (displacement $y$) against a spring of compliance $C_M$; the piston displacement imposed by the generator is $x$ (velocity $u=\dot x$). (a) With all mechanical elements fixed and rigid, draw the acoustical circuit of the fluid alone. (b) With the mechanics *in vacuo*, draw the **impedance** analog (add a resistor $R_p$ for piston friction). (c) Draw the impedance analog of the complete system (remove $R_p$), coupling fluid and mechanics through transformers $A_p:1$ or $1:A_p$. (d) Show that for $M_c=M_p=0$ and an incompressible, inertia-less fluid ($C_{f1}=C_{f2}=M_f=0$) the system reduces to a spring of compliance $C_M$ in series with a resistor $R_M=R_fA_p^2\rho$.
+
+</Statement>
+
+<Think>
+
+When the piston moves *relative* to the cylinder, it pushes oil through the hose and the valve: the valve resists (friction), the oil's mass resists acceleration (inertance), the chambers are slightly springy (compressibility). The pressure difference that drives the oil also pushes on the piston with force $A_p(P_2-P_1)$, so the **coupling is a transformer with ratio $A_p$**. In the limit of massless incompressible fluid only the valve resistance survives, and the dashpot looks like a damper $R_M=\rho R_fA_p^2$ in series with the spring.
+
+</Think>
+
+<Steps>
+<Step title="(a) 1. Each chamber is a capacitor">
+
+Compressibility of each chamber: a capacitor to ground, $C_{f1}/\rho$ at pressure $P_1$ and $C_{f2}/\rho$ at $P_2$ (acoustic analog: potential = pressure, flux = volume flow $U=q_m/\rho$).
+
+</Step>
+<Step title="(a) 2. The hose">
+
+Between $P_2$ and $P_1$: **inductor $\rho M_f$** (inertance in volume-flux form) in series with **resistor $\rho R_f$** (the valve). Conversions from the handout: $R_A=\rho R_f$, $M_A=\rho M_f$, $C_A=C_f/\rho$.
+
+</Step>
+<Step title="(b) Mechanics in vacuo (impedance: force = voltage, velocity = current)">
+
+One series loop with the generator $U_0e^{j\omega t}$: **inductor $M_p$** (absolute velocity $\dot x$), the shared **resistor $R_p$** (carrying $\dot x-\dot y$), then **inductor $M_c$** and **capacitor $C_M$** carrying $\dot y$. (The official sketch shows two loops sharing $R_p$; its mobility sketch has nodes $\dot x$, $\dot y$: capacitors $M_p$, $M_c$, resistor $1/R_p$ between the nodes, the spring as an inductor to ground.)
+
+</Step>
+<Step title="(c) 1. What couples fluid and mechanics">
+
+(1) The fluid exerts the force $F=A_p(P_2-P_1)$ on the piston and an equal and opposite force on the cylinder. (2) The volume flow through the hose is driven by the **relative** velocity: $U=A_p(\dot x-\dot y)$ (if $\dot x=\dot y$ nothing is displaced and $U=0$).
+
+</Step>
+<Step title="(c) 2. The coupled circuit">
+
+The mechanical loops join the fluid network through a **transformer $A_p:1$** acting on the relative mechanical velocity $(\dot x-\dot y)$, giving the flow $U$; the fluid network is the circuit of (a) (inductor $\rho M_f$, resistor $\rho R_f$, capacitors $C_{f1}/\rho$, $C_{f2}/\rho$); $M_c$ and $C_M$ carry $\dot y$. Counting energy stores ($M_p$, $M_c$, $C_M$, $C_{f1}$, $C_{f2}$, $M_f$) gives a **6th-order** system.
+
+</Step>
+<Step title="(d) 1. Take the limit">
+
+$M_p=M_c=0$: the mechanical inductors become short circuits. $M_f=0$: the fluid inductor is a short. $C_{f1}=C_{f2}=0$: the fluid capacitors are open circuits.
+
+</Step>
+<Step title="(d) 2. What remains">
+
+The generator drives the transformer whose secondary sees **only the resistor $\rho R_f$**, with the spring $C_M$ in series on the mechanical side.
+
+</Step>
+<Step title="(d) 3. Reflect the resistor through the transformer">
+
+Impedance scales with the **square** of the ratio: force/velocity $=\dfrac{A_p(P_2-P_1)}{U/A_p}=A_p^2\dfrac{P_2-P_1}{U}=A_p^2\rho R_f$, so $R_M=\rho R_fA_p^2$ ✔. The same force passes through both elements, so they are in **series**: a spring $C_M=1/k$ in series with a damper $R_M$: a **Maxwell element**.
+
+</Step>
+<Step title="(d) 4. Check against HW6 Q2">
+
+There $T=\dfrac{R\rho A^2}{k}=R_MC_M$: the same time constant ✔.
+
+</Step>
+</Steps>
+
+<CircuitBoard close source={{kind:'Vs',label:'U₀e^{jωt}',sub:'generator'}} sections={[{type:'series',el:{kind:'R',label:'R_M = ρR_fA_p²',sub:'valve seen through the piston'}},{type:'series',el:{kind:'C',label:'C_M',sub:'spring compliance'}}]} title="The limit of part (d): a Maxwell element" caption="Massless incompressible fluid: only the reflected valve resistance remains, in series with the spring. Same time constant R_M C_M = RρA²/k as in HW6 Q2." />
+
+<Answer>
+
+(a) capacitors $C_{f1}/\rho$, $C_{f2}/\rho$ to ground and $\rho M_f$–$\rho R_f$ between $P_2$ and $P_1$; (c) mechanical loops coupled by a transformer $A_p:1$ on the relative velocity; (d) $R_M=\rho R_fA_p^2$ in series with $C_M$.
+
+*Real-world:* a car shock absorber: oil forced through a valve gives a force proportional to the relative velocity; the piston area enters **squared** because the same area converts motion to flow and pressure to force.
+
+</Answer>
+
+<Traps>
+
+- Using the piston velocity $\dot x$ instead of the **relative** velocity $\dot x-\dot y$ for the flow.
+- Impedance scales with the ratio squared through a transformer.
+- Leaving $R_p$ in the coupled circuit (the problem says to remove it).
+
+</Traps>
+
+<Source>official ✔ (circuits and reduction consistent with the HW6 and F2022 derivations).</Source>
+
+</Problem>
+
+<Problem id="MT2 W2009 Q2" title="State-transition matrix of ẍ + 2ẋ = 0 (20 marks)" tags="Φ(t), resolvent, viscous coasting">
+
+<Statement>
+
+Obtain the state-transition matrix of the system $\ddot x+2\dot x=0$.
+
+</Statement>
+
+<Think>
+
+Choose states $x_1=x$, $x_2=\dot x$, get $A$, then $\Phi(s)=(sI-A)^{-1}$ and invert each entry.
+
+</Think>
+
+<Steps>
+<Step title="1. State equations">
+
+$\dot x_1=x_2$, $\dot x_2=-2x_2$, so $A=\begin{bmatrix}0&1\\0&-2\end{bmatrix}$ (no input).
+
+</Step>
+<Step title="2. Resolvent">
+
+$sI-A=\begin{bmatrix}s&-1\\0&s+2\end{bmatrix}$; determinant $s(s+2)$; the inverse is $\dfrac1{s(s+2)}\begin{bmatrix}s+2&1\\0&s\end{bmatrix}=\begin{bmatrix}\tfrac1s&\tfrac1{s(s+2)}\\0&\tfrac1{s+2}\end{bmatrix}$.
+
+</Step>
+<Step title="3. Invert each entry">
+
+$\tfrac1s\to1$; $\dfrac1{s(s+2)}=\tfrac12\Big(\dfrac1s-\dfrac1{s+2}\Big)\to\tfrac12(1-e^{-2t})$; $\tfrac1{s+2}\to e^{-2t}$.
+
+</Step>
+<Step title="4. Result">
+
+$$\Phi(t)=e^{At}=\begin{bmatrix}1&\tfrac12(1-e^{-2t})\\0&e^{-2t}\end{bmatrix}.$$
+
+</Step>
+<Step title="5. Checks">
+
+$\Phi(0)=I$ ✔; $\dot\Phi(0)=\begin{bmatrix}0&1\\0&-2\end{bmatrix}=A$ ✔. Physically $x(t)=x_0+\tfrac{\dot x_0}2(1-e^{-2t})$: the velocity decays exponentially (viscous friction) and the position creeps to the finite limit $x_0+\dot x_0/2$: a block sliding on a viscous surface.
+
+</Step>
+</Steps>
+
+<Answer>
+
+$\Phi(t)=\begin{bmatrix}1&\tfrac12(1-e^{-2t})\\0&e^{-2t}\end{bmatrix}$.
+
+*Real-world:* a puck on honey, or a coasting cyclist with drag proportional to speed: the speed decays with time constant $\tfrac12$ and the distance coasted is $v_0/2$.
+
+</Answer>
+
+<Traps>
+
+- Writing $e^{At}$ entry by entry ($e^0,e^1,e^{-2t},\ldots$): the matrix exponential is **not** the exponential of each entry.
+- Forgetting the partial fractions of $\tfrac1{s(s+2)}$.
+
+</Traps>
+
+<Source>official ✔ (textbook problem A-8-9).</Source>
+
+<ToolLink tool="state-space">Check $\Phi(t)$</ToolLink>
+
+</Problem>
+
+<Problem id="MT2 W2009 Q3" title="Operational amplifiers: a buffer in front of an L–C–R filter (30 marks)" tags="voltage follower, high-pass, loading">
+
+<Statement>
+
+Circuit 1: $e_i\to R_1\to C\to$ node $N$ (the op-amp's $+$ terminal); $L$ from $N$ to ground; the op-amp is a **voltage follower**: its output $e_o$ is fed back to the $-$ input through $R_2$. Circuit 2: the same $R_1$–$C$–$L$ network with the output $e_o$ taken directly across $L$ (no op-amp). (a) Find $E_o/E_i$ for both. (b) If a load $Z_{load}$ is connected across the output, what is the advantage of circuit 1? (c) In circuit 1, $R_2$ is typically very large: why is a high $R_2$ better?
+
+</Statement>
+
+<Think>
+
+The (ideal) op-amp input draws **no current**, so the series branch $R_1+\tfrac1{Cs}$ and the shunt inductor $L$ simply form a divider whose midpoint voltage is the $+$ input; the follower copies it to the output.
+
+</Think>
+
+<Steps>
+<Step title="(a) 1. Divider">
+
+The current through $R_1+\tfrac1{Cs}$ equals the current through $L$: $\dfrac{E_i-E_o}{R_1+1/(Cs)}=\dfrac{E_o}{sL}$.
+
+</Step>
+<Step title="(a) 2. Solve">
+
+$E_o\Big[\dfrac1{R_1+1/(Cs)}+\dfrac1{sL}\Big]=\dfrac{E_i}{R_1+1/(Cs)}\Rightarrow\dfrac{E_o}{E_i}=\dfrac{sL}{sL+R_1+1/(Cs)}$.
+
+</Step>
+<Step title="(a) 3. Clear fractions (multiply by Cs)">
+
+$$\frac{E_o}{E_i}=\frac{LCs^2}{LCs^2+R_1Cs+1}.$$
+A **second-order high-pass**: gain 0 at DC (the inductor shorts the output), gain 1 at high frequency, $\omega_n=1/\sqrt{LC}$, $\zeta=\dfrac{R_1}2\sqrt{C/L}$. Both circuits have the **same** transfer function (the op-amp only copies the voltage).
+
+</Step>
+<Step title="(b) Advantage of circuit 1">
+
+The op-amp **isolates the load**. In circuit 2, connecting $Z_{load}$ in parallel with $L$ changes the divider (the shunt branch becomes $L\parallel Z_{load}$), so the transfer function changes and power is drawn from the filter itself. In circuit 1 the follower has a very high input impedance and a very low output impedance, so the transfer function is the same for any load and the load receives its power from the op-amp supply.
+
+</Step>
+<Step title="(c) High R₂">
+
+The feedback resistor sets the current in the feedback path (and in the output stage); making it large keeps that current small so the feedback path does not load the output or draw significant power. For a unity-gain buffer $R_2$ does not affect the gain (no current flows through it into the ideal input).
+
+</Step>
+</Steps>
+
+<Answer>
+
+(a) $\dfrac{LCs^2}{LCs^2+R_1Cs+1}$ for both circuits; (b) isolation: the transfer function does not depend on the load; (c) a large $R_2$ keeps the feedback current negligible.
+
+*Real-world:* buffer amplifiers between filter stages in a hi-fi crossover or sensor chain: the filter is designed once and keeps its shape whatever it drives.
+
+</Answer>
+
+<Callout kind="note" title="Scan cut-off">
+
+The official answer to (c) is cut off on the scan ("to reduce the current flowing in the ground... the group"); the reasoning above is the standard one. (a) and (b) are ✔.
+
+</Callout>
+
+<Traps>
+
+- Treating the op-amp as inverting (the signal is on the $+$ terminal: no sign change).
+- Adding a load changes circuit 2's transfer function but not circuit 1's.
+
+</Traps>
+
+<Source>official ✔ for (a), (b); (c) incomplete on the scan.</Source>
+
+</Problem>
+
+<Problem id="MT2 W2009 Q4" title="Miscellaneous short questions (20 marks)" tags="absorber, ill-posed tank, orifice linearisation, true/false">
+
+<Statement>
+
+Five conceptual questions: a perfectly tuned dynamic absorber (true/false), a tank whose level rises 5 % in 2 s, the main factor setting a servomotor's torque, the linearised resistance of an orifice $Q=K\sqrt H$, and five true/false items.
+
+</Statement>
+
+<Steps>
+<Step title="1. Perfectly tuned dynamic absorber (T/F)">
+
+Official: **F, T, F (true only in the mobility analog), F, F.** Reasoning: the absorber does not remove energy through the damper; **true:** its spring pushes back on the main mass with a force exactly $-P\sin\omega t$, cancelling the excitation (that is why the main mass does not move); "the absorber acts as a short circuit in the equivalent circuit" depends on which analog is used (true only in the mobility analog); the total mass is not what stops the motion; the stiffness is not simply increased.
+
+</Step>
+<Step title="2. Tank of area 0.5 m²: level up 5 % in 2 s, find R">
+
+$h=Rq(1-e^{-t/RC})$ with $C=A$: the question is **ill-posed**: the initial level and the inlet flow rate are not given, so $R$ cannot be found. Official: answer (e) "none of these", and **4 points awarded to everyone**. A well-posed version gives the inflow and the initial level, and the 2 s data then fixes $R$ through $h(t)=Rq(1-e^{-t/(0.5R)})$.
+
+</Step>
+<Step title="3. Servomotor torque">
+
+(a) the product of the armature current and the air-gap flux: $\tau=K_t\Phi i_a$.
+
+</Step>
+<Step title="4. Orifice Q = K√H, linearised resistance">
+
+(d) $R=\dfrac{dH}{dQ}=\dfrac{2\sqrt H}{K}=\dfrac{2H_{av}}{Q_{av}}$ (the Lecture-15 formula $R_l=2\bar H/\bar Q$).
+
+</Step>
+<Step title="5. True/false: T, F, T, T, T">
+
+(i) Free oscillations of any linear system with many degrees of freedom are a superposition of first- and second-order responses: **True** (modal decomposition). (ii) Increasing the heat-transfer coefficient *increases* the heat resistance: **False** ($R_t=1/(hA)$ decreases). (iii) Pneumatic systems are preferable in biomedical prosthetics: **True** (clean, light, safe in a leak). (iv) The damped natural frequency is always smaller than the undamped: **True** ($\omega_d=\omega_n\sqrt{1-\zeta^2}$). (v) A rotating unbalance is an ideal force generator with amplitude growing with the square of the frequency: **True** ($F=me\omega^2$).
+
+</Step>
+</Steps>
+
+<Answer>
+
+1: F, T, F, F, F; 2: ill-posed, (e); 3: (a); 4: (d); 5: T, F, T, T, T.
+
+</Answer>
+
+<Source>official ✔ (re-derived; item 2 is ill-posed as the instructor admits).</Source>
+
+</Problem>
+
+<Examined>
+
+Dashpot: $\text{HW6 Q2}$, $\text{MT2 F2022 Q1b}$, $\text{MT2 W2024 Q2}$, <Ch slug="hydraulic-thermal">Chapter 13</Ch>; $\Phi(t)$: <Ch slug="state-space">Chapter 7</Ch>; op-amps: <Ch slug="circuits-opamps">Chapter 8</Ch>.
+
+</Examined>

@@ -1,0 +1,357 @@
+<p className="eyebrow">Homework 1 · due Jan 17, 2024 · Lectures 1–2</p>
+
+# HW1: block diagram, Laplace, partial fractions, ODEs, sample-and-hold
+
+<div className="lede">
+
+Six problems on the first two lectures: reading a feedback loop, building a Laplace transform from a picture, and the three workhorse skills — partial fractions, ODEs with initial conditions, and the definition of linear / time-invariant. Background: <Ch slug="intro">Chapter 1</Ch> and <Ch slug="laplace">Chapter 2</Ch>. One **official solution error** is flagged in Q3(b).
+
+</div>
+
+<Problem id="HW1 Q1" title="Block diagram of a person playing a video game" tags="feedback loop, L01">
+
+<Statement>
+
+Draw a component block diagram for a person playing a video game with a joystick on a personal computer. Describe the controlled variable, the sensor that measures it, the actuator that increases or decreases it, the information path completing the feedback, and the disturbances.
+
+</Statement>
+
+<Think>
+
+This is the Chapter 1 loop with different labels. The only technical requirement is **negative feedback**: the error is *desired − measured*, and the sensor sits in the return path, not the forward path.
+
+</Think>
+
+<Steps>
+<Step title="1. Name the controlled variable">
+
+The position of the pointer (or avatar) on the screen.
+
+</Step>
+<Step title="2. Assign each block">
+
+- **Reference:** where you want the pointer.
+- **Sensor:** your eyes (human vision) — they measure the *actual* pointer position.
+- **Controller:** your brain, which compares target with what it sees.
+- **Actuator:** your hand and the joystick.
+- **Process:** the game engine and screen (turns the stick signal into pointer motion).
+
+</Step>
+<Step title="3. Disturbances and information path">
+
+Disturbances: game lag, an enemy pushing the avatar, a bumped hand, screen glare. Information path: light from the screen to the eyes to the brain, closing the loop with a minus sign at the summing junction.
+
+</Step>
+</Steps>
+
+<BlockDiagram blocks={[{label:'Player',sub:'brain'},{label:'Joystick',sub:'actuator'},{label:'Video game',sub:'process'}]} feedback={{label:'Human vision',sub:'sensor'}} input="desired pointer" output="actual pointer" errorLabel="error" />
+
+<Answer>
+
+A single negative-feedback loop as drawn. *Real-world meaning:* you are the controller. Your reaction delay plus the screen lag explain why aiming gets harder at high game speed: delay plus high gain gives overshoot and oscillation (Chapters 16–19).
+
+</Answer>
+
+<Traps>
+
+- The feedback sign must be negative; do not put the sensor in the forward path.
+
+</Traps>
+
+<Source>official solution (any negative feedback system accepted); Anthony's file has no Q1.</Source>
+
+</Problem>
+
+<Problem id="HW1 Q2" title="Laplace transform of a doublet pulse, and the limit a → 0" tags="shifted ramps, time shift, limits">
+
+<Statement>
+
+$f(t)$ rises linearly from 0 at $t=0$ to $+12/a^2$ at $t=a/2$, drops vertically to $-12/a^2$ at $t=a/2$, then rises linearly back to 0 at $t=a$, and is zero elsewhere. Find $\mathcal L\{f\}$ and its limit as $a\to0$.
+
+</Statement>
+
+<Think>
+
+A piecewise-linear function is a sum of **ramps** and **steps**, each switched on at the right time. Write the line equation on each piece, convert to unit steps, then use the time-shift theorem.
+
+</Think>
+
+<Steps>
+<Step title="1. Line on the rising piece, 0 ≤ t < a/2">
+
+$f=ct$ with $12/a^2=c\,a/2$, so $c=24/a^3$.
+
+</Step>
+<Step title="2. Line on the second piece, a/2 < t ≤ a">
+
+$f=ct+d$ with $-12/a^2=c\,a/2+d$ and $0=ca+d$: $c=24/a^3$, $d=-24/a^2$. So $f=\dfrac{24}{a^3}(t-a)$.
+
+</Step>
+<Step title="3. One expression with unit steps">
+
+$$f(t)=\frac{24}{a^3}t\,u(t)-\frac{24}{a^2}u\!\big(t-\tfrac a2\big)-\frac{24}{a^3}(t-a)\,u(t-a).$$
+
+*Check:* for $t>a$: $\tfrac{24t}{a^3}-\tfrac{24}{a^2}-\tfrac{24(t-a)}{a^3}=0$ ✔. The $-24/a^2$ step at $a/2$ is the vertical drop ✔.
+
+</Step>
+<Step title="4. Transform">
+
+$$F(s)=\frac{24}{a^3s^2}-\frac{24\,e^{-as/2}}{a^2s}-\frac{24\,e^{-as}}{a^3s^2}.$$
+
+</Step>
+<Step title="5. The limit">
+
+Factor: $F=\dfrac{24}{a^3s^2}\big[1-e^{-as}-(as)e^{-as/2}\big]$. With $x=as$: $1-e^{-x}-xe^{-x/2}=\dfrac{x^3}{24}-\dfrac{x^4}{48}+\cdots$, so $F=\dfrac{24}{a^3s^2}\cdot\dfrac{a^3s^3}{24}(1-\cdots)\to s$.
+
+</Step>
+</Steps>
+
+<Answer>
+
+$F(s)=\dfrac{24}{a^3s^2}-\dfrac{24e^{-as/2}}{a^2s}-\dfrac{24e^{-as}}{a^3s^2}$ and $\displaystyle\lim_{a\to0}F=s$.
+
+</Answer>
+
+<Traps>
+
+- The jump at $a/2$ needs its own *step* term, not just a ramp.
+- The limit is $s$, not 1: the object is a **unit doublet** (derivative of the impulse): net area 0, first moment non-zero.
+
+</Traps>
+
+<Source>official solution (l'Hôpital three times); series check by the digest author. Anthony wrote only the line equations.</Source>
+
+</Problem>
+
+<Problem id="HW1 Q3" title="Laplace transform rules: f(t) sin t and a delayed exponential" tags="frequency shift, time shift">
+
+<Statement>
+
+Given $\mathcal L\{f\}=F(s)$, find $\mathcal L\{g\}$ for (a) $g=f(t)\sin t$; (b) $g=e^{-t}+1(t-1)\,e^{t-1}$.
+
+</Statement>
+
+<Think>
+
+(a) Use Euler's formula to turn $\sin t$ into exponentials, then the frequency-shift rule $\mathcal L\{e^{at}f\}=F(s-a)$. (b) The *second shifting theorem*: a unit step switched on at $t=1$ multiplies the transform by $e^{-s}$.
+
+</Think>
+
+<Steps>
+<Step title="(a) Euler and the shift rule">
+
+$\sin t=\dfrac{e^{jt}-e^{-jt}}{2j}$, and $\mathcal L\{fe^{jt}\}=F(s-j)$. Therefore
+
+$$G(s)=\frac{1}{2j}\big[F(s-j)-F(s+j)\big].$$
+
+</Step>
+<Step title="(b) The delayed term">
+
+$1(t-1)e^{t-1}$ is the function $e^{\tau}$ delayed by 1 s. By the second shifting theorem with $f(\tau)=e^{\tau}$: $\mathcal L=e^{-s}\dfrac{1}{s-1}$.
+
+</Step>
+<Step title="(b) Add the first term">
+
+$$G(s)=\frac{1}{s+1}+\frac{e^{-s}}{s-1}.$$
+
+</Step>
+</Steps>
+
+<Answer>
+
+(a) $\dfrac1{2j}[F(s-j)-F(s+j)]$. (b) $\dfrac1{s+1}+\dfrac{e^{-s}}{s-1}$.
+
+</Answer>
+
+<Callout kind="warn" title="⚠ Official solution error (and Anthony copied it)">
+
+The official answer to (b) is $\dfrac1{s+1}+\dfrac{e^{-1}}{(s-1)^2}-\dfrac{e^{-1}}{s-1}$. That is the transform of $e^{-t}+(t-1)e^{t-1}$: the unit **step** $1(t-1)$ was replaced by the **ramp** $(t-1)$ and the delay $e^{-s}$ was lost. Anthony's page repeats the same reading. (Even if the intended function were the delayed ramp-exponential, the answer would be $e^{-s}/(s-1)^2$, still different.)
+
+</Callout>
+
+<Traps>
+
+- $1(t-1)$ is a unit *step*, not a ramp. A delayed step gives the factor $e^{-s\cdot\text{delay}}$.
+- Do not expand $(t-1)$ and lose the step.
+
+</Traps>
+
+<Source>official solution (error in (b)); Anthony: (a) only the definition, (b) copy of the official answer.</Source>
+
+</Problem>
+
+<Problem id="HW1 Q4" title="Inverse Laplace of five rational functions" tags="partial fractions: real, complex, repeated, repeated complex">
+
+<Statement>
+
+Find $f(t)$ for (a) $\dfrac{12}{s(s+2)(s+3)}$; (b) $\dfrac{5s-3}{s^2+3s+10}$; (c) $\dfrac{2s^2+6s+15}{(s+2)(s^2+s+5)}$; (d) $\dfrac{s-1}{s^2(s+1)}$; (e) $\dfrac{s+1}{(s^2+2s+2)^2}$.
+
+</Statement>
+
+<Think>
+
+Match each to the four cases of <Ch slug="laplace">Chapter 2</Ch>: (a) distinct real poles — cover-up; (b), (c) complex pair — complete the square; (d) double pole at zero; (e) a *repeated complex pair* — brute-force coefficients are painful, use the derivative trick.
+
+</Think>
+
+<Steps>
+<Step title="(a) Cover-up">
+
+$A=\dfrac{12}{2\cdot3}=2$, $B=\dfrac{12}{(-2)(1)}=-6$, $C=\dfrac{12}{(-3)(-1)}=4$. $\;f=2-6e^{-2t}+4e^{-3t}$.
+
+</Step>
+<Step title="(b) Complete the square">
+
+$s^2+3s+10=(s+\tfrac32)^2+\tfrac{31}{4}$, $\omega=\tfrac{\sqrt{31}}2$. Numerator $5s-3=5(s+\tfrac32)-\tfrac{21}2$. The sine needs numerator $\omega$: $-\tfrac{21}{2}=-\tfrac{21}{\sqrt{31}}\cdot\tfrac{\sqrt{31}}2$.
+
+$$f=5e^{-1.5t}\cos\tfrac{\sqrt{31}}2t-\tfrac{21}{\sqrt{31}}e^{-1.5t}\sin\tfrac{\sqrt{31}}2t\quad(\tfrac{21}{\sqrt{31}}=3.772).$$
+
+</Step>
+<Step title="(c) Quadratic factor">
+
+$2s^2+6s+15=A(s^2+s+5)+(Bs+C)(s+2)$: $A+B=2$, $A+2B+C=6$, $5A+2C=15$ ⇒ $A=\tfrac{11}7$, $B=\tfrac37$, $C=\tfrac{25}7$. With $s^2+s+5=(s+\tfrac12)^2+\tfrac{19}4$:
+
+$$f=\tfrac{11}7e^{-2t}+\tfrac37e^{-t/2}\cos\tfrac{\sqrt{19}}2t+\tfrac{47}{7\sqrt{19}}e^{-t/2}\sin\tfrac{\sqrt{19}}2t .$$
+
+</Step>
+<Step title="(d) Double pole at 0">
+
+$\dfrac{s-1}{s^2(s+1)}=\dfrac A{s}+\dfrac B{s^2}+\dfrac C{s+1}$: $B=-1$ (multiply by $s^2$, set $s=0$), $C=\dfrac{-2}{1}=-2$, $A=-C=2$. $\;f=2-t-2e^{-t}$.
+
+</Step>
+<Step title="(e) The derivative trick">
+
+$\dfrac{s+1}{(s^2+2s+2)^2}=-\tfrac12\dfrac d{ds}\dfrac1{s^2+2s+2}$. Since $\mathcal L\{tg\}=-G'$ and $g=e^{-t}\sin t$: $\;f=\tfrac12\,t\,e^{-t}\sin t$. (Check by convolution: $e^{-t}\cos t * e^{-t}\sin t=\tfrac12te^{-t}\sin t$ ✔.)
+
+</Step>
+</Steps>
+
+<Answer>
+
+(a) $2-6e^{-2t}+4e^{-3t}$; (b) as above; (c) as above; (d) $2-t-2e^{-t}$; (e) $\tfrac12te^{-t}\sin t$.
+
+</Answer>
+
+<Traps>
+
+- The sine coefficient is (numerator constant)/$\omega$, not the constant itself. Anthony's (b) dropped the minus sign on this term.
+- Handwriting traps in his page: a "1" that looks like "7" (1.5 read as 7.5), "√19" read as "√17".
+
+</Traps>
+
+<Source>official solution; Anthony Q4 a–d correct up to those slips, (e) stopped at the PFE setup. Verified with `inverseLaplace`.</Source>
+
+</Problem>
+
+<Problem id="HW1 Q5" title="Three ODEs with initial conditions" tags="Laplace with ICs, forced response">
+
+<Statement>
+
+(a) $\ddot y+3\dot y+7y=0$, $y(0)=-2$, $\dot y(0)=1$. (b) $\ddot y+5\dot y=\cos t$, $y(0)=1$, $\dot y(0)=-2$. (c) $\ddot y+y=\cos2t$, $y(0)=\dot y(0)=0$.
+
+</Statement>
+
+<Think>
+
+Transform with the derivative rules; the initial conditions move to the right-hand side as $sy_0+\dot y_0+(\text{coeff})y_0$. Then partial fractions.
+
+</Think>
+
+<Steps>
+<Step title="(a) Free response">
+
+$(s^2+3s+7)Y=sy_0+\dot y_0+3y_0=-2s+1-6=-2s-5$. With $s^2+3s+7=(s+1.5)^2+\tfrac{19}4$: $Y=\dfrac{-2(s+1.5)-2}{(s+1.5)^2+19/4}$.
+
+$$y=-2e^{-1.5t}\cos\tfrac{\sqrt{19}}2t-\tfrac4{\sqrt{19}}e^{-1.5t}\sin\tfrac{\sqrt{19}}2t\quad(\tfrac4{\sqrt{19}}=0.918).$$
+
+Poles $-1.5\pm j2.18$ ($\omega_n=\sqrt7$, $\zeta=0.567$).
+
+</Step>
+<Step title="(b) Forced + free">
+
+$(s^2+5s)Y=\dfrac{s}{s^2+1}+s-2+5=\dfrac s{s^2+1}+s+3$. So $Y=\dfrac{s^3+3s^2+2s+3}{s(s+5)(s^2+1)}=\dfrac{3/5}s+\dfrac{57/130}{s+5}+\dfrac{-s+5}{26(s^2+1)}$.
+
+$$y=\tfrac35+\tfrac{57}{130}e^{-5t}-\tfrac1{26}\cos t+\tfrac5{26}\sin t .$$
+
+*Check:* $y(0)=0.6+0.4385-0.0385=1$ ✔.
+
+</Step>
+<Step title="(c) Two frequencies">
+
+$(s^2+1)Y=\dfrac s{s^2+4}$ ⇒ $Y=\dfrac s{(s^2+1)(s^2+4)}=\dfrac13\dfrac s{s^2+1}-\dfrac13\dfrac s{s^2+4}$.
+
+$$y=\tfrac13(\cos t-\cos2t).$$
+
+</Step>
+</Steps>
+
+<Answer>
+
+(a), (b), (c) as shown.
+
+</Answer>
+
+<Traps>
+
+- (b): there is no $y$ term, so $y$ tends to a constant ($3/5$) plus a sinusoid, not to zero.
+- The printed sheet lost the dots: "$3(t)$" means $3\dot y$ and "$5y$" means $5\dot y$.
+
+</Traps>
+
+<Source>official solution; Anthony's (a) and (c) match, (b) has an intermediate $\tfrac1{26}e^{-5t}$ but the final answer is right.</Source>
+
+</Problem>
+
+<Problem id="HW1 Q6" title="Sample-and-hold is linear but not time-invariant" tags="linearity, time invariance, zero-order hold">
+
+<Statement>
+
+$y(t)=u(kT)$ for $kT\le t<(k+1)T$. Show the system is linear but not time-invariant. Why "sample-and-hold"? Give an application.
+
+</Statement>
+
+<Think>
+
+*Linear* means superposition: scaling and adding inputs scales and adds outputs. *Time-invariant* means that delaying the input by *any* $t_0$ just delays the output by $t_0$.
+
+</Think>
+
+<Steps>
+<Step title="Linearity">
+
+Inputs $u_1\to y_1=u_1(kT)$ and $u_2\to y_2=u_2(kT)$. For $au_1+bu_2$: $y=au_1(kT)+bu_2(kT)=ay_1+by_2$ ✔ linear.
+
+</Step>
+<Step title="Time invariance fails">
+
+Shift the input by $t_0$: the output still samples at multiples of $T$, so it holds $u(kT-t_0)$ on $kT\le t<(k+1)T$. The delayed output $y(t-t_0)$ holds $u(kT)$ on $kT+t_0\le t<(k+1)T+t_0$ — the hold interval has *moved*. They differ unless $t_0$ is a multiple of $T$ ⇒ **not time-invariant**.
+
+</Step>
+<Step title="Name and use">
+
+It samples at $t=kT$ and **holds** the value for one period (a zero-order hold). Application: A/D conversion, and the D/A hold in every digital controller.
+
+</Step>
+</Steps>
+
+<Answer>
+
+Linear, not time-invariant; zero-order hold. A digital cruise controller reads the speed every $T$ ms and holds its last command between samples.
+
+</Answer>
+
+<Traps>
+
+- Time invariance must hold for *every* shift, not only multiples of $T$: the sampler is clocked by an absolute clock, so it is linear but time-varying.
+
+</Traps>
+
+<Source>official solution; Anthony wrote only the definition.</Source>
+
+</Problem>
+
+<Examined>
+
+Same skills in the exams: partial fractions with a complex pair ($\text{MT1 W2009 Q2}$), ODEs with initial conditions ($\text{MT1 F2011 Q1}$), delayed/shifted inputs ($\text{MT1 F2007 Q1}$).
+
+</Examined>

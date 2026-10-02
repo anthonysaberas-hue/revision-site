@@ -1,0 +1,144 @@
+<p className="eyebrow">Chapter 4</p>
+
+# Speed of sound & Mach number
+
+<p className="lede">Sound is how a gas passes news of a disturbance from one place to the next. How fast that news travels, c = √(γRT), sets the speed limit of the whole course. The ratio M = V/c tells you whether the flow ahead can "hear" what is coming, and almost every surprise in compressible flow follows from that.</p>
+
+## Riding the wave: c² = (∂p/∂ρ)ₛ
+
+**The idea in plain words.** Push a piston into still gas with a tiny velocity $dV$. The gas next to the piston is squeezed (pressure up by $dp$, density up by $d\rho$) and starts moving at $dV$. That squeezed layer pushes the next layer, and so on: a weak pressure wave runs into the still gas at speed $c$.
+
+<PistonWaveFigure />
+
+In the lab frame this is **unsteady** (the wave moves). The trick of the whole derivation is to **ride with the wave**. In the wave frame the wave is stationary, so the flow is *steady* and our 1-D control-volume equations of Chapter 3 apply. Gas enters from the right at speed $c$ with $p, \rho$ and leaves to the left at $c - dV$ with $p + dp$, $\rho + d\rho$.
+
+<SoundWaveFigure />
+
+<Steps label="🪜 Derivation, one line at a time">
+<Step title="1. Mass (constant area, A₁ = A₂)">
+
+$$
+\rho c = (\rho + d\rho)(c - dV) \;\Rightarrow\; \rho\, dV = c\, d\rho
+$$
+
+(dropped the second-order term $d\rho\, dV$). Since $\rho$, $c$, $dV$ are positive, $d\rho > 0$: a wave that pushes into the gas compresses it.
+
+</Step>
+<Step title="2. Momentum (constant area, no friction)">
+
+$$
+p + \rho c^2 = (p + dp) + (\rho + d\rho)(c - dV)^2 \;\Rightarrow\; dp = 2\rho c\, dV - c^2 d\rho
+$$
+
+</Step>
+<Step title="3. Eliminate dV with step 1">
+
+Substitute $\rho\, dV = c\, d\rho$: $dp = 2c^2 d\rho - c^2 d\rho = c^2 d\rho$, so
+
+$$
+c^2 = \frac{dp}{d\rho}
+$$
+
+</Step>
+<Step title="4. Which path? Isentropic">
+
+$p$ depends on two variables, so $dp/d\rho$ must be taken along a specific path. A sound wave is **weak** (gradients are tiny, so it is reversible) and **fast** (no time for heat to leave the squeezed element, so it is adiabatic). Reversible and adiabatic means isentropic:
+
+$$
+c^2 = \left(\frac{\partial p}{\partial \rho}\right)_s
+$$
+
+</Step>
+<Step title="5. Evaluate for a perfect gas">
+
+Along an isentrope $p = \text{const}\cdot\rho^\gamma$, so $(\partial p/\partial\rho)_s = \gamma\,\text{const}\,\rho^{\gamma-1} = \gamma p/\rho$. With $p = \rho R T$:
+
+$$
+c = \sqrt{\gamma \frac{p}{\rho}} = \sqrt{\gamma R T}
+$$
+
+</Step>
+</Steps>
+
+<Remember title="c depends on T only (for a given gas)">
+
+$c = \sqrt{\gamma R T}$ with $R = \Re/MW$. Pressure and density cancel: double the density at the same $T$ and $c$ does not change. Physically, sound is carried by molecules bumping into each other, and their speed depends on $T$ only. Air at 300 K: $c = \sqrt{1.4 \times 287 \times 300} = 347$ m/s (about 1250 km/h).
+
+</Remember>
+
+**Compression and rarefaction.** From step 1, $dV = c\,d\rho/\rho$ has the same sign as $dp$. A compression ($dp > 0$) drags the gas behind it *along with the wave*; a rarefaction ($dp < 0$) sets it moving *against* the wave. Both travel at the same $c$ because the waves are infinitesimal. (Finite waves differ: compressions steepen into shocks in Chapter 7.)
+
+## Newton vs Laplace
+
+Newton (1687) did exactly our derivation, then assumed the wave was **isothermal**: $p \propto \rho$, so $c = \sqrt{RT}$. That gives about 294 m/s for air, about 15% below his own cannon-flash measurement of 348 m/s. He blamed dust and moisture. As von Kármán dryly put it, Newton "looked for some excuse to justify the discrepancy".
+
+Laplace (1816) saw the real mistake: the wave is too fast for heat to flow, so it is **adiabatic**, and since it is also weak it is **isentropic**. The isentropic slope is $\gamma$ times the isothermal one, so the speed is $\sqrt{\gamma}$ times larger:
+
+$$
+\frac{c_\text{Laplace}}{c_\text{Newton}} = \sqrt{\gamma} = \sqrt{1.4} = 1.183
+$$
+
+<SoundSpeedSim />
+
+## Compressibility: why solids are fast
+
+Write the isentropic compressibility $K_s = \frac{1}{\rho}\left(\frac{\partial \rho}{\partial p}\right)_s$ (fractional density change per unit pressure). Then
+
+$$
+c = \frac{1}{\sqrt{\rho K_s}}
+$$
+
+| Material | $K_s$ (m·s²/kg) | ρ (kg/m³) | c (m/s) |
+|---|---|---|---|
+| Air | $7\times10^{-6}$ | 1.2 | ≈ 345 |
+| Water | $4.55\times10^{-10}$ | 1000 | ≈ 1480 |
+| Steel | $6.1\times10^{-12}$ | 7900 | ≈ 4550 |
+
+Air is about 15 000 times more compressible than water; that is exactly why its density changes in fast flows and water's does not. A "stiff" medium (small $K_s$) carries sound fast.
+
+## Mach number
+
+$$
+M = \frac{V}{c}
+$$
+
+**Local** speed over **local** sound speed. In a hot rocket jet the local $c$ is high, so a fast jet can still have a modest $M$. "The Concorde flies at Mach 2" properly means: in the Concorde's frame, the air approaches at twice *its own* speed of sound, at that altitude's temperature.
+
+$M$ is also the square root of (kinetic energy)/(thermal energy) of the flow: $\frac{V^2/2}{c_v T} \propto M^2$. Big $M$ means the motion carries more energy than the random molecular motion, so slowing the flow down changes $T$, $p$ and $\rho$ a lot.
+
+## Subsonic vs supersonic: who can hear what
+
+Hold a beeper still: its beeps spread as concentric circles. Move it at $V < c$: the circles bunch up ahead but still **outrun** the source, so the gas ahead is warned and can start moving out of the way (this is why subsonic flow "anticipates" an obstacle). At $V = c$ all fronts pile up at the source. At $V > c$ the source outruns its own sound: the fronts form a cone and everything outside it is a **zone of silence**.
+
+<MachConeSim />
+
+The cone half-angle (the **Mach angle**) follows from the geometry. In time $t$ the source moves $Vt$ and the sound $ct$:
+
+$$
+\sin\mu = \frac{ct}{Vt} = \frac{1}{M}, \qquad \mu = \sin^{-1}\frac{1}{M}
+$$
+
+<MachConeFigure M={2} />
+
+<Idea title="The one fact behind the whole course">
+
+Information in a gas travels at $c$ relative to the gas. In supersonic flow the gas moves downstream faster than information can move upstream, so **a supersonic flow cannot feel what is downstream**. That single fact explains choking (Ch. 5), why a supersonic nozzle exit need not match the back pressure (Ch. 6), and why shocks exist at all (Ch. 7).
+
+</Idea>
+
+<Examined>
+
+- **PS1 P5** derives $c = \sqrt{\gamma RT}$ from a wave-frame control volume and asks which way compression and rarefaction waves push the gas. See [PS1 P5](#/mech430/ps/ps01).
+- **PS1 P6** (sound speed of He, Ar, N₂, CO₂, SF₆) and **PS1 P7** (Yeager vs Green: who was faster at Mach 1?) test "c depends on T and the gas".
+- On exams, $c = \sqrt{\gamma RT}$ is step 1 of almost every problem: you need it to turn a velocity into a Mach number. Watch the gas: exams use MW = 28, 28.9, 30, 25…
+- The Mach angle $\mu = \sin^{-1}(1/M)$ returns in oblique shocks and Prandtl–Meyer (Ch. 12–13).
+
+</Examined>
+
+## Check yourself
+
+1. Air at −57 °C: what is $c$? → $\sqrt{1.4 \times 287 \times 216} = 295$ m/s.
+2. You double the pressure of a gas at constant temperature. What happens to $c$? → Nothing: $c$ depends on $T$ only.
+3. Why is the sound wave isentropic and not isothermal? → It is weak (reversible) and too fast for heat transfer (adiabatic).
+4. A source flies at M = 2. What is the Mach angle? → $\sin^{-1}(0.5) = 30°$.
+5. Helium (γ = 1.67, MW = 4) vs air at the same T: ratio of sound speeds? → $\sqrt{(1.67/4)/(1.4/28.9)} = 2.94$.

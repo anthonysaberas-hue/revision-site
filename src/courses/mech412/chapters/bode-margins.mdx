@@ -1,0 +1,94 @@
+<p className="eyebrow">Chapter 19 · Lecture 21 · HW8-2024 Q2 · HW10 Q4 · F2009 P6</p>
+
+# Bode, polar plots, gain and phase margins
+
+<div className="lede">
+
+Chapter 6 built Bode plots. This chapter uses them for the thing they are really for: judging a **closed loop** from its **open-loop** frequency response. Two numbers — the gain margin and the phase margin — tell you how close the loop is to oscillating, and a rough rule links the phase margin to the damping.
+
+</div>
+
+<Idea title="The 30-second version">
+
+Plot the open loop $L(j\omega)=G_c(j\omega)G(j\omega)H(j\omega)$.
+
+- **Gain crossover** $\omega_{gc}$: where $|L|=1$ (0 dB). **Phase margin** $PM=180^\circ+\angle L(j\omega_{gc})$.
+- **Phase crossover** $\omega_{pc}$: where $\angle L=-180^\circ$. **Gain margin** $GM=-20\log|L(j\omega_{pc})|$ dB.
+- A closed loop (with a minimum-phase open loop) is **stable iff both margins are positive**. A loop gain of 1 at a frequency where the phase is $-180^\circ$ is a signal that returns with the same size and the *wrong* sign, so the loop reinforces itself: oscillation.
+
+</Idea>
+
+## A picture: the squealing microphone
+
+A microphone near a speaker. The sound goes round the loop (mic → amplifier → speaker → air → mic). At the frequency where the round trip delays the sound by half a cycle ($-180^\circ$) and the amplifier brings it back at gain $\ge1$, it feeds back on itself and howls. Turn the amplifier down (gain margin) or change the delay (phase margin) and it stops.
+
+## Reading the margins
+
+- **Gain margin:** how much you can *multiply the gain* before the loop reaches the edge: the vertical distance from the magnitude curve to 0 dB at $\omega_{pc}$.
+- **Phase margin:** how much *extra phase lag* (e.g. from delay) the loop can take: the vertical distance from the phase curve to $-180^\circ$ at $\omega_{gc}$.
+- Both positive ⇒ stable; PM $\approx100\zeta$ degrees is a rough link to the closed-loop damping for $\zeta<0.7$; typical targets are PM $\ge40^\circ$ and GM $\ge10$ dB.
+
+### Worked example 1: $L=\dfrac{K}{s(s+1)(s+5)}$
+
+- **$K=10$:** $\omega_{gc}=1.23$ rad/s, **PM $=25.4^\circ$**; $\omega_{pc}=\sqrt5=2.236$, **GM $=9.5$ dB** ⇒ stable.
+- **$K=100$:** $\omega_{gc}=3.9$ rad/s, PM $=-23.6^\circ$, GM $=-10.5$ dB ⇒ **unstable**.
+- At $K=30$ the loop gain at $\omega_{pc}$ is exactly 1: GM $=0$ dB — the same $K_{cr}=30$ as Routh (Chapter 16) and Ziegler–Nichols (Chapter 17).
+
+<BodeTool />
+
+Move the gain slider: the magnitude curve slides vertically (and the phase does not move), so the crossover frequencies and margins change. That is the essence of "gain margin".
+
+### Worked example 2 (HW8-2024 Q2 = HW10 Q4): $L=\dfrac{10(1+0.4s)}{s(1+2s)(1+0.24s+0.04s^2)}$
+
+1. **Factors:** gain 10 (20 dB); integrator; real pole at $0.5$ rad/s; zero at $2.5$; quadratic $s^2/25+0.24s+1$, i.e. $\omega_n=5$ rad/s and $\zeta=0.6$ (since $2\zeta/\omega_n=0.24$).
+2. **Asymptotes:** slope $-20$ dB/dec at low frequency, $-40$ after 0.5, back to $-20$ after 2.5, $-60$ after 5. Phase: $-90^\circ\to-180^\circ\to-90^\circ$ (the zero) $\to-270^\circ$ (the quadratic).
+3. **Margins (exact):** $\omega_{gc}=2.76$ rad/s, **PM $=14.4^\circ$**; $\omega_{pc}=3.74$ rad/s, **GM $=3.9$ dB**. Stable, but only just: a very oscillatory step response.
+
+### Worked example 3 (F2009 P6): margins from a state-space model
+
+`ss2tf` of the given $A,B,C$ gives $G=\dfrac{0.02(s+1)}{s(s^3+4s^2+3s+0.75)}$ and the proportional controller $K_p=5$. $\omega_{gc}=0.129$ rad/s with phase $-112^\circ$ ⇒ **PM $=68^\circ$**; $\omega_{pc}=0.707$ rad/s with $|L|=0.080$ ⇒ **GM $=21.9$ dB**. Check by Routh: marginal at $K_{cr}=62.5$, so GM $=62.5/5=12.5=21.9$ dB ✔. (Read from the given Bode plot, which is for $K_p=1$: shift the magnitude up by $20\log5=14$ dB.)
+
+## Error constants from a Bode plot
+
+- **Type 0:** the low-frequency asymptote is a horizontal line at $20\log K_p$.
+- **Type 1:** the initial $-20$ dB/dec line has magnitude $20\log K_v$ at $\omega=1$ and crosses 0 dB at $\omega=K_v$.
+- **Type 2:** the initial $-40$ dB/dec line crosses 0 dB at $\omega=\sqrt{K_a}$.
+
+(For the calculator's $K_v$: type 1 plants show $K_v$ in the readout.)
+
+## Polar (Nyquist-style) plots of simple transfer functions
+
+Plot $L(j\omega)$ in the complex plane as $\omega$ runs from 0 to $\infty$.
+
+- **RC low-pass** $\dfrac1{1+j\omega\tau}$: a **semicircle** $(X-\tfrac12)^2+Y^2=\tfrac14$ from 1 (at $\omega=0$) through $\tfrac{1-j}2$ at $\omega=1/\tau$ to the origin at $-90^\circ$.
+- **Type 1** $\dfrac K{j\omega(j\omega\tau+1)}$: starts at $-\infty\cdot j$ (real part $-K\tau$) and spirals to the origin at $-180^\circ$.
+- Type 0, 1, 2 shapes start at the positive real axis, at $-90^\circ$ and at $-180^\circ$ respectively.
+
+The curve's closeness to the point $-1$ *is* the stability margin; the next chapters use it.
+
+## Resonance in the closed loop
+
+For a second-order closed loop: $M_r=\dfrac1{2\zeta\sqrt{1-\zeta^2}}$ at $\omega_r=\omega_n\sqrt{1-2\zeta^2}$ (only for $\zeta<0.707$). A tall peak means low damping.
+
+<Trap title="Common Bode-margin mistakes">
+
+- Reading the PM at the wrong crossover: PM is at the **gain** crossover ($|L|=1$), GM at the **phase** crossover ($-180^\circ$).
+- Forgetting that adding gain moves the **magnitude** only; phase is unchanged.
+- Using the margins of a **non-minimum-phase** or **conditionally stable** loop without checking the Nyquist plot.
+- Reading the phase with the wrong $360^\circ$ branch: use the continuous (unwrapped) phase.
+
+</Trap>
+
+<Examined>
+
+- <Hw n="8">HW8</Hw> Q2, <Hw n="10">HW10</Hw> Q4, $\text{F2009 P6}$; margin ideas also inside every lead/lag problem (next chapter).
+- $\text{Final crib}$ has *no* Bode content (Anthony's gap): study this chapter and Chapter 6.
+
+</Examined>
+
+### Check yourself
+
+1. $|L(j\omega_{pc})|=0.25$: GM? *($20\log4=12$ dB.)*
+2. PM $=45^\circ$: rough damping ratio? *($\zeta\approx0.45$.)*
+3. Doubling the loop gain: what happens to the PM if the phase at the new crossover is lower? *(PM drops; GM falls by 6 dB.)*
+4. Type-1 loop whose $-20$ dB/dec line crosses 0 dB at $\omega=20$: $K_v$? *(20.)*

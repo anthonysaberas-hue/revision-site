@@ -1,0 +1,130 @@
+<p className="eyebrow">Chapter 3 (continued) · Heat transfer from finned surfaces · Midterm 1</p>
+
+# Extended surfaces: fins
+
+<div className="lede">
+
+A fin is a piece of metal sticking out of a hot surface to give the surrounding fluid more area to carry heat away from. The idea is simple; the exam question (every Midterm 1 has one) is a short chain: find $m$, find the fin heat rate for an adiabatic tip, find the efficiency and effectiveness, and compare with an infinitely long fin. This chapter shows why the formulas look the way they do and how to decide, without calculation, when a fin is worth having.
+
+</div>
+
+<Idea title="The 30-second version">
+
+- Heat enters the fin at its base ($T_b$), conducts along it, and leaks out of the sides by convection. The temperature falls from base to tip.
+- The governing parameter is $m=\sqrt{\dfrac{hp}{kA_c}}$ ($p$ perimeter, $A_c$ cross-section): large $m$ (poor conductor, high $h$, thin fin) means a fin that is cold at the tip, so the extra length is wasted.
+- Adiabatic tip: $\dot Q_{fin}=\sqrt{hpkA_c}\,(T_b-T_\infty)\tanh(mL)$ and **$\eta_{fin}=\dfrac{\tanh(mL)}{mL}$**.
+- **Efficiency** $\eta=\dfrac{\dot Q_{fin}}{\dot Q_{max}}$, with $\dot Q_{max}=hA_{fin}(T_b-T_\infty)$ (the whole fin at $T_b$). **Effectiveness** $\varepsilon=\dfrac{\dot Q_{fin}}{hA_b(T_b-T_\infty)}$ (with versus without the fin on the same base area).
+- Use a fin only where $\varepsilon>2$ and on the side with the **low** $h$ (the gas side).
+
+</Idea>
+
+## Why a fin works, and why the extra length stops helping
+
+Convection is $\dot Q=hA(T_s-T_\infty)$. When $h$ is small (air) the only way to move more heat is to increase $A$. A fin is cheap area. But the fin is a conductor too, with a finite $k$: heat must travel along it to reach the far end, and along the way it is leaking out the sides. So the temperature drops with distance from the base, and the part of the fin far from the base is cooler and does less (the temperature difference driving convection there is smaller). A very long fin is mostly *wasted* material: beyond some length the tip is at $T_\infty$ and contributes nothing.
+
+## Derivation
+
+Energy balance on a slice $\Delta x$ of a fin with constant cross-section area $A_c$ and perimeter $p$, base at $x=0$:
+
+$$\dot Q_{cond}(x)=\dot Q_{cond}(x+\Delta x)+\dot Q_{conv},\qquad\dot Q_{conv}=h\,(p\,\Delta x)(T-T_\infty).$$
+
+Divide by $\Delta x$, let it go to zero and use Fourier's law $\dot Q=-kA_c\,dT/dx$:
+
+$$kA_c\frac{d^2T}{dx^2}-hp(T-T_\infty)=0\;\Longrightarrow\;\frac{d^2\theta}{dx^2}-m^2\theta=0,\quad\theta=T-T_\infty,\quad m^2=\frac{hp}{kA_c}.$$
+
+The general solution is $\theta=C_1e^{mx}+C_2e^{-mx}$. One boundary condition is the base temperature $\theta(0)=\theta_b=T_b-T_\infty$. The tip condition gives four cases:
+
+| Tip condition | $\theta(x)/\theta_b$ | Heat rate $\dot Q_{fin}$ |
+|---|---|---|
+| **very long** ($L\to\infty$, $\theta(L)=0$) | $e^{-mx}$ | $\sqrt{hpkA_c}\,\theta_b$ |
+| **adiabatic tip** ($d\theta/dx=0$ at $L$) | $\dfrac{\cosh m(L-x)}{\cosh mL}$ | $\sqrt{hpkA_c}\,\theta_b\tanh(mL)$ |
+| **convecting tip** | $\dfrac{\cosh m(L-x)+\frac h{mk}\sinh m(L-x)}{\cosh mL+\frac h{mk}\sinh mL}$ | $\sqrt{hpkA_c}\,\theta_b\dfrac{\sinh mL+\frac h{mk}\cosh mL}{\cosh mL+\frac h{mk}\sinh mL}$ |
+| **corrected length** (convecting tip, simple) | use adiabatic with $L_c=L+A_c/p$ | $\sqrt{hpkA_c}\,\theta_b\tanh(mL_c)$ |
+
+The corrected length $L_c=L+A_c/p$ ($L+t/2$ for a thin rectangular fin, $L+D/4$ for a pin) is the neat trick that lets you keep the simple adiabatic formula while accounting for the tip's convection. In Midterm 1 the problem usually says "assume an adiabatic tip", in which case $L$ is used directly (and the textbook solution uses $L_c$ only if told to).
+
+<Trap title="Perimeter and area of a rectangular fin">
+
+For a thin plate fin of width $w$ and thickness $t$: $p=2(w+t)$ and $A_c=wt$, **not** $p=2w$ unless $t\ll w$ is stated. Check $m$: for $w\gg t$, $m\approx\sqrt{2h/(kt)}$.
+
+</Trap>
+
+## Efficiency and effectiveness
+
+**Fin efficiency** compares the fin with an *ideal fin* that is at the base temperature all along (infinite conductivity): $\dot Q_{max}=hA_{fin}\theta_b$, with $A_{fin}$ the whole exposed surface (lateral $pL$ plus tip if included). For an adiabatic-tip fin of uniform section $A_{fin}=pL$, and
+
+$$\eta_{fin}=\frac{\tanh(mL)}{mL}.$$
+
+Reading it: for small $mL$ the efficiency approaches 1 (a short, fat, highly conducting fin is nearly isothermal); at $mL=1$, $\eta=0.76$; at $mL=2$, $\eta=0.48$; at $mL=5$, $\eta=0.2$. **Efficiency falls as the fin gets longer**; the heat rate $\propto\tanh(mL)$ rises but flattens, since $\tanh(mL)\to1$ for $mL\gtrsim2.5$ (heat rate within 1 % of the infinite-fin value).
+
+**Fin effectiveness** asks the engineering question: is the fin worth adding?
+
+$$\varepsilon_{fin}=\frac{\dot Q_{fin}}{\dot Q_{no\,fin}}=\frac{\dot Q_{fin}}{hA_b(T_b-T_\infty)}\qquad(A_b=A_c\ \text{for a fin of uniform section}).$$
+
+Relationship: $\varepsilon_{fin}=\eta_{fin}\dfrac{A_{fin}}{A_b}$. Rules that follow from the formulas:
+
+1. Fins are worthwhile only if $\varepsilon>2$ (otherwise there is hardly any point).
+2. **High conductivity** $k$ (aluminium, copper) raises $\varepsilon$.
+3. A **large $p/A_c$** (thin, closely spaced fins) raises $\varepsilon$: more area for the same material.
+4. **Low $h$** raises $\varepsilon$: fins belong on the **air side** of an air-to-water exchanger (the reason car radiators have fins on the air side only).
+5. If the fin is so long that $\tanh(mL)\to1$, extra length buys nothing.
+6. Fins make little sense when $h$ is already large (boiling water, forced liquid flow): $m$ is big, $\eta$ small.
+
+A fin **array** with $N$ identical fins on a base of total area $A_{total}$ has an **overall surface efficiency** $\eta_{o}=1-\dfrac{NA_{fin}}{A_{total}}(1-\eta_{fin})$ and a total rate
+
+$$\dot Q_{total}=h\,(A_{unfin}+\eta_{fin}NA_{fin})\,(T_b-T_\infty).$$
+
+Spacing matters: if fins are too close, the boundary layers merge and $h$ falls (Chapter 7/9 give the optimum).
+
+<ToolLink tool="fin">Fin calculator: $m$, $\dot Q$, $\eta$, $\varepsilon$, tip temperature for any tip condition</ToolLink>
+<LabLink lab="fin">Heat-sink lab: change $k$, $h$, length and number of fins in 3D</LabLink>
+
+## Worked example 1: the aluminium fin on an electronics package (Midterm 1, Oct 2021 Q2 and Oct 2023 Q2)
+
+Rectangular aluminium fins: length $L=150$ mm, width $w=250$ mm, thickness $t=2$ mm, $k=177$ W/m·K. Base at 50 °C in air at 20 °C, $h=50$ W/m²K. Find (a) the heat loss of one fin (adiabatic tip), (b) the efficiency, (c) the effectiveness, (d) the percent error if the infinitely long assumption is used.
+
+**Geometry.** $p=2(w+t)=2(0.252)=0.504$ m, $A_c=wt=5\times10^{-4}$ m².
+
+**(a)** $m=\sqrt{\dfrac{hp}{kA_c}}=\sqrt{\dfrac{50(0.504)}{177(5\times10^{-4})}}=16.87$ m⁻¹, so $mL=2.53$ and $\tanh(mL)=0.9873$. $\sqrt{hpkA_c}=\sqrt{50(0.504)(177)(5\times10^{-4})}=1.4934$ W/K. Then
+$$\dot Q_{fin}=1.4934(50-20)(0.9873)=\mathbf{44.2\ W}.$$
+(Using the corrected length $L_c=0.151$ m: 44.26 W. The exam used $L_c$ and got 44.25 W: both are within rounding.)
+
+**(b)** $A_{fin}=pL_c=0.504(0.151)=0.0761$ m², $\dot Q_{max}=hA_{fin}\theta_b=50(0.0761)(30)=114.2$ W, so $\eta=44.25/114.2=\mathbf{0.388}$ (equally $\tanh(mL_c)/(mL_c)=0.389$). *The fin is mostly wasted: the outer 60 % is below base temperature.*
+
+**(c)** $\varepsilon=\dfrac{\dot Q_{fin}}{hA_c\theta_b}=\dfrac{44.25}{50(5\times10^{-4})(30)}=\mathbf{59}$. The fin multiplies the heat loss from its footprint 59 times: **worth it**.
+
+**(d)** Very long fin: $\sqrt{hpkA_c}\,\theta_b=44.80$ W. Error $=\dfrac{44.80-44.25}{44.80}=1.2\%$: the fin is already long enough ($mL=2.5$) to be "infinite" for engineering purposes.
+
+*(The student's graded copy follows exactly this route with $m=16.81$, a slip in the square root of 284.7; the answers are right to three figures.)*
+
+## Worked example 2: how wrong is the "infinite fin" assumption? (3-127)
+
+A pin fin, $D=4$ mm, $L=10$ cm, $k=237$, $h=12$ W/m²K. $m=\sqrt{4h/(kD)}=\sqrt{4(12)/(237\cdot0.004)}=7.116$ m⁻¹, $mL=0.7116$, $\tanh(mL)=0.612$. The infinite-fin result over-predicts the adiabatic-tip result by $\dfrac1{\tanh(mL)}-1=63.5\%$. *Short, stubby fins ($mL<2$) must **not** be treated as infinite.*
+
+## Worked example 3: pin fins on a hot plate (3-142)
+
+A 1 m × 1 m plate at 100 °C in 30 °C air ($h=35$) is covered by aluminium pin fins ($k=237$), $D=2.5$ mm, $L=3$ cm, spaced 6 mm apart (27 777 fins). $m=\sqrt{4h/(kD)}=15.37$ m⁻¹, $mL=0.461$, $\eta=\tanh(mL)/(mL)=0.935$. The total fin area (sides plus tips of all 27 777 fins) is $A_{fin}=6.68$ m² and the unfinned part of the base is $0.86$ m². 
+$\dot Q_{fins}=\eta hA_{fin}\theta_b=0.935(35)(6.68)(70)=15\,300$ W; $\dot Q_{base}=35(0.86)(70)=2107$ W; total **17.4 kW**. Without fins: $35(1)(70)=2450$ W. Effectiveness of the array $=17.4/2.45=\mathbf{7.1}$: seven times more heat from the same footprint.
+
+## Worked example 4: pipe flanges treated as fins (3-138)
+
+Two steam pipes joined by 1-cm flanges (annular fins, inner radius 5 cm, outer 9 cm, thickness 2 cm, cast iron $k=52$), air at 12 °C with $h=25$. The pipe wall temperature comes first from a resistance network ($T_s=175.1$ °C). For an **annular fin** the efficiency comes from a chart or from Bessel functions: with $L_c=r_2-r_1+t/2$, ratio $r_{2c}/r_1=2.0$, parameter $\xi=0.245$, $\eta=0.94$ (exact formula 0.947). $A_{fin}=2\pi(r_2^2-r_1^2)+2\pi r_2t=0.0465$ m², $\dot Q_{fin}=0.94(25)(0.0465)(163.1)=178$ W. Since the bare pipe loses 1280 W per metre, the flange is **equivalent to $178/1280=0.139$ m (13.9 cm) of extra pipe**: a neat way to quote a fin's value.
+
+## Worked example 5: choose a heat sink (3-145)
+
+A 40 W transistor case must stay below 90 °C in 20 °C air. Required case-to-ambient resistance: $R=\dfrac{90-20}{40}=1.75$ K/W. Any catalogue heat sink whose thermal resistance is **below** 1.75 K/W (in the orientation you will use: horizontal fins are worse for natural convection) will do.
+
+<Examined>
+
+- **Midterm 1, Oct 2021 Q2 and Oct 2023 Q2**: this chapter's worked example 1 (the statement even lists the formulas: very long fin, insulated tip, $\eta$, $\varepsilon$, with part (d) the error of the infinite-fin assumption).
+- MCQ in both papers: "Heat dissipated by fins can be increased by..." with "select the **wrong** statement". True ways: raise $k$, raise $h$, add fins. Not helpful: **insulating the tip** (it removes the tip's small convection) and **increasing the distance between fins** (fewer fins, less area). Read the stem: it asks for the wrong one.
+- <Asg n="03">Assignment 3</Asg>: 3-127, 3-138, 3-142, 3-145; <Asg n="03b">fin practice set</Asg>.
+
+</Examined>
+
+### Check yourself
+
+1. A copper fin and a stainless-steel fin of the same shape sit side by side. Which has the higher $m$? Efficiency? *(Stainless: low $k$, high $m$, low $\eta$.)*
+2. Why is a fin on the water side of a water-to-air heat exchanger a poor idea? *(Water's $h$ is large, so $m$ is large, $\eta$ and $\varepsilon$ small.)*
+3. $mL=3$: efficiency? *($\tanh3/3=0.33$.)*
+4. A pin fin, $D=3$ mm, $L=4$ cm, $k=200$, $h=40$, $\theta_b=60$ K. Adiabatic tip heat rate? *($m=\sqrt{4(40)/(200\cdot0.003)}=16.33$, $mL=0.653$, $\tanh=0.574$; $\sqrt{hpkA_c}=\sqrt{40\cdot0.009425\cdot200\cdot7.07\times10^{-6}}=0.02309$; $\dot Q=0.02309(60)(0.574)=0.80$ W.)*

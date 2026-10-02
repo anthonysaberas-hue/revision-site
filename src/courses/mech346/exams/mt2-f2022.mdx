@@ -1,0 +1,193 @@
+<p className="eyebrow">Midterm 2 · November 15, 2022 · McGill MECH 346 · 75 min · closed book</p>
+
+# Midterm 2, November 2022
+
+<div className="lede">
+
+Q1 (6): lumped annealing of a small steel cylinder; Q2 (7): one-term/product solution for a short brass cylinder on a table; Q3 (7): flat plate in parallel flow with an insulation layer. The formula sheet gives the lumped formula, the plane-wall and cylinder one-term formulas, the Table 4-2 and 4-3 coefficients, and the plate Nusselt-number correlations. The source contains handwritten revision notes; every number below was recomputed independently. Statements are paraphrased. Covers <Ch slug="transient">Chapter 4</Ch> and <Ch slug="external-flow">Chapter 7</Ch>.
+
+</div>
+
+<Problem id="Q1" title="Annealing a small carbon-steel cylinder (lumped system)" tags="Bi check, lumped time, total heat">
+
+<Statement>
+
+Carbon-steel cylinders ($\rho=7833$ kg/m³, $k=54$ W/mK, $c_p=0.465$ kJ/kgK, $\alpha=1.474\times10^{-5}$ m²/s), 8 mm in diameter and 10 mm high, are annealed by heating them to 900 °C in a furnace and then cooling slowly to 100 °C in ambient air at 35 °C with $h=75$ W/m²K. (a) Verify the use of the lumped-system analysis. (b) How long does the annealing (cooling) take, in seconds? (c) What is the total heat transferred from the cylinder to the air (in joules)?
+
+</Statement>
+
+<Think>
+
+Always start by computing the **characteristic length of the actual body**: $L_c=V/A_s$ with the *whole* surface (ends included). Then $Bi=hL_c/k\le0.1$ allows the lumped model $\dfrac{T-T_\infty}{T_i-T_\infty}=e^{-bt}$, $b=\dfrac{hA_s}{\rho Vc_p}=\dfrac h{\rho c_pL_c}$. (The statement of part (c) says "rate... in joules": the units show that it asks for the **total heat** $Q=mc_p\Delta T$.)
+
+</Think>
+
+<Steps>
+<Step title="1. Geometry">
+
+$V=\dfrac{\pi D^2}4H=\dfrac{\pi(0.008)^2}4(0.01)=5.027\times10^{-7}$ m³; $A_s=2\dfrac{\pi D^2}4+\pi DH=1.005\times10^{-4}+2.513\times10^{-4}=3.519\times10^{-4}$ m²; $L_c=\dfrac V{A_s}=1.429\times10^{-3}$ m.
+
+</Step>
+<Step title="2. (a) Biot number">
+
+$Bi=\dfrac{hL_c}k=\dfrac{75(1.429\times10^{-3})}{54}=0.0020\ll0.1$: **lumped model valid**.
+
+</Step>
+<Step title="3. (b) Time">
+
+$b=\dfrac h{\rho c_pL_c}=\dfrac{75}{7833(465)(1.429\times10^{-3})}=0.014414$ s⁻¹. $\dfrac{100-35}{900-35}=0.07514=e^{-bt}\Rightarrow t=\dfrac{\ln(1/0.07514)}{0.014414}=179.6$ s.
+
+</Step>
+<Step title="4. (c) Total heat">
+
+$Q=\rho Vc_p(T_i-T_f)=7833(5.027\times10^{-7})(465)(900-100)=1465$ J (average rate $1465/179.6=8.16$ W).
+
+</Step>
+</Steps>
+
+<Answer>
+
+**(a) $Bi=0.002$; (b) $t=179.6$ s (3 min); (c) $Q=1465$ J.**
+
+</Answer>
+
+<Source>Paper: Nov 15, 2022 Q1. Recomputed: identical.</Source>
+
+</Problem>
+
+<Problem id="Q2" title="A short brass cylinder on a table (product solution)" tags="one-term, product of cylinder and plane-wall solutions, insulated base">
+
+<Statement>
+
+A short brass cylinder, $D=6$ cm, $H=6$ cm, initially at 120 °C, stands on a table (no heat transfer to the table), in 25 °C air with $h=60$ W/m²K. Using the one-term approximation: (a) the temperature at the **centre of the top surface** 15 min after cooling starts; (b) the total heat transferred. Brass: $k=90$ W/mK, $\alpha=33.9\times10^{-6}$ m²/s, $\rho=8530$ kg/m³, $c_p=0.380$ kJ/kgK.
+
+</Statement>
+
+<Think>
+
+An insulated base is a **plane of symmetry**: the real cylinder equals the upper half of a cylinder of height $2H=12$ cm exposed on both ends. Product solution: (infinite cylinder of radius $r_0=3$ cm) × (plane wall of half-thickness $L=H=6$ cm). The centre of the top surface is the centre of the cylinder's cross-section ($r=0$) at the wall surface ($x=L$).
+
+</Think>
+
+<Plan>
+
+$Bi_c=hr_0/k$, $Bi_w=hL/k$ $\to$ Table 4-2 $\to\lambda_1,A_1$ for each $\to Fo_c,Fo_w\to\theta_{0,c},\theta_{0,w}$; top centre $=\theta_{0,c}\,\theta_{0,w}\cos\lambda_{1,w}$; $Q$ from the combination formula.
+
+</Plan>
+
+<Steps>
+<Step title="1. Biot numbers and coefficients">
+
+$Bi_c=\dfrac{60(0.03)}{90}=0.02$: cylinder $\lambda_1=0.1995$, $A_1=1.0050$. $Bi_w=\dfrac{60(0.06)}{90}=0.04$: plane wall $\lambda_1=0.1987$, $A_1=1.0066$ (Table 4-2).
+
+</Step>
+<Step title="2. Fourier numbers (15 min = 900 s)">
+
+$Fo_c=\dfrac{\alpha t}{r_0^2}=\dfrac{33.9\times10^{-6}(900)}{0.03^2}=33.9$; $Fo_w=\dfrac{\alpha t}{L^2}=\dfrac{33.9\times10^{-6}(900)}{0.06^2}=8.475$: both $>0.2$ ✓.
+
+</Step>
+<Step title="3. Centre values">
+
+$\theta_{0,c}=1.0050e^{-(0.1995)^2(33.9)}=1.0050e^{-1.349}=0.2607$; $\theta_{0,w}=1.0066e^{-(0.1987)^2(8.475)}=1.0066e^{-0.3346}=0.7204$.
+
+</Step>
+<Step title="4. (a) Top centre">
+
+Wall factor at the surface $x=L$: $\theta_{w}(x=L)=\theta_{0,w}\cos(\lambda_1)=0.7204\cos(0.1987)=0.7062$. $\theta=\theta_{0,c}\,\theta_w=0.2607(0.7062)=0.1841$, so $T=25+0.1841(95)=42.5$ °C.
+
+</Step>
+<Step title="5. (b) Total heat">
+
+$V=\pi r_0^2H=\pi(0.03)^2(0.06)=1.696\times10^{-4}$ m³ (the **actual** body, not the doubled one): $Q_{max}=\rho Vc_p\Delta T=8530(1.696\times10^{-4})(380)(95)=52.24$ kJ. Fractions: wall $1-\theta_{0,w}\dfrac{\sin\lambda_1}{\lambda_1}=0.2843$; cylinder $1-2\theta_{0,c}\dfrac{J_1(\lambda_1)}{\lambda_1}=0.7406$. Combined: $\dfrac Q{Q_{max}}=0.2843+0.7406(1-0.2843)=0.8143$; $Q=0.8143(52.24)=42.5$ kJ.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**(a) 42.5 °C; (b) 42.5 kJ.** (The centre of the base is a little warmer, 42.8 °C.)
+
+</Answer>
+
+<Callout kind="note" title="A property inconsistency in the statement">
+
+The given $k=90$ W/mK and $\alpha=33.9\times10^{-6}$ m²/s do not satisfy $\alpha=k/(\rho c_p)$ (that would need $k\approx110$ W/mK). The exam intends you to use $k$ for the Biot number and $\alpha$ for the Fourier number *as given*. The answer is **not** insensitive: with $k=110$ (and the same $\alpha$) the Biot numbers shrink by 18 % and the top-centre temperature becomes 48.8 °C instead of 42.5 °C. Use the numbers exactly as printed, and quote the property values you used.
+
+</Callout>
+
+<Traps>
+
+- Use the Biot number of **each** 1-D problem with its own length ($r_0$ for the cylinder, $L$ for the wall).
+- The total heat uses the **actual** body volume.
+- Do not forget $\cos(\lambda_1x/L)$ for the point on the wall surface.
+
+</Traps>
+
+<Source>Paper: Nov 15, 2022 Q2. Recomputed: identical.</Source>
+
+</Problem>
+
+<Problem id="Q3" title="Insulating a machine surface cooled by air flow" tags="flat plate, combined laminar/turbulent, energy balance, resistance network">
+
+<Statement>
+
+A 1.5 m × 1.5 m flat machine surface of 5 mm aluminum ($k=237$ W/mK) has an inner surface up to 90 °C; the outer surface is cooled by 30 °C air flowing parallel at 10 m/s. To protect operators from burns it is covered with a low-conductivity material ($k=0.06$ W/mK). What thickness keeps the local outer surface temperature at 45 °C or lower? Air: $\rho=1.145$ kg/m³, $c_p=1.007$ kJ/kgK, $k=0.02625$ W/mK, $\mu=1.655\times10^{-5}$ kg/ms, $Pr=0.7268$. (The sheet gives the combined laminar and turbulent plate formula.)
+
+</Statement>
+
+<Think>
+
+Two physics: external flow (gives $h$) and a series conduction wall (aluminum + insulation). The energy balance at the **outer surface** links them: heat conducted through the wall $=$ heat convected away at 45 °C. First $Re_L$ to decide the formula.
+
+</Think>
+
+<Steps>
+<Step title="1. Reynolds number and regime">
+
+$Re_L=\dfrac{\rho VL}\mu=\dfrac{1.145(10)(1.5)}{1.655\times10^{-5}}=1.038\times10^6>5\times10^5$: **combined laminar + turbulent**.
+
+</Step>
+<Step title="2. Nusselt number and $h$">
+
+$Re_L^{0.8}=(1.0378\times10^6)^{0.8}=64\,995$; $0.037(64\,995)=2405$; $2405-871=1534$; $Pr^{1/3}=0.7268^{1/3}=0.8991$. $\overline{Nu}=1534(0.8991)=1379$. $h=\dfrac kL\overline{Nu}=\dfrac{0.02625}{1.5}(1379)=24.13$ W/m²K.
+
+</Step>
+<Step title="3. Heat flux that the outer surface can convect at 45 °C">
+
+$q''=h(T_s-T_\infty)=24.13(45-30)=362$ W/m².
+
+</Step>
+<Step title="4. Energy balance: the same flux must be conducted through the wall from 90 °C to 45 °C">
+
+$q''=\dfrac{T_{in}-T_s}{\dfrac{L_{Al}}{k_{Al}}+\dfrac{L_{ins}}{k_{ins}}}\Rightarrow\dfrac{L_{Al}}{k_{Al}}+\dfrac{L_{ins}}{k_{ins}}=\dfrac{90-45}{362}=0.1243$ m²K/W. The aluminum term is $\dfrac{0.005}{237}=2.1\times10^{-5}$ (negligible). So $L_{ins}=(0.1243-0.0000211)(0.06)=7.46\times10^{-3}$ m.
+
+</Step>
+<Step title="5. Check (forward)">
+
+With 7.46 mm: $\dot Q/A=\dfrac{90-30}{2.1\times10^{-5}+0.1243+1/24.13}=361.9$ W/m², and $T_s=30+\dfrac{361.9}{24.13}=45.0$ °C ✓.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**$h=24.13$ W/m²K; insulation thickness $L_{ins}\ge7.46$ mm.**
+
+</Answer>
+
+<Callout kind="note" title="Notes from the revision guidelines">
+
+The handwritten revision solution notes that a *backward* approach (fix the surface temperature, compute the heat flux that convection can remove, then find the thickness) is easier than the *forward* one (guess the thickness, compute $T_s$); both give 7.46 mm. The problem asks for the **local** surface limit, and the average $h$ is used as a modelling approximation. The $\rho$ in the Reynolds number is used with the *dynamic* viscosity $\mu$ (kg/m·s) as given.
+
+</Callout>
+
+<Traps>
+
+- Using the fully turbulent formula (no $-871$) would give $h=37.8$ W/m²K and a thickness of only 4.8 mm: an **unsafe** under-design (36 % too thin). $Re_L>5\times10^5$ but the statement does not say the flow is tripped, so the **combined** formula (the one the sheet provides) is the right one.
+- The aluminum plate is negligible, but you must still include its resistance in the written solution.
+
+</Traps>
+
+<Source>Paper: Nov 15, 2022 Q3. Recomputed: identical.</Source>
+
+</Problem>

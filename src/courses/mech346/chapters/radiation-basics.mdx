@@ -1,0 +1,100 @@
+<p className="eyebrow">Chapter 12 · Radiation: fundamentals · Final</p>
+
+# Thermal radiation: fundamentals
+
+<div className="lede">
+
+Conduction and convection need matter. **Radiation does not**: it crosses vacuum, which is why you feel the Sun's warmth across 150 million km. Every body above absolute zero emits electromagnetic waves, and the hotter it is, the more it emits and the shorter the wavelength. This chapter builds the vocabulary of radiation: the **blackbody** (the ideal emitter), its spectrum (Planck, Wien, Stefan–Boltzmann), the **real surface** (emissivity, absorptivity, reflectivity), and Kirchhoff's law that ties them. Chapter 13 then uses these to compute heat exchange between surfaces.
+
+</div>
+
+<Idea title="The 30-second version">
+
+1. A **blackbody** absorbs everything and emits the maximum possible: $E_b=\sigma T^4$, $\sigma=5.67\times10^{-8}$ W/m²K⁴, $T$ in **kelvin**.
+2. Spectrum (Planck): $E_{b\lambda}=\dfrac{C_1}{\lambda^5[e^{C_2/\lambda T}-1]}$ with $C_1=3.742\times10^8$ W·µm⁴/m², $C_2=14\,388$ µm·K. It peaks at $\lambda_{max}T=2898$ µm·K (**Wien**).
+3. Real surface: $E=\varepsilon\sigma T^4$ with **emissivity** $0\le\varepsilon\le1$.
+4. Incident radiation splits into $\alpha+\rho+\tau=1$ (absorbed, reflected, transmitted); opaque: $\alpha+\rho=1$. **Kirchhoff:** $\varepsilon_\lambda=\alpha_\lambda$ (for the same wavelength, direction and temperature). A *gray* surface has $\varepsilon=\alpha$.
+5. Small gray body $A$ in large surroundings: $\dot Q=\varepsilon\sigma A(T_s^4-T_{surr}^4)$, equivalent to $h_{rad}A(T_s-T_{surr})$ with $h_{rad}=\varepsilon\sigma(T_s+T_{surr})(T_s^2+T_{surr}^2)$.
+
+</Idea>
+
+## What radiation is
+
+Thermal radiation is the part of the electromagnetic spectrum emitted because of temperature: **0.1 to 100 µm**, covering ultraviolet (below 0.4 µm), visible (0.4–0.7 µm) and infrared (0.7–100 µm). Light, X-rays and radio waves differ only in wavelength. A body emits over a **continuous range** of wavelengths and in all directions.
+
+The three radiation-heat-transfer properties of a surface are **absolute** (no medium needed) and **rapid** (at light speed), and unlike conduction they depend on the **fourth power** of temperature: heat from a surface at 600 K is 16 times that at 300 K.
+
+*Real-life example:* the heat from a campfire on your face, while the air next to you is cold, is radiation (infrared at about 3–5 µm). If you put a pane of glass in front of you, it blocks that long-wave radiation (glass is opaque at $\lambda>3$ µm) but not the Sun's visible light: the basis of the greenhouse effect.
+
+## Blackbody radiation
+
+A **blackbody** is a perfect absorber and emitter: it absorbs all incident radiation at all wavelengths and directions and, at a given temperature, emits the most radiation at every wavelength. A small hole in a hot hollow cavity is the standard blackbody. Three results:
+
+**Stefan–Boltzmann law:** total emissive power $E_b(T)=\sigma T^4$.
+
+**Planck's distribution:** spectral emissive power (per µm) $E_{b\lambda}(\lambda,T)=\dfrac{C_1}{\lambda^5\left[\exp(C_2/\lambda T)-1\right]}$, in W/m²·µm. It rises steeply at short $\lambda$, peaks and falls slowly. The area under the curve is $\sigma T^4$.
+
+**Wien's displacement law:** the wavelength at the peak is $\lambda_{max}=\dfrac{2897.8\ \mu\text{m·K}}T$. Hot things glow at shorter wavelengths: a 5780 K Sun peaks at $0.50$ µm (green-yellow, visible), a 2800 K tungsten filament at $1.03$ µm (near infrared), a 305 K human body at $9.5$ µm (thermal infrared, which is why thermal cameras work).
+
+### Band emission: the fraction $f_\lambda$
+
+Often you need the fraction of the emission within a wavelength band, for example how much of a lamp's output is visible. The integral of the Planck function from 0 to $\lambda$, divided by $\sigma T^4$, depends only on the product $\lambda T$, so it is tabulated: $f_\lambda(\lambda T)$. The fraction between $\lambda_1$ and $\lambda_2$ is
+$$f_{\lambda_1-\lambda_2}=f_{\lambda_2}(\lambda_2T)-f_{\lambda_1}(\lambda_1T),\qquad E_{b,\lambda_1\to\lambda_2}=f_{\lambda_1-\lambda_2}\,\sigma T^4.$$
+Some values for orientation: $f=0.0003$ at $\lambda T=1000$ µm·K, $0.10$ at 2200, $0.25$ at 2898 (a quarter of the energy lies below the peak wavelength), $0.50$ at 4107, $0.75$ at 6148 and $0.90$ at 9376 µm·K.
+
+<LabLink lab="furnace">Radiation lab: emission spectra and band fractions</LabLink>
+<ToolLink tool="radiation">Radiation calculator: Planck, Wien, band fractions</ToolLink>
+
+## Radiative properties of real surfaces
+
+**Emissivity** $\varepsilon(T)=\dfrac{E(T)}{E_b(T)}$: the fraction of blackbody emission the surface actually radiates. Metals polished: $0.02$–$0.1$; oxidized metals $0.5$–$0.8$; paint, wood, skin, water $0.9$–$0.97$; snow $0.8$ (in the infrared). Emissivity depends on the material, temperature, wavelength and direction.
+
+**Absorptivity** $\alpha$, **reflectivity** $\rho$, **transmissivity** $\tau$ are the fractions of the incident radiation (irradiation $G$) absorbed, reflected and transmitted: $\alpha+\rho+\tau=1$. An opaque body: $\tau=0$. A blackbody: $\alpha=1$.
+
+**Kirchhoff's law:** at a given wavelength, temperature and direction, $\varepsilon_\lambda=\alpha_\lambda$. The *good absorbers are good emitters*. The total quantities $\varepsilon$ and $\alpha$ are equal if the surface is **gray** (properties independent of wavelength) or if the surface and the source are at about the same temperature.
+
+**The trap:** the Sun is at 5780 K, a roof is at 300 K. They radiate at different wavelengths, so for solar radiation you need the *solar absorptivity* $\alpha_s$ (mostly visible and near-IR) and for the roof's own emission the *infrared emissivity* $\varepsilon$ (mid-IR). They are **not** equal for most surfaces: white paint $\alpha_s=0.2$, $\varepsilon=0.9$ (stays cool); black paint $\alpha_s=0.95$, $\varepsilon=0.9$ (heats up); a **selective** solar absorber (black chrome) $\alpha_s=0.95$, $\varepsilon=0.1$: it absorbs sunlight but hardly radiates away the heat.
+
+**Diffuse vs specular:** diffuse surfaces reflect (and emit) equally in all directions; specular surfaces (mirrors) reflect like a mirror. In this course all surfaces are **diffuse and gray** unless stated.
+
+## Solar radiation and the atmosphere
+
+The Sun is a blackbody at about 5780 K; at the Earth's orbit the solar flux normal to the rays is the **solar constant** $G_s\approx1373$ W/m² (it can be checked: $\sigma T^4(R_{sun}/D)^2=1368$ W/m² for $T=5778$ K). Averaged over the whole spinning Earth: divide by 4 (sphere area vs disc area), about 343 W/m². Part is reflected (albedo about 0.3) and the rest heats the surface. The Earth in turn radiates at about 255 K effective temperature at 10–20 µm, in a band partly blocked by water vapour and CO₂: the **greenhouse effect**.
+
+For heat-loss calculations near the ground, the atmosphere acts as a surrounding **sky temperature** $T_{sky}$ (about 230 K for cold clear weather to about 285 K for humid cloudy) in $\dot Q=\varepsilon\sigma A(T_s^4-T_{sky}^4)$. That is why frost forms on car windshields on a clear night even when the air stays above 0 °C: the glass radiates to a cold sky.
+
+## Radiation to the surroundings
+
+A small gray surface $A$ at $T_s$ completely enclosed by much larger surroundings at $T_{surr}$ (the surroundings behave as a blackbody for this surface):
+$$\dot Q_{rad}=\varepsilon\sigma A\,(T_s^4-T_{surr}^4)=h_{rad}A(T_s-T_{surr}),\quad h_{rad}=\varepsilon\sigma(T_s^2+T_{surr}^2)(T_s+T_{surr}).$$
+$h_{rad}$ (the "radiation heat transfer coefficient") is about 5–6 W/m²K near room temperature for $\varepsilon\approx0.9$, comparable to natural convection, so the two simply **add in parallel**: $h_{combined}=h_{conv}+h_{rad}$ (to compare, Chapter 9). At hot temperatures $h_{rad}$ grows rapidly (it scales as $T^3$).
+
+## Worked examples
+
+**Example 1: the Sun and a filament.** For $T=5780$ K: $E_b=\sigma T^4=\mathbf{63.3\ MW/m^2}$ and $\lambda_{max}=2897.8/5780=\mathbf{0.501\ \mu m}$. The fraction of the Sun's emission in the visible band 0.4–0.7 µm is $f=\mathbf{0.367}$ (from the table: $f_{0.4}\!:\ \lambda T=2312$, $f=0.122$; $f_{0.7}\!:\ \lambda T=4046$, $f=0.489$; the difference is $0.367$, which means that the sun puts only 37 % of its energy in visible light). A 2800 K tungsten filament: $\lambda_{max}=1.035$ µm and only $\mathbf{6.0\ \%}$ of its radiation is visible (the other 94 % is heat, which is why incandescent bulbs are about 5 % efficient), $E_b=3.49\times10^6$ W/m².
+
+**Example 2: skin to a room.** Skin at $33$ °C ($306.15$ K), $\varepsilon=0.95$, in a room whose walls are at $20$ °C ($293.15$ K): $q''=0.95(5.67\times10^{-8})(306.15^4-293.15^4)=\mathbf{75.4\ W/m^2}$, i.e. $h_{rad}=5.8$ W/m²K. For a body area $1.7$ m² that is $128$ W: **half of a resting person's heat loss is radiation** (resting metabolic rate is about 100 W). *(This is why you feel cold next to a cold window even in warm air.)*
+
+**Example 3: solar collector surface temperature.** A flat plate in space-like conditions (no convection, radiating to cold surroundings at 0 K), exposed to $G=800$ W/m². Energy balance (absorbed = emitted): $\alpha_sG=\varepsilon\sigma T^4$, so $T=(\alpha_sG/\varepsilon\sigma)^{1/4}$. Black paint ($\alpha_s=0.95$, $\varepsilon=0.95$): $T=344.6$ K $=\mathbf{71.5\ ^\circ C}$. Selective surface ($\alpha_s=0.95$, $\varepsilon=0.10$): $T=605.1$ K $=\mathbf{331.9\ ^\circ C}$. Same sunlight, 260 K hotter, just because it radiates less. *(In practice convection losses lower the temperature, but the selective surface is the reason solar water heaters work.)*
+
+**Example 4: a clear night.** A roof with $\varepsilon=0.9$ at 12 °C faces a sky at $T_{sky}=255$ K: net radiative loss $=0.9\sigma(285.15^4-255^4)=\mathbf{122\ W/m^2}$: the reason a roof can be colder than the air at night (and why frost forms).
+
+<Trap title="Radiation checklist">
+
+1. **Kelvin**, always: $T_s^4-T_{surr}^4$ in °C is wrong by orders of magnitude.
+2. Do not use $\varepsilon=\alpha$ across very different source temperatures (solar vs room): use $\alpha_s$ and $\varepsilon$ separately.
+3. A body in a *large* enclosure: $\dot Q=\varepsilon_s\sigma A_s(T_s^4-T_{surr}^4)$ — the surroundings' own $\varepsilon$ does not matter. If the enclosing surface is not large or the surfaces see each other partly, use Chapter 13.
+4. Band fractions: $f_\lambda$ is a function of the product $\lambda T$ with $T$ in K and $\lambda$ in µm.
+
+</Trap>
+
+<Examined>
+Typical questions: (i) "find $\lambda_{max}$ and the total emissive power at $T$", (ii) "what fraction of the radiation is visible / below $\lambda$" (give $f_\lambda$ from the table), (iii) equilibrium of a surface with absorbed solar flux and emitted radiation, (iv) combining radiation with convection in a heat-loss energy balance. The formula sheet gives the constants.
+</Examined>
+
+## Check yourself
+
+1. Double the temperature of a blackbody: by what factor does $E_b$ increase? $\lambda_{max}$ changes by? *($16$; halves.)*
+2. A surface at 500 K with $\varepsilon=0.6$ faces large surroundings at 300 K, area 2 m². $\dot Q$? *($0.6(5.67\times10^{-8})(2)(500^4-300^4)=3.7$ kW; $500^4=6.25\times10^{10}$, $300^4=8.1\times10^9$, so $=0.6\cdot5.67\times10^{-8}\cdot2\cdot5.44\times10^{10}=3703$ W.)*
+3. Why is a car's black dashboard hotter than a white one in the Sun but not in the dark? *(In sunlight $\alpha_s$ differs a lot (0.95 vs 0.2); in the dark only the infrared emissivity, nearly equal, matters.)*
+4. Why does the glass of a greenhouse heat the interior? *(Glass transmits the Sun's short-wave radiation but is opaque to the long-wave radiation re-emitted by the warm interior.)*

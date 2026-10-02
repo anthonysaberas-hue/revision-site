@@ -1,0 +1,514 @@
+<p className="eyebrow">Assignment 1 · Chapter 1 · instructor solutions provided</p>
+
+# Assignment 1: energy balance, conduction, convection and radiation basics
+
+<div className="lede">
+
+Eleven problems from <Ch slug="intro">Chapter 1</Ch> (1-19, 1-53, 1-56, 1-71, 1-79, 1-80, 1-94, 1-98, 1-123, 1-127, 1-137). They are short, but they contain every move you need later: **pick the mode (or modes), write the right law, mind the units (kelvin for radiation!), add parallel paths**. All answers were recomputed and agree with the printed solutions.
+
+</div>
+
+<Problem id="1-19" title="Infiltration loss of a heated house" tags="energy balance on air, ideal gas, ACH">
+
+<Statement>
+
+An electrically heated house (200 m² floor, 3 m ceiling) is kept at 22 °C. Outdoor air at 5 °C and 89.6 kPa infiltrates at 0.7 air changes per hour (ACH) and leaves at 22 °C. Find the energy lost per day by infiltration and its cost at 0.082 USD/kWh. ($c_p=1.007$ kJ/kg·K, $R=0.287$ kPa·m³/kg·K.)
+
+</Statement>
+
+<Think>
+
+Heat is carried by the **air stream**: whatever mass enters cold and leaves warm took $\dot m\,c_p\Delta T$ from the house. So I need the mass flow of the *entering* air: ideal gas $m=PV/RT$ at **outdoor** conditions (that's where it is counted). "0.7 ACH" means 0.7 house volumes per hour.
+
+</Think>
+
+<Steps>
+<Step title="1. House volume and number of air changes per day">
+
+$V=200(3)=600$ m³. In a day: $0.7\times24=16.8$ changes, i.e. $16.8\times600=10\,080$ m³ of outdoor air.
+
+</Step>
+<Step title="2. Mass of air per day (outdoor state)">
+
+$m=\dfrac{PV}{RT}=\dfrac{89.6(10\,080)}{0.287(278.15)}=11\,314$ kg/day.
+
+</Step>
+<Step title="3. Energy and cost">
+
+$Q=mc_p(T_{in}-T_{out})=11\,314(1.007)(22-5)=193\,681$ kJ/day $=53.8$ kWh/day. Cost $=53.8(0.082)=4.41$ USD/day.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**193 700 kJ/day (53.8 kWh/day), about 4.41 USD per day.**
+
+</Answer>
+
+<Traps>
+
+- Use the outdoor density: indoor air is not what enters.
+- 1 kWh = 3600 kJ, so $193\,681/3600=53.8$.
+
+</Traps>
+
+<Source>Textbook solution 1-19. Recomputed: identical.</Source>
+
+</Problem>
+
+<Problem id="1-53" title="Conduction through the bottom of an aluminum pan" tags="Fourier, plane wall">
+
+<Statement>
+
+Heat flows steadily through the 0.4 cm thick aluminum bottom ($k=237$ W/mK, 15 cm diameter) of a pan to boiling water. The inner surface is at 105 °C and the heat rate is 800 W. Find the outer-surface temperature.
+
+</Statement>
+
+<Think>
+
+Pure 1-D conduction through a plane wall: $\dot Q=kA\,\Delta T/L$. Solve for $\Delta T$; the outer (burner side) is hotter by that amount.
+
+</Think>
+
+<Steps>
+<Step title="1. Area">
+
+$A=\pi r^2=\pi(0.075)^2=0.01767$ m².
+
+</Step>
+<Step title="2. Temperature difference">
+
+$\Delta T=\dfrac{\dot QL}{kA}=\dfrac{800(0.004)}{237(0.01767)}=0.764$ K.
+
+</Step>
+<Step title="3. Outer temperature">
+
+$T_2=105+0.76=105.76$ °C.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**$T_{outer}\approx105.8$ °C.**
+
+</Answer>
+
+<Traps>
+
+Aluminum is such a good conductor that the drop across the pan is under 1 K: the **bottleneck** is the boiling heat transfer, not the pan.
+
+</Traps>
+
+<Source>Textbook solution 1-53. Recomputed: identical.</Source>
+
+</Problem>
+
+<Problem id="1-56" title="Thermal conductivity from a heater-sandwich test" tags="Fourier, symmetry">
+
+<Statement>
+
+A 25 W heater is sandwiched between two identical $10\times10$ cm samples, each 0.5 cm thick, the whole apparatus insulated at the sides. At steady state the two faces of each sample read 82 °C and 74 °C. Find $k$.
+
+</Statement>
+
+<Think>
+
+By **symmetry** half the heat (12.5 W) goes through each sample, and the lateral insulation forces 1-D flow. Then Fourier's law solved for $k$.
+
+</Think>
+
+<Steps>
+<Step title="1. Heat through one sample">
+
+$\dot Q=25/2=12.5$ W; $A=0.1(0.1)=0.01$ m²; $\Delta T=82-74=8$ K.
+
+</Step>
+<Step title="2. Fourier">
+
+$k=\dfrac{\dot QL}{A\Delta T}=\dfrac{12.5(0.005)}{0.01(8)}=0.781$ W/mK.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**$k=0.78$ W/mK** (a plastic or wood-like material).
+
+</Answer>
+
+<Traps>
+
+Forgetting to split the heater power between the two samples doubles the answer.
+
+</Traps>
+
+<Source>Textbook solution 1-56. Recomputed: identical.</Source>
+
+</Problem>
+
+<Problem id="1-71" title="Maximum safe power of a transistor cooled by air" tags="Newton's law of cooling, area of a cylinder with a top">
+
+<Statement>
+
+A transistor (a small cylinder, diameter 0.6 cm, height 0.4 cm, base on the board, heat transfer from the base negligible) must stay at or below 70 °C in 55 °C air with $h=30$ W/m²K. Radiation is disregarded. What power can it dissipate safely?
+
+</Statement>
+
+<Think>
+
+Steady state: power dissipated $=$ heat convected away. The area is the lateral surface plus the top (not the base).
+
+</Think>
+
+<Steps>
+<Step title="1. Surface area">
+
+$A_s=\pi DL+\pi D^2/4=\pi(0.6)(0.4)+\pi(0.6)^2/4=0.754+0.283=1.037$ cm$^2=1.037\times10^{-4}$ m².
+
+</Step>
+<Step title="2. Newton">
+
+$\dot Q=hA_s(T_s-T_\infty)=30(1.037\times10^{-4})(70-55)=0.0467$ W.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**$\dot Q_{max}\approx0.047$ W** (47 mW: a tiny transistor needs a heat sink to handle more).
+
+</Answer>
+
+<Traps>
+
+cm$^2$ to m²: multiply by $10^{-4}$, not $10^{-2}$.
+
+</Traps>
+
+<Source>Textbook solution 1-71. Recomputed: identical.</Source>
+
+</Problem>
+
+<Problem id="1-79" title="Radiation from a person to cold and warmer rooms" tags="Stefan–Boltzmann, kelvin, enclosure">
+
+<Statement>
+
+A person ($A_s=1.7$ m², $\varepsilon=0.5$, surface temperature 32 °C) stands in a room. Find the net radiation heat loss when the walls, ceiling and floor are at (a) 300 K and (b) 280 K. Convection is ignored.
+
+</Statement>
+
+<Think>
+
+A small body completely enclosed by large surroundings: $\dot Q=\varepsilon A\sigma(T_s^4-T_{surr}^4)$, **in kelvin**.
+
+</Think>
+
+<Steps>
+<Step title="1. Surface temperature in kelvin">
+
+$T_s=32+273=305$ K.
+
+</Step>
+<Step title="2. (a) 300 K walls">
+
+$\dot Q=0.5(1.7)(5.67\times10^{-8})(305^4-300^4)=4.82\times10^{-8}(8.653\times10^9-8.100\times10^9)=26.7$ W.
+
+</Step>
+<Step title="3. (b) 280 K walls">
+
+$\dot Q=4.82\times10^{-8}(8.653\times10^9-6.147\times10^9)=121$ W.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**(a) 26.7 W; (b) 121 W.**
+
+</Answer>
+
+<Traps>
+
+A 20 K colder room raises the loss 4.5×: the fourth power amplifies the difference. This is the "cold wall" discomfort: you feel cold next to a cold window even when the air is warm.
+
+</Traps>
+
+<Source>Textbook solution 1-79. Recomputed: identical.</Source>
+
+</Problem>
+
+<Problem id="1-80" title="Radiation-cooled electronic box in a vacuum chamber" tags="radiation only, solve for the surroundings temperature">
+
+<Statement>
+
+A sealed box (0.4 m × 0.4 m × 0.2 m, $\varepsilon=0.95$) dissipates 100 W in a vacuum chamber (no convection). Its surface must not exceed 55 °C; the bottom rests on a stand and is negligible. What must the chamber surfaces' temperature be?
+
+</Statement>
+
+<Think>
+
+Radiation only: $\dot Q=\varepsilon A\sigma(T_s^4-T_{surr}^4)$ and we solve for $T_{surr}$. The area is the top plus the four sides.
+
+</Think>
+
+<Steps>
+<Step title="1. Area">
+
+$A_s=(0.4)(0.4)+4(0.2)(0.4)=0.16+0.32=0.48$ m².
+
+</Step>
+<Step title="2. Solve for $T_{surr}^4$">
+
+$T_{surr}^4=T_s^4-\dfrac{\dot Q}{\varepsilon A_s\sigma}=328^4-\dfrac{100}{0.95(0.48)(5.67\times10^{-8})}=1.1573\times10^{10}-3.868\times10^9=7.705\times10^9$ K⁴.
+
+</Step>
+<Step title="3. Temperature">
+
+$T_{surr}=(7.705\times10^9)^{1/4}=296.3$ K $=23.3$ °C.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**The chamber surfaces must be at 23.3 °C or colder.**
+
+</Answer>
+
+<Source>Textbook solution 1-80. Recomputed: identical.</Source>
+
+</Problem>
+
+<Problem id="1-94" title="Heat lost by a person: convection plus radiation" tags="parallel paths, add convection and radiation">
+
+<Statement>
+
+A person ($A_s=1.7$ m², $\varepsilon=0.9$, surface at 32 °C) is in a room with air and walls at 23 °C; $h=5$ W/m²K. Find the total heat loss (convection and radiation; evaporation not considered).
+
+</Statement>
+
+<Think>
+
+Convection to the air and radiation to the walls act **in parallel**; each uses its own law. Add the two.
+
+</Think>
+
+<Steps>
+<Step title="1. Radiation">
+
+$\dot Q_{rad}=0.9(1.7)(5.67\times10^{-8})(305^4-296^4)=8.675\times10^{-8}(8.653\times10^9-7.677\times10^9)=84.8$ W.
+
+</Step>
+<Step title="2. Convection">
+
+$\dot Q_{conv}=hA\Delta T=5(1.7)(32-23)=76.5$ W.
+
+</Step>
+<Step title="3. Sum">
+
+$\dot Q=84.8+76.5=161.3$ W.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**$\dot Q\approx161$ W**, with radiation slightly larger than convection (evaporation, not counted, is of comparable size).
+
+</Answer>
+
+<Source>Textbook solution 1-94. Recomputed: identical.</Source>
+
+</Problem>
+
+<Problem id="1-98" title="A spherical iced-water tank outdoors: how much ice melts per day?" tags="convection plus radiation gain, latent heat">
+
+<Statement>
+
+A spherical steel tank (outer diameter 3.02 m, $\varepsilon=0.75$) holds iced water at 0 °C. The outdoor air is at 25 °C, $h=30$ W/m²K, surroundings 15 °C (288 K), and the tank wall resistance is negligible (the whole steel is at 0 °C). Find the heat-gain rate and the mass of ice melted in 24 h ($h_{if}=333.7$ kJ/kg).
+
+</Statement>
+
+<Think>
+
+Heat flows **into** the cold tank by both convection (air warmer than 0 °C) and radiation (walls warmer than 0 °C), all absorbed by melting ice at constant 0 °C. Total heat $\times$ time $/h_{if}$ gives the melted mass.
+
+</Think>
+
+<Steps>
+<Step title="1. Area">
+
+$A_s=\pi D^2=\pi(3.02)^2=28.65$ m².
+
+</Step>
+<Step title="2. Convection gain">
+
+$\dot Q_{conv}=hA_s(T_\infty-T_s)=30(28.65)(25-0)=21\,488$ W.
+
+</Step>
+<Step title="3. Radiation gain (the surroundings are warmer)">
+
+$\dot Q_{rad}=\varepsilon A_s\sigma(T_{surr}^4-T_s^4)=0.75(28.65)(5.67\times10^{-8})(288^4-273^4)=1614$ W.
+
+</Step>
+<Step title="4. Total and ice melted">
+
+$\dot Q=23\,102$ W. Over 24 h: $Q=23.102(86\,400)=1.996\times10^6$ kJ; $m=\dfrac{Q}{h_{if}}=\dfrac{1.996\times10^6}{333.7}=5980$ kg.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**$\dot Q\approx23.1$ kW; about 5980 kg (6 tonnes) of ice melts per day.** Insulation would cut this to a small fraction.
+
+</Answer>
+
+<Traps>
+
+Radiation is only about 7 % here because $T_{surr}-T_s$ is small and $T_s$ is cold, but it is not zero: include it when a surface sees large surroundings.
+
+</Traps>
+
+<Source>Textbook solution 1-98. Recomputed: identical.</Source>
+
+</Problem>
+
+<Problem id="1-123" title="A resistor: daily energy, heat flux, fraction through the ends" tags="area bookkeeping, uniform h">
+
+<Statement>
+
+A cylindrical resistor (diameter 0.4 cm, length 2 cm) on a circuit board dissipates 0.8 W. Find (a) the energy dissipated in 24 h, (b) the heat flux on its surface and (c) the fraction of heat leaving through the two end faces, assuming a uniform heat transfer coefficient.
+
+</Statement>
+
+<Think>
+
+Bookkeeping: total surface = side + two ends. With uniform $h$ and temperature, heat is proportional to area.
+
+</Think>
+
+<Steps>
+<Step title="1. Energy in 24 h">
+
+$Q=\dot Qt=0.8(24)=19.2$ Wh $=19.2(3.6)=69.1$ kJ.
+
+</Step>
+<Step title="2. Areas">
+
+Ends: $2\pi D^2/4=2\pi(0.4)^2/4=0.251$ cm². Side: $\pi DL=\pi(0.4)(2)=2.513$ cm². Total $A_s=2.764$ cm².
+
+</Step>
+<Step title="3. Flux and end fraction">
+
+$q''=0.8/2.764=0.289$ W/cm² $=2890$ W/m². Ends: $0.251/2.764=0.091$, i.e. 9.1 %.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**(a) 69.1 kJ; (b) 0.289 W/cm² (2890 W/m²); (c) 9.1 % through the ends.**
+
+</Answer>
+
+<Source>Textbook solution 1-123. Recomputed: identical.</Source>
+
+</Problem>
+
+<Problem id="1-127" title="Wind chill: a standing man in still and windy air" tags="Newton's law, effective temperature">
+
+<Statement>
+
+Model a standing person as a 30 cm diameter, 170 cm tall vertical cylinder (top and bottom insulated), skin at 34 °C, air at 20 °C. The convection coefficient is 15 W/m²K in still air and 30 W/m²K in high wind; radiation is neglected. Find the heat loss in both cases and the **wind-chill temperature** (the still-air temperature that would give the same loss as the windy air at 20 °C).
+
+</Statement>
+
+<Think>
+
+Two applications of Newton's law with different $h$. For the wind chill: equate the windy loss with the still-air formula and solve for the equivalent air temperature.
+
+</Think>
+
+<Steps>
+<Step title="1. Area">
+
+$A_s=\pi DL=\pi(0.3)(1.70)=1.60$ m².
+
+</Step>
+<Step title="2. Losses">
+
+Still: $15(1.60)(34-20)=336$ W. Windy: $30(1.60)(34-20)=672$ W.
+
+</Step>
+<Step title="3. Wind chill temperature">
+
+$672=15(1.60)(34-T_{eff})\Rightarrow T_{eff}=34-28=6$ °C.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**336 W (still), 672 W (windy), wind-chill temperature 6 °C**: the 20 °C windy air "feels" like 6 °C still air.
+
+</Answer>
+
+<Source>Textbook solution 1-127. Recomputed: identical.</Source>
+
+</Problem>
+
+<Problem id="1-137" title="Electric heater: surface temperature with and without radiation" tags="convection plus radiation, iteration, h from a calibration point">
+
+<Statement>
+
+An electric heater of surface area 0.25 m² and emissivity 0.75 consumes 500 W when its surface is at 120 °C in a room with air at 20 °C and walls at 10 °C (283 K). What will its surface temperature be at 700 W, (a) neglecting radiation, (b) including it?
+
+</Statement>
+
+<Think>
+
+Both parts first **calibrate $h$** from the 500 W measurement, then use it at 700 W. In (a) all the power is convected; in (b) the 500 W is split between convection and radiation, which gives a *smaller* $h$ and then the surface-temperature equation is nonlinear (radiation ∝ $T^4$), so solve by iteration.
+
+</Think>
+
+<Steps>
+<Step title="1. (a) No radiation: calibrate $h$">
+
+$h=\dfrac{\dot Q}{A(T_s-T_\infty)}=\dfrac{500}{0.25(120-20)}=20$ W/m²K.
+
+</Step>
+<Step title="2. (a) Surface temperature at 700 W">
+
+$T_s=T_\infty+\dfrac{\dot Q}{hA}=20+\dfrac{700}{20(0.25)}=160$ °C.
+
+</Step>
+<Step title="3. (b) With radiation: calibrate $h$">
+
+Radiation at 120 °C: $0.75(0.25)(5.67\times10^{-8})(393^4-283^4)=185.4$ W. So convection carries $500-185.4=314.6$ W and $h=\dfrac{314.6}{0.25(100)}=12.58$ W/m²K.
+
+</Step>
+<Step title="4. (b) Surface temperature at 700 W">
+
+Solve $700=12.58(0.25)(T_s-293)+0.75(0.25)(5.67\times10^{-8})(T_s^4-283^4)$. Iterating: $T_s=420$ K gives $3.145(127)+1.063\times10^{-8}(420^4-283^4)=399.4+262.6=662$ W (too low); $T_s=425.9$ K gives $418.0+281.6=699.6$ W ✓. $T_s=425.9$ K $=152.9$ °C.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**(a) 160 °C; (b) 152.9 °C.** Neglecting radiation overestimates the surface temperature by about 7 K.
+
+</Answer>
+
+<Traps>
+
+The "calibration" step must use the same model as the prediction: if you ignore radiation to find $h$ you must ignore it later too (that is part (a)); mixing them gives an inconsistent answer.
+
+</Traps>
+
+<Source>Textbook solution 1-137. Recomputed: identical.</Source>
+
+</Problem>

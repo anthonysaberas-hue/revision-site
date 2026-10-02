@@ -1,0 +1,312 @@
+<p className="eyebrow">Homework 4 · due Feb 8, 2024 · Lectures 7–9</p>
+
+# HW4: state-space models, $\Phi(t)$, principal coordinates
+
+<div className="lede">
+
+Every problem here is a state-space skill from <Ch slug="state-space">Chapter 7</Ch>: realise a transfer function, read states off a block diagram, go from $(A,B,C)$ to $G(s)$, diagonalise, and compute $\Phi(t)$. Q1 has a nice surprise: feedback makes nothing better.
+
+</div>
+
+<Problem id="HW4 Q1" title="Autonomous vehicle position control: state model and step responses" tags="closed loop, Method 2, instability">
+
+<Statement>
+
+Unity feedback, controller $\dfrac{s+2}{s+4}$, then the plant $\dfrac1{s-3}$ (voltage to velocity) and an integrator $\dfrac1s$ (velocity to position $Y$). (a) State-variable representation. (b) Step response with and without the controller; discuss the benefit of feedback.
+
+</Statement>
+
+<Think>
+
+Close the loop with $T=L/(1+L)$, then realise the closed-loop TF by **Method 2** (controllable canonical form). Note the plant has an **unstable pole at $+3$**: be suspicious of "feedback always improves things".
+
+</Think>
+
+<Steps>
+<Step title="1. Closed-loop transfer function">
+
+$L=\dfrac{s+2}{s(s+4)(s-3)}$ and $s(s-3)(s+4)=s^3+s^2-12s$, so
+
+$$\frac YR=\frac{s+2}{s^3+s^2-11s+2}.$$
+
+</Step>
+<Step title="2. Method 2 realisation">
+
+$a_1=1,\,a_2=-11,\,a_3=2$; $\;b=(0,0,1,2)$. With $x_1=z,\,x_2=\dot z,\,x_3=\ddot z$:
+
+$$A=\begin{bmatrix}0&1&0\\0&0&1\\-2&11&-1\end{bmatrix},\quad B=\begin{bmatrix}0\\0\\1\end{bmatrix},\quad C=[2\;\;1\;\;0],\quad D=0 .$$
+
+</Step>
+<Step title="3. Stability">
+
+With the controller the poles are $+2.744,\,+0.186,\,-3.929$: **two in the RHP**. Without it, $\dfrac1{s^2-3s+1}$ has poles $+2.618,\,+0.382$: also unstable. Both step responses grow exponentially (about $e^{2.7t}$, $10^{28}$ after 25 s).
+
+</Step>
+<Step title="4. Can a gain fix it?">
+
+Replacing the controller by $K\dfrac{s+2}{s+4}$ gives $s^3+s^2+(K-12)s+2K$ with RHP roots for **every** $K>0$.
+
+</Step>
+</Steps>
+
+<Answer>
+
+(a) $A,B,C,D$ above. (b) Both unstable; **feedback gives no benefit here**: the plant has an unstable pole at $+3$ and the integrator loop, and this controller structure cannot stabilise it.
+
+</Answer>
+
+<Traps>
+
+- "Feedback always improves" is false when the plant is unstable and the controller cannot supply the right phase.
+- (Conjecture) with a *stable* plant $1/(s+3)$ the closed loop would be $s^3+7s^2+13s+2$, stable; the sheet may have a sign typo, but the official answer works with $s-3$.
+- Method 1 and Method 2 give different $B,C$ but the same TF. **Anthony's** Method-1 box has $\beta=(0,1,-3)$; his own box gives $\beta_3=1$, and the library gives $B=[0;1;1]$.
+
+</Traps>
+
+<Source>official solution; Anthony agrees except the $\beta$ slip. Verified with the library.</Source>
+
+</Problem>
+
+<Problem id="HW4 Q2" title="State model and Φ(t) from a block diagram" tags="integrator outputs as states">
+
+<Statement>
+
+$U$ passes through $h_0$ into a summer $\Sigma_1$, an integrator giving $X_1$, then a second summer $\Sigma_2$ (also fed by $h_1U$) and a second integrator giving $X_2=Y$. Feedbacks: $a_1$ from $X_1$ and $a_0$ from $Y$ (both $-$) into $\Sigma_1$. Find a state model and the state-transition matrix.
+
+</Statement>
+
+<Think>
+
+**Every integrator output is a state.** Write each integrator's *input* as the derivative of that state.
+
+</Think>
+
+<Steps>
+<Step title="1. State equations">
+
+$\Sigma_1$: $\dot x_1=-a_1x_1-a_0x_2+h_0u$. $\Sigma_2$: $\dot x_2=x_1+h_1u$. $y=x_2$.
+
+$$A=\begin{bmatrix}-a_1&-a_0\\1&0\end{bmatrix},\;B=\begin{bmatrix}h_0\\h_1\end{bmatrix},\;C=[0\;\;1].$$
+
+</Step>
+<Step title="2. Transfer function (check)">
+
+$G=\dfrac{h_1s+h_0+a_1h_1}{s^2+a_1s+a_0}$: the $h_1$ branch enters *between* the integrators, so it adds $h_1(s+a_1)$ to the numerator.
+
+</Step>
+<Step title="3. State-transition matrix">
+
+$sI-A=\begin{bmatrix}s+a_1&a_0\\-1&s\end{bmatrix}$, so $(sI-A)^{-1}=\dfrac1{s^2+a_1s+a_0}\begin{bmatrix}s&-a_0\\1&s+a_1\end{bmatrix}$ and $\Phi(t)=\mathcal L^{-1}$ of that matrix. For distinct real roots $\lambda_{1,2}$ of $s^2+a_1s+a_0$: $\Phi(t)=\dfrac{e^{\lambda_1t}(A-\lambda_2I)-e^{\lambda_2t}(A-\lambda_1I)}{\lambda_1-\lambda_2}$; for a complex pair the entries are $e^{-\sigma t}$ times combinations of $\cos\omega_dt$ and $\sin\omega_dt$ (e.g. $\Phi_{21}=e^{-\sigma t}\sin\omega_dt/\omega_d$).
+
+</Step>
+</Steps>
+
+<Answer>
+
+$A,B,C$ above; $G=\dfrac{h_1s+h_0+a_1h_1}{s^2+a_1s+a_0}$; $\Phi=\mathcal L^{-1}\{(sI-A)^{-1}\}$.
+
+</Answer>
+
+<Traps>
+
+- Anthony chose controllable canonical form instead: $A=\begin{bmatrix}0&1\\-a_0&-a_1\end{bmatrix}$, $B=[0;1]$, $C=[h_1a_1+h_0,\;h_1]$, a valid but different realisation (same TF and eigenvalues, a different $\Phi(t)$ because the states differ).
+
+</Traps>
+
+<Source>official solution (leaves $\Phi$ as the matrix inverse); Anthony ✔.</Source>
+
+</Problem>
+
+<Problem id="HW4 Q3" title="Multi-loop diagram: state model and characteristic equation" tags="state equations from a diagram">
+
+<Statement>
+
+State variables $x_1,x_2$. $U\to\Sigma_1$ (with $-k$ from $X_2$) $\to\dfrac1s\to X_1\to a\to\Sigma_2$; a branch $f$ from the output of $\Sigma_1$ goes to $\Sigma_2$; $\Sigma_2\to\dfrac1s\to X_2\to b\to Y$; $d$ feeds $X_2$ back to $\Sigma_2$ ($-$). Find the state model and the characteristic equation.
+
+</Statement>
+
+<Think>
+
+The $f$ branch starts *after* $\Sigma_1$, so it carries $u-kx_2$ (not $u$).
+
+</Think>
+
+<Steps>
+<Step title="1. State equations">
+
+$\dot x_1=u-kx_2$; $\;\dot x_2=ax_1+f(u-kx_2)-dx_2=ax_1-(fk+d)x_2+fu$; $\;y=bx_2$.
+
+$$A=\begin{bmatrix}0&-k\\a&-(fk+d)\end{bmatrix},\;B=\begin{bmatrix}1\\f\end{bmatrix},\;C=[0\;\;b].$$
+
+</Step>
+<Step title="2. Characteristic equation">
+
+$|sI-A|=s\,(s+fk+d)+ak=0\;\Rightarrow\;\boxed{s^2+(fk+d)s+ak=0}$. (And $G=\dfrac{b(fs+a)}{s^2+(fk+d)s+ak}$.)
+
+</Step>
+</Steps>
+
+<Answer>
+
+As above: $\omega_n^2=ak$ and $2\zeta\omega_n=fk+d$ — you can read how the loop gains set stiffness and damping.
+
+</Answer>
+
+<Traps>
+
+- $d$ and $k$ both feed back $x_2$ but at different junctions; only $d+kf$ enters the $s$ term and only $ak$ the constant.
+
+</Traps>
+
+<Source>official solution; Anthony identical (his characteristic equation $\lambda^2+d\lambda+kf\lambda+ak$ is equivalent).</Source>
+
+</Problem>
+
+<Problem id="HW4 Q4" title="State space to transfer function, eigenvalues, principal coordinates" tags="Vandermonde diagonalisation">
+
+<Statement>
+
+$\dot x=\begin{bmatrix}0&1\\-3&-4\end{bmatrix}x+\begin{bmatrix}0\\1\end{bmatrix}u$, $y=[10\;0]x$. (a) $G=Y/U$. (b) Eigenvalues. (c) Principal-coordinate form.
+
+</Statement>
+
+<Think>
+
+(a) $G=C(sI-A)^{-1}B$. (b) roots of $\det(\lambda I-A)$. (c) For a *companion* matrix the eigenvector of $\lambda$ is $(1,\lambda)^T$, so the modal matrix is the Vandermonde $P=\begin{bmatrix}1&1\\\lambda_1&\lambda_2\end{bmatrix}$.
+
+</Think>
+
+<Steps>
+<Step title="(a) Transfer function">
+
+$sI-A=\begin{bmatrix}s&-1\\3&s+4\end{bmatrix}$, $\det=s^2+4s+3$, $(sI-A)^{-1}=\dfrac1{s^2+4s+3}\begin{bmatrix}s+4&1\\-3&s\end{bmatrix}$. So $G=\dfrac{10}{s^2+4s+3}=\dfrac5{s+1}-\dfrac5{s+3}$.
+
+</Step>
+<Step title="(b) Eigenvalues">
+
+$\lambda^2+4\lambda+3=0\Rightarrow\lambda=-1,\,-3$.
+
+</Step>
+<Step title="(c) Principal coordinates">
+
+Order $\lambda_1=-3,\lambda_2=-1$: $P=\begin{bmatrix}1&1\\-3&-1\end{bmatrix}$, $P^{-1}=\tfrac12\begin{bmatrix}-1&-1\\3&1\end{bmatrix}$. Then $\tilde A=P^{-1}AP=\operatorname{diag}(-3,-1)$, $\tilde B=P^{-1}B=\begin{bmatrix}-\tfrac12\\\tfrac12\end{bmatrix}$, $\tilde C=CP=[10\;\;10]$.
+
+*Check:* $\tilde C(sI-\tilde A)^{-1}\tilde B=\dfrac{10(-1/2)}{s+3}+\dfrac{10(1/2)}{s+1}=\dfrac5{s+1}-\dfrac5{s+3}$ ✔.
+
+</Step>
+</Steps>
+
+<Answer>
+
+$G=\dfrac{10}{s^2+4s+3}$; $\lambda=-1,-3$; $\tilde A$ diagonal as above.
+
+</Answer>
+
+<Traps>
+
+- The *order* of the eigenvalues fixes the order of the columns of $P$ and the sign/position of $\tilde B$ (Anthony used the order $-1,-3$ and got $\tilde B=[\tfrac12;-\tfrac12]$: equally right).
+- Always recover $G(s)$ to check.
+
+</Traps>
+
+<Source>official; Anthony ✔.</Source>
+
+</Problem>
+
+<Problem id="HW4 Q5" title="(extra) Φ(t) and the time history for x(0) = (1, −1)" tags="state-transition matrix, eigenvector initial condition">
+
+<Statement>
+
+$\dot x=\begin{bmatrix}0&1\\-2&-3\end{bmatrix}x$. Find $\Phi(t)$ and $x(t)$ for $x(0)=(1,-1)^T$.
+
+</Statement>
+
+<Steps>
+<Step title="1. Resolvent">
+
+$(sI-A)^{-1}=\dfrac1{(s+1)(s+2)}\begin{bmatrix}s+3&1\\-2&s\end{bmatrix}$.
+
+</Step>
+<Step title="2. Partial fractions entry by entry">
+
+$\tfrac{s+3}{(s+1)(s+2)}=\tfrac2{s+1}-\tfrac1{s+2}$; $\tfrac1{(s+1)(s+2)}=\tfrac1{s+1}-\tfrac1{s+2}$; $\tfrac{-2}{\ldots}=-\tfrac2{s+1}+\tfrac2{s+2}$; $\tfrac s{\ldots}=-\tfrac1{s+1}+\tfrac2{s+2}$.
+
+$$\Phi(t)=\begin{bmatrix}2e^{-t}-e^{-2t}&e^{-t}-e^{-2t}\\-2e^{-t}+2e^{-2t}&-e^{-t}+2e^{-2t}\end{bmatrix}.$$
+
+</Step>
+<Step title="3. The response">
+
+$x(t)=\Phi(t)(1,-1)^T=\big(e^{-t},\,-e^{-t}\big)^T$: the $e^{-2t}$ mode cancels because $(1,-1)$ is the eigenvector for $\lambda=-1$.
+
+</Step>
+</Steps>
+
+<Answer>
+
+$\Phi(t)$ as above; $x(t)=e^{-t}(1,-1)^T$.
+
+</Answer>
+
+<Traps>
+
+- $\Phi(0)=I$ is a quick check; the *columns* of $\Phi$ are the responses to the unit initial states.
+- An initial condition along one eigenvector gives a single-exponential straight-line motion in state space.
+
+</Traps>
+
+<Source>official; verified with the library ($\Phi(1)=[[0.600,0.233],[-0.465,-0.097]]$).</Source>
+
+</Problem>
+
+<Problem id="HW4 Q6" title="(extra) Laser-printer belt drive with a DC motor" tags="mechanical EOMs, motor, state space, Simulink">
+
+<Statement>
+
+A DC motor drives a carriage (mass $m$) through a belt (springs $k$) over pulleys of radius $r$. Motor inertia $J$, torsional damping $b$. A sensor $v_1=k_1y$ and a controller $v_2=-k_2\dot v_1$ feed the motor, $T_m=\tfrac{K_m}Rv_2$. States $x_1=r\theta-y$, $x_2=\dot y$, $x_3=\dot\theta$. (a) EOMs, (b) state-space with disturbance $T_d$, (c) complete the Simulink model.
+
+</Statement>
+
+<Steps>
+<Step title="(a) Equations of motion">
+
+Belt tension forces: $m\ddot y=2k(r\theta-y)$. Pulley torque $\tau=2kr(r\theta-y)$. Motor shaft: $J\ddot\theta+b\dot\theta=T_m-\tau-T_d$.
+
+</Step>
+<Step title="(b) Controller makes the torque velocity feedback">
+
+$T_m=\dfrac{K_m}Rv_2=-\dfrac{K_mk_1k_2}{R}\dot y$.
+
+States: $\dot x_1=rx_3-x_2$, $\;\dot x_2=\dfrac{2k}mx_1$, $\;\dot x_3=-\dfrac{2kr}Jx_1-\dfrac{K_mk_1k_2}{JR}x_2-\dfrac bJx_3-\dfrac1JT_d$.
+
+$$A=\begin{bmatrix}0&-1&r\\\tfrac{2k}m&0&0\\-\tfrac{2kr}J&-\tfrac{K_mk_1k_2}{JR}&-\tfrac bJ\end{bmatrix},\;B=\begin{bmatrix}0\\0\\-\tfrac1J\end{bmatrix},\;C=[1\;0\;0].$$
+
+</Step>
+<Step title="(c) Simulink">
+
+Gain $1/J$ after the $T_d$ summer; integrator → $X_3$ with feedback gain $b/J$; gain $r$; summer ($rx_3-x_2$); integrator → $X_1$; $X_1\to2kr/J$ back to the first summer; $X_1\to2k/m\to$ integrator → $X_2$; $X_2\to k_1k_2\to K_m/R\to T_m$ (negative) into the first summer.
+
+</Step>
+</Steps>
+
+<Answer>
+
+As in (a)–(c). *Physical:* $x_1$ is the belt stretch; the velocity feedback $K_mk_1k_2/R$ acts as electronic damping that stops the print carriage ringing after a quick move.
+
+</Answer>
+
+<Traps>
+
+- $T_d$ opposes the motor torque: $B=-1/J$.
+- The derivative in $v_2=-k_2\dot v_1$ makes $T_m$ proportional to carriage *velocity*, not position.
+
+</Traps>
+
+<Source>official solution; no numbers are given. (This model reappears as MT1 W2019 Q2.)</Source>
+
+</Problem>
+
+<Examined>
+
+State-space construction is on every MT1: $\text{W2009 Q3}$, $\text{F2011 Q2}$, W2017, W2019; $\Phi(t)$ in $\text{MT2 W2009 Q2}$.
+
+</Examined>

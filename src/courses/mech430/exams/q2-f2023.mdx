@@ -1,0 +1,241 @@
+<p className="eyebrow">Quiz 2 · Fall 2023 · 80 min · closed book, tables provided</p>
+
+# Quiz 2, Fall 2023
+
+<p className="lede">Two 50-point problems: a channel with two throats (the "blocked" supersonic wind tunnel), and a tank feeding a long friction duct. No class statistics were published for this sitting. The quiz said: "Interpolation not required when using the tables; just select closest value. 1 bar = 10⁵ Pa."</p>
+
+<Callout kind="note" title="Before you start">
+
+**Topics tested**
+- Choking at the smaller throat, shocks between two throats, and why a fixed-geometry tunnel stays "blocked". See [Ch. 9 Pitot, inlets & wind tunnels](#/mech430/ch/inlets) and [Ch. 8 Flow with shocks](#/mech430/ch/shocks-in-flow).
+- A tank-fed Fanno duct with a choked exit. See [Ch. 10 Fanno flow](#/mech430/ch/fanno) and [Ch. 6 Nozzles](#/mech430/ch/nozzles) for the choked mass flow.
+
+**Recipes used:** §1.5 (shock between two throats) and R4 (tank → friction channel) on the [exam recipes page](#/mech430/page/recipes).
+
+**Tables:** A2, A3, A4. γ = 1.4, MW = 30 kg/kmol, so R = 8314/30 = 277.1 J/kg·K.
+
+</Callout>
+
+<Problem id="F2023 P1" title="Channel with two throats: the blocked wind tunnel (50 pts: a 15, b 20, c 15)" tags="choking, normal shock, second throat, wind tunnel">
+
+<Statement>
+
+A tank of quiescent air (MW = 30 kg/kmol) at 10 bar and 300 K feeds a channel with a cross-sectional area of 5 cm². The channel has two throats, $A_{t1}$ = 1 cm² and $A_{t2}$ = 1.5 cm², with an intermediate section between them at the original channel area (5 cm²). The channel exhausts into a tank with back pressure $p_{back}$ = 5 bar. Neglect friction.
+
+(a) Find the mass flow rate through the channel in kg/s.
+
+(b) Find the static pressure (in bar) in the intermediate section between the two throats.
+
+(c) Redraw the sketch, label the state of the flow in each region (subsonic, supersonic or sonic), and indicate the location of any shock waves.
+
+</Statement>
+
+<Think>
+
+Two throats in series means **a supersonic wind tunnel with a diffuser** ([Ch. 9](#/mech430/ch/inlets)). Three decisions, in order:
+
+1. **Does it choke?** $p_b = 5$ bar is below $p^* = 0.5283 \times 10 = 5.283$ bar, so yes. It chokes at the **smaller** throat, $A_{t1}$.
+2. **What happens after $t_1$?** Neither a subsonic nor a fully supersonic solution matches 5 bar, so there is a shock.
+3. **How strong is the shock?** The flow behind it has to fit through $t_2$. Take $A^*_y = A_{t2}$. Then $p_{0y}/p_{0x} = A^*_x/A^*_y = A_{t1}/A_{t2}$ fixes the shock **without any iteration**.
+
+</Think>
+
+<Plan>
+
+tank → contraction → $t_1$ (M = 1) → supersonic → **shock 1** → subsonic intermediate section → $t_2$ (M = 1) → supersonic → **shock 2** → subsonic → 5 bar.
+
+<TwoThroatSection3D />
+
+</Plan>
+
+<Steps>
+<Step title="1. (a) Choked at the first throat">
+
+$p_b = 5\text{ bar} < p^* = 0.5283\,p_0 = 5.283$ bar, so the flow **must** choke, and it chokes at the minimum area, $A_{t1} = 1$ cm²:
+
+$$
+\dot m = \frac{p_0}{\sqrt{T_0}}\sqrt{\frac{\gamma}{R}}\,\frac{A_{t1}}{1.2^{3}} = \frac{10^6}{\sqrt{300}}\sqrt{\frac{1.4}{277.1}}\times\frac{10^{-4}}{1.728} = 0.237\ \text{kg/s}
+$$
+
+<CalcLink calc="isentropic" q="in=M&v=1">sonic ratios</CalcLink>
+
+</Step>
+<Step title="2. (b) Rule out the shock-free solutions">
+
+Subsonic after $t_1$, all the way to the exit:
+
+<T>A2 @ A/A* = 5 (sub): M = 0.12, p/p₀ = 0.98998</T> → 9.90 bar ≠ 5 bar. Not valid. — <CalcLink calc="isentropic" q="in=A&v=5&b=sub">check</CalcLink>
+
+Supersonic and isentropic after $t_1$:
+
+<T>A2 @ A/A* = 5 (sup): M = 3.2, p/p₀ = 0.02023</T> → 0.20 bar, far below 5 bar. So there is a shock. — <CalcLink calc="isentropic" q="in=A&v=5&b=sup">check</CalcLink>
+
+</Step>
+<Step title="3. (b) The shock strength from the second throat">
+
+After the shock $A^*_y$ is larger than $A_{t1}$, but it cannot be larger than $A_{t2}$ (the flow must pass $t_2$). Take $A^*_y = A_{t2}$, so the second throat is also choked:
+
+$$
+\frac{p_{0y}}{p_{0x}} = \frac{A^*_x}{A^*_y} = \frac{1}{1.5} = 0.667
+$$
+
+<T>A3 @ p₀ᵧ/p₀ₓ = 0.6666: Mₓ = 2.11</T> (exact 2.116), so $p_{0y} = 6.67$ bar — <CalcLink calc="normal" q="in=p0&v=0.6667">check</CalcLink>
+
+Check: $M_x = 2.11$ is less than the 3.2 reached at the end of the diverging section, so the shock sits **inside the diverging part after $t_1$**, at $A = 1.86$ cm².
+
+</Step>
+<Step title="4. (b) Intermediate-section pressure">
+
+$A/A^*_y = 5/1.5 = 3.33$, subsonic:
+
+<T>A2 @ A/A* = 3.33 (sub): M = 0.18, p/p₀ = 0.97765</T> (exact M = 0.177) — <CalcLink calc="isentropic" q="in=A&v=3.333&b=sub">check</CalcLink>
+
+$$
+p_{inter} = 0.97765 \times 6.67 = 6.5\ \text{bar}
+$$
+
+The official solution read the M = 0.2 row ($p/p_0 = 0.9725$, giving 6.48 bar).
+
+</Step>
+<Step title="5. (c) After the second throat: a second shock">
+
+The intermediate flow reaches $t_2$ at M = 1. After it:
+- Subsonic: $p_{exit} = 6.5$ bar ≠ 5 bar.
+- Supersonic: <T>A2 @ A/A* = 3.33 (sup): M = 2.75, p/p₀ = 0.0398</T> → 0.26 bar ≠ 5 bar.
+
+So the flow goes supersonic after $t_2$ and then **shocks in the diverging part after $t_2$**. Its exact position needs iteration. The lib puts it at $A \approx 2.29$ cm² with $M_x \approx 1.88$, but the quiz only asks you to show that it is there.
+
+<TwoThroatTunnelFigure />
+
+</Step>
+<Step title="6. (c) Why not supersonic through both throats?">
+
+The official solution also considers flow that stays supersonic through $t_2$ (M = 1.85 there), with a single shock further downstream. That state exists mathematically, but **it cannot be reached with fixed areas**. To get there, shock 1 would have to be swallowed through $t_2$, which needs $A_{t2}/A_{t1} \geq p_{0x}/p_{0y}$ at the test-section Mach number (about 3.2), roughly 3.5, not 1.5. This is the "blocked" wind tunnel of the MIT film *Channel Flow of a Compressible Fluid*. Toggle "Started" in the 3-D section above to see the unreachable state.
+
+<TwoThroatTunnelFigure scenario="started" />
+
+</Step>
+</Steps>
+
+<Answer>
+
+- (a) **ṁ = 0.237 kg/s** (choked at $t_1$).
+- (b) **$p_{inter} \approx 6.5$ bar** with $M \approx 0.18$. The official value is 6.48 bar, from the M = 0.2 row.
+- (c) ① M < 1 → ② M = 1 at $t_1$ → ③ M > 1 → **shock 1** ($M_x$ = 2.11, diverging part after $t_1$) → ④ M < 1 → ⑤ M = 1 at $t_2$ → ⑥ M > 1 → **shock 2** (diverging part after $t_2$) → ⑦ M < 1 to 5 bar.
+
+</Answer>
+
+<Traps>
+
+- **Official slip, corrected:** for $A/A^* = 3.33$ the official reads M = 0.2, but that row has $A/A^* = 2.96$. The nearest row is **M = 0.18** ($A/A^*$ = 3.28), which gives **6.5 bar**. The difference is small (6.48 vs 6.5 bar), and both were accepted.
+- The flow chokes at the **smaller** throat. The key closure is $A^*_y = A_{t2}$.
+- The drawing was worth 15 pts: 2 for each shock and 2 for its position (8 in total), and 7 for the M < 1 / = 1 / > 1 labels. Anthony's note to himself: **"Be aware of location!!"** Both shocks belong in the **diverging** parts.
+- **Exam-speed version:** "a) $p_b$ = 5 < 5.283 ⇒ choke at $t_1$ (min A): ṁ = 0.237. b) sub: A/A* = 5 → 9.9 bar ≠ 5; sup: M = 3.2 → 0.20 bar ≠ 5 ⇒ shock. Take $A^*_y$ = $A_{t2}$ = 1.5 → $p_{0y}/p_{0x}$ = 0.667 → $M_x$ = 2.11 (< 3.2 ⇒ in the diverging part). A/A* = 3.33 → M = 0.18 → p = 0.97765 × 6.67 = 6.5 bar. c) at $t_2$: 6.5 ≠ 5 and 0.26 ≠ 5 ⇒ sonic, supersonic, second shock in the diverging part."
+
+</Traps>
+
+<Source>official F2023 solution (phone screenshots pp. 2–6, red marking) · Anthony's minimum-writing notes pp. 17–20 · exact shock positions from lib/twoThroat.ts</Source>
+
+</Problem>
+
+<Problem id="F2023 P2" title="Tank feeding a long friction duct (50 pts: a 30, b 10, c 10)" tags="Fanno, choked exit, mass flow">
+
+<Statement>
+
+A tank of quiescent air (MW = 30 kg/kmol) at 10 bar and 300 K feeds a channel with a square 1 cm × 1 cm cross-section, so the hydraulic diameter is $D_H$ = 1 cm. The channel is 10 m long with a friction coefficient f = 0.005. It exhausts into a chamber with back pressure $p_{back}$ = 1 bar.
+
+(a) What is the Mach number at the entrance of the channel?
+
+(b) What is the Mach number at the exit of the channel?
+
+(c) What is the mass flow rate in kg/s?
+
+</Statement>
+
+<Think>
+
+There is no throat and no diverging section, so the flow entering the duct is **subsonic**. The duct is very long ($4fL/D = 20$), so friction alone will choke it at the exit (recipe R4).
+
+Anthony's decision rule: "Since we don't know the state, **assume L = L***." That gives $M_1$ straight from A4. Then check whether $p^* > p_b$. If it is, the exit is choked, and the exit pressure does not have to match $p_b$.
+
+</Think>
+
+<Plan>
+
+$4fL/D$ → (assume $L = L^*$) → A4 → $M_1$ → A2 → $p_1$ → A4 → $p^*$ → compare with $p_b$ → ṁ from the isentropic mass-flux formula at $M_1$, using the duct area.
+
+<TankDuctSection3D fL={20} />
+
+</Plan>
+
+<Steps>
+<Step title="1. Friction length">
+
+$$
+\frac{4fL}{D_H} = \frac{4(0.005)(10)}{0.01} = 20
+$$
+
+</Step>
+<Step title="2. (a) Assume the duct is exactly L* long">
+
+<T>A4 @ 4fL*/D = 20 (sub): M₁ = 0.17, p/p* = 6.4252</T> (exact M₁ = 0.174) — <CalcLink calc="fanno" q="in=fL&v=20&b=sub">check</CalcLink>
+
+<T>A2 @ M = 0.17: p/p₀ = 0.98003</T> → $p_1 = 9.80$ bar — <CalcLink calc="isentropic" q="in=M&v=0.17">check</CalcLink>
+
+$$
+p^* = p_2 = \frac{9.8003}{6.4252} = 1.525\ \text{bar}
+$$
+
+</Step>
+<Step title="3. (a) Is the choked solution the right one?">
+
+$p^* = 1.525$ bar is **above** $p_b = 1$ bar. Once the back pressure is below $p^*$, the duct is isolated from it, so $p_{exit} = p^*$ need not match $p_b$ (+5 pts on the marking).
+
+Optional check (the official "certain it chokes" step): try $M_1 = 0.15$.
+
+<T>A4 @ M = 0.15: 4fL*/D = 27.932, p/p* = 7.2886</T> → $27.932 - 20 = 7.932$ → <T>A4: M₂ = 0.26, p/p* = 4.185</T> → $p_2 = 5.65$ bar
+
+That exit is subsonic, so it must equal $p_b$, and it doesn't. Every subsonic solution has $p_{exit} > 1.525 > 1$ bar, and any $M_1 > 0.17$ would need $L > L^*$. **The only solution is the choked one.**
+
+<TankDuctExitPlot fL={20} p0={10} pb={1} guesses={[0.15]} />
+
+</Step>
+<Step title="4. (b) Exit Mach number">
+
+The duct is exactly $L^*$ long: **$M_2 = 1$**, with $p_{exit} = 1.525$ bar, which is greater than $p_b$.
+
+</Step>
+<Step title="5. (c) Mass flow">
+
+Use the isentropic mass-flux formula with the **entrance** Mach number and the duct area (the duct is constant-area; M = 1 occurs only at its exit):
+
+$$
+\dot m = A\,\frac{p_0}{\sqrt{T_0}}\sqrt{\frac{\gamma}{R}}\;\frac{M_1}{(1 + 0.2M_1^2)^3} = 10^{-4}\times\frac{10^6}{\sqrt{300}}\sqrt{\frac{1.4}{277.1}}\times\frac{0.17}{(1.00578)^3} = 0.0686\ \text{kg/s}
+$$
+
+With the exact $M_1 = 0.174$: 0.0702 kg/s. The official answer is "0.07 kg/s".
+
+</Step>
+</Steps>
+
+<Answer>
+
+- (a) **$M_1 \approx 0.17$** (exact 0.174).
+- (b) **$M_2 = 1$**: choked at the exit, with $p_{exit} = p^* \approx 1.53$ bar, above $p_b$ = 1 bar.
+- (c) **ṁ ≈ 0.07 kg/s** (0.0686 with M = 0.17).
+
+</Answer>
+
+<Traps>
+
+- The solution sheet writes "$P_0$ = 10 atm" and "$P_{back}$ = 1 atm". The question uses **bar**.
+- Once choked, $p_{exit} = p^* \neq p_b$. Realising this was worth 5 pts.
+- ṁ uses the **entrance** Mach number (0.17) in the isentropic formula, not M = 1.
+- The red marking allowed either iterating on $M_1$ or "jumping directly to the answer with $L^* = L$". The direct jump is faster.
+- **Exam-speed version:** "a) no exit condition ⇒ assume L = L*: 4fL/D = 20 → $M_1$ = 0.17. p = 0.98 × 10 = 9.8, p* = 1.52 > $p_b$ ⇒ choked (any M > 0.17 needs L > L*; any lower M gives $p_{exit}$ > p* > $p_b$). b) $M_2$ = 1. c) ṁ = A($p_0/\sqrt{T_0}$)$\sqrt{\gamma/R}$ M/(1 + 0.2M²)³ = 0.0686 ≈ 0.07 kg/s."
+
+</Traps>
+
+<Source>official F2023 solution pp. 7–9 with red marking · Anthony's minimum-writing notes pp. 21–22 (both passes)</Source>
+
+</Problem>

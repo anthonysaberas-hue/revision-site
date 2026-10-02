@@ -1,0 +1,246 @@
+<p className="eyebrow">Tutorial 8 · Apr 2024 · Lectures 14–15</p>
+
+# Tutorial 8: two-tank level control, pneumatic nozzle-flapper controller, hydraulic servo with bellows
+
+<div className="lede">
+
+The last tutorial brings together <Ch slug="hydraulic-thermal">Chapter 13</Ch> (liquid level, servos), <Ch slug="acoustic-pneumatic">Chapter 12</Ch> (pneumatic controllers) and <Ch slug="sensitivity">Chapter 14</Ch> (disturbances). Anthony's own crib sheet marks **Q2 as his weak spot**, so it is explained slowly in three separate stories. The instructor's Q3 loses a factor $k$.
+
+</div>
+
+<Problem id="T8 Q1" title="Liquid-level system with a proportional controller: transfer function and step response" tags="two tanks, superposition, offset">
+
+<Statement>
+
+Two tanks in series (tank 1: capacitance $C_1$, valve $R_1$; tank 2: capacitance $C_2$, valve $R_2$ draining to atmosphere). The inflow $q_i$ to tank 1 is set by a proportional controller measuring $h_2$; a disturbance inflow $q_d$ enters tank 2. (a) Find the transfer function. (b) Find the unit-step response for different gains $K_p$.
+
+</Statement>
+
+<Think>
+
+Each tank is a bucket with a hole: the level rises until the outflow equals the inflow, so each is a **first-order lag**. Two in series are two lags. A proportional controller opens the inflow valve in proportion to how far the second level is below target: more gain is faster but can overshoot (two lags plus feedback can ring) and **a constant offset remains because there is no integrator**. *Real life:* two connected rain barrels with a float valve on the second.
+
+</Think>
+
+<Plan>
+
+Mass balances; **superposition** for the two inputs (the system is linear); then close the loop with $T=G/(1+G)$.
+
+</Plan>
+
+<Steps>
+<Step title="1. Tank balances (inflow − outflow = rate of change of stored volume)">
+
+Tank 1: $q_i-q_1=C_1\dot h_1\Rightarrow Q_i-Q_1=C_1sH_1$, valve $q_1=h_1/R_1$ (linearised, flow proportional to head). Tank 2: $(q_1+q_d)-q_o=C_2\dot h_2\Rightarrow Q_1+Q_d-Q_o=C_2sH_2$, valve $q_o=h_2/R_2$.
+
+</Step>
+<Step title="2. Case 1: q_d = 0">
+
+Tank 1: $Q_i=\big(C_1s+\tfrac1{R_1}\big)H_1\Rightarrow H_1=\dfrac{R_1Q_i}{R_1C_1s+1}$ and $Q_1=\dfrac{H_1}{R_1}=\dfrac{Q_i}{R_1C_1s+1}$. Tank 2: $Q_1=\big(C_2s+\tfrac1{R_2}\big)H_2$, so
+$$\frac{H_2}{Q_i}=\frac{R_2}{(R_1C_1s+1)(R_2C_2s+1)}.$$
+
+</Step>
+<Step title="3. Case 2: q_i = 0">
+
+Then $q_1=0$ (tank 1 starts empty, so nothing flows into tank 2). Tank 2: $Q_d=\big(C_2s+\tfrac1{R_2}\big)H_2$, so $\dfrac{H_2}{Q_d}=\dfrac{R_2}{R_2C_2s+1}$.
+
+</Step>
+<Step title="4. Total (superposition)">
+
+$$H_2=\frac{R_2Q_i}{(R_1C_1s+1)(R_2C_2s+1)}+\frac{R_2Q_d}{R_2C_2s+1}.$$
+*Meaning:* the disturbance enters tank 2 directly (one lag); the controlled inflow must pass through both tanks (two lags).
+
+</Step>
+<Step title="5. Close the loop">
+
+Controller $q_i=K_p(r-h_2)$ (unity negative feedback). Plant $G=\dfrac{K_pR_2}{(R_1C_1s+1)(R_2C_2s+1)}$; ignoring the disturbance, $T=\dfrac{G}{1+G}$. With all constants $=1$:
+$$\frac{H_2}{R}=\frac{K_p}{(s+1)^2+K_p}=\frac{K_p}{s^2+2s+1+K_p}.$$
+
+</Step>
+<Step title="6. Step response">
+
+$R=1/s$: $H_2=\dfrac{K_p}{s\,(s^2+2s+1+K_p)}$. Read $\omega_n^2=1+K_p$, $2\zeta\omega_n=2\Rightarrow\zeta=\dfrac1{\sqrt{1+K_p}}$, $\omega_d=\sqrt{K_p}$. Partial fractions ($A/s$ with $A=\dfrac{K_p}{1+K_p}$, then complete the square):
+$$h_2(t)=\frac{K_p}{1+K_p}\Big\{1-e^{-t}\Big[\cos\sqrt{K_p}\,t+\frac{1}{\sqrt{K_p}}\sin\sqrt{K_p}\,t\Big]\Big\}.$$
+
+</Step>
+<Step title="7. What changes with K_p">
+
+$\zeta<1$ for every $K_p>0$: always underdamped. Final value $\dfrac{K_p}{1+K_p}<1$, so a steady **offset** $\dfrac{1}{1+K_p}$ remains (a type-0 loop). Overshoot $e^{-\pi/\sqrt{K_p}}$: $K_p=1$: 4.3%; $K_p=4$: 20.8%; $K_p=10$: 37%. Settling time $\approx4/\sigma=4$ s **whatever $K_p$ is**, since the real part of the poles is fixed at $-1$.
+
+</Step>
+<Step title="8. Disturbance with the loop closed">
+
+$H_2=\dfrac{K_pR+(s+1)Q_d}{(s+1)^2+K_p}$ (unit constants); a unit step in $q_d$ gives a level offset $\dfrac1{1+K_p}$: the proportional controller cannot reject a step disturbance completely (Ogata B-4-2).
+
+</Step>
+</Steps>
+
+<Answer>
+
+$\dfrac{H_2}{Q_i}=\dfrac{R_2}{(R_1C_1s+1)(R_2C_2s+1)}$, $\dfrac{H_2}{Q_d}=\dfrac{R_2}{R_2C_2s+1}$; closed loop (unit constants) $\dfrac{K_p}{s^2+2s+1+K_p}$ with offset $\dfrac1{1+K_p}$ and $OS=e^{-\pi/\sqrt{K_p}}$.
+
+</Answer>
+
+<Traps>
+
+- $q_1=0$ when $q_i=0$ **only because tank 1 starts empty**; a tank with stored water keeps feeding tank 2 for a while.
+- Closing the loop adds $K_p$ to the **constant** term, not the $s$ term: the real part ($-1$) stays.
+- In reality $q_i$ cannot go negative (saturation); $K_p$ is per unit of controller output.
+
+</Traps>
+
+<Source>instructor's transfer functions ✔ (match Ogata B-4-2 and HW6); closed-loop and step response derived here.</Source>
+
+<LabLink lab="tanks">Play with the two-tank lab</LabLink>
+
+</Problem>
+
+<Problem id="T8 Q2" title="Pneumatic controller (Ogata Fig. 4-48): block diagram and transfer function" tags="nozzle–flapper, PID from air, ⚠ Anthony's weak spot">
+
+<Statement>
+
+Find the block diagram and the transfer function of the pneumatic controller: a flapper (lever with arms $a$ and $b$) driven by the actuating error $e$; nozzle back-pressure $P_c$; two bellows (capacitances $C_1$, $C_2$) connected through restrictions $R_1$ (from $P_c$) and $R_2$; the bellows displacement $y$ pushes the lever back (feedback).
+
+</Statement>
+
+<Think>
+
+Three separate stories: **(A) geometry** (the lever), **(B) the amplifier** (gap to pressure), **(C) the pneumatic RC network** (pressure to bellows). Solve each alone, then connect them. The error moves a flapper over a nozzle; the back-pressure changes a lot for tiny gaps (a high gain $K$). That pressure inflates two bellows through air restrictors; the bellows push the flapper back with *delays* (restrictors and chambers are RC filters). A high-gain amplifier with delayed feedback behaves like the **inverse of the feedback path**: that is how air builds P, I and D.
+
+</Think>
+
+<Steps>
+<Step title="(A) Lever geometry">
+
+For small motions the nozzle gap is $x=\dfrac{b}{a+b}e-\dfrac{a}{a+b}y$ ($e$ pushes the gap up, the bellows pushes it back).
+
+</Step>
+<Step title="(B) Amplifier">
+
+Linearised nozzle-flapper $P_b=K_1x$ plus the relay $P_c=\dots$: merged as $P_c=Kx$ with $K=K_1K_3/K_2$, a large gain.
+
+</Step>
+<Step title="(C) Pneumatic network: mass balance on each chamber (flow in − flow out = C dP/dt)">
+
+$P_c$ feeds $R_1$, then bellows 1 ($C_1$, pressure $P_1$), then $R_2$, then bellows 2 ($C_2$, pressure $P_2$):
+
+- Chamber 1: $\dfrac{P_c-P_1}{R_1}=C_1sP_1+\dfrac{P_1-P_2}{R_2}$
+- Chamber 2: $\dfrac{P_1-P_2}{R_2}=C_2sP_2$.
+
+From chamber 2: $P_1=(R_2C_2s+1)P_2$. Insert in chamber 1: $\dfrac{P_1-P_2}{R_2}=C_2sP_2$ turns it into $P_c=P_1+R_1C_1sP_1+R_1C_2sP_2=P_2\big[(R_2C_2s+1)(R_1C_1s+1)+R_1C_2s\big]$, so
+$$P_2=\frac{P_c}{D},\quad P_1=\frac{(R_2C_2s+1)P_c}{D},\quad D=R_1R_2C_1C_2s^2+(R_1C_1+R_1C_2+R_2C_2)s+1.$$
+
+</Step>
+<Step title="The bellows push back">
+
+Force balance $(P_1-P_2)A=ky\Rightarrow y=\dfrac Ak(P_1-P_2)$, and $P_1-P_2=\dfrac{R_2C_2s}{D}P_c$ (because $(R_2C_2s+1)-1=R_2C_2s$).
+
+</Step>
+<Step title="Close the loop">
+
+$P_c=K\Big[\dfrac{b}{a+b}e-\dfrac{a}{a+b}\dfrac Ak\dfrac{R_2C_2s}{D}P_c\Big]$, so
+$$\frac{P_c}{E}=\frac{\dfrac{b}{a+b}K}{1+K\dfrac{a}{a+b}\dfrac Ak\dfrac{R_2C_2s}{D}}.$$
+
+</Step>
+<Step title="Ideal controller (K → ∞)">
+
+The 1 disappears: $\dfrac{P_c}{E}\to\dfrac{bk}{aA}\dfrac{D}{R_2C_2s}$. Divide term by term:
+$$\frac{P_c}{E}=\frac{bk}{aA}\Big[R_1C_1\,s+\Big(1+\frac{R_1}{R_2}+\frac{R_1C_1}{R_2C_2}\Big)+\frac{1}{R_2C_2\,s}\Big]:$$
+a **PID controller** with $K_p=\dfrac{bk}{aA}\Big(1+\dfrac{R_1}{R_2}+\dfrac{R_1C_1}{R_2C_2}\Big)$, $K_d=\dfrac{bk}{aA}R_1C_1$, $K_i=\dfrac{bk}{aA}\dfrac{1}{R_2C_2}$ ($T_d=K_d/K_p$, $T_i=K_p/K_i$).
+
+</Step>
+</Steps>
+
+<Answer>
+
+Block diagram: $E\to\dfrac b{a+b}\to\oplus\to K\to P_c$; feedback from $P_c$ through $\dfrac{R_2C_2s}{D}$ (the difference $P_1-P_2$), then $\dfrac Ak$ and $\dfrac a{a+b}$, subtracted at the junction. Closed loop as above; ideal limit a PID.
+
+*Real-world:* a refinery's pneumatic PID controller: the three terms come free from the geometry of two restrictors and two bellows.
+
+</Answer>
+
+<Callout kind="note" title="What the instructor's page contains">
+
+It derives $P_1$ and $P_2$ (✔) and draws the block diagram ($E\to\dfrac b{a+b}\to\oplus\to K\to P_c$, feedback through $\dfrac{R_2C_2s+1}{D}$ and $\dfrac1D$, subtracted, then $\dfrac Ak$ and $\dfrac a{a+b}$). It stops at the block diagram; the closed-loop transfer function and the PID identification are the digest's completion. **Compare <Hw n="6">HW6 Q3</Hw>**, the same structure with the feedback bracket $\dfrac1{R_dCs+1}-\dfrac1{R_iCs+1}$.
+
+</Callout>
+
+<Traps>
+
+- The feedback bellows act on the **difference** $P_1-P_2$, not on $P_2$ alone.
+- "$K\to\infty$" is an approximation: the controller is then the inverse of the feedback path.
+- The model ignores extra bellows compliance (the effective capacitance is $C+A^2/k$).
+
+</Traps>
+
+<Source>instructor ✔ ($P_1,P_2$, block diagram); chamber equations ✔ (symbolic); completion by the digest.</Source>
+
+</Problem>
+
+<Problem id="T8 Q3" title="Hydraulic servo with bellows and lever: unit step response" tags="servo as integrator, lever feedback">
+
+<Statement>
+
+Air pressure $p_i$ (input) acts on a bellows (area $A$, spring $k$) whose lower end $z$ is connected by a lever to the pilot valve of a hydraulic servomotor with output $y$. Find the unit-step response of $y$.
+
+</Statement>
+
+<Think>
+
+The hydraulic servo is an **integrator**: a valve opening $w$ makes the piston move at a speed proportional to it ($Y/W=K_H/s$). The lever feeds the output position back to the valve and turns the integrator into a first-order lag. The bellows spring converts the air pressure into a position command. *Real life:* power steering or an aircraft control-surface actuator.
+
+</Think>
+
+<Steps>
+<Step title="1. Servo and lever">
+
+$\dfrac YW=\dfrac{K_H}{s}$. The lever relations (from the sheet): $x=w$ and $y=-z$ (the pivot reverses the sign). So $X=\dfrac{sY}{K_H}$.
+
+</Step>
+<Step title="2. Bellows force balance">
+
+Pressure force = spring force: $p_iA=k(x-z)=k(x+y)=k\Big(\dfrac{sY}{K_H}+Y\Big)$.
+
+</Step>
+<Step title="3. Factor">
+
+$p_iA=k\Big(\dfrac{s}{K_H}+1\Big)Y\Rightarrow\dfrac{Y}{P_i}=\dfrac{A/k}{s/K_H+1}$.
+
+</Step>
+<Step title="4. Unit step (A = k = K_H = 1)">
+
+$Y=\dfrac{1}{s(s+1)}=\dfrac1s-\dfrac1{s+1}\Rightarrow y(t)=1-e^{-t}$. In general $y(t)=\dfrac Ak\big(1-e^{-K_Ht}\big)$, time constant $1/K_H$.
+
+</Step>
+</Steps>
+
+<Answer>
+
+$\dfrac{Y}{P_i}=\dfrac{A/k}{s/K_H+1}$; step response $y=\dfrac Ak(1-e^{-K_Ht})$.
+
+</Answer>
+
+<Callout kind="warn" title="⚠ Instructor's result loses a k">
+
+He writes $\dfrac{Y}{P_i}=\dfrac{A}{ks/K_H+1}$ (the $k$ multiplies only the $s$ term). The force balance gives $\dfrac{A}{k(s/K_H+1)}$: the DC gain is $A/k$, not $A$. With $A=k=K_H=1$ there is no numerical difference, which is why it went unnoticed.
+
+</Callout>
+
+<Traps>
+
+- The lever sign $y=-z$ makes the feedback **negative**; a wrong sign gives a growing exponential.
+- The servo alone is an integrator (it would ramp forever for a constant valve opening); the spring feedback is what makes $y$ settle.
+
+</Traps>
+
+<Source>instructor ✘ (missing $k$); response ✔.</Source>
+
+<LabLink lab="hydraulic-servo">Try the hydraulic servo lab</LabLink>
+
+</Problem>
+
+<Examined>
+
+Level systems: $\text{MT2 W2011}$, $\text{final F2010}$; pneumatic PID: $\text{MT2 W2012}$, $\text{final F2009}$; hydraulic servo: $\text{MT2 W2009}$, $\text{W2019}$.
+
+</Examined>

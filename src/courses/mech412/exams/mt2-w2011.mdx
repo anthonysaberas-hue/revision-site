@@ -1,0 +1,369 @@
+<p className="eyebrow">Midterm 2 · Winter 2011 (Mar 15, 2011) · 4 × 25 = 100 marks</p>
+
+# Midterm 2, Winter 2011: two analog circuits, tank regulator, servo gain for 20 % overshoot, op-amp PID
+
+<div className="lede">
+
+A clean, fully correct paper. Q1 is literally the two **representative problems of the Lecture-exercise pack** (same figures), Q2 a tank level regulator with sensitivity (<Ch slug="hydraulic-thermal">Chapter 13</Ch>, <Ch slug="sensitivity">Chapter 14</Ch>), Q3 a DC-servomotor position loop with an overshoot limit (<Ch slug="electromechanical">Chapter 11</Ch>, <Ch slug="time-response">Chapter 4</Ch>), Q4 an op-amp PID (<Ch slug="circuits-opamps">Chapter 8</Ch>, <Ch slug="pid">Chapter 17</Ch>). The paper attached the analogies table, the Laplace table, the block-diagram transformations table and the state-equation Methods 1 and 2.
+
+</div>
+
+<Problem id="MT2 W2011 Q1a" title="Three-mass mechanical system: mobility and impedance analogs (≈ 12 marks)" tags="mobility analog, force source first, 5th order">
+
+<Statement>
+
+Three masses $M_{M1},M_{M2},M_{M3}$ on a frictionless floor; a spring $C_{M1}$ and mass $M_{M1}$ on the left with dashpots $R_{M1}$ (to the wall above) and $R_{M2}$ (between $M_{M1}$ and $M_{M2}$); a spring $C_{M2}$ between $M_{M2}$ and $M_{M3}$; a dashpot $R_{M3}$ from $M_{M3}$ to the right wall; the force $F(t)$ pushes $M_{M2}$. Draw equivalent circuits in the mobility and impedance analogs.
+
+</Statement>
+
+<Think>
+
+Mobility: potential = velocity, flux = force; masses are capacitors **to ground** (absolute velocity), springs inductors $C_M=1/k$, dashpots resistors $1/R_M$. Crib rule: **if there is a force input, start with that component.** A damper or spring to a fixed wall goes from that mass's node to ground; one between two masses goes between the nodes.
+
+</Think>
+
+<Steps>
+<Step title="1. Nodes">
+
+$\dot x_1,\dot x_2,\dot x_3$ (absolute velocities) and ground (the fixed walls).
+
+</Step>
+<Step title="2. Masses">
+
+Capacitors $M_{M1},M_{M2},M_{M3}$ from each node to ground.
+
+</Step>
+<Step title="3. Springs">
+
+Inductors of value $C_M=1/k$: $C_{M1}$ from node 1 to ground (wall spring); $C_{M2}$ between nodes 2 and 3.
+
+</Step>
+<Step title="4. Dashpots">
+
+Resistors $1/R_M$: $R_{M1}$ (wall) from its node to ground; $R_{M2}$ between nodes 1 and 2; $R_{M3}$ from node 3 to ground.
+
+</Step>
+<Step title="5. Source">
+
+$F(t)$ is a **current source** into node 2 (the node of $M_{M2}$).
+
+</Step>
+<Step title="6. Impedance analog (official, second sketch)">
+
+Three series loops: $F$ as a voltage source; masses become inductors $M_M$, springs capacitors $C_M$, dashpots resistors $R_M$; the elements shared between adjacent masses ($R_{M2}$, $C_{M2}$) are the elements shared between adjacent loops.
+
+</Step>
+<Step title="7. Count check">
+
+3 masses + 2 springs = 5 states: a **5th-order** system.
+
+</Step>
+</Steps>
+
+<Answer>
+
+Mobility: current source $F$ into node 2; capacitors $M_{M1},M_{M2},M_{M3}$ to ground; inductors $C_{M1}$ (1 to ground), $C_{M2}$ (2 to 3); resistors $1/R_{M1}$ (1 to ground), $1/R_{M2}$ (1 to 2), $1/R_{M3}$ (3 to ground).
+
+</Answer>
+
+<Callout kind="note" title="Figure ambiguity">
+
+The figure is slightly ambiguous about which mass $R_{M1}$ acts on; the rule is the same either way: a damper to a fixed wall is a resistor from that mass's node to ground. The circuit is **non-planar** in the official drawing (the $R_{M1}$ branch crosses): redraw with the ground as the common bottom rail.
+
+</Callout>
+
+<Traps>
+
+- Putting $R_{M1}$ in series with the mass instead of to the wall.
+- A spring is an inductor in the mobility analog.
+
+</Traps>
+
+<Source>official (page 11), identical to the L12–13 representative problem.</Source>
+
+</Problem>
+
+<Problem id="MT2 W2011 Q1b" title="Hydro-pneumatic system: tank, valve, pipe masses, piston-closed air cavity (≈ 13 marks)" tags="flux divider, transformer 1:A_p, volume vs mass flux">
+
+<Statement>
+
+A liquid tank feeds a pipe through a valve; the pipe has fluid inertias; a piston-closed air cavity $C_A$ branches off at a node $b$ (as in the L14–15 representative problem). Draw the equivalent circuit.
+
+</Statement>
+
+<Think>
+
+Work in **volume flux** (mass flux $\div\rho_f$). Liquid compliance is a shunt capacitor; valve and pipe inertias are series elements; the piston branch takes a share of the flow ($A_p\dot x$) and converts it to mechanical motion with a transformer $1:A_p$; the air cavity pushes back on the piston.
+
+</Think>
+
+<Steps>
+<Step title="1. Source and tank">
+
+Current source $m_{in}/\rho_f$ into a shunt capacitor $C_f/\rho_f$ (the tank).
+
+</Step>
+<Step title="2. Valve and first pipe section">
+
+Series $\rho_fR_f$ and $\rho_fM_{f1}$, arriving at node $b$.
+
+</Step>
+<Step title="3. Node b: flux divider">
+
+Volume balance: flow arriving $=$ flow leaving through the pipe $+A_p\dot x$. One branch continues through the series $\rho_fM_{f2}$ to the output $m_{out}/\rho_f$; the other leaves through the piston.
+
+</Step>
+<Step title="4. Piston branch">
+
+A transformer $1:A_p$ to the mechanical **mobility** circuit (capacitor $M_M$, piston velocity $\dot x$), and a second transformer to the acoustic impedance circuit with $C_A$ (the air cavity pushing back on the piston). The official page labels the blocks "mech. imp. / acoustic imp. / fluid" with the ratios "$1{:}A_p$" and "$A_p{:}1$".
+
+</Step>
+<Step title="5. Reasoning check">
+
+The piston moves because the water pressure $P_b$ pushes on $A_p$ and the air cavity $C_A$ pushes back. Units: mass flux $\div\rho_f=$ volume flux.
+
+</Step>
+</Steps>
+
+<Answer>
+
+Source $\to C_f/\rho_f\to\rho_fR_f\to\rho_fM_{f1}\to$ node $b$ (piston branch via transformers) $\to\rho_fM_{f2}\to$ output.
+
+</Answer>
+
+<Traps>
+
+- Forgetting transformers between media, or using mass flux without converting by $\rho_f$.
+
+</Traps>
+
+<Source>official ✔ (same solution as in the lecture-exercise pack).</Source>
+
+</Problem>
+
+<Problem id="MT2 W2011 Q2" title="Tank level regulator: error equation, offset with P and with I, sensitivity to C (25 marks)" tags="final value, integral action, S^T_C">
+
+<Statement>
+
+A tank (capacitance $C$, orifice resistance $R$) with inflow $q_1$ from a controller and a disturbance inflow $q_3$; level $h$. Block diagram: desired variation $H_d(s)=0$, error $E(s)\to$ controller $G(s)\to\dfrac{R}{RCs+1}\to\oplus$ (with the disturbance $Q_3(s)$) $\to H(s)$; negative feedback of $H$ to the error junction. (a) The equation for $E(s)$. (b) The steady-state error for a unit-step disturbance $Q_3=1/s$ with $G=K$. (c) The same for $G=K/s$. (d) The closed-loop sensitivity to variations in $C$ for $G=K$, $Q_3=0$.
+
+</Statement>
+
+<Think>
+
+A float-controlled tank. A step disturbance (an extra inflow) raises the level; a proportional controller leaves an **offset**, an **integral** controller removes it; sensitivity measures how much the closed loop changes if the tank's area changes.
+
+</Think>
+
+<Steps>
+<Step title="(a) 1. Error">
+
+$E=H_d-H=-H$ (since $H_d=0$).
+
+</Step>
+<Step title="(a) 2. Level from the diagram">
+
+$H=Q_3+\dfrac{R}{RCs+1}G\,E$ (the figure adds $Q_3$ after the tank block, as the official solution does).
+
+</Step>
+<Step title="(a) 3. Substitute">
+
+$E=-Q_3-\dfrac{R}{RCs+1}GE\Rightarrow E\Big[1+\dfrac{RG}{RCs+1}\Big]=-Q_3$:
+$$E(s)=-\frac{(RCs+1)\,Q_3(s)}{RCs+1+RG(s)} .$$
+
+</Step>
+<Step title="(b) G = K, Q₃ = 1/s">
+
+Final-value theorem: $e_{ss}=\lim_{s\to0}sE=-\dfrac{1}{1+RK}$: a **constant offset** (the larger $K$, the smaller, but never zero).
+
+</Step>
+<Step title="(c) G = K/s">
+
+$sE(s)=-\dfrac{s(RCs+1)}{RCs^2+s+RK}\Rightarrow e_{ss}=0$ ✔: an integrator in the controller rejects a constant disturbance (the plant has no integrator before the disturbance entry here, so the controller must supply it). The characteristic polynomial $RCs^2+s+RK$ has all positive coefficients, so it is stable and the final-value theorem is valid.
+
+</Step>
+<Step title="(d) 1. Closed loop (Q₃ = 0)">
+
+$H=\dfrac{R}{RCs+1}K(H_d-H)\Rightarrow T=\dfrac{H}{H_d}=\dfrac{RK}{RCs+1+RK}$.
+
+</Step>
+<Step title="(d) 2. Sensitivity">
+
+$S^T_C=\dfrac CT\dfrac{\partial T}{\partial C}$ with $\dfrac{\partial T}{\partial C}=-\dfrac{RK\cdot Rs}{(RCs+1+RK)^2}$:
+$$S^T_C=-\frac{RCs}{RCs+1+RK}.$$
+
+</Step>
+<Step title="(d) 3. Reading S">
+
+$S=0$ at DC (the steady value $\tfrac{RK}{1+RK}$ does not depend on $C$); at high frequency $S\to-1$; a larger loop gain $RK$ enlarges the denominator and lowers the sensitivity at low frequencies.
+
+</Step>
+</Steps>
+
+<Answer>
+
+(a) $E=-\dfrac{(RCs+1)Q_3}{RCs+1+RG}$; (b) $e_{ss}=-\dfrac1{1+RK}$; (c) $e_{ss}=0$; (d) $S^T_C=-\dfrac{RCs}{RCs+1+RK}$.
+
+*Real-world:* a water-tank or boiler level controller: proportional-only leaves a level offset when demand changes; integral action (PI/PID) removes it.
+
+</Answer>
+
+<Traps>
+
+- Applying the final-value theorem without checking stability (fine here).
+- Dropping the minus sign in $E=-H$.
+
+</Traps>
+
+<Source>official ✔ (all four parts reproduced).</Source>
+
+<LabLink lab="tanks">Two-tank lab</LabLink>
+
+</Problem>
+
+<Problem id="MT2 W2011 Q3" title="DC servomotor: transfer function, position servo, maximum gain for overshoot < 20 % (25 marks)" tags="back-emf damping, ζ from overshoot, K_max">
+
+<Statement>
+
+$J_m\ddot\theta_m+\Big(b+\dfrac{K_tK_e}{R_a}\Big)\dot\theta_m=\dfrac{K_t}{R_a}v_a$ with $J_m=0.01$ kg·m², $b=0.001$ N·m·s, $K_e=0.02$ V·s, $K_t=0.02$ N·m/A, $R_a=10\ \Omega$. (a) $\Theta_m/V_a$. (b) With feedback $v_a=K(\theta_r-\theta_m)$, $\Theta_m/\Theta_r$. (c) The largest $K$ for overshoot $M_p<20\%$.
+
+</Statement>
+
+<Think>
+
+The back emf adds to the mechanical damping ($K_tK_e/R_a$), and the plant is an integrator times a lag. With position feedback the closed loop is a second-order system whose $\omega_n^2$ is proportional to $K$ and whose damping term does **not** grow with $K$: more gain means less damping.
+
+</Think>
+
+<Steps>
+<Step title="(a) 1. Laplace">
+
+$J_ms^2\Theta+\Big(b+\dfrac{K_tK_e}{R_a}\Big)s\Theta=\dfrac{K_t}{R_a}V_a$.
+
+</Step>
+<Step title="(a) 2. Numbers">
+
+$\dfrac{K_tK_e}{R_a}=\dfrac{0.02\cdot0.02}{10}=4\times10^{-5}$; total damping $0.001+0.00004=1.04\times10^{-3}$; $\dfrac{K_t}{R_a}=2\times10^{-3}$.
+
+</Step>
+<Step title="(a) 3. Result">
+
+$$\frac{\Theta_m}{V_a}=\frac{0.002}{0.01s^2+0.00104s}=\frac{0.2}{s(s+0.104)}.$$
+
+</Step>
+<Step title="(b) Close the loop">
+
+$V_a=K(\Theta_r-\Theta_m)$: $(J_ms^2+1.04\times10^{-3}s+0.002K)\Theta_m=0.002K\,\Theta_r$:
+$$\frac{\Theta_m}{\Theta_r}=\frac{0.2K}{s^2+0.104s+0.2K}.$$
+
+</Step>
+<Step title="(c) 1. Match the standard form">
+
+$\omega_n^2=0.2K$, $2\zeta\omega_n=0.104\Rightarrow\zeta=\dfrac{0.104}{2\sqrt{0.2K}}=\dfrac{0.052}{\sqrt{0.2K}}$.
+
+</Step>
+<Step title="(c) 2. Overshoot to damping">
+
+$M_p=e^{-\zeta\pi/\sqrt{1-\zeta^2}}<0.20$: $\ln0.20=-1.609$, so $\dfrac{\zeta\pi}{\sqrt{1-\zeta^2}}>1.609\Rightarrow\dfrac{\zeta^2\pi^2}{1-\zeta^2}>2.590\Rightarrow\zeta^2(\pi^2+2.590)>2.590\Rightarrow\zeta^2>0.2079\Rightarrow\zeta>0.4559$.
+
+</Step>
+<Step title="(c) 3. Solve for K">
+
+$\dfrac{0.104}{2\sqrt{0.2K}}>0.4559\Rightarrow\sqrt{0.2K}<0.1140\Rightarrow0.2K<0.0130\Rightarrow K<0.065$. So **$K_{max}=0.065$ V/rad**.
+
+</Step>
+<Step title="(c) 4. Check">
+
+$K=0.065$: $\omega_n=\sqrt{0.013}=0.114$ rad/s, $\zeta=0.456$, overshoot $20.0\%$ ✔. The response is **slow**: settling $4/(\zeta\omega_n)=77$ s (the small gain needed comes from the almost frictionless, low-gain motor: damping 0.104 relative to the inertia).
+
+</Step>
+</Steps>
+
+<Answer>
+
+(a) $\dfrac{0.2}{s(s+0.104)}$; (b) $\dfrac{0.2K}{s^2+0.104s+0.2K}$; (c) $K_{max}=0.065$ V/rad.
+
+*Real-world:* a position servo: small gain gives a gentle, well-damped response; high gain a fast but oscillatory motor.
+
+</Answer>
+
+<Traps>
+
+- Forgetting the back-emf contribution $K_tK_e/R_a$ to the damping.
+- $\zeta$ must use the **total** damping 0.104, not $b$ alone.
+
+</Traps>
+
+<Source>official ✔ ($0.2/(s^2+0.104s)$, $0.2K/(s^2+0.104s+0.2K)$, $K_{max}=0.065$).</Source>
+
+<ToolLink tool="second-order">Check ζ and overshoot</ToolLink>
+
+</Problem>
+
+<Problem id="MT2 W2011 Q4" title="Op-amp circuit as a PID controller (25 marks)" tags="inverting op-amp, PID identification">
+
+<Statement>
+
+Inverting op-amp; input: $C_1$ in parallel with $R_1$ in series with $V_i$; feedback: $R_2$ in series with $C_2$. (a) $V_o/V_i$. (b) Show it can be written $K_p+K_i/s+K_ds$. (c) Identify $K_p,K_i,K_d$ in terms of $R_1,R_2,C_1,C_2$.
+
+</Statement>
+
+<Think>
+
+Ideal inverting amplifier: $V_o/V_i=-Z_2/Z_1$. The input element is a **parallel** pair, the feedback element a **series** pair.
+
+</Think>
+
+<Steps>
+<Step title="(a) 1. Impedances">
+
+$Z_1=R_1\parallel C_1=\dfrac{R_1}{R_1C_1s+1}$; $Z_2=R_2+\dfrac1{C_2s}=\dfrac{R_2C_2s+1}{C_2s}$.
+
+</Step>
+<Step title="(a) 2. Divide">
+
+$$\frac{V_o}{V_i}=-\frac{Z_2}{Z_1}=-\frac{(R_1C_1s+1)(R_2C_2s+1)}{R_1C_2s}=-\frac{R_1R_2C_1C_2s^2+(R_1C_1+R_2C_2)s+1}{R_1C_2s}.$$
+
+</Step>
+<Step title="(b) Divide each term by the denominator R₁C₂s">
+
+$$G(s)=-\frac{R_1C_1+R_2C_2}{R_1C_2}-\frac{1}{R_1C_2s}-R_2C_1s .$$
+
+</Step>
+<Step title="(c) Read the gains">
+
+$$K_p=-\Big(\frac{C_1}{C_2}+\frac{R_2}{R_1}\Big),\quad K_i=-\frac1{R_1C_2},\quad K_d=-R_2C_1 .$$
+All three are negative (the stage inverts): follow it by an inverting stage to get positive gains.
+
+</Step>
+<Step title="Checks">
+
+The expansion of the numerator ✔. With $R_2\to0$ the derivative action disappears (a PI remains); with $C_1\to0$ likewise ✔.
+
+</Step>
+</Steps>
+
+<Answer>
+
+$\dfrac{V_o}{V_i}=-\dfrac{(R_1C_1s+1)(R_2C_2s+1)}{R_1C_2s}$; $K_p=-\Big(\dfrac{C_1}{C_2}+\dfrac{R_2}{R_1}\Big)$, $K_i=-\dfrac1{R_1C_2}$, $K_d=-R_2C_1$.
+
+*Real-world:* the classic analog PID amplifier: the proportional gain depends on both ratios, the integral gain only on $R_1C_2$, the derivative gain only on $R_2C_1$.
+
+</Answer>
+
+<Traps>
+
+- Using the parallel impedance as $R_1+1/(C_1s)$ (series).
+- Dropping the minus sign.
+
+</Traps>
+
+<Source>official ✔ (final page).</Source>
+
+</Problem>
+
+<Examined>
+
+Compare $\text{T4 Q3}$ (the same PID op-amp), $\text{HW5 Q2}$, <Hw n="6">HW6 Q3</Hw>; liquid-level and sensitivity: <Ch slug="sensitivity">Chapter 14</Ch>; servo overshoot: <Ch slug="time-response">Chapter 4</Ch>.
+
+</Examined>

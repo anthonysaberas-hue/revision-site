@@ -1,0 +1,201 @@
+<p className="eyebrow">Chapter 6</p>
+
+# Nozzles & rockets
+
+<p className="lede">Now fix the reservoir and turn the one knob the outside world controls: the back pressure. A converging nozzle can only reach M = 1, and then it chokes. A converging–diverging nozzle can go supersonic, but only if the back pressure lets it. Bolt one onto a combustion chamber and you have a rocket. This chapter gives the thrust equation, proves why the exit pressure should match the ambient pressure, and works through the NERVA nuclear rocket.</p>
+
+## The converging nozzle with back pressure
+
+A large reservoir ($p_0$, $T_0$, $V = 0$) feeds a converging nozzle that exhausts into a chamber whose pressure $p_b$ we lower with a valve.
+
+**Subsonic exit: the latex balloon.** Anthony's Feb 5 picture: imagine a latex balloon on the end of the tube. A subsonic jet cannot hold a pressure difference across its free boundary. If $p_\text{exit} > p_b$ the jet would bulge out and keep expanding (decelerating, raising pressure further: not possible); if $p_\text{exit} < p_b$ it would be squeezed. So **$p_\text{exit} = p_b$**, and the back pressure sets everything:
+
+$$
+\frac{p_0}{p_b} = \left(1 + \frac{\gamma - 1}{2}M_\text{exit}^2\right)^{\frac{\gamma}{\gamma - 1}}
+$$
+
+**Choked exit: the Bell Centre.** Lower $p_b$ until $p_b = p^* = 0.5283\,p_0$: the exit is sonic. Lower it further and nothing inside changes. The exit stays at $M = 1$, $p_\text{exit} = p^*$, and **the exit pressure no longer matches $p_b$**; the rest of the expansion happens outside, in waves. Clearing the concourse faster does not get people through the doors any faster.
+
+| Back pressure | Exit Mach | Exit pressure | $\dot m$ |
+|---|---|---|---|
+| $p_b = p_0$ | 0 | $p_0$ | 0 (no flow) |
+| $p^* < p_b < p_0$ | below 1 | $= p_b$ | depends on $p_b$ |
+| $p_b \le p^*$ | 1 | $= p^*$ | maximum, independent of $p_b$ |
+
+<BellCentreSim />
+
+<ConvergingNozzleSim />
+
+## The converging–diverging nozzle
+
+Add a diverging section after the throat. As $p_b$ drops from $p_0$:
+
+1. **Venturi** (subsonic everywhere): the flow speeds up to the throat (M < 1 there), then slows down again; $p_\text{exit} = p_b$.
+2. **First critical, $p_3$**: the throat just reaches M = 1, and the diverging part is a subsonic diffuser. This is the lowest $p_0$ (for a given $p_b$) that chokes the nozzle (PS3 P4a). Mass flow is now frozen.
+3. **Between $p_3$ and the design pressure** there is *no isentropic solution*: a normal shock stands in the diverging section, or just outside (Ch. 8).
+4. **Design, $p_d$**: supersonic all the way, $p_\text{exit} = p_b$ exactly, no waves at all.
+5. **Below $p_d$** (under-expanded): the nozzle is unchanged; expansion fans outside finish the job (Ch. 13).
+
+Both $p_3$ and $p_d$ come from the **same** $A_e/A_t$, read on the two branches of Table A2:
+
+$$
+\frac{A_e}{A_t} \xrightarrow{\text{A2, sub}} M_3 \to p_3 = p_0\,(p/p_0)_{M_3}, \qquad
+\frac{A_e}{A_t} \xrightarrow{\text{A2, sup}} M_d \to p_d = p_0\,(p/p_0)_{M_d}
+$$
+
+"P_exit may not match P_back if we are supersonic, as it cannot feel p_back" (Feb 5 notes). Drag the slider and watch the shock walk out of the nozzle:
+
+<NozzleSim initialAR={2.5} initialPb={0.6} />
+
+## Worked example: wind through a window (Feb 5 lecture)
+
+<WindowFigure />
+
+**Problem.** Outside air at $p_0 = 1$ bar, $T_0 = 300$ K blows through a window into a building where the pressure is 0.92 bar. The opening converges to $A_\text{exit} = 1$ m².
+
+- **Exit Mach.** Is it choked? $p_b/p_0 = 0.92 > 0.5283$: no, "there is no way to choke". So $p_\text{exit} = p_b$ and $p_0/p_\text{exit} = 1.0870$ gives $M_\text{exit} = 0.347$ (<T>A2 @ M = 0.35: p/p₀ = 0.9188</T>, exact 0.3472).
+- **Smaller exit (0.5 m²).** $M_\text{exit}$ is unchanged, because it is set by $p_0/p_b$ alone. The mass flux $\rho V$ is the same, so $\dot m$ halves.
+- **C-D version, same 1 m² exit.** With $M_\text{exit} = 0.347$, <T>A2 @ M = 0.35: A/A* = 1.7780</T> (exact 1.790), so $A^* = 1/1.790 = 0.558$ m². Pinch a throat of exactly 0.558 m² and the throat is just sonic: this is the first-critical design.
+- **Supersonic root.** The same $A_e/A^* = 1.790$ on the supersonic branch is $M = 2.07$, $p_\text{exit} = 0.1146\,p_0$. That solution would need a back pressure of about 0.115 bar. At 0.92 bar it cannot happen without shocks.
+
+The same nozzle in 3-D (area ratio 1.79, back pressure 0.92 p₀): the throat is sonic, then the flow diffuses back to M 0.35.
+
+<NozzleSim initialAR={1.79} initialPb={0.92} />
+
+## Rocket thrust
+
+<RocketCVFigure />
+
+Draw the control volume around the whole rocket (notes §6.3). Propellants are on board, so nothing enters in the thrust direction. Ambient pressure acts all over the surface except the exit plane, where the exhaust has $p_e$. Steady x-momentum, with only $\dot m V_e$ leaving:
+
+$$
+F_\text{thrust} = \dot m V_e + A_e(p_e - p_\text{amb})
+$$
+
+Two contributions: the **momentum** term $\dot m V_e$ and the **pressure** term $A_e(p_e - p_\text{amb})$. A supersonic exit need not match $p_\text{amb}$, so the pressure term can be positive (under-expanded) or negative (over-expanded, a "suction" drag on the exit area).
+
+### Optimum expansion: p_e = p_amb
+
+Should the nozzle be longer (more momentum) or shorter (more exit pressure)? Fix the chamber, so $\dot m$ is fixed by the choked throat, and differentiate with respect to $A_e$:
+
+<Steps label="🪜 Proof">
+<Step title="1. Differentiate">
+
+$$
+\frac{dF}{dA_e} = \dot m\frac{dV_e}{dA_e} + A_e\frac{dp_e}{dA_e} + (p_e - p_\text{amb})
+$$
+
+</Step>
+<Step title="2. Use ṁ = ρₑVₑAₑ and Euler (dp + ρV dV = 0)">
+
+$$
+\dot m\frac{dV_e}{dA_e} + A_e\frac{dp_e}{dA_e} = A_e\left(\rho_e V_e\frac{dV_e}{dA_e} + \frac{dp_e}{dA_e}\right) = 0
+$$
+
+</Step>
+<Step title="3. Extremum">
+
+$$
+\frac{dF}{dA_e} = p_e - p_\text{amb} = 0 \;\Rightarrow\; p_e = p_\text{amb}
+$$
+
+</Step>
+<Step title="4. Maximum, not minimum (PS4 P1)">
+
+$$
+\frac{d^2F}{dA_e^2} = \frac{dp_e}{dA_e} = -\frac{1}{M_e^2 - 1}\frac{\rho_e V_e^2}{A_e} < 0 \quad\text{for } M_e > 1
+$$
+
+</Step>
+</Steps>
+
+If $p_e > p_\text{amb}$, lengthening the nozzle still converts pressure into more momentum than it loses. If $p_e < p_\text{amb}$, the suction on the exit outweighs the extra velocity. The fixed nozzle's thrust line only *touches* the ideal envelope where $p_e = p_\text{amb}$:
+
+<RocketThrustSim />
+
+### Maximum velocity and specific impulse
+
+Energy gives $V = \sqrt{2c_p(T_0 - T)}$. Expanding all the way to vacuum ($T \to 0$) converts *all* the enthalpy into motion:
+
+$$
+V_\text{max} = \sqrt{2c_pT_0} = \sqrt{\frac{2\gamma}{\gamma-1}RT_0} = \sqrt{\frac{2}{\gamma-1}}\,c_0 = 2.236\,c_0 \;(\gamma = 1.4)
+$$
+
+$M \to \infty$ there because $c \to 0$, not because $V$ is infinite. **Specific impulse** is thrust per unit mass flow, $I_{sp} = F/\dot m$ (m/s), or $F/(\dot m g_0)$ in seconds with $g_0 = 9.81$ m/s². The best possible $I_{sp}$ is $V_\text{max}$, so the best propellant has a **high temperature and a low molecular weight** ($c_0 = \sqrt{\gamma\Re T_0/MW}$).
+
+### The general rocket nozzle equation
+
+With $T/T_0 = (p/p_0)^{(\gamma-1)/\gamma}$ in the energy equation:
+
+$$
+F_\text{thrust} = \dot m\sqrt{\frac{2\gamma}{\gamma - 1}RT_0\left[1 - \left(\frac{p_e}{p_0}\right)^{\frac{\gamma - 1}{\gamma}}\right]} + A_e(p_e - p_\text{amb})
+$$
+
+This holds for **any** operating point. Optimal ($p_e = p_\text{amb}$) and vacuum-maximum ($p_e \to 0$) are special cases. A handy identity for the pressure term: $A_e p_e/\dot m = RT_e/V_e$.
+
+<Trap title="Fixed nozzle, new altitude">
+
+For a fixed nozzle running full and supersonic, $\dot m$, $M_e$, $p_e$ and $V_e$ are set by the chamber and $A_e/A_t$ only. **Changing altitude changes only $p_\text{amb}$ in the pressure term.** (Unless the ambient is so high that a shock enters the nozzle; Ch. 8.)
+
+</Trap>
+
+## Worked example: the NERVA nuclear thermal rocket (notes §6.3.4)
+
+Pure H₂ (MW = 2, so $R = 4157$ J/kg·K, γ = 1.4), heated by a reactor to $T_0 = 3000$ K at $p_0 = 30$ atm.
+
+**(a) Optimal I_sp at sea level** ($p_e = p_\text{amb} = 1$ atm):
+
+$$
+I_{sp} = \sqrt{\frac{2(1.4)}{0.4}(4157)(3000)\left[1 - \left(\frac{1}{30}\right)^{0.2857}\right]} = 7366\ \text{m/s}
+$$
+
+The Space Shuttle main engine, the best chemical engine ever built, manages about 4100 m/s at sea level. From $p_0/p_e = 30$: $M_e = 2.87$, and <T>A2 @ M = 2.87: A/A* = 3.74</T> (exact for $p_0/p_e = 30$: $M_e = 2.866$, $A_e/A^* = 3.73$).
+
+**(b) Same nozzle in space** ($p_\text{amb} = 0$): the exit state is unchanged ($p_e = 1$ atm), so only the pressure term appears:
+
+$$
+I_{sp} = 7366 + \frac{RT_e}{V_e} = 7366 + 643 = 8009\ \text{m/s}
+$$
+
+(exact arithmetic gives 641 and 8007 m/s; the notes' text also quotes 8006).
+
+**(c) Maximum, infinite area ratio in vacuum:**
+
+$$
+I_{sp,\max} = V_\text{max} = \sqrt{\frac{2\gamma}{\gamma-1}RT_0} = \sqrt{7 \times 4157 \times 3000} = 9343\ \text{m/s}
+$$
+
+**(d) Real space nozzle, $A_e/A^* = 500$:** $M_e = 9.83$, $p_e = 7.9\times10^{-4}$ atm, $I_{sp} = 9111 + 67 = 9178$ m/s, only 2.5% below the maximum.
+
+| Nozzle | $A_e/A^*$ | $I_{sp}$ at sea level | $I_{sp}$ in space |
+|---|---|---|---|
+| optimised for sea level | 3.74 | 7366 m/s | 8009 m/s |
+| optimised for space | ∞ | n/a | 9343 m/s |
+| actual NERVA design | 500 | n/a | 9178 m/s |
+
+A nozzle optimised for sea level loses 14% of the achievable vacuum performance; a vacuum nozzle at sea level would be so over-expanded that a shock would stand inside it. That compromise is why launch vehicles use different upper-stage nozzles and why altitude-compensating nozzles exist.
+
+<RocketBreakdownSim preset="nerva" />
+
+<Callout kind="note" title="Fire one yourself">
+
+The [3D engine lab](#/mech430/lab/engine) runs this chapter live: change chamber pressure, area ratio and altitude and watch the plume go from over-expanded (pinched, shock diamonds) to under-expanded (ballooning).
+
+</Callout>
+
+<Examined>
+
+- **Quiz 2 W2019, P2** (25 pts): a nozzle optimal at sea level ($p_0$ = 1000 kPa, $T_0$ = 2000 K, R = 300) taken to space. Ratio of sea-level to space thrust for the fixed nozzle, then vs an infinite area ratio. Exactly PS4 P3 with different numbers. [Quiz 2 W2019](#/mech430/exam/q2-w2019)
+- **Final A, P2** is also a rocket problem built on the general rocket nozzle equation. [Final A](#/mech430/exam/final-a)
+- **PS3 P2** (N₂ nozzle: optimum exit Mach, V_e, Fliegner throat), **PS3 P4** (first critical vs design $p_0$), **PS4 P1–P3** (prove the maximum; derive the thrust equation; sea level vs space). See [PS4](#/mech430/ps/ps04).
+- Recipe: never compute $A_e$ or $\dot m$ when only ratios are asked. Work **per unit mass flow**: $F/\dot m = V_e + RT_e/V_e \cdot (1 - p_\text{amb}/p_e)$.
+
+</Examined>
+
+## Check yourself
+
+1. A tank at 3 atm vents through a converging nozzle to 1 atm. Exit Mach and exit pressure? → Choked ($1/3 < 0.528$): $M_e = 1$, $p_e = 0.528 \times 3 = 1.58$ atm, not 1 atm.
+2. Why can a supersonic exit sit at a pressure different from $p_b$? → Supersonic flow cannot receive signals from downstream; the mismatch is fixed by waves outside.
+3. A rocket's $p_e$ is above $p_\text{amb}$. Should you lengthen the nozzle? → Yes: $dF/dA_e = p_e - p_\text{amb} > 0$.
+4. What sets the maximum possible $I_{sp}$? → $V_\text{max} = \sqrt{2c_pT_0}$: hot and light propellant.
+5. Same nozzle, sea level vs vacuum: what changes in $F = \dot mV_e + A_e(p_e - p_\text{amb})$? → Only $p_\text{amb}$.

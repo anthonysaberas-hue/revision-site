@@ -1,0 +1,184 @@
+<p className="eyebrow">Practice set 6 · Chapter 6 · fundamentals of convection · original problems</p>
+
+# Practice 6: boundary layers, friction, analogy, similarity
+
+<div className="lede">
+
+Chapter 6 is the "why" behind the correlations of the later chapters, and it appears on Midterm 2 as part of the external-flow question (Reynolds number, regime, boundary-layer ideas). These four original problems train the numbers that go with the ideas: $\delta$, $\delta_t$, $C_f$, $h_x$, the **Reynolds–Colburn analogy** and **similarity**. See <Ch slug="convection-basics">the chapter</Ch>. All numbers were recomputed independently with CoolProp properties (these may differ in the third digit from textbook tables).
+
+</div>
+
+<Problem id="P6-1" title="Laminar air flow over a heated plate: layers, coefficients, drag, heat" tags="Blasius, h_x, average h, Cf, drag force">
+
+<Statement>
+
+Air at 20 °C and 2 m/s flows along a flat plate 1 m long and 0.5 m wide at 60 °C. Find at $x=0.1$, 0.5 and 1 m: $Re_x$, $\delta$, $C_{f,x}$, $h_x$. Then find the average $h$, the heat rate, the drag force and the thermal boundary-layer thickness at the trailing edge.
+
+</Statement>
+
+<Think>
+
+Film temperature 40 °C: $k=0.02735$, $\nu=1.700\times10^{-5}$, $Pr=0.705$. $Re_L$ will be about $10^5$, below $5\times10^5$: laminar all the way, so Blasius formulas apply: $\delta=4.91x/\sqrt{Re_x}$, $C_{f,x}=0.664/\sqrt{Re_x}$, $Nu_x=0.332Re_x^{1/2}Pr^{1/3}$. The average over $L$ is exactly twice the local value at $L$.
+
+</Think>
+
+<Steps>
+<Step title="1. Local quantities">
+
+$Re_x=Vx/\nu$: 11 770 (0.1 m), 58 830 (0.5 m), 117 700 (1 m). $\delta=4.91x/\sqrt{Re_x}$: 4.53 mm, 10.1 mm, 14.3 mm. $C_{f,x}=0.664/\sqrt{Re_x}$: 0.00612, 0.00274, 0.00194. $Nu_x=0.332\sqrt{Re_x}Pr^{1/3}$: 32.1, 71.7, 101.4; $h_x=Nu_xk/x$: 8.77, 3.92, 2.77 W/m²K.
+
+</Step>
+<Step title="2. Observations">
+
+$\delta$ grows as $\sqrt x$, $h_x$ falls as $1/\sqrt x$ (thicker layer, lower gradient): the leading edge is where the plate cools best.
+
+</Step>
+<Step title="3. Average $h$ and heat rate">
+
+$\bar h=2h_L=2(2.773)=5.55$ W/m²K. $\dot Q=\bar hA(T_s-T_\infty)=5.55(1\times0.5)(40)=111$ W.
+
+</Step>
+<Step title="4. Drag">
+
+$C_f=1.328/\sqrt{Re_L}=0.00387$; $F=C_f\,A\,\dfrac{\rho V^2}2=0.00387(0.5)\dfrac{1.127(4)}2=0.0044$ N (very small: one side of the plate).
+
+</Step>
+<Step title="5. Thermal boundary layer">
+
+$\delta_t=\delta\,Pr^{-1/3}=14.3/0.89=16.1$ mm: for air ($Pr<1$) the thermal layer is **thicker** than the velocity layer, because heat diffuses faster than momentum.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**$\bar h=5.55$ W/m²K, $\dot Q\approx111$ W, $F\approx0.0044$ N, $\delta(L)=14.3$ mm, $\delta_t(L)=16.1$ mm.**
+
+</Answer>
+
+</Problem>
+
+<Problem id="P6-2" title="Water over a plate: why a high-Pr fluid has a thin thermal layer" tags="Pr effect, delta_t, large h">
+
+<Statement>
+
+Water at 25 °C flows at 0.5 m/s over a 0.3 m plate. Find $Re_L$, $\delta(L)$, $\delta_t(L)$ and $\bar h$ (laminar, plate hotter or colder by a few degrees so properties stay at 25 °C).
+
+</Statement>
+
+<Think>
+
+For $Pr=6.13$, $\delta_t/\delta=Pr^{-1/3}=0.55$: the thermal layer lies inside the velocity layer. Thin thermal layer means a steep gradient and large $h$.
+
+</Think>
+
+<Steps>
+<Step title="1. Properties">
+
+$\nu=8.926\times10^{-7}$, $k=0.6066$, $Pr=6.135$.
+
+</Step>
+<Step title="2. Reynolds number and layers">
+
+$Re_L=\dfrac{0.5(0.3)}{8.926\times10^{-7}}=1.68\times10^5$ (laminar). $\delta=\dfrac{4.91(0.3)}{\sqrt{1.68\times10^5}}=3.59$ mm. $\delta_t=\dfrac{3.59}{6.135^{1/3}}=1.96$ mm.
+
+</Step>
+<Step title="3. Heat transfer coefficient">
+
+$\overline{Nu}=0.664\sqrt{Re_L}Pr^{1/3}=0.664(410)(1.830)=498$; $\bar h=\dfrac{498(0.6066)}{0.3}=1007$ W/m²K.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**$\delta=3.6$ mm, $\delta_t=2.0$ mm, $\bar h\approx1010$ W/m²K** (180× the air value of P6-1 at a lower velocity: water carries far more heat per kelvin).
+
+</Answer>
+
+</Problem>
+
+<Problem id="P6-3" title="Using the Chilton–Colburn analogy: from drag to heat transfer" tags="Colburn analogy, Cf, St, Nu consistency">
+
+<Statement>
+
+Air at 30 °C flows at 10 m/s along a 2 m × 1 m plate. The flow is laminar then turbulent. Compute the average skin-friction coefficient and drag force, then predict $\bar h$ from the **analogy** $St\,Pr^{2/3}=C_f/2$ and compare it with the correlation $\overline{Nu}=(0.037Re_L^{0.8}-871)Pr^{1/3}$.
+
+</Statement>
+
+<Think>
+
+The analogy says drag and heat transfer are two views of the same momentum transport: knowing one gives the other. $St=\dfrac{\bar h}{\rho c_pV}$.
+
+</Think>
+
+<Steps>
+<Step title="1. Properties and Reynolds number">
+
+$\rho=1.165$, $c_p=1006$, $k=0.02662$, $\nu=1.605\times10^{-5}$, $Pr=0.7067$. $Re_L=\dfrac{10(2)}{1.605\times10^{-5}}=1.246\times10^6>5\times10^5$: mixed.
+
+</Step>
+<Step title="2. Friction and drag">
+
+$C_f=\dfrac{0.074}{Re_L^{1/5}}-\dfrac{1742}{Re_L}=0.004468-0.001398=0.003070$. $F=C_fA\dfrac{\rho V^2}2=0.003070(2)\dfrac{1.165(100)}2=0.358$ N.
+
+</Step>
+<Step title="3. Heat transfer by analogy">
+
+$St=\dfrac{C_f/2}{Pr^{2/3}}=\dfrac{0.001535}{0.7934}=0.001935$; $\bar h=St\,\rho c_pV=0.001935(1.165)(1006)(10)=22.7$ W/m²K.
+
+</Step>
+<Step title="4. Direct correlation">
+
+$\overline{Nu}=(0.037(1.246\times10^6)^{0.8}-871)(0.7067)^{1/3}=1704$; $\bar h=\dfrac{1704(0.02662)}{2}=22.7$ W/m²K.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**$C_f=0.00307$, $F=0.36$ N, $\bar h=22.7$ W/m²K from both methods.** The two plate correlations are consistent with the analogy by construction: it gives a quick estimate of $h$ when only drag data exist.
+
+</Answer>
+
+</Problem>
+
+<Problem id="P6-4" title="Scaling laws and similarity" tags="dimensionless groups, model tests, h proportional to V^0.8 L^-0.2">
+
+<Statement>
+
+(a) A turbulent plate has $h\propto V^{0.8}L^{-0.2}$. If the wind speed doubles and the plate length is halved, what happens to $h$ and to $\dot Q$ for the same temperature difference? (b) A 10 cm cylinder in 5 m/s air is to be modelled by a 2.5 cm cylinder in the same air. What model speed gives dynamic similarity, and how are the measured heat transfer coefficients related?
+
+</Statement>
+
+<Think>
+
+(a) Just exponents. (b) Same fluid and temperatures means the same $Pr$; match $Re$ so that $Nu$ is identical. Then $h=Nu\,k/D$ scales as $1/D$.
+
+</Think>
+
+<Steps>
+<Step title="1. (a) Coefficient and heat rate">
+
+$h_2/h_1=2^{0.8}(1/2)^{-0.2}=2^{0.8}\cdot2^{0.2}=2$. The area is $A\propto L$ (same width), halved: $\dot Q_2/\dot Q_1=2(1/2)=1$ for the same $\Delta T$.
+
+</Step>
+<Step title="2. (b) Reynolds matching">
+
+$Re=VD/\nu$ equal: $V_m=V_p\dfrac{D_p}{D_m}=5(4)=20$ m/s.
+
+</Step>
+<Step title="3. (b) Coefficient scaling">
+
+$Nu_m=Nu_p\Rightarrow\dfrac{h_mD_m}k=\dfrac{h_pD_p}k\Rightarrow h_m=4h_p$.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**(a) $h$ doubles, $\dot Q$ unchanged. (b) Test at 20 m/s; the model's $h$ is 4× the prototype's.**
+
+</Answer>
+
+</Problem>

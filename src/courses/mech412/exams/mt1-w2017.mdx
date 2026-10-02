@@ -1,0 +1,284 @@
+<p className="eyebrow">Midterm 1 · Winter 2017 (Feb 10, 2017) · covers Lectures 1–9 · 4 × 25 = 100 marks</p>
+
+# Midterm 1, Winter 2017: state space to ODE, block diagram with a sensor, nonlinear circuit, SDOF from its Laplace transform
+
+<div className="lede">
+
+One help sheet allowed, handout of Method 1 / Method 2 stapled to the paper. Four questions, each a different skill from the first block. The handwritten solution is clean except for one thing: **its "alternate Method 1" in Q2 is wrong** (fixed below). Q3 is the nonlinear-circuit recipe of <Ch slug="linearization">Chapter 9</Ch> (the same circuit as the Lecture-10 problem).
+
+</div>
+
+<Problem id="MT1 W2017 Q1" title="State space to ODE to Laplace to a fitted damped sinusoid (25 marks)" tags="eliminate states, initial conditions, completing the square">
+
+<Statement>
+
+$A=\begin{bmatrix}0&2&0\\-8&-1&8\\0&0&1\end{bmatrix}$, $C=\begin{bmatrix}1&0&1\end{bmatrix}$, $x(0)=[0;1;0]$, no input. (a) Derive the ODE for $y(t)$ by eliminating the states (recognise that the third state equation with zero initial condition forces $x_3=0$); find initial conditions for $y$. (b) Find the numerator and denominator polynomials in the Laplace domain (numerator a constant, denominator second order). (c) For the approximation $y=Ae^{-\sigma t}\sin\omega t$ find $A,\sigma,\omega$.
+
+</Statement>
+
+<Think>
+
+Written out, $\dot x=Ax$ is three scalar equations. The third, $\dot x_3=x_3$, with $x_3(0)=0$ has the unique solution $x_3\equiv0$ (the unstable mode, eigenvalue $+1$, simply is **not excited**). Then the other two form a second-order system. Initial conditions on $y$ come from the equations at $t=0$.
+
+</Think>
+
+<Steps>
+<Step title="(a) 1. Write the three state equations">
+
+$\dot x_1=2x_2$; $\dot x_2=-8x_1-x_2+8x_3$; $\dot x_3=x_3$; output $y=x_1+x_3$.
+
+</Step>
+<Step title="(a) 2. Kill x₃">
+
+$\dot x_3=x_3$ with $x_3(0)=0\Rightarrow x_3\equiv0$. So $y=x_1$ and $\dot x_2=-8x_1-x_2$.
+
+</Step>
+<Step title="(a) 3. Eliminate x₂">
+
+$\dot y=\dot x_1=2x_2\Rightarrow x_2=\tfrac12\dot y$. Then $\dot x_2=\tfrac12\ddot y=-8y-\tfrac12\dot y$, i.e.
+$$\ddot y+\dot y+16y=0 .$$
+
+</Step>
+<Step title="(a) 4. Initial conditions">
+
+$y(0)=x_1(0)=0$ and $\dot y(0)=2x_2(0)=2$ (not 1: the factor 2 comes from $\dot x_1=2x_2$).
+
+</Step>
+<Step title="(b) Laplace transform with the initial conditions">
+
+$s^2Y-sy(0)-\dot y(0)+sY-y(0)+16Y=0\Rightarrow(s^2+s+16)Y=\dot y(0)=2$:
+$$Y(s)=\frac{2}{s^2+s+16}.$$
+
+</Step>
+<Step title="(c) Complete the square">
+
+$s^2+s+16=(s+\tfrac12)^2+15.75$, and $\sqrt{15.75}=3.97\approx4$. Write $Y=\dfrac{2}{\omega}\cdot\dfrac{\omega}{(s+\tfrac12)^2+\omega^2}$: with $\omega\approx4$, $\dfrac2\omega\approx\tfrac12$:
+$$y(t)\approx\tfrac12e^{-t/2}\sin4t,\qquad A=\tfrac12,\ \sigma=\tfrac12,\ \omega\approx4.$$
+
+</Step>
+</Steps>
+
+<Answer>
+
+$\ddot y+\dot y+16y=0$, $y(0)=0$, $\dot y(0)=2$; $Y=\dfrac{2}{s^2+s+16}$; $y\approx\tfrac12e^{-0.5t}\sin4t$ (exact: $\omega=3.9686$, $A=2/\omega=0.504$).
+
+*Real-world:* a lightly damped oscillator ($\omega_n=4$ rad/s, $\zeta=0.125$, a swaying structure) kicked with an initial velocity rings at about 4 rad/s and decays with time constant 2 s.
+
+</Answer>
+
+<Traps>
+
+- $\dot y(0)=2$, not 1; forgetting the 2 halves the amplitude.
+- The mode with eigenvalue $+1$ is absent from the output **only because** $x_3(0)=0$.
+
+</Traps>
+
+<Source>official solution (9 + 8 + 8 marks) ✔; eigenvalues of $A$: $+1$ and $-0.5\pm3.9686j$ checked.</Source>
+
+</Problem>
+
+<Problem id="MT1 W2017 Q2" title="Block diagram of a spacecraft attitude loop; state space with an input derivative (25 marks)" tags="superposition, sensor in feedback, pole-zero cancellation, Method 2">
+
+<Statement>
+
+$\Theta_{com}\to\oplus\to D(s)\to T_c\to\oplus$ (with the disturbance torque $T_d$ entering here) $\to$ spacecraft $\dfrac{0.9}{s^2}\to\Theta$; $\Theta$ is fed through a sensor $\dfrac{2}{s+2}$ (output $\Theta_m$) negatively to the first junction. (a) Find $T(s)=\Theta/\Theta_{com}$ in terms of $D(s)$ and $T_d(s)$. (b) If $T_d=0$ and $D(s)=s$, find a state-space representation (numerator first order, denominator second order).
+
+</Statement>
+
+<Think>
+
+Two inputs, so use **superposition** and write the loop equation directly: the disturbance adds to the compensator **output** $T_c=D\cdot(\text{error})$, **not** to $D$ itself (that is the common mistake the marking scheme penalises by 5 marks).
+
+</Think>
+
+<Steps>
+<Step title="(a) 1. Write Θ in terms of everything">
+
+$\Theta=\dfrac{0.9}{s^2}\Big[T_d+D\Big(\Theta_{com}-\dfrac{2}{s+2}\Theta\Big)\Big]$.
+
+</Step>
+<Step title="(a) 2. Collect Θ">
+
+Multiply by $s^2(s+2)$: $s^2(s+2)\Theta=0.9(s+2)T_d+0.9(s+2)D\Theta_{com}-1.8D\Theta$, so $[s^2(s+2)+1.8D]\Theta=0.9(s+2)T_d+0.9(s+2)D\Theta_{com}$.
+
+</Step>
+<Step title="(a) 3. Result">
+
+$$\Theta=\frac{0.9(s+2)}{s^2(s+2)+1.8D}T_d+\frac{0.9(s+2)D}{s^2(s+2)+1.8D}\Theta_{com},\qquad\frac{\Theta}{\Theta_{com}}=\frac{0.9(s+2)D}{s^2(s+2)+1.8D}.$$
+
+</Step>
+<Step title="(b) 1. Put D = s">
+
+$\dfrac{0.9(s+2)s}{s^2(s+2)+1.8s}=\dfrac{0.9(s+2)}{s(s+2)+1.8}=\dfrac{0.9s+1.8}{s^2+2s+1.8}$ (cancel the common $s$: order $3\to2$).
+
+</Step>
+<Step title="(b) 2. Method 2 (controllable companion form)">
+
+Split into $\dfrac{Z}{\Theta_{com}}=\dfrac1{s^2+2s+1.8}$ and $\Theta=(0.9s+1.8)Z$. With $x_1=z$, $x_2=\dot z$:
+$$\dot x=\begin{bmatrix}0&1\\-1.8&-2\end{bmatrix}x+\begin{bmatrix}0\\1\end{bmatrix}\theta_{com},\qquad\theta=\begin{bmatrix}1.8&0.9\end{bmatrix}x .$$
+
+</Step>
+<Step title="(b) 3. Check with Method 1 (correct version)">
+
+Numerator $b_0s^2+b_1s+b_2=0\cdot s^2+0.9s+1.8$: $\beta_0=0$; $\beta_1=b_1-a_1\beta_0=0.9$; $\beta_2=b_2-a_1\beta_1-a_2\beta_0=1.8-2(0.9)-0=0$. So $B=\begin{bmatrix}0.9\\0\end{bmatrix}$, $C=\begin{bmatrix}1&0\end{bmatrix}$, $A$ unchanged.
+
+</Step>
+</Steps>
+
+<Answer>
+
+$\dfrac{\Theta}{\Theta_{com}}=\dfrac{0.9(s+2)D}{s^2(s+2)+1.8D}$; for $D=s$: $\dfrac{0.9s+1.8}{s^2+2s+1.8}$ with $A=\begin{bmatrix}0&1\\-1.8&-2\end{bmatrix}$, $B=\begin{bmatrix}0\\1\end{bmatrix}$, $C=[1.8\ \ 0.9]$.
+
+*Real-world:* the characteristic polynomial $s^2+2s+1.8$ has $\omega_n=1.342$ rad/s, $\zeta=0.745$: a satellite pointing loop that overshoots a few percent and settles in about 3 s, with a zero at $-2$.
+
+</Answer>
+
+<Callout kind="warn" title="⚠ Official 'alternate Method 1' is wrong">
+
+The parenthetical says "$\beta_0=0.9$, $\beta_1=0$, $\beta_2=-1.62$, $\beta_3=3.2..$, $B=[0;1]$, $C=[1\ 0]$". These are not a consistent Method 1. The correct values are those of step 3 ($\beta_0=0$, $\beta_1=0.9$, $\beta_2=0$, $B=[0.9;0]$, $C=[1\ 0]$); Method 2 as given in the main solution is right.
+
+</Callout>
+
+<Traps>
+
+- The disturbance enters after the compensator: its transfer function is $\dfrac{0.9(s+2)}{s^2(s+2)+1.8D}$, **not** multiplied by $D$.
+- Do not forget the sensor $\dfrac2{s+2}$ in the feedback path (it gives the extra pole at $-2$ and the $1.8=0.9\cdot2$).
+- The question tells you to cancel the common $s$.
+
+</Traps>
+
+<Source>official solution: (a) 15 marks ✔, (b) Method 2 ✔, alternate Method 1 ✘.</Source>
+
+<ToolLink tool="state-space">Check the realisation</ToolLink>
+
+</Problem>
+
+<Problem id="MT1 W2017 Q3" title="Nonlinear RLC circuit: state equations, DC operating point, linearisation (25 marks)" tags="Taylor linearisation, cubic resistor">
+
+<Statement>
+
+A nonlinear resistor obeys $i_2=\tfrac18e_C^3$, $R=1\ \Omega$, $L=3$ H, $C=2$ F. (a) State-variable equations with the inductor current as the output of interest. (b) DC operating point for $e_i(t)=2+\hat e_i(t)$. (c) Linearised state equations in $\hat e_C,\hat e_i,\hat\imath_L$. (Circuit: the capacitor and the nonlinear resistor are in parallel from the source to the right node; $R$ and $L$ in parallel from that node to ground.)
+
+</Statement>
+
+<Think>
+
+Same recipe as <Ch slug="linearization">Chapter 9</Ch> (and the Lecture-10 representative problem): states $e_C,i_L$, KVL/KCL, set derivatives to zero for the operating point, Taylor-expand only the cubic.
+
+</Think>
+
+<Steps>
+<Step title="(a) 1. KVL">
+
+The voltage across $R$ and $L$ is $e_L=e_R=e_i-e_C$.
+
+</Step>
+<Step title="(a) 2. KCL at the right node">
+
+The source branch current ($C\dot e_C+e_C^3/8$) splits into $R$ and $L$: $C\dot e_C+\dfrac{e_C^3}{8}=i_L+\dfrac{e_L}{R}$. With $C=2$, $R=1$:
+$$\dot e_C=\tfrac12\Big[e_i+i_L-\tfrac18e_C^3-e_C\Big],\qquad\frac{di_L}{dt}=\frac{e_L}{L}=\tfrac13[e_i-e_C].$$
+
+</Step>
+<Step title="(b) Operating point">
+
+Derivatives zero: $\bar e_i-\bar e_C=0\Rightarrow\bar e_C=\bar e_i=2$ V; then $\bar e_i+\bar\imath_L-\tfrac18\bar e_C^3-\bar e_C=0\Rightarrow\bar\imath_L=\tfrac{2^3}{8}=1$ A.
+
+</Step>
+<Step title="(c) Linearise">
+
+$\tfrac18e_C^3\approx\tfrac18\bar e_C^3+\tfrac38\bar e_C^2\hat e_C=1+\tfrac32\hat e_C$. Substituting:
+$$\dot{\hat e}_C=\tfrac12\Big[\hat e_i+\hat\imath_L-\tfrac52\hat e_C\Big],\qquad\dot{\hat\imath}_L=\tfrac13[\hat e_i-\hat e_C],$$
+$$\begin{bmatrix}\dot{\hat e}_C\\\dot{\hat\imath}_L\end{bmatrix}=\begin{bmatrix}-5/4&1/2\\-1/3&0\end{bmatrix}\begin{bmatrix}\hat e_C\\\hat\imath_L\end{bmatrix}+\begin{bmatrix}1/2\\1/3\end{bmatrix}\hat e_i .$$
+
+</Step>
+<Step title="Checks">
+
+$-\tfrac54=-\tfrac{1+3/2}{2}$ ✔. The nonlinear resistor linearised to a conductance $\dfrac{di_2}{de_C}=\dfrac{3\bar e_C^2}8=\tfrac32$ S ($R_{lin}=\tfrac23\ \Omega$).
+
+</Step>
+</Steps>
+
+<Answer>
+
+$\bar e_C=\bar e_i=2$ V, $\bar\imath_L=1$ A; $A=\begin{bmatrix}-5/4&1/2\\-1/3&0\end{bmatrix}$, $B=\begin{bmatrix}1/2\\1/3\end{bmatrix}$.
+
+*Real-world:* ripples on a 2 V rail see a soft nonlinear conductance of 1.5 S in addition to the 1 S load, so near the operating point the circuit is a linear RLC.
+
+</Answer>
+
+<Traps>
+
+- The nonlinear resistor is **in parallel with $C$**, so at DC the capacitor voltage equals the source voltage (the inductor shorts $R$ at DC).
+- Put the operating-point numbers in **before** writing the $A$ matrix.
+- The official linearisation line writes "$i_L\approx1+\tfrac32\hat e_C$": it should read $i_2$ (notation slip).
+
+</Traps>
+
+<Source>official solution (10 + 5 + 10 marks) ✔ (entries recomputed).</Source>
+
+</Problem>
+
+<Problem id="MT1 W2017 Q4" title="SDOF response: identify M, b, k, x(0), u(0) and the pole angle (25 marks)" tags="free + forced response, initial-value theorem, pole angle">
+
+<Statement>
+
+A SDOF system with mass $M$, damping $b$, stiffness $k$ is excited by $f(t)=\sin t$ and starts with some initial displacement and velocity. The transform of the total displacement (forced and free) is
+$$X(s)=\frac{s(5s^2-s+5)}{(s^2+1)(2s^2+s+1)}.$$
+(a) Identify $M,b,k$. (b) Find $x(0)$ and $u(0)$. (c) What angle do the poles make with the negative real axis?
+
+</Statement>
+
+<Think>
+
+For a SDOF system $X(s)=\dfrac{F(s)+(Ms+b)x(0)+Mu(0)}{Ms^2+bs+k}$. The factor $s^2+1$ in the denominator is the forcing $\mathcal L\{\sin t\}$, not part of the system. Everything else follows by reading and matching.
+
+</Think>
+
+<Steps>
+<Step title="(a) Read the system polynomial">
+
+$2s^2+s+1=Ms^2+bs+k\Rightarrow M=2,\ b=1,\ k=1$.
+
+</Step>
+<Step title="(b) x(0) by the initial-value theorem">
+
+$x(0)=\lim_{s\to\infty}sX=\lim\dfrac{s^2(5s^2-s+5)}{(s^2+1)(2s^2+s+1)}=\dfrac52$.
+
+</Step>
+<Step title="(b) u(0) by matching numerators (independent check)">
+
+Multiply $X=\dfrac{1/(s^2+1)+(2s+1)x_0+2u_0}{2s^2+s+1}$ by $(s^2+1)$: the numerator is $1+[(2s+1)x_0+2u_0](s^2+1)=2x_0s^3+(x_0+2u_0)s^2+2x_0s+(x_0+2u_0+1)$, which must equal $5s^3-s^2+5s$. $s^3$: $x_0=5/2$; $s^2$: $x_0+2u_0=-1\Rightarrow u_0=-\tfrac74$; $s^1$: $2x_0=5$ ✔; $s^0$: $-1+1=0$ ✔.
+
+</Step>
+<Step title="(c) Poles">
+
+$2s^2+s+1=0\Rightarrow s=\dfrac{-1\pm j\sqrt7}{4}=-0.25\pm0.661j$. Angle from the negative real axis: $\varphi=\tan^{-1}\dfrac{\sqrt7}{1}=1.21$ rad $=69.3^\circ$ (so $\zeta=\cos\varphi=0.354$).
+
+</Step>
+</Steps>
+
+<Answer>
+
+$M=2$, $b=1$, $k=1$; $x(0)=2.5$, $u(0)=-1.75$; $\varphi=69.3^\circ$.
+
+*Real-world:* a 2 kg block on a soft spring: $\omega_n=0.707$ rad/s, $\zeta=0.35$, overshoot about 30%; the $69^\circ$ pole angle says at a glance it is lightly damped.
+
+</Answer>
+
+<Traps>
+
+- $(s^2+1)$ belongs to the forcing, not the system poles.
+- The angle is measured from the **negative** real axis: $\tan^{-1}(\text{Im}/|\text{Re}|)$.
+- $x$ is relative to static equilibrium, so gravity does not appear.
+
+</Traps>
+
+<Source>official solution (10 + 8 + 7 marks) ✔ (numerator-matching check done).</Source>
+
+</Problem>
+
+<Examined>
+
+State space and ODE: <Ch slug="state-space">Chapter 7</Ch>; block diagrams with disturbances: <Ch slug="block-diagrams">Chapter 5</Ch>; nonlinear circuit: also $\text{T3 Q1}$, $\text{T4 Q2}$; SDOF from a Laplace transform: <Ch slug="time-response">Chapter 4</Ch>.
+
+</Examined>

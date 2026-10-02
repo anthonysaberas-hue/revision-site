@@ -1,0 +1,230 @@
+<p className="eyebrow">Homework 2 · due Jan 24, 2024 · Lectures 3–4</p>
+
+# HW2: a zero in a 2nd-order system, a pinned bar, a disk on a cable
+
+<div className="lede">
+
+Three problems on mechanical modelling and second-order response (<Ch slug="mech-models">Chapter 3</Ch>, <Ch slug="time-response">Chapter 4</Ch>). **Important:** the file called `HW02-sol.pdf` in the archive is the solution set of a *different* textbook-style assignment; only its problem 4 matches Q1 here. Q2 and Q3 have **no official solution**, so they are solved from first principles and verified numerically.
+
+</div>
+
+<Problem id="HW2 Q1" title="Second-order system with an extra zero: step response and overshoot" tags="zero, step response, overshoot">
+
+<Statement>
+
+$H(s)=\dfrac{\omega_n^2(s+z)}{z\,(s^2+2\zeta\omega_ns+\omega_n^2)}$. (a) Show the unit-step response has the form $y(t)=1\pm Ce^{-\sigma t}\cos(\omega_dt+\beta)$ with $C=\dfrac{\sqrt{1-2\zeta\omega_n/z+\omega_n^2/z^2}}{\sqrt{1-\zeta^2}}$ and $\beta=\tan^{-1}\dfrac{-\zeta+\omega_n/z}{\sqrt{1-\zeta^2}}$. (b) Derive the overshoot $M_p$. (c) Given $M_p$, how are $\zeta,\omega_n$ found?
+
+</Statement>
+
+<Think>
+
+A zero multiplies by $(s+z)/z=1+s/z$, and multiplying a transform by $s$ **differentiates** the time response. So the response is *the plain 2nd-order step response plus $1/z$ times its derivative*. The common student error is to differentiate the **impulse** response (the transfer function itself) instead of the **step** response — then the "1 −" and the cosine form never appear.
+
+</Think>
+
+<Plan>
+
+$y=y_1+\dfrac1z\dot y_1$ where $y_1$ is the step response of $\dfrac{\omega_n^2}{s^2+2\zeta\omega_ns+\omega_n^2}$ → combine sine and cosine into one cosine → set $\dot y=0$ for the peak.
+
+</Plan>
+
+<Steps>
+<Step title="1. Split the transfer function">
+
+$H=\dfrac{\omega_n^2}{s^2+2\zeta\omega_ns+\omega_n^2}+\dfrac1z\,\dfrac{s\,\omega_n^2}{s^2+2\zeta\omega_ns+\omega_n^2}$. With $Y=H/s$ the second term is $s\times$(first term's step transform), i.e. the *derivative* of the first step response.
+
+</Step>
+<Step title="2. The standard step response">
+
+$y_1=1-\dfrac{e^{-\sigma t}}{\sqrt{1-\zeta^2}}\cos(\omega_dt-\beta_0)$, $\tan\beta_0=\dfrac\zeta{\sqrt{1-\zeta^2}}$, so $\cos\beta_0=\sqrt{1-\zeta^2}$, $\sin\beta_0=\zeta$. Its derivative: $\dot y_1=\dfrac{\omega_n}{\sqrt{1-\zeta^2}}e^{-\sigma t}\sin\omega_dt$.
+
+</Step>
+<Step title="3. Combine">
+
+$y=1-\dfrac{e^{-\sigma t}}{\sqrt{1-\zeta^2}}\Big[\sqrt{1-\zeta^2}\cos\omega_dt+\big(\zeta-\tfrac{\omega_n}z\big)\sin\omega_dt\Big]$. The bracket has amplitude $M=\sqrt{1-2\zeta\omega_n/z+\omega_n^2/z^2}$, so
+
+$$y(t)=1-C\,e^{-\sigma t}\cos(\omega_dt+\beta),\qquad C=\frac M{\sqrt{1-\zeta^2}},$$
+
+which is the printed form **with a minus sign in front of $C$**.
+
+</Step>
+<Step title="4. Peak time">
+
+$\dot y=0$ first at $\omega_dt_p=\pi-\operatorname{atan2}\big(\omega_n\sqrt{1-\zeta^2},\,z-\zeta\omega_n\big)$.
+
+</Step>
+<Step title="5. Overshoot">
+
+At $t_p$, $\cos(\omega_dt_p+\beta)=-\sqrt{1-\zeta^2}$, so
+
+$$M_p=C\sqrt{1-\zeta^2}\,e^{-\sigma t_p}=\frac1z\sqrt{z^2-2\zeta\omega_nz+\omega_n^2}\;e^{-\sigma t_p}.$$
+
+</Step>
+<Step title="6. (c) Given M_p">
+
+$M_p$ depends only on $\zeta$ and $\omega_n/z$. One spec does not fix both $\zeta$ and $\omega_n$: with $z$ known, a second spec (peak time, settling time) is needed and the two equations are solved numerically. As $z\to\infty$: $M_p=e^{-\pi\zeta/\sqrt{1-\zeta^2}}$ (the standard result). A left-half-plane zero always **increases overshoot** and shortens the rise.
+
+</Step>
+<Step title="7. Numerical check">
+
+$\zeta=0.5$, $\omega_n=1$, $z=2$: the simulation peaks at $t\approx3.0$ s with $M_p=0.191$; the formulas give $t_p=3.023$ s, $M_p=0.1910$ ✔. (Without the zero the overshoot is 16.3 %: the zero pushes it to 19.1 %.)
+
+</Step>
+</Steps>
+
+<Answer>
+
+$y=1-Ce^{-\sigma t}\cos(\omega_dt+\beta)$; $t_p=\dfrac{\pi-\operatorname{atan2}(\omega_n\sqrt{1-\zeta^2},z-\zeta\omega_n)}{\omega_d}$; $M_p=\dfrac1z\sqrt{z^2-2\zeta\omega_nz+\omega_n^2}\,e^{-\sigma t_p}$.
+
+</Answer>
+
+<Callout kind="warn" title="⚠ Errors in the printed statement and the official solution">
+
+- The printed statement has "$1+Ce^{-\sigma t}\cos(\cdot)$": that gives $y(0)=2$, impossible. It must be $1-Ce^{-\sigma t}\cos(\cdot)$ (then $y(0)=0$, and $y(2)=1.059$ matches the simulation).
+- The official final $y(t)$ has the wrong sign and is missing a factor $z$ (dimensional mismatch).
+- The official $t_p=\tfrac1{\omega_d}\big[\tan^{-1}\tfrac{z-\zeta\omega_n}{\omega_n\sqrt{1-\zeta^2}}+\tfrac32\pi\big]$ gives 6.65 s for the example: one half-period late (it lands on the next minimum). The official $M_p$ formula has a missing factor 2 ($z^2-z\zeta\omega_n+\omega_n^2$ instead of $z^2-2\zeta\omega_nz+\omega_n^2$).
+- **Anthony:** treated $F(s)=\omega_n^2/(\cdots)$ as the step response; its inverse $f=\tfrac{\omega_d}{1-\zeta^2}e^{-\sigma t}\sin\omega_dt$ is the *impulse* response. He also wrote OS $=100e^{+\pi\sigma/\omega_d}$ (missing minus sign), valid only without the zero.
+
+</Callout>
+
+<Traps>
+
+- Differentiate the *step* response, not the transfer function.
+- $M_p$ is measured against the final value $H(0)=1$.
+- When $z\gg\omega_n$ the zero hardly matters.
+
+</Traps>
+
+<Source>official solution (Wang, problem 4) with the corrections above; digest-author derivation checked with the step-response simulator.</Source>
+
+</Problem>
+
+<Problem id="HW2 Q2" title="Pinned bar driven through a slider by a spring and a dashpot" tags="rotation, small angle, 2nd-order TF with s in the numerator">
+
+<Statement>
+
+A uniform bar (mass $m=3$ kg, length $L=0.1$ m) rotates frictionlessly about a pin at its right end. A frictionless slider in a slot, at distance $L$ from the pin, links it to a spring $k=12$ kN/m (to the ground) and a dashpot $b=400$ N·s/m whose upper end is the input $x$ (a 1 mm step). Small oscillations. Find (a) the EOM, (b) the Laplace form, (c) $\omega_n,\zeta$, the final value, (d) the step response.
+
+</Statement>
+
+<Think>
+
+Rotation about a fixed pin ⇒ **moments**. The spring and dashpot act at the slider, an arm $L$ from the pin, so their coefficients get multiplied by $L^2$. The dashpot sees the **relative** velocity of its two ends.
+
+</Think>
+
+<Steps>
+<Step title="1. Kinematics and forces (down positive)">
+
+Slider displacement $y=L\theta$. Force on the bar at the slider: spring $-kL\theta$; dashpot $b(\dot x-L\dot\theta)$.
+
+</Step>
+<Step title="2. Moments about the pin">
+
+$I\ddot\theta=L\big[b(\dot x-L\dot\theta)-kL\theta\big]$, with $I=\tfrac13mL^2=3(0.1)^2/3=0.01$ kg·m². So
+
+$$\frac{mL^2}3\ddot\theta+bL^2\dot\theta+kL^2\theta=bL\dot x .$$
+
+</Step>
+<Step title="3. Numbers and transfer function">
+
+$0.01\ddot\theta+4\dot\theta+120\theta=40\dot x$ ⇒ $\dfrac\Theta X=\dfrac{40s}{0.01s^2+4s+120}=\dfrac{4000\,s}{s^2+400s+12000}$.
+
+</Step>
+<Step title="4. Specs">
+
+$\omega_n^2=12000\Rightarrow\omega_n=109.5$ rad/s (17.4 Hz); $2\zeta\omega_n=400\Rightarrow\zeta=1.83$ (**overdamped**). Poles $-200\pm20\sqrt{70}=-32.67$ and $-367.3$.
+
+</Step>
+<Step title="5. Step of 1 mm">
+
+$X=0.001/s$, so $\Theta=\dfrac{4}{s^2+400s+12000}=\dfrac{4}{(s+32.67)(s+367.3)}$. Residues: $\theta(t)=0.01195\big(e^{-32.67t}-e^{-367.3t}\big)$ rad.
+
+</Step>
+<Step title="6. Final value and peak">
+
+$\lim_{s\to0}s\Theta=0$ (the numerator has a zero at $s=0$). Peak at $t=\ln(367.3/32.67)/334.7=7.2$ ms, $\theta_{max}=8.6$ mrad $=0.49^\circ$. Decays in about $0.15$ s (time constant 31 ms).
+
+</Step>
+</Steps>
+
+<Answer>
+
+EOM $\dfrac{mL^2}3\ddot\theta+bL^2\dot\theta+kL^2\theta=bL\dot x$; $\dfrac\Theta X=\dfrac{4000s}{s^2+400s+12000}$; $\omega_n=109.5$ rad/s, $\zeta=1.83$, $\theta(\infty)=0$, $\theta(t)=0.01195(e^{-32.67t}-e^{-367.3t})$ rad.
+
+</Answer>
+
+<Traps>
+
+- The input is the *position* of the damper top, so the TF has an $s$ in the numerator: the final value is **0**, not a multiple of $x$.
+- Units of $x$ (mm vs m) and **rad/s vs Hz**: Anthony wrote "hz" for $\omega_n$ and plotted the 1 **m** step (peak 8.6 rad instead of 8.6 mrad).
+- *Physical:* the damper can shove the bar for a moment but cannot hold it: a high-pass behaviour.
+
+</Traps>
+
+<Source>no official solution (the file does not contain it). Digest-author solution, poles verified with the library. Anthony's EOM and TF are right; his tablet version uses the energy method $T=\tfrac12I\dot\theta^2$, $V=\tfrac12kL^2\theta^2$.</Source>
+
+</Problem>
+
+<Problem id="HW2 Q3" title="Disk on a cable with a spring and a torsional damper" tags="rolling without slipping, instantaneous centre, factor 2">
+
+<Statement>
+
+A cable is fixed to a wall at B, wrapped around a homogeneous disk (mass $m=50$ kg, radius $R=0.6$ m) and leaves horizontally at A, where $F(t)=200\,u(t)$ N pulls. A spring $k=250$ N/m joins the disk centre O to the ground. The disk does not slip on the cable; torsional damping $c_t=18$ N·m·s. Start from rest. (a) EOM, (b) coefficients of the equation, (c) poles and zeros, (d) final position of the wheel.
+
+</Statement>
+
+<Think>
+
+The bottom contact point C is an *instantaneous centre of zero velocity*: $v_O=R\omega$ and the top point (where the cable leaves) moves at $2v_O$. So the force $F$ at the top does work at twice the rate of $F$ on the centre: effectively a force $2F$ on the centre, and the disk's effective inertia about C is $\tfrac32mR^2$.
+
+</Think>
+
+<Steps>
+<Step title="1. Equation of motion">
+
+Newton for the centre plus moments about O (or energy): $T=\tfrac34m\dot x^2$ (kinetic energy about C), dissipation $D=\tfrac12c_t\dot x^2/R^2$, $V=\tfrac12kx^2$, generalised force $2F$ (point A moves twice as far as O):
+
+$$\tfrac{3m}2\ddot x+\frac{c_t}{R^2}\dot x+kx=2F .$$
+
+</Step>
+<Step title="2. Numbers">
+
+$75\ddot x+50\dot x+250x=400\,u(t)$; in $\theta$ ($x=R\theta$): $27\ddot\theta+18\dot\theta+90\theta=240u$, i.e. $\ddot\theta+\tfrac23\dot\theta+\tfrac{10}3\theta=\tfrac{80}9u$. Transfer function $\dfrac XF=\dfrac2{75s^2+50s+250}$.
+
+</Step>
+<Step title="3. Poles and zeros">
+
+$s^2+\tfrac23s+\tfrac{10}3=0\Rightarrow s=-\tfrac13\pm j\tfrac{\sqrt{29}}3=-0.333\pm j1.795$. **No finite zeros.** $\omega_n=1.826$ rad/s, $\zeta=0.183$ (lightly damped: overshoot 55.8 %).
+
+</Step>
+<Step title="4. Final position">
+
+At rest the damper carries no force: $kx=2F\Rightarrow x(\infty)=\dfrac{400}{250}=1.6$ m (simulation: final 1.60, peak 2.49 m, ringing at 1.8 rad/s).
+
+</Step>
+</Steps>
+
+<Answer>
+
+$75\ddot x+50\dot x+250x=400u$; poles $-0.333\pm j1.795$, no zeros; $\omega_n=1.826$, $\zeta=0.183$; $x(\infty)=1.6$ m.
+
+</Answer>
+
+<Traps>
+
+- **The factor 2**: Anthony's first version used $F=kx$ and got $x=0.8$ m; his second version ($2F=kx$, $x=1.6$ m) is right.
+- The damping is *torsional*: the equivalent translational damping is $c_t/R^2=50$ N·s/m, not 18.
+- *Real-world:* a winch: a 200 N pull stretches the spring 1.6 m but the light damping lets it overshoot to about 2.5 m and ring with a 3.5 s period.
+
+</Traps>
+
+<Source>no official solution; digest-author solution (Newton + Lagrange agree), verified with the library. Anthony: version a ✘ (0.8 m), version b ✔.</Source>
+
+</Problem>
+
+<Examined>
+
+The rotational-EOM pattern (arms squared, moments about a pin) reappears in $\text{MT2 F2022 Q1a}$ (pivoted bar) and T01 Q3; the "extra zero" idea in $\text{MT1 F2011 Q4}$.
+
+</Examined>

@@ -1,0 +1,127 @@
+<p className="eyebrow">Chapter 6 · Lecture 6 (slides missing, reconstructed) · HW3 Q5</p>
+
+# Frequency response and Bode sketching
+
+<div className="lede">
+
+Shake a system with a sine wave and, once the transients die, it answers with a sine wave of the **same frequency**, just bigger or smaller and shifted in time. A transfer function evaluated at $s=j\omega$ gives you exactly that amplitude change and shift. Anthony marked "Bode plot diagrams" with a red double ⚠ in his own review, so this chapter goes slowly and builds a Bode plot the foolproof way: factor, list corners, draw one factor at a time, add.
+
+</div>
+
+<Callout kind="note" title="Where this chapter comes from">
+
+The lecture-6 slide deck is missing from the archive. Everything here is rebuilt from Anthony's page 14–15, the polls of lecture 7, the lecture-21 slides (which re-use lecture 6), and the exam/homework problems that need it. Nothing was invented that those sources do not support.
+
+</Callout>
+
+<Idea title="The 30-second version">
+
+For a **stable** system $G(s)$ and an input $A\sin\omega t$, the steady-state output is $A\,|G(j\omega)|\,\sin\!\big(\omega t+\angle G(j\omega)\big)$. A **Bode plot** draws $20\log_{10}|G(j\omega)|$ (dB) and $\angle G(j\omega)$ (degrees) against $\log\omega$. Because logs turn products into sums, **a Bode plot of a product is the sum of the Bode plots of the factors**: that is the whole trick.
+
+</Idea>
+
+## Real-life picture: the volume knob per frequency
+
+A car-audio low-pass filter passes bass and cuts treble hiss. Its Bode plot is a "volume knob per frequency": flat at 0 dB for the bass, then falling 20 dB per decade after the corner. At the **cutoff** the amplitude is $1/\sqrt2=0.707$ of the low-frequency value, i.e. $-3$ dB: half the *power*.
+
+## Magnitude and phase of $G(j\omega)$ at one frequency
+
+Take $G(s)=\dfrac{s+4}{s^2+5s+6}$. Two ways:
+
+**Method II (always use this one): factor first.** $G=\dfrac{s+4}{(s+2)(s+3)}$, so
+
+$$
+|G(j\omega)|=\frac{\sqrt{\omega^2+4^2}}{\sqrt{\omega^2+2^2}\,\sqrt{\omega^2+3^2}},\qquad
+\angle G=\tan^{-1}\frac\omega4-\tan^{-1}\frac\omega2-\tan^{-1}\frac\omega3 .
+$$
+
+(Rule: *magnitude = product of the magnitudes of the numerator factors ÷ product of the denominator factors; phase = sum of numerator angles − sum of denominator angles.*)
+
+**Method I (expand): $s=j\omega$ into the unfactored quadratic.** $G(j\omega)=\dfrac{4+j\omega}{(6-\omega^2)+5j\omega}$. The denominator angle needs a *quadrant correction*: $\tan^{-1}\dfrac{5\omega}{6-\omega^2}$ for $\omega^2<6$ but $180^\circ-\tan^{-1}\dfrac{5\omega}{\omega^2-6}$ for $\omega^2>6$. (Anthony's Method I line has $\tan^{-1}(4/\omega)$ for the numerator: the angle of $4+j\omega$ is $\tan^{-1}(\omega/4)$, as in his Method II.)
+
+| $\omega$ | $\lvert G\rvert$ | dB | phase |
+|---|---|---|---|
+| 0.1 | 0.6657 | −3.53 | −3.3° |
+| 1 | 0.5831 | −4.69 | −31.0° |
+| 2 | 0.4385 | −7.16 | −52.1° |
+| 6 | 0.1700 | −15.39 | −78.7° |
+| 10 | 0.1012 | −19.90 | −83.8° |
+
+**A one-frequency example from an exam** ($\text{MT1 F2011 Q3c}$): $G=\dfrac{s+3}{2s+3}$ at $\omega=5$ rad/s. $G(j5)=\dfrac{3+5j}{3+10j}$:
+
+- $|G|=\dfrac{\sqrt{9+25}}{\sqrt{9+100}}=\dfrac{\sqrt{34}}{\sqrt{109}}=0.559$.
+- $\angle G=\tan^{-1}\tfrac53-\tan^{-1}\tfrac{10}3=59.0^\circ-73.3^\circ=-14.3^\circ$.
+
+**Steady state with a mix of inputs** ($\text{F2010 P2d}$): by superposition the response to $T=20+10\sin2t$ is $20\,G(0)+10\,|G(2j)|\sin(2t+\angle G(2j))$: a constant plus a sinusoid, each treated separately.
+
+<Trap title="When the formula does not apply">
+
+$y_{ss}=A|G(j\omega)|\sin(\omega t+\angle G)$ **only exists for a stable system.** For poles on the imaginary axis (an undamped spring–mass forced at its own frequency) the output grows (resonance) and $G(j\omega)$ alone is not enough. An undamped system also cannot show a decaying envelope $e^{-t}\sin\omega t$ (a poll question).
+
+</Trap>
+
+## dB and what it means
+
+$20\log_{10}x$ turns a ratio $x$ into decibels. Easy values: $\times2\to+6$ dB, $\times10\to+20$ dB, $\times\tfrac1{\sqrt2}\to-3$ dB, $\times\tfrac1{10}\to-20$ dB. A 1 dB rise is $\times1.122$ (+12.2 %); a 1 dB penalty is $\times0.891$ ($-10.9$ %).
+
+## The building blocks (memorise this table)
+
+| Factor | Magnitude (asymptotes) | Phase |
+|---|---|---|
+| gain $K$ | flat at $20\log|K|$ | $0^\circ$ ($180^\circ$ if $K<0$) |
+| integrator $1/(j\omega)^N$ | $-20N$ dB/dec, passes 0 dB at $\omega=1$ | $-90^\circ N$ |
+| differentiator $(j\omega)^N$ | $+20N$ dB/dec | $+90^\circ N$ |
+| real pole $\dfrac1{1+\tau j\omega}$ | 0 dB until $1/\tau$, then $-20$ dB/dec; exact value $-3$ dB at the corner | $0^\circ\to-90^\circ$, $-45^\circ$ at the corner (straight line from $0.1/\tau$ to $10/\tau$) |
+| real zero $1+\tau j\omega$ | mirror image: $+20$ dB/dec | $0^\circ\to+90^\circ$ |
+| 2nd-order pair $\dfrac{\omega_n^2}{s^2+2\zeta\omega_ns+\omega_n^2}$ | 0 dB until $\omega_n$ then $-40$ dB/dec; resonant peak for $\zeta<0.707$ | $0^\circ\to-180^\circ$, exactly $-90^\circ$ at $\omega_n$ |
+
+**First-order exact values.** $\dfrac1{1+j\omega\tau}$: $|G|=\dfrac1{\sqrt{1+\omega^2\tau^2}}$, phase $-\tan^{-1}\omega\tau$. High-frequency asymptote $-20\log(\omega\tau)$: **−20 dB/decade = −6 dB/octave**. The two straight lines meet at $\omega=1/\tau$.
+
+**Second-order peak:** $M_r=\dfrac1{2\zeta\sqrt{1-\zeta^2}}$ at $\omega_r=\omega_n\sqrt{1-2\zeta^2}$ for $\zeta<0.707$.
+
+<Remember title="Right-half-plane factors">
+
+A factor $(1-s/a)$ or $1/(1-s/a)$ has the **same magnitude** as its left-half-plane twin; only the **phase has the opposite sign**. These "non-minimum-phase" factors look harmless in the magnitude plot but add lag where you would expect lead (a zero in the right half-plane makes the step response start in the wrong direction).
+
+</Remember>
+
+## Drawing a Bode plot, step by step (the slow way, on purpose)
+
+**Worked example** (HW3 Q5d): $G(s)=\dfrac{12(s+5)}{s(s+3)(s+8)}$.
+
+1. **Normalise every factor to the form $(1+s/\omega_c)$:** $G=\dfrac{12\cdot5}{3\cdot8}\cdot\dfrac{1}{s}\cdot\dfrac{1+s/5}{(1+s/3)(1+s/8)}=\dfrac{2.5\,(1+s/5)}{s\,(1+s/3)(1+s/8)}$.
+2. **List the pieces:** a constant $2.5$ (7.96 dB), an integrator, a zero at 5, poles at 3 and 8.
+3. **Draw the low-frequency asymptote.** Only the gain and the integrator count: $2.5/\omega$, slope $-20$ dB/dec, $+7.96$ dB at $\omega=1$, crossing 0 dB at $\omega=2.5$.
+4. **Walk right and add slope at each corner:** at 3: pole ⇒ slope $-40$. At 5: zero ⇒ $-20$. At 8: pole ⇒ $-40$.
+5. **Phase:** the integrator gives $-90^\circ$ at all low frequencies; each pole then pulls it down by $90^\circ$ around its corner, the zero pushes it up by $90^\circ$. Net: $-90^\circ\to-180^\circ$ (ends at $-90^\circ$ times the pole-minus-zero count).
+6. **Check:** the high-frequency slope must be $-20\,(n-m)$ dB/dec with $n=3$ poles and $m=1$ zero: $-40$ ✔.
+
+Other cases from the homework: (a) $\dfrac1{(1+0.5s)(1+5s)}$ has corners at $0.2$ and $2$ rad/s (0 dB, then $-20$ after 0.2, then $-40$ after 2; phase $0^\circ\to-180^\circ$); (b) has a double RHP pole at $+2$ and two real zeros at $-0.73$, $-1.37$ (the quadratic $s^2+2.1s+1$ has $\zeta=1.05>1$, so *real* zeros); (c) $\dfrac{s-2}{s^2+5s+4}$ has $\mathrm{DC}=-0.5$ ($-6$ dB) and a RHP zero at 2.
+
+<Trap title="Corner frequency is not bandwidth">
+
+The *corner* is where the asymptotes meet ($1/\tau$ for a first-order factor). The *bandwidth/cutoff* is where the exact magnitude falls 3 dB below its low-frequency value. For a single first-order factor they coincide; for several factors they do not (HW3 Q5: Anthony quoted Matlab `bandwidth` values where the question asked for corners).
+
+</Trap>
+
+<BodeTool />
+
+### Reading a Bode plot backwards
+
+- **Corner frequency** = where the straight lines meet; a first-order system's time constant is $T=1/\omega_c$.
+- **$\omega_n$** of a second-order pair = where the slope changes by $-40$ dB/dec; **$\zeta$** from the height of the peak ($M_r$ formula) or the steepness of the phase drop.
+- **Cutoff/bandwidth** = the $-3$ dB point; the fastest of several systems is the one with the highest bandwidth.
+
+<Examined>
+
+- Single-frequency gain and phase: $\text{MT1 F2011 Q3c}$, $\text{F2009 P4}$ (motor at 5 rad/s: gain 0.0376, phase −145.7°), $\text{F2010 P2d}$.
+- Building a Bode plot from factors: <Hw n="3">HW3</Hw> Q5, <Hw n="8">HW8</Hw> Q2, <Hw n="10">HW10</Hw> Q4. The full margin story is in <Ch slug="bode-margins" />.
+
+</Examined>
+
+### Check yourself
+
+1. Sketch $\dfrac{10}{s+10}$: corner, DC, phase at the corner. *(Corner 10 rad/s, 0 dB, $-45^\circ$.)*
+2. What slope does $\dfrac{K}{s^2(s+1)}$ have at low frequency and at high frequency? *($-40$ and $-60$ dB/dec.)*
+3. Two real poles at 0.2 and 2 rad/s. Slope between and after? *($-20$, then $-40$ dB/dec.)*
+4. $|G|=0.1$: how many dB? *($-20$ dB.)*

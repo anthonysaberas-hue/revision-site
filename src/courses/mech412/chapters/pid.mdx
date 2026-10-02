@@ -1,0 +1,131 @@
+<p className="eyebrow">Chapter 17 · Lecture 19 · HW7 Q3–Q4 · HW9 Q1 · HW10 Q1</p>
+
+# PID controllers and Ziegler–Nichols tuning
+
+<div className="lede">
+
+Seventy years of industrial control come down to three knobs: how hard to push *now* (proportional), how long you have been wrong (integral), and how fast the error is changing (derivative). This chapter shows what each knob does to the closed loop, how to choose them by pole placement, and how Ziegler and Nichols found a recipe that gets you a decent first guess in two experiments.
+
+</div>
+
+<Idea title="The 30-second version">
+
+$$
+G_c(s)=K_p\Big(1+\frac1{T_is}+T_ds\Big)=K_p+\frac{K_i}{s}+K_ds,\qquad K_i=\frac{K_p}{T_i},\;K_d=K_pT_d .
+$$
+
+- **P** speeds the response but leaves an offset (type 0 stays type 0).
+- **I** removes the steady-state error (raises the type by 1) but adds lag, so it is slower and less stable.
+- **D** adds damping — it anticipates — but amplifies noise.
+- **Ziegler–Nichols:** from a step test (delay $L$, time constant $T$) or from the loop pushed to the edge of oscillation ($K_{cr},P_{cr}$), tables give $K_p,T_i,T_d$. They are a *first cut*, usually with 25–60 % overshoot.
+
+</Idea>
+
+## Real-life picture: cruise control and a 3D-printer heater
+
+A cruise controller using P only settles a little below the set speed on a hill (offset). Add I and the offset vanishes but the speed rolls back and forth more. Add a touch of D and the roll-back dies faster. A 3D-printer hot-end uses the same three terms, and "autotune" is Ziegler–Nichols method 2 run automatically.
+
+<Car3D />
+
+Compare *P*, *PI*, *PID* on the hill, and watch the offset appear (P) and vanish (PI).
+
+## What each action does
+
+| Controller | $G_c(s)$ | Effect |
+|---|---|---|
+| P | $K_p$ | faster, offset remains |
+| I | $K_i/s$ | zero offset; slows and destabilises |
+| PI | $K_p(1+\tfrac1{T_is})$ | zero offset; a zero at $-1/T_i$ |
+| PD | $K_p(1+T_ds)$ | adds damping; a zero at $-1/T_d$ |
+| PID | $K_p\dfrac{T_iT_ds^2+T_is+1}{T_is}$ | a pole at the origin and two zeros |
+
+*Pole–zero structure:* $G_c=K_pT_d\dfrac{s^2+s/T_d+1/(T_iT_d)}{s}$.
+
+**Analog implementations.** Op-amp PID (Chapter 8): $K_p=-(C_1/C_2+R_2/R_1)$, $K_i=-1/(R_1C_2)$, $K_d=-R_2C_1$. Pneumatic PID (Chapter 12). Hydraulic PI (governor, Chapter 13).
+
+## Design by pole placement (PI on a type-1 plant: HW7 Q3)
+
+Plant $\dfrac1{s(s+15)(s+25)}$, controller $K_p+K_I/s$, unity feedback. Closed loop:
+
+$$
+T=\frac{K_ps+K_I}{s^4+40s^3+375s^2+K_ps+K_I}.
+$$
+
+Two unknowns ($K_p,K_I$), one spec (dominant poles with $\zeta=0.707$): **the problem is under-determined**, so you must add a design choice and say so. Standard choice: put the PI zero close to the origin so it barely disturbs the transient. With $K_I=0.1K_p$ and matching $(s+a)(s+b)(s^2+2\zeta\omega_ns+\omega_n^2)$:
+
+- $a+b+2\zeta\omega_n=40$, $\;\omega_n^2+2\zeta\omega_n(a+b)+ab=375$, $\;\omega_n^2(a+b)+2\zeta\omega_nab=K_p$, $\;\omega_n^2ab=K_I$.
+- Solution: $\omega_n\approx7.6$ rad/s, $a\approx29.15$, $b\approx0.1$, **$K_I\approx172$, $K_p\approx1720$**.
+- Closed-loop poles: $-29.15$, $-5.37\pm j5.37$ ($\zeta=0.707$ ✔) and $-0.102$ — the slow real pole sits on top of the closed-loop zero at $-0.1$ and cancels it, which is *why* the PI action does not ruin the response.
+- Dominant-pair estimates: $t_p=\pi/\omega_d=0.585$ s, $t_s=4/\sigma=0.745$ s, OS 4.3 %. The actual simulation: **OS 6.4 %, $t_p=0.625$ s, $t_s=1.09$ s** — the extra pole and zero shift the numbers.
+- Errors: type 2 ⇒ position and velocity errors 0; acceleration error $375/K_I=2.18$ (Chapter 15).
+
+## Ziegler–Nichols tuning
+
+### Method 1: the step-response (S-curve) method
+
+For a plant that is stable and roughly first-order with a delay, apply a unit step, draw the **tangent at the inflection point**, and read the delay $L$ and the time constant $T$ (where the tangent reaches the final value).
+
+| Controller | $K_p$ | $T_i$ | $T_d$ |
+|---|---|---|---|
+| P | $T/L$ | — | — |
+| PI | $0.9T/L$ | $L/0.3$ | — |
+| **PID** | $\mathbf{1.2T/L}$ | $\mathbf{2L}$ | $\mathbf{0.5L}$ |
+
+Equivalent form $G_c=0.6T\dfrac{(s+1/L)^2}{s}$ (a double zero at $-1/L$).
+
+**Worked example (HW7 Q4a): paper machine** $G=\dfrac{e^{-2s}}{3s+1}$. $y(t)=\big[1-e^{-(t-2)/3}\big]H(t-2)$. The slope is largest at the start of the rise, $y'(2^+)=\tfrac13$; the tangent $y=(t-2)/3$ reaches the final value 1 at $t=5$. So **$L=2$ s, $T=3$ s**, and PID: $K_p=1.2\cdot3/2=1.8$, $T_i=4$ s, $T_d=1$ s ($K_i=0.45$, $K_d=1.8$).
+
+### Method 2: ultimate gain
+
+Use proportional control only, raise $K_p$ until the loop oscillates steadily: $K_{cr}$ and the period $P_{cr}=2\pi/\omega_{cr}$.
+
+| Controller | $K_p$ | $T_i$ | $T_d$ |
+|---|---|---|---|
+| P | $0.5K_{cr}$ | — | — |
+| PI | $0.45K_{cr}$ | $P_{cr}/1.2$ | — |
+| **PID** | $\mathbf{0.6K_{cr}}$ | $\mathbf{0.5P_{cr}}$ | $\mathbf{0.125P_{cr}}$ |
+
+$G_c=0.075K_{cr}P_{cr}\dfrac{(s+4/P_{cr})^2}{s}$ (a double zero at $-4/P_{cr}$).
+
+**Finding $K_{cr},P_{cr}$ on paper:** (1) Routh on $1+K_pG=0$ gives $K_{cr}$ (the gain at which the $s^1$ row vanishes); (2) put $s=j\omega$ in the characteristic polynomial and solve for $\omega_{cr}$; (3) $P_{cr}=2\pi/\omega_{cr}$.
+
+**Worked example (Anthony's pp.77–78): $G=\dfrac{K}{s(s+1)(s+5)}$.**
+
+1. Characteristic polynomial $s^3+6s^2+5s+K_p$.
+2. Routh: $s^1$ row $=\dfrac{30-K_p}6$ ⇒ **$K_{cr}=30$**.
+3. $s=j\omega$: $-j\omega^3-6\omega^2+5j\omega+30=0$ ⇒ imaginary: $\omega(5-\omega^2)=0$, so $\omega=\sqrt5$, and $P_{cr}=2\pi/\sqrt5=2.81$ s.
+4. PID: $K_p=0.6\cdot30=18$, $T_i=0.5\cdot2.81=1.40$ s, $T_d=0.125\cdot2.81=0.351$ s; $K_i=12.8$, $K_d=6.32$.
+5. $G_c=6.32\,\dfrac{(s+1.42)^2}{s}$ (his page prints 1.49 and 6.39: small transcription slips).
+6. Closed-loop poles: $-4.13$, $-1.12$, $-0.37\pm j1.62$ — the slow complex pair gives large overshoot. *Z–N is a first cut, not a finished design.*
+
+**Two more.** HW7 Q4b: the paper machine with $K_u=3.044$ and $P_u\approx7$ s read from the plot: $K_p=0.6\cdot3.044=1.83$, $T_i=3.5$, $T_d=0.875$ (the exact $P_u$ is 6.59 s, giving $T_i=3.3$, $T_d=0.82$; the exact $K_u$ is 3.030). HW9 Q1a: antenna plant $\dfrac{10}{s(s+5)(s+10)}$: $K_{cr}=75$, $P_{cr}=0.889$ s ⇒ $K_p=45$, $T_i=0.444$, $T_d=0.111$.
+
+<Trap title="Z–N does not meet specs">
+
+Applied to the antenna, Z–N gives **59 % overshoot** and a 2.6 s settling time — it fails the 5 % / 2 s spec of HW9 Q1. That is why the problem then asks for a retune with root-locus tools (Chapter 18). Use Z–N for the first cut and *always simulate*.
+
+</Trap>
+
+## Closing the loop on a tachometer (position control with velocity feedback)
+
+Velocity (tach) feedback is derivative-type feedback on position: it adds damping without differentiating a noisy signal. Chapter 18 designs it with the root locus ($\zeta=0.4$, $k\approx0.45$).
+
+## PD for an unstable plant (F2010 P4, the rocket attitude)
+
+$ML\ddot\theta-(M+m)g\theta=f$ has an open-loop pole at $+\sqrt{(M+m)g/(ML)}=1.39$. With $f=-K_p\theta-K_d\dot\theta$: $ML\ddot\theta+K_d\dot\theta+[K_p-(M+m)g]\theta=0$. **$K_p$ must first beat the toppling term $(M+m)g$** before it gives any stiffness. For $\zeta=0.707$ and $t_s=8$ s: $\omega_n^2=0.5$, $2\zeta\omega_n=1$ ⇒ $K_p=1545.6+400=1945.6$, $K_d=800$ (rocket units).
+
+<LabLink lab="pendulum">Try it on the real cart-pendulum</LabLink>
+
+<Examined>
+
+- <Hw n="7">HW7</Hw> Q3–Q4, <Hw n="9">HW9</Hw> Q1, <Hw n="10">HW10</Hw> Q1 (PI on $400/[s(s+40)]$: $K_P=0.5$ gives 20.7 % overshoot because the closed-loop zero at $-K_I/K_P=-2$ sits next to the poles), $\text{F2009 P5}$, $\text{F2010 P4}$.
+- Op-amp PID: MT2 W2011 Q4; pneumatic PID: HW6 Q3, T08 Q2.
+
+</Examined>
+
+### Check yourself
+
+1. $K_{cr}=20$, $P_{cr}=4$ s: Z–N PID? *($K_p=12$, $T_i=2$ s, $T_d=0.5$ s.)*
+2. Which action removes the steady-state offset? *(Integral.)*
+3. Why can derivative action hurt in practice? *(It amplifies measurement noise.)*
+4. Method 1 gave $L=0.5$ s, $T=2$ s: $K_p$ for PID? *($1.2\cdot2/0.5=4.8$.)*

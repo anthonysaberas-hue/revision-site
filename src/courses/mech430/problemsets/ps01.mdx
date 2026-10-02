@@ -1,0 +1,486 @@
+<p className="eyebrow">Problem Set 1 · Winter 2025</p>
+
+# Conservation laws & the speed of sound
+
+<p className="lede">Seven problems that set up the whole course: vocabulary, the steady-flow energy equation, control-volume momentum (a jet engine and a pipe junction), the speed-of-sound derivation, and why "Mach 1" is not one speed. Constants: ℜ = 8314 J/kmol·K, R_air = 287 J/kg·K, 1 atm = 101 325 Pa.</p>
+
+<Problem id="PS1 P1" title="Terminology" tags="definitions, control volume, 1-D flow">
+
+<Statement>
+
+Write a one-sentence definition of: (a) control volume, (b) conservation law, (c) compressible, (d) inviscid, (e) one-dimensional, (f) steady, (g) uniform, (h) streamline, (i) stream tube.
+
+</Statement>
+
+<Think>
+
+Vocabulary, but each word is a modelling assumption you will invoke on every exam ("steady, 1-D, adiabatic, inviscid…"). Know what each one *buys* you.
+
+</Think>
+
+<Plan>
+
+Define each term, then note the assumption it enables in the equations of [Chapter 3](#/mech430/ch/one-d).
+
+</Plan>
+
+<Steps>
+<Step title="1. Control volume and conservation law">
+
+- **Control volume**: a fixed region of space through which fluid flows; we account for what crosses its surface.
+- **Conservation law**: a statement that a quantity (mass, momentum, energy) of a system changes only by what is transported in or out, or produced by forces/heat/work.
+
+</Step>
+<Step title="2. Fluid models">
+
+- **Compressible**: the density changes appreciably in response to pressure changes (not just "density can change": a heated incompressible liquid changes density too).
+- **Inviscid**: no shear stresses and no viscous dissipation.
+
+</Step>
+<Step title="3. Flow descriptions">
+
+- **One-dimensional**: properties vary along one coordinate only (x along the duct); the area A(x) may still vary ("quasi-1-D").
+- **Steady**: nothing changes with time at a fixed point ($\partial/\partial t = 0$).
+- **Uniform**: nothing changes with position across a section (or in space). Steady and uniform are independent ideas.
+
+</Step>
+<Step title="4. Streamline and stream tube">
+
+- **Streamline**: a curve tangent to the velocity vector at every point (Anthony's definition, the rigorous one).
+- **Stream tube**: the tube formed by all streamlines passing through a closed curve. Its walls are streamlines, so **no fluid crosses them**: a stream tube is a natural 1-D control volume.
+
+</Step>
+</Steps>
+
+<Answer>
+
+The definitions above. Key ideas: a stream tube's walls are made of streamlines; "1-D" allows A(x); steady (time) ≠ uniform (space).
+
+</Answer>
+
+<StreamTubeFigure />
+
+<Traps>
+
+- Anthony's stream-tube definition ("3D region where fluid flows in streamline fashion") missed the key point: no flow crosses the walls.
+- "Compressible" means density responds to *pressure*, which is what links it to the speed of sound.
+
+</Traps>
+
+<Source>official 2025 solution · Anthony's PS01-mine p.4</Source>
+
+</Problem>
+
+<Problem id="PS1 P2" title="Nitrogen through a steady-flow device" tags="energy equation, continuity, ideal gas">
+
+<Statement>
+
+Nitrogen (MW = 28), at 12 m/s, 14 atm and 800 K, enters a steady-flow device through an area of 0.05 m². No work or heat transfer takes place. At the exit, where the area is 0.15 m², the temperature has dropped to 590 K. Find the velocity and pressure at the outlet.
+
+</Statement>
+
+<Think>
+
+Steady, adiabatic, no work: **$h + V^2/2$ = const** (energy alone gives $V_2$). Then continuity plus $p = \rho RT$ give $p_2$. No isentropic assumption is needed, and none is allowed (PS2 P10 shows the flow is not isentropic).
+
+</Think>
+
+<Plan>
+
+Energy → $V_2$. Ideal gas at 1 → $\rho_1$. Continuity → $\rho_2$. Ideal gas at 2 → $p_2$.
+
+</Plan>
+
+<Steps>
+<Step title="1. Exit velocity from energy">
+
+$h_1 + V_1^2/2 = h_2 + V_2^2/2$. The official solution uses $h = c_p(T)\,T$ from the N₂ table: $h_1 = 1.122 \times 800 = 897.6$ kJ/kg and $h_2 = 1.073 \times 590 = 633.07$ kJ/kg.
+
+$$
+V_2 = \sqrt{2(897\,600 - 633\,070) + 12^2} = 727.5\ \text{m/s}
+$$
+
+With one constant $c_p = 1.122$ kJ/kg·K (Anthony): $V_2 = \sqrt{2 \times 1122 \times 210 + 144} = 686.6$ m/s.
+
+</Step>
+<Step title="2. Inlet density">
+
+$R = 8314/28 = 296.9$ J/kg·K, $p_1 = 14 \times 101\,325 = 1.4186$ MPa:
+
+$$
+\rho_1 = \frac{p_1}{RT_1} = \frac{1\,418\,550}{296.9 \times 800} = 5.97\ \text{kg/m}^3
+$$
+
+</Step>
+<Step title="3. Exit density from continuity">
+
+$$
+\rho_2 = \frac{\rho_1V_1A_1}{V_2A_2} = \frac{5.97 \times 12 \times 0.05}{727.5 \times 0.15} = 0.0328\ \text{kg/m}^3
+$$
+
+</Step>
+<Step title="4. Exit pressure">
+
+$$
+p_2 = \rho_2RT_2 = 0.0328 \times 296.9 \times 590 = 5.75\ \text{kPa}
+$$
+
+(constant-$c_p$ version: $\rho_2 = 0.0347$, $p_2 = 6.09$ kPa).
+
+</Step>
+</Steps>
+
+<Answer>
+
+- $V_2 = 727$ m/s, $p_2 = 5.75$ kPa (official, $c_p(T)$ from the table)
+- Constant $c_p = 1.122$: $V_2 = 687$ m/s, $p_2 = 6.09$ kPa. Both are defensible models.
+
+</Answer>
+
+<DuctSetupFigure M1={0.0208} M2={1.373} left={['1: N₂, 12 m/s', '14 atm, 800 K', 'A = 0.05 m²']} right={['2: 590 K', 'A = 0.15 m²', 'V₂ ≈ 727 m/s']} middle="the device must hide a throat: area triples while V grows 60× (PS2 P10)" caption="What the device must look like inside. Colours show the isentropic Mach number from M 0.02 to 1.37; the real flow is irreversible (Δs > 0), but the throat is still there." />
+
+<Traps>
+
+- Convert atm to Pa and use $R_{N_2} = 8314/28$, not $R_\text{air}$.
+- $V_1^2/2 = 72$ J/kg is negligible next to 265 kJ/kg: nearly all the enthalpy drop becomes kinetic energy.
+- Physical check: area ×3 while V ×60 means ρ ÷180. Only a supersonic expansion does that, so the device is a converging–diverging nozzle (picked up again in PS2 P10).
+
+</Traps>
+
+<Source>official 2025 solution pp. 2–3 · Anthony's PS01-mine pp. 5–6</Source>
+
+</Problem>
+
+<Problem id="PS1 P3" title="Jet engine: exhaust density, temperature and thrust" tags="control volume, momentum, thrust">
+
+<Statement>
+
+An engine flies at 600 km/h where the ambient pressure is 30 kPa (inlet pressure = ambient) and the temperature −50 °C. Air flow is 25 kg/s; fuel is added at 3 kg/s with negligible velocity. At the exit: p = 60 kPa, A = 0.2 m², exhaust velocity 1500 km/h relative to the engine. (a) Exhaust density. (b) Exhaust temperature if MW = 27.5. (c) Thrust; does it come mostly from pressure or momentum flux?
+
+</Statement>
+
+<Think>
+
+Control-volume momentum in the **engine frame** (steady): $F = (p_2 + \rho_2V_2^2)A_2 - (p_1 + \rho_1V_1^2)A_1$. Mass out includes the fuel. The inlet area is not given: back it out from $\dot m_\text{air} = \rho_1V_1A_1$.
+
+</Think>
+
+<Plan>
+
+$V$ in m/s → $\rho_2$ from $\dot m_\text{out}$ → $T_2$ from $p = \rho RT$ with MW 27.5 → $\rho_1$, $A_1$ → momentum balance.
+
+</Plan>
+
+<Steps>
+<Step title="1. Velocities and exit density (a)">
+
+$V_1 = 600/3.6 = 166.67$ m/s, $V_2 = 1500/3.6 = 416.67$ m/s. $\dot m_2 = 25 + 3 = 28$ kg/s:
+
+$$
+\rho_2 = \frac{28}{0.2 \times 416.67} = 0.336\ \text{kg/m}^3
+$$
+
+</Step>
+<Step title="2. Exhaust temperature (b)">
+
+$$
+T_2 = \frac{p_2}{\rho_2(\Re/MW)} = \frac{60\,000}{0.336 \times 8314/27.5} = 590.7\ \text{K} = 317.5\ \text{°C}
+$$
+
+</Step>
+<Step title="3. Inlet area">
+
+$\rho_1 = 30\,000/(287 \times 223) = 0.4686$ kg/m³, so $A_1 = 25/(0.4686 \times 166.67) = 0.320$ m².
+
+</Step>
+<Step title="4. Thrust (c)">
+
+$$
+F = (60\,000 + 0.336 \times 416.67^2)(0.2) - (30\,000 + 0.4686 \times 166.67^2)(0.320) = 23\,667 - 13\,770 \approx 9.9\ \text{kN}
+$$
+
+Split it: momentum $28 \times 416.67 - 25 \times 166.67 = 7500$ N; pressure $p_2A_2 - p_1A_1 = 12\,000 - 9600 \approx 2400$ N.
+
+</Step>
+</Steps>
+
+<Answer>
+
+- (a) $\rho_2 = 0.336$ kg/m³
+- (b) $T_2 = 591$ K = 318 °C
+- (c) $F \approx 9.9$ kN (official 9.86 kN with $A_1$ rounded to 0.321 m²): 7.5 kN momentum + 2.4 kN pressure, so **momentum flux dominates**.
+
+</Answer>
+
+<JetEngine3D />
+
+<Traps>
+
+- Fuel adds mass (28 kg/s out) but no x-momentum in.
+- Use MW = 27.5 for the hot gas, not air.
+- This problem's thrust uses absolute pressures on both planes (inlet and exit). The rocket formula of PS4 references ambient instead: $F = \dot m_eV_e - \dot m_aV_a + (p_e - p_\text{amb})A_e = 13.5$ kN here. The two differ because they draw the control volume differently; follow the problem's definition.
+
+</Traps>
+
+<Source>official 2025 solution pp. 4–5 · Anthony's PS01-mine pp. 7–8</Source>
+
+</Problem>
+
+<Problem id="PS1 P4" title="Force to hold a four-port water junction" tags="momentum, continuity, impulse function">
+
+<Statement>
+
+Find $F_x$, $F_y$ needed to hold the junction (steady, uniform, water ρ = 1000 kg/m³). Port 1 (in, +x): 350 kPa, 3 m/s, R = 0.2 m. Port 2 (in, +y from below): 300 kPa, 1.8 m/s, R = 0.4 m. Port 3 (out, +x): 150 kPa, 2.1 m/s, R = 0.3 m. Port 4 (out, 30° above +x): 200 kPa, V₄ = ?, R = 0.32 m.
+
+</Statement>
+
+<Think>
+
+Incompressible continuity gives V₄; then a momentum balance. Anthony's shortcut: each port contributes its **impulse function** $(p + \rho V^2)A$, outward along the flow at outlets and against it at inlets.
+
+</Think>
+
+<Plan>
+
+Areas → V₄ → $F_x$ = Σ outlets − Σ inlets (x-components) → same for y.
+
+</Plan>
+
+<BranchPipeFigure />
+
+<Steps>
+<Step title="1. Areas and V₄">
+
+$A = \pi R^2$: $A_1 = 0.1257$, $A_2 = 0.5027$, $A_3 = 0.2827$, $A_4 = 0.3217$ m².
+
+$$
+V_4 = \frac{V_1R_1^2 + V_2R_2^2 - V_3R_3^2}{R_4^2} = \frac{0.12 + 0.288 - 0.189}{0.1024} = 2.139\ \text{m/s}
+$$
+
+</Step>
+<Step title="2. x-force">
+
+$$
+F_x = (p_3 + \rho V_3^2)A_3 + (p_4 + \rho V_4^2)A_4\cos30° - (p_1 + \rho V_1^2)A_1 = 43\,659 + 56\,994 - 45\,113 = 55\,539\ \text{N}
+$$
+
+</Step>
+<Step title="3. y-force">
+
+$$
+F_y = (p_4 + \rho V_4^2)A_4\sin30° - (p_2 + \rho V_2^2)A_2 = 32\,906 - 152\,425 = -119\,519\ \text{N}
+$$
+
+</Step>
+</Steps>
+
+<Answer>
+
+- $V_4 = 2.14$ m/s
+- $F_x = +55.5$ kN, $F_y = -119.5$ kN must be applied to hold the junction.
+
+</Answer>
+
+<Traps>
+
+- Pressures are taken as absolute, as given; gauge pressures would change the answer.
+- The momentum terms are about 1 kN each; the pressure terms (hundreds of kPa × m²) dominate.
+- Force on the fluid, force on the pipe and force to hold the pipe differ only in sign. Decide which one you are computing before writing signs.
+
+</Traps>
+
+<Source>official 2025 solution pp. 6–7 · Anthony's PS01-mine p. 9</Source>
+
+</Problem>
+
+<Problem id="PS1 P5" title="Derive the speed of sound; which way does the gas move?" tags="derivation, wave frame, isentropic">
+
+<Statement>
+
+From a control volume around a steady planar sound wave, derive the speed of sound. Show that a compression wave ($dp > 0$) moving left pushes the gas left, and a rarefaction ($dp < 0$) moving left makes the gas flow right. Is the speed different for compression and expansion waves?
+
+</Statement>
+
+<Think>
+
+The derivation of [Chapter 4](#/mech430/ch/sound): go to the **wave frame** so the flow is steady, then mass + momentum give $c^2 = dp/d\rho$, and isentropic evaluation gives $\sqrt{\gamma RT}$.
+
+</Think>
+
+<Plan>
+
+Wave frame: gas in at $c$ with $p,\rho$; out at $c - dV$ with $p + dp$, $\rho + d\rho$. Mass → $\rho\,dV = c\,d\rho$. Momentum → $dp = \rho c\,dV$. Combine. Then signs.
+
+</Plan>
+
+<SoundWaveFigure />
+
+<Steps>
+<Step title="1. Mass">
+
+$\rho c = (\rho + d\rho)(c - dV)$ ⇒ $\rho\, dV = c\, d\rho$ (second-order term dropped).
+
+</Step>
+<Step title="2. Momentum">
+
+Differential form with $V = c$: $dp + \rho c(-dV) = 0$ ⇒ $dp = \rho c\, dV$.
+
+</Step>
+<Step title="3. Combine">
+
+$dp = \rho c \cdot (c\,d\rho/\rho) = c^2 d\rho$ ⇒ $c^2 = dp/d\rho$.
+
+</Step>
+<Step title="4. Isentropic evaluation">
+
+Weak wave (reversible) and fast (adiabatic) ⇒ isentropic, $p/\rho^\gamma$ = const. From $T\,ds = c_v dT + p\,dv$ and $T\,ds = c_p dT - v\,dp$ with $ds = 0$: $T_2/T_1 = (p_2/p_1)^{(\gamma-1)/\gamma} = (\rho_2/\rho_1)^{\gamma-1}$. Then
+
+$$
+c^2 = \left(\frac{\partial p}{\partial\rho}\right)_s = \gamma\frac{p}{\rho} = \gamma RT
+$$
+
+e.g. air at 300 K: $\sqrt{1.4 \times 287.7 \times 300} = 348$ m/s.
+
+</Step>
+<Step title="5. Direction of induced flow">
+
+From step 2, $dV = dp/(\rho c)$ has the sign of $dp$.
+
+- Compression ($dp > 0$): $dV > 0$, so gas leaves the wave at $c - dV < c$. Back in the lab frame the gas behind the wave moves at $dV$ **in the wave's direction** (left).
+- Rarefaction ($dp < 0$): $dV < 0$, exit speed $c - dV > c$: the gas behind moves **opposite** to the wave (right).
+
+</Step>
+</Steps>
+
+<Answer>
+
+- $c = \sqrt{(\partial p/\partial\rho)_s} = \sqrt{\gamma p/\rho} = \sqrt{\gamma RT}$
+- Compression: gas follows the wave. Rarefaction: gas moves against it.
+- **No difference in speed**: $c$ depends only on the local state, not on the sign of $dp$ (for infinitesimal waves).
+
+</Answer>
+
+<PistonWaveFigure />
+
+<Traps>
+
+- Anthony's solution did not answer the last question explicitly. Answer it: same speed.
+- Newton used isothermal $dp/d\rho = p/\rho$, i.e. $c = \sqrt{RT}$, about 15% low for air.
+- Finite waves behave differently: compressions steepen into shocks, expansions spread (Ch. 7, Ch. 16).
+
+</Traps>
+
+<Source>official 2025 solution pp. 8–9 · Anthony's PS01-mine pp. 10–11</Source>
+
+</Problem>
+
+<Problem id="PS1 P6" title="Sound speed of five gases at STP" tags="c = √γRT, molecular weight">
+
+<Statement>
+
+Find the speed of sound at 20 °C, 101 kPa in He (MW 4, γ 1.67), Ar (40, 1.67), N₂ (28, 1.40), CO₂ (44, 1.28), SF₆ (146, 1.09). What happens to your voice if you inhale helium? SF₆?
+
+</Statement>
+
+<Think>
+
+Pure substitution in $c = \sqrt{\gamma\Re T/MW}$. The point: pressure is irrelevant, and MW matters more than γ.
+
+</Think>
+
+<Plan>
+
+T = 293 K, ℜ = 8314, one line per gas.
+
+</Plan>
+
+<Steps>
+<Step title="1. Substitute">
+
+| Gas | $\sqrt{\gamma \cdot 8314 \cdot 293/MW}$ | c (m/s) |
+|---|---|---|
+| He | $\sqrt{1.67 \times 8314 \times 293/4}$ | 1008 |
+| Ar | $\sqrt{1.67 \times 8314 \times 293/40}$ | 319 |
+| N₂ | $\sqrt{1.40 \times 8314 \times 293/28}$ | 349 |
+| CO₂ | $\sqrt{1.28 \times 8314 \times 293/44}$ | 266 |
+| SF₆ | $\sqrt{1.09 \times 8314 \times 293/146}$ | 135 |
+
+</Step>
+<Step title="2. Voice">
+
+Your vocal tract's resonances (formants) scale with $c$. Helium shifts them up ("squeaky"); SF₆ shifts them down (deep, slow voice).
+
+</Step>
+</Steps>
+
+<Answer>
+
+He 1008 m/s · Ar 319 m/s · N₂ 349 m/s · CO₂ 266 m/s · SF₆ 135 m/s. Helium: higher-pitched voice; SF₆: very deep voice.
+
+</Answer>
+
+<SoundSpeedSim initialT={293} />
+
+<Traps>
+
+- The 101 kPa is a distractor: $c$ depends on T only.
+- He vs Ar: same γ, 10× the MW, so $\sqrt{10} = 3.16$× slower.
+- Strictly the vocal-fold frequency barely changes; it is the timbre (formants) that shifts.
+
+</Traps>
+
+<Source>official 2025 solution p. 10 · Anthony's PS01-mine pp. 12–13</Source>
+
+</Problem>
+
+<Problem id="PS1 P7" title="Yeager vs Green: who was faster at Mach 1?" tags="speed of sound, temperature">
+
+<Statement>
+
+Yeager (Bell X-1, 1947) broke the sound barrier at 13 000 m: T = −57 °C, p = 16.50 kPa, ρ = 0.265 kg/m³. Andy Green (Thrust SSC, 1997) did it near sea level in the Nevada desert: T = 30 °C, p = 101 kPa, ρ = 1.226 kg/m³. Who was going faster, and why?
+
+</Statement>
+
+<Think>
+
+Mach 1 means $V = c$, and $c$ depends on the local temperature. Cold air at altitude has a lower $c$.
+
+</Think>
+
+<Plan>
+
+Compute $c$ for each case, with $\sqrt{\gamma p/\rho}$ (official) or $\sqrt{\gamma RT}$ (Anthony).
+
+</Plan>
+
+<Steps>
+<Step title="1. Yeager">
+
+$c = \sqrt{1.4 \times 16\,500/0.265} = 295.2$ m/s, or $\sqrt{1.4 \times 287 \times 216} = 294.6$ m/s.
+
+</Step>
+<Step title="2. Green">
+
+$c = \sqrt{1.4 \times 101\,000/1.226} = 339.6$ m/s, or $\sqrt{1.4 \times 287 \times 303} = 348.9$ m/s.
+
+</Step>
+</Steps>
+
+<Answer>
+
+Green was faster: about 340–349 m/s vs Yeager's 295 m/s (1063 km/h), because the hot desert air has a higher speed of sound than the cold stratosphere.
+
+</Answer>
+
+<SoundBarrierFigure />
+
+<Traps>
+
+- The sea-level data are not self-consistent: $101\,000/(287 \times 1.226) = 287$ K, not 303 K (1.226 kg/m³ is the standard 15 °C density). Hence 339.6 vs 348.9 m/s. The conclusion is the same.
+- $c$ depends on T only, not on p or ρ separately.
+
+</Traps>
+
+<Source>official 2025 solution p. 11 · Anthony's PS01-mine pp. 13–14</Source>
+
+</Problem>

@@ -1,0 +1,92 @@
+<p className="eyebrow">Chapter 0 · warm-up</p>
+
+# Thermo refresher
+
+<p className="lede">Everything in this course is built on five facts about a perfect gas. Get these back into your fingers first — every later derivation is just these plus conservation laws.</p>
+
+## The perfect gas
+
+A **thermally perfect** gas obeys the ideal-gas law; a **calorically perfect** gas also has constant specific heats. MECH 430 always assumes both:
+
+$$
+p = \rho R T, \qquad R = \frac{\Re}{MW}, \qquad \Re = 8314\ \tfrac{\text{J}}{\text{kmol·K}}
+$$
+
+$$
+h = c_p T, \qquad e = c_v T, \qquad R = c_p - c_v, \qquad \gamma = \frac{c_p}{c_v}
+$$
+
+Two combinations you will use constantly:
+
+$$
+c_p = \frac{\gamma R}{\gamma - 1}, \qquad c_v = \frac{R}{\gamma - 1}
+$$
+
+| Gas | MW | γ | R (J/kg·K) | c_p (J/kg·K) |
+|---|---|---|---|---|
+| Air | 28.9 | 1.4 | 287 | 1005 |
+| N₂ | 28 | 1.4 | 297 | 1039 |
+| He | 4 | 5/3 | 2079 | 5196 |
+| Ar | 40 | 5/3 | 208 | 520 |
+| CO₂ | 44 | ≈1.29 | 189 | ≈840 |
+| H₂ | 2 | 1.4 | 4157 | 14 550 |
+
+<Remember title="Where γ comes from">
+
+Monatomic gases (He, Ar) only store energy in translation: $\gamma = 5/3$. Diatomic gases (N₂, O₂, air, H₂) add two rotational modes: $\gamma = 7/5 = 1.4$. Big molecules (CO₂, SF₆) have many modes, so γ creeps toward 1. **Light and monatomic = fast sound, fast rockets.**
+
+</Remember>
+
+## First law
+
+For a closed system $\Delta E = Q + W$. For a flowing gas the work needed to push fluid in and out of a control volume (the *flow work* $p v$) is bundled with internal energy into **enthalpy** $h = e + p/\rho$. For steady flow through a device:
+
+$$
+q + w = \left(h_2 + \tfrac{V_2^2}{2}\right) - \left(h_1 + \tfrac{V_1^2}{2}\right)
+$$
+
+That single line is the energy equation of the whole course (Ch. 3). With no heat and no shaft work, $h + V^2/2$ is constant — this is why we will define a *stagnation temperature* $T_0$ in Ch. 5.
+
+## Second law and entropy
+
+The two Gibbs equations:
+
+$$
+T\,ds = de + p\,dv \qquad\qquad T\,ds = dh - v\,dp
+$$
+
+Integrate them for a perfect gas:
+
+$$
+s_2 - s_1 = c_p \ln\frac{T_2}{T_1} - R\ln\frac{p_2}{p_1} = c_v\ln\frac{T_2}{T_1} + R\ln\frac{v_2}{v_1}
+$$
+
+**Isentropic** (adiabatic *and* reversible, $ds = 0$) processes then follow directly:
+
+$$
+\frac{p_2}{p_1} = \left(\frac{\rho_2}{\rho_1}\right)^{\gamma} = \left(\frac{T_2}{T_1}\right)^{\frac{\gamma}{\gamma-1}}
+$$
+
+<Idea title="Why this matters later">
+
+Shocks, friction and heat addition all **create entropy**. In an adiabatic flow the entropy rise shows up as a loss of stagnation pressure:
+
+$$
+s_2 - s_1 = -R \ln\frac{p_{02}}{p_{01}}
+$$
+
+So whenever you see $p_0$ drop (across a shock, along a Fanno pipe) you are looking at entropy being generated. $p_0$ can never rise without heat being *removed*.
+
+</Idea>
+
+## Quick self-test
+
+1. Air at 300 K: what is $c_p$? → $\frac{1.4 \times 287}{0.4} = 1005$ J/kg·K.
+2. Helium, $T$ doubles isentropically: pressure ratio? → $2^{\gamma/(\gamma-1)} = 2^{2.5} = 5.66$.
+3. A gas is compressed adiabatically but *irreversibly* from $p_1$ to $p_2$. Is $T_2$ higher or lower than the isentropic value? → Higher: the extra entropy appears as extra temperature.
+
+<Examined>
+
+Never asked directly, but every problem assumes you can move between $p, \rho, T$ with $p=\rho RT$, find $R$ from a molecular weight (exams use MW = 28, 28.9, 30, 25, 17…), and get $c_p$ from γ and R.
+
+</Examined>

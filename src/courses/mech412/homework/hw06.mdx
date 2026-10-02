@@ -1,0 +1,326 @@
+<p className="eyebrow">Homework 6 · due Mar 10, 2024 · Lectures 13–15</p>
+
+# HW6: hydro-acoustic horn, hydraulic dashpot, pneumatic PID
+
+<div className="lede">
+
+Three mixed-domain circuits from <Ch slug="acoustic-pneumatic">Chapter 12</Ch> and <Ch slug="hydraulic-thermal">Chapter 13</Ch>. The skill is always the same: find the **nodes** (pressures or velocities), decide who is in parallel and who is in series, then put a transformer or gyrator wherever the energy changes domain. **There is no official solution for Q2**, and the file called "HW06-07-sol" is really HW6 only (Q1, Q3 and the Ogata B-4 problems), so Q2 is the digest author's derivation.
+
+</div>
+
+<Problem id="HW6 Q1" title="Water-level tunable horn: equivalent circuit" tags="hydro-acoustic, transformer 1:1, impedance analogy">
+
+<Statement>
+
+A tank is filled from the left through a valve $\rho R_{f1}$ (flow $Q_{in}$) and drained through a valve $R_{f2}$ to the atmosphere. The water has a free surface, and above it is an air cavity $C_{A1}$. A short neck $M_{A1}$ leads up to a bigger chamber $C_{A2}$; that chamber has a short open side tube $M_{A2}$ (open to the outside) and a conical horn $M_{A3}$ ending in a radiation resistance $R_A$. Draw the equivalent circuit, using **volume flow rate as the flux** (pressure = voltage, volume flow = current).
+
+</Statement>
+
+<Think>
+
+Think of it as two worlds joined by the moving water surface. In the **water world** the unknown is the pressure at the *bottom* of the tank; in the **air world** the unknown is the air pressure above the surface. The surface is a piston: when water rises it pushes the same *volume* of air, so the volume flow is continuous across it (a 1 : 1 transformer), but the *pressure* is not (the water column weighs something).
+
+</Think>
+
+<Plan>
+
+(1) Source and inlet valve in series, giving the bottom node. (2) Drain valve from the bottom node to ground (it discharges to atmosphere). (3) Water compliance between the bottom node and the air node. (4) 1:1 transformer. (5) Acoustic ladder: shunt $C_{A1}$, series $M_{A1}$, shunt $C_{A2}$, shunt $M_{A2}$, series $M_{A3}$, load $R_A$.
+
+</Plan>
+
+<Steps>
+<Step title="1. Water side">
+
+The inlet valve is *in the path* of the flow, so it is a series resistance $\rho R_{f1}$ after the current source $q_{in}$ (it is a "mass-flux" resistance in the statement, hence the $\rho$). The node after it is **the pressure at the bottom of the tank**, $p_b$.
+
+</Step>
+<Step title="2. Drain valve">
+
+The drain flow depends on $p_b$ (relative to atmosphere), so $R_{f2}$ hangs **directly from the bottom node to ground** (atmosphere).
+
+</Step>
+<Step title="3. Water compliance">
+
+The flow that does *not* leave through the drain raises the water level: $q_{in}-q_{out}=A\dot h$. The pressure at the surface equals $p_b-\rho g h$, so the stored energy is $\tfrac12\rho g A h^2$: a **capacitor** $C_f/\rho=A/(\rho g)$ sitting *between* the bottom node and the air node, and its current is exactly the volume rate pushed into the air.
+
+</Step>
+<Step title="4. Transformer 1:1">
+
+Volume flow is continuous across the surface (flux in = flux out), and the pressure difference was already taken by the capacitor, so the transformer is 1 : 1, a pass-through that marks the change of medium.
+
+</Step>
+<Step title="5. Acoustic ladder">
+
+Trapped air stores energy as it is compressed: shunt $C_{A1}$. The neck carries the flow (its air has inertia): series $M_{A1}$. The big chamber: shunt $C_{A2}$. The open side tube leaks to the atmosphere: **shunt** $M_{A2}$ (a mass to ground). The horn carries the output flow: **series** $M_{A3}$ ending in $R_A$ (radiated sound power). Ground = atmospheric pressure.
+
+</Step>
+</Steps>
+
+<CircuitBoard source={{kind:'Is',label:'q_in',sub:'inlet flow'}} sections={[{type:'series',el:{kind:'R',label:'ρR_f1',sub:'inlet valve'}},{type:'shunt',stack:[{kind:'R',label:'ρR_f2',sub:'drain valve'}],node:'p_b'},{type:'series',el:{kind:'C',label:'C_f/ρ',sub:'water surface'}},{type:'xfmr',ratio:'1 : 1'}]} title="Part 1: the water side and the moving surface" caption="Inlet valve in series, tank-bottom node with the drain valve to ground (atmosphere), the water compliance between the bottom node and the air node, and the moving surface as a 1:1 transformer." />
+
+<CircuitBoard sections={[{type:'wire',node:'p_A1'},{type:'shunt',stack:[{kind:'C',label:'C_A1',sub:'air cavity'}]},{type:'series',el:{kind:'L',label:'M_A1',sub:'neck'}},{type:'shunt',stack:[{kind:'C',label:'C_A2',sub:'chamber'}]},{type:'shunt',stack:[{kind:'L',label:'M_A2',sub:'open side tube'}]},{type:'series',el:{kind:'L',label:'M_A3',sub:'horn'}},{type:'shunt',stack:[{kind:'R',label:'R_A',sub:'radiation'}]}]} title="Part 2: the acoustic ladder (continues from the transformer)" caption="Shunt air cavity, series neck, shunt chamber, shunt open side tube (to atmosphere), series horn ending in the radiation resistance. Ground is atmospheric pressure." />
+
+<Answer>
+
+The circuit above. *Real-world:* a bottle you blow across: as the water level rises the air cavity $C_{A1}$ shrinks and the pitch goes up; the two valves set how fast the level (and so the pitch) moves.
+
+</Answer>
+
+<Callout kind="warn" title="⚠ Anthony's water section is wrong">
+
+He put $C_f/\rho$ and $R_{f2}$ **in series** in one shunt branch. That would force the drain current to equal the capacitor current. In the real system the drain valve is fed directly by the tank-bottom pressure, so $R_{f2}$ is its **own** shunt branch from the bottom node, and the capacitor sits between the two nodes (official topology). His air section (the acoustic ladder) is right.
+
+</Callout>
+
+<Traps>
+
+- The 1 : 1 transformer is easy to forget: the flux is the same on both sides, the pressures differ by the hydrostatic term (that is $C_f/\rho$).
+- $M_{A2}$ is a **shunt** (open end to atmosphere); $M_{A3}$ is a **series** element (the horn carries the output flow).
+- $R_{f1},R_{f2}$ are mass-flux resistances in the statement, so they appear as $\rho R$ in volume-flow form.
+
+</Traps>
+
+<Source>official solution p.1 of the HW06 file (headed "2."): circuit ✔. Anthony: acoustic part ✔, water topology ✘.</Source>
+
+</Problem>
+
+<Problem id="HW6 Q2" title="Hydraulic dashpot: circuit with four-pole elements, and Z/Y for massless parts" tags="washout filter, transformer, T = RρA²/k">
+
+<Statement>
+
+A piston (mass $m_p$, position $y$, area $A$) slides in a cylinder (mass $m_c$, position $z$) full of oil (density $\rho$). An orifice of flow resistance $R$ (mass flux vs pressure) bypasses the piston between the two chambers; a spring $k$ connects the cylinder to a fixed wall. (a) Draw one equivalent circuit that joins the hydraulic and mechanical parts with four-pole elements. (b) Neglect both masses and show that $Z(s)/Y(s)$ is a unity feedback loop with $1/(Ts)$ in the feedback, $T=R\rho A^2/k$. Sketch: a step in $y$ makes $z$ jump to the same value, then decay to 0.
+
+</Statement>
+
+<Think>
+
+This is a **car shock absorber in series with a spring** (a Maxwell element), and the same problem reappears as $\text{MT2 F2022 Q1b}$ and $\text{MT2 W2024 Q2}$. The one fact everything hangs on: the oil can only get from one chamber to the other through the orifice, so the flow through the orifice is driven by the **relative** motion $\dot y-\dot z$ of piston and cylinder.
+
+</Think>
+
+<Plan>
+
+Part (b) first (it is short and it fixes the physics): flow, then pressure drop, then cylinder force balance, giving a first-order ODE. Then use the same relations to read off the circuit for (a).
+
+</Plan>
+
+<Steps>
+<Step title="1. Flow through the orifice">
+
+If the piston moves at $\dot y$ and the cylinder at $\dot z$, the piston sweeps volume at rate $A(\dot y-\dot z)$ relative to the cylinder. That oil has to go through the orifice: $Q=A(\dot y-\dot z)$ (volume rate), mass flux $\rho Q$.
+
+</Step>
+<Step title="2. Orifice law">
+
+$P_2-P_1=R\,(\rho Q)=R\rho A(\dot y-\dot z)$. *Meaning:* the faster the relative motion, the higher the pressure difference across the piston (a viscous damper).
+
+</Step>
+<Step title="3. Force balance on the (massless) cylinder">
+
+The oil pushes the cylinder with force $A(P_2-P_1)$ and the spring pulls back with $kz$: $A(P_2-P_1)=kz$.
+
+</Step>
+<Step title="4. Combine">
+
+Substitute step 2 into step 3: $\dfrac{R\rho A^2}{k}(\dot y-\dot z)=z$, that is $T(\dot y-\dot z)=z$ with $T=\dfrac{R\rho A^2}{k}$.
+
+</Step>
+<Step title="5. Laplace transform">
+
+$Ts\,(Y-Z)=Z\;\Rightarrow\;Z(Ts+1)=TsY\;\Rightarrow\;\dfrac ZY=\dfrac{Ts}{Ts+1}$. The same thing as $Z=Y-\dfrac{1}{Ts}Z$ (rearranging $TsY=Z+TsZ$ and dividing by $Ts$): $Y$ enters a summing junction, the output $Z$ passes through $1/(Ts)$ and is subtracted. That is the unity-feedback diagram.
+
+</Step>
+<Step title="6. Step response (numeric check)">
+
+$Y=1/s$: $Z=\dfrac{Ts}{Ts+1}\cdot\dfrac1s=\dfrac{T}{Ts+1}=\dfrac{1}{s+1/T}$, so $z(t)=e^{-t/T}$: it **jumps to 1** (a fast change cannot push oil through the orifice, so the cylinder goes with the piston) and **decays to 0** with time constant $T$ (the spring pushes the oil through). Final value $\lim_{s\to0}sZ=0$ ✔.
+
+</Step>
+<Step title="7. Circuit for (a)">
+
+Impedance analogy: force = voltage, velocity = current in the mechanical parts; pressure = voltage, volume flow = current in the hydraulic part.
+
+- Piston side (loop with current $\dot y$): force source in series with inductor $m_p$.
+- Transformer $A:1$ (force to pressure, $p=f/A$; velocity to volume flow, $U=A\dot y$).
+- Hydraulic node (pressure difference $\Delta P=P_2-P_1$): the flow $A\dot y$ splits; one branch goes through the orifice $R\rho$ (carrying $Q$), the other into a second transformer carrying $A\dot z$. KCL: $A\dot y=Q+A\dot z$ ✔ (step 1).
+- Transformer $1:A$ back to the mechanical side: a series loop with inductor $m_c$ and capacitor $C_M=1/k$ carrying $\dot z$.
+
+</Step>
+</Steps>
+
+<CircuitBoard source={{kind:'Vs',label:'F',sub:'force on rod'}} sections={[{type:'series',el:{kind:'L',label:'m_p',sub:'piston mass'}},{type:'xfmr',ratio:'A : 1'},{type:'shunt',stack:[{kind:'R',label:'Rρ',sub:'orifice'}],node:'ΔP'},{type:'xfmr',ratio:'1 : A'},{type:'series',el:{kind:'L',label:'m_c',sub:'cylinder mass'}},{type:'series',el:{kind:'C',label:'C_M = 1/k',sub:'spring'}}]} title="Hydraulic dashpot: mechanical, hydraulic, mechanical" caption="The orifice shunts the middle node, so it sees the difference of the two flows; the cylinder's loop carries ż." />
+
+<Answer>
+
+(a) circuit above; (b) $\dfrac{Z}{Y}=\dfrac{Ts}{Ts+1}$, $T=\dfrac{R\rho A^2}{k}$; a step in $y$ gives $z=e^{-t/T}$.
+
+*Real-world:* a car shock absorber in series with the body spring: a sudden bump is transmitted in full ($z$ jumps) but a slow drift is absorbed ($z\to0$). Same maths as an RC **high-pass** (washout) filter.
+
+</Answer>
+
+<Callout kind="note" title="Anthony's solution is correct">
+
+Circuit and algebra match the digest derivation exactly: $f_y=(P_2-P_1)A$, $A\dot y=q+A\dot z$, $q=(P_2-P_1)/(R\rho)$, $A(P_2-P_1)=kz$, giving $Z/Y=Ts/(Ts+1)$. Only blemishes: the second transformer's constant is left implicit and there is a stray label "$C_A$" in the hydraulic part (there is **no** hydraulic compliance, since the oil is treated as incompressible).
+
+</Callout>
+
+<Traps>
+
+- Orifice flow is driven by $\dot y-\dot z$, not by $\dot y$.
+- $R$ is a mass-flux resistance, so $\rho$ appears in $T$.
+- With the masses present the system is second order; the washout form needs them neglected.
+
+</Traps>
+
+<Source>no official solution for Q2; digest-author derivation checked symbolically; Anthony ✔.</Source>
+
+</Problem>
+
+<Problem id="HW6 Q3" title="Pneumatic PID controller: standard circuit vs the ad-hoc block diagram" tags="nozzle–flapper, ideal controller K→∞, gyrator">
+
+<Statement>
+
+For the pneumatic PID controller (supply pressure $P_s$, nozzle–flapper with lever lengths $a$, $b$, input displacement $e$, nozzle gap $x$; controlled pressure fed back through two restrictions $R_i\gg R_d$ to two bellows of capacitance $C$ each, area $A$) (a) draw one valid equivalent circuit with standard analogies (transformers between mechanical and pneumatic parts), including bellows stiffness, flapper–nozzle stiffness and cavity compressibility, neglecting gas inertance; (b) get the transfer function from a block diagram with the feedback bracket $\dfrac{1}{R_dCs+1}-\dfrac{1}{R_iCs+1}$ and relate $K,C,k_s$ to the circuit.
+
+</Statement>
+
+<Think>
+
+Two ideas. **(1)** The lever and bellows are *mechanical* (mobility analog, a spring has compliance $C_M$); the cavities are *pneumatic* (impedance analog, a cavity is a capacitor); the bellows piston converts one into the other (a **gyrator** $1/A_b$, because it joins a mobility-type domain to an impedance-type domain). **(2)** For the transfer function, a huge gain $K$ makes the controller the *inverse of its feedback path*: whatever is in the feedback path appears upside-down in the controller. A lag minus a faster lag is roughly an $s$ (derivative); inverting gives the $1/s$ (integral) plus the proportional and derivative terms.
+
+</Think>
+
+<Steps>
+<Step title="1. Lever mechanics (floating lever, mass neglected)">
+
+Moments about the nozzle end give $F_e\,a=F_y\,b$; about the lower end $F_e(a+b)=F_x\,b$. Geometry: $\dot e=\tfrac{a+b}{b}\dot x+\tfrac ab\dot y$. With mobilities $\xi$ (velocity per unit force): $\dot x=\xi_{nf}F_x=\xi_{nf}\tfrac{a+b}{b}F_e$ and $\dot y=\xi_bF_y=\xi_b\tfrac abF_e$. So the lever is two **transformers** $(a+b)/b:1$ and $a/b:1$ connecting the input velocity $\dot e$ to the nozzle–flapper mobility $\xi_{nf}$ and the bellows mobility $\xi_b$.
+
+</Step>
+<Step title="2. Stiffnesses">
+
+The nozzle–flapper behaves as a spring at the operating point: $1/C_{M,nf}=dF_x/dx$. The two bellows are in series mechanically, so $F_y=\big(\tfrac1{C_{Mb}}+\tfrac1{C_{Mb}}\big)y$, i.e. stiffness $k_s=2/C_{Mb}$.
+
+</Step>
+<Step title="3. Pneumatic part and the gyrator">
+
+The bellows piston moving at $\dot y$ pushes air at volume flow $U=A_b\dot y$. Two air cavities (acoustic compliance $C_A$ each) and the two resistances $R_i$, $R_d$ form the pneumatic network; **gyrators** $1/A_b$ join this impedance-type network to the mechanical mobility network. At the bellows terminals: the same volume flow on both sides (reverse sign), $U=A_b\dot y$, and the force balance on the piston $0=(P_{right}-P_{left})A_b+2y/C_{Mb}$.
+
+</Step>
+<Step title="4. What the standard circuit does not contain">
+
+The circuit has **no gain $K$**: the relation $p_c=Kx$ (nozzle back-pressure per unit gap, $K=-dP_c/dx$ at the operating point) must be added as a separate equation. Also the overall bellows stiffness is $k_s=2/C_{Mb}$ while the pneumatic capacitance is $C=C_A/2$ (half, because the two cavities combine in series).
+
+</Step>
+<Step title="5. Block diagram reduction">
+
+With the feedback path $F(s)=\dfrac1{R_dCs+1}-\dfrac1{R_iCs+1}=\dfrac{(R_i-R_d)Cs}{(R_dCs+1)(R_iCs+1)}$, forward elements $\tfrac b{a+b}$ and $K$, and feedback gain $\tfrac a{a+b}\tfrac A{k_s}$:
+
+$$\frac{P_c}{E}=\frac{\tfrac{b}{a+b}K}{1+K\tfrac{a}{a+b}\tfrac{A}{k_s}F(s)} .$$
+
+</Step>
+<Step title="6. Ideal controller, K → ∞">
+
+When $K\tfrac a{a+b}\tfrac A{k_s}F\gg1$ the 1 in the denominator is negligible and the $K$ cancels:
+
+$$\frac{P_c}{E}\to\frac{b\,k_s}{aA}\;\frac{(R_dCs+1)(R_iCs+1)}{(R_i-R_d)Cs}.$$
+
+</Step>
+<Step title="7. Identify P, I and D">
+
+Put $\tau_i=R_iC$, $\tau_d=R_dC$ and expand the numerator $(\tau_ds+1)(\tau_is+1)=\tau_i\tau_ds^2+(\tau_i+\tau_d)s+1$ over $(\tau_i-\tau_d)s$:
+
+$$\frac{P_c}{E}=\frac{bk_s}{aA}\Big[\frac{\tau_i+\tau_d}{\tau_i-\tau_d}+\frac{1}{(\tau_i-\tau_d)s}+\frac{\tau_i\tau_d}{\tau_i-\tau_d}s\Big]=K_p\Big(1+\frac1{T_is}+T_ds\Big)$$
+
+with $K_p=\dfrac{bk_s}{aA}\dfrac{\tau_i+\tau_d}{\tau_i-\tau_d}$, $T_i=\tau_i+\tau_d$, $T_d=\dfrac{\tau_i\tau_d}{\tau_i+\tau_d}$. For $R_i\gg R_d$: $K_p\approx\dfrac{bk_s}{aA}$, $T_i\approx R_iC$, $T_d\approx R_dC$.
+
+</Step>
+<Step title="8. Numeric check">
+
+Take $\tau_i=10$, $\tau_d=1$ and evaluate the bracket at $s=j$. Left form: $\dfrac{(1+j)(1+10j)}{9j}=\dfrac{-9+11j}{9j}=\dfrac{11}{9}+j=1.222+j$. PID form: $K_p'=11/9=1.222$, $T_i=11$, $T_d=10/11=0.909$: $1.222\big(1+\tfrac1{11j}+0.909j\big)=1.222\big(1+j(0.909-0.091)\big)=1.222+j\,1.000$ ✔.
+
+</Step>
+</Steps>
+
+<Answer>
+
+Circuit as described (lever transformers, mobility analogs for flapper and bellows, gyrators to the pneumatic network, $k_s=2/C_{Mb}$, $C=C_A/2$, $K=-dP_c/dx$). Transfer function $\dfrac{P_c}{E}=\dfrac{\tfrac b{a+b}K}{1+K\tfrac a{a+b}\tfrac A{k_s}F(s)}\to K_p\big(1+\tfrac1{T_is}+T_ds\big)$ with $K_p\approx bk_s/(aA)$, $T_i\approx R_iC$, $T_d\approx R_dC$.
+
+*Real-world:* the pneumatic PID of an old refinery or HVAC loop: the P part is the lever gain, the I part comes from the slow $R_iC$ lag, the D part from the fast $R_dC$ lag, all built from air restrictors and rubber bellows instead of op-amps.
+
+</Answer>
+
+<Callout kind="warn" title="⚠ Anthony's reduction has a sign / denominator inconsistency">
+
+The block he draws has a **+** inside the feedback bracket, the closed-form line a **−**; the figure has the $R_i$ path **subtracted**. With "+" the controller would not be a PID. His denominator, if it really reads $K+\ldots$, would send the $K\to\infty$ limit to 1 instead of the PID; the correct denominator is $1+K\tfrac{a}{a+b}\tfrac A{k_s}F(s)$. His circuit structure (lever transformers, gyrators) is right; he stopped before identifying P, I, D.
+
+</Callout>
+
+<Callout kind="note" title="Reading the official solution">
+
+It gives the circuit and three comments (no $p_c=Kx$ in the circuit; $k_s=2/C_{Mb}$ and $C=C_A/2$; a flux divider at the bellows piston) but **leaves the closed-form transfer function to the student**; steps 5–8 are the digest author's derivation, checked symbolically.
+
+</Callout>
+
+<Traps>
+
+- The two lag paths must be **subtracted** for PID.
+- The standard circuit contains no $K$: add $p_c=Kx$ separately.
+- Both bellows are in series mechanically ($k_s=2/C_{Mb}$) but each cavity is its own pneumatic capacitor, giving $C=C_A/2$.
+- "Ideal" means $KH\gg1$: the controller is then the inverse of the feedback path.
+
+</Traps>
+
+<Source>official solution pp.2–5 (a dated, 2017-numbers version): circuit ✔, no closed form; digest-author derivation; Anthony partial.</Source>
+
+</Problem>
+
+<Problem id="HW6 Ogata" title="Optional Ogata problems B-4-1, 2, 3, 7, 9, 10" tags="Ogata, quick checks">
+
+<Statement>
+
+The official file also contains solutions to Ogata B-4-1, 2, 3, 7, 9, 10. Results, each recomputed:
+
+</Statement>
+
+<Steps>
+<Step title="B-4-2: tank with a disturbance and proportional control">
+
+$\dfrac{H_2}{Q_d}=\dfrac{R_2(R_1C_1s+1)}{(R_1C_1s+1)(R_2C_2s+1)+KR_2}$. For a unit-step disturbance $h_2(\infty)=\dfrac{R_2}{1+KR_2}$: a proportional controller leaves an **offset** (a type-0 loop cannot reject a step disturbance completely).
+
+</Step>
+<Step title="B-4-3: pneumatic bellows">
+
+$C\dot p_o=q=(p_i-p_o)/R\Rightarrow P_o/P_i=\dfrac1{RCs+1}$; bellows $A p_o=kx\Rightarrow\dfrac{X}{P_i}=\dfrac{A/k}{RCs+1}$.
+
+</Step>
+<Step title="B-4-7: pneumatic PID (K₁K ≫ 1)">
+
+$\dfrac{P_c}{E}=\dfrac{bk}{aA}\Big(1+\dfrac{R_1C_1}{R_2C_2}+\dfrac1{R_2C_2s}+R_1C_1s\Big)$: PID, same structure as Q3.
+
+</Step>
+<Step title="B-4-9: hydraulic servo and elevator">
+
+$\dfrac{Y}{\Theta}=\dfrac{l\,b}{a}$ for large gain: the piston displacement is proportional to the control-lever angle.
+
+</Step>
+<Step title="B-4-1 and B-4-10: checks">
+
+B-4-1 (draining tank): $x^{5/2}=5.657-2.1486=3.508\Rightarrow x=1.652$ m ✔. B-4-10: $2\dot h=-y+q_d-2h$, $\dot y=h\Rightarrow\dfrac{H}{Q_d}=\dfrac{s}{2s^2+2s+1}$ ✔.
+
+</Step>
+</Steps>
+
+<Answer>
+
+As listed.
+
+</Answer>
+
+<Source>manual pages 6–10 of the HW06 file.</Source>
+
+</Problem>
+
+<Examined>
+
+Hydraulic dashpot: $\text{MT2 F2022 Q1b}$, $\text{MT2 W2024 Q2}$. Pneumatic PID / flapper: $\text{MT2 W2012}$, $\text{final F2009}$. Hydro-acoustic circuits: $\text{MT2 W2019}$.
+
+</Examined>

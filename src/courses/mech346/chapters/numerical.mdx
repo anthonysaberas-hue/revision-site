@@ -1,0 +1,88 @@
+<p className="eyebrow">Chapter 5 · Numerical methods in conduction · Recommended reading</p>
+
+# Numerical methods in conduction
+
+<div className="lede">
+
+Closed-form solutions only exist for simple shapes with simple boundary conditions. When the geometry is irregular, the properties vary or the boundary conditions are awkward, we **divide the body into a grid of small blocks (nodes)** and write the energy balance of each block as an algebraic equation. This chapter is marked "recommended reading" in the course: it is **not examined**, but it is the idea behind every conduction software package (finite-difference, finite-volume, finite-element). Learn the one-line rule below and you have the whole method.
+
+</div>
+
+<Idea title="The one rule that generates every equation">
+
+**Energy balance on a node:** (heat conducted in from all neighbours) $+$ (heat generated in the node) $=$ (energy stored in the node). For steady state with no generation and a uniform square grid ($\Delta x=\Delta y$), an interior node's temperature is simply the **average of its four neighbours**:
+$$T_{m,n}=\tfrac14\left(T_{m-1,n}+T_{m+1,n}+T_{m,n-1}+T_{m,n+1}\right).$$
+
+</Idea>
+
+## Setting up the finite-difference grid
+
+Replace the derivatives by differences. For 1-D steady conduction, $\dfrac{d^2T}{dx^2}\approx\dfrac{T_{m-1}-2T_m+T_{m+1}}{\Delta x^2}$ (central difference). Inserting into $\dfrac{d^2T}{dx^2}+\dfrac{\dot e}k=0$ gives, for each interior node,
+$$T_{m-1}-2T_m+T_{m+1}+\frac{\dot e\,\Delta x^2}k=0.$$
+In 2-D (square grid), add the same term in $y$:
+$$T_{m-1,n}+T_{m+1,n}+T_{m,n-1}+T_{m,n+1}-4T_{m,n}+\frac{\dot e\,\Delta x^2}k=0.$$
+
+**Why "the average of the neighbours"?** Heat flows from each neighbour to the node with conductance $k\,\Delta y/\Delta x\cdot(\text{depth})=k$ (the same for the four sides on a square grid). At steady state the net heat in is zero, so $\sum(T_{nb}-T_m)=0$: $T_m$ is the mean of its neighbours (the discrete form of "Laplace's equation: no local maxima").
+
+### Boundary nodes (half-blocks and corners)
+
+A node on the surface has half a block of volume, so the energy balance must include the surface. The general pattern, for a node of 1-D/2-D flow: $\sum_{nb}\dot Q_{nb\to node}+\dot Q_{surface}+\dot e V=0$, where $V$ is the node's own volume.
+
+| Boundary | Equation (2-D, square grid, no generation) |
+|---|---|
+| **Insulated** (flat face) | mirror: $2T_{m-1,n}+T_{m,n+1}+T_{m,n-1}-4T_{m,n}=0$ (the missing neighbour equals its mirror image) |
+| **Convection** (flat face, fluid at $T_\infty$) | $2T_{m-1,n}+T_{m,n+1}+T_{m,n-1}+\dfrac{2h\Delta x}kT_\infty-2\left(\dfrac{h\Delta x}k+2\right)T_{m,n}=0$ |
+| **Outer corner, convection** | $T_{m,n-1}+T_{m-1,n}+\dfrac{2h\Delta x}kT_\infty-2\left(\dfrac{h\Delta x}k+1\right)T_{m,n}=0$ |
+| **Inner corner, convection** | $2(T_{m-1,n}+T_{m,n+1})+T_{m+1,n}+T_{m,n-1}+\dfrac{2h\Delta x}kT_\infty-2\left(\dfrac{h\Delta x}k+3\right)T_{m,n}=0$ |
+
+The dimensionless group $Bi_\Delta=h\Delta x/k$ (a local Biot number) appears: it compares convection at the surface with conduction to the neighbours. Notice the rule inside: each node is **a weighted average**, with weights proportional to the conductances and areas of its faces.
+
+## Solving the equations
+
+$N$ nodes give $N$ linear algebraic equations. Methods:
+
+- **Direct:** matrix inversion / Gaussian elimination (fine for a few hundred nodes; computers solve millions).
+- **Iterative (Gauss–Seidel):** start from a guess, replace each $T$ in turn by the average of its (latest) neighbours, repeat until the changes are small. It converges when the diagonal dominates, which it does for diffusion problems.
+
+**Accuracy:** halving $\Delta x$ cuts the error by four (second-order), but quadruples the nodes in 2-D.
+
+## Transient problems: explicit and implicit
+
+Add the storage term $\rho c_p\,\Delta V\,\dfrac{T_m^{i+1}-T_m^i}{\Delta t}$. Two choices of *when* to evaluate the neighbour temperatures:
+
+**Explicit** (use the known old temperatures, superscript $i$): the new temperature at each node is computed directly,
+$$T_m^{i+1}=Fo\left(T_{m-1}^i+T_{m+1}^i\right)+(1-2Fo)\,T_m^i,\qquad Fo=\frac{\alpha\,\Delta t}{\Delta x^2}\ (\text{1-D interior node}).$$
+**Stability criterion:** the coefficient of $T_m^i$ must be non-negative, $1-2Fo\ge0$, i.e. $Fo\le\tfrac12$ (and $Fo\le\tfrac14$ in 2-D). Otherwise a node would get *colder* from being hotter earlier, and errors grow. For a convection boundary node: $Fo(1+Bi_\Delta)\le\tfrac12$. This **limits the time step**, $\Delta t\le\dfrac{\Delta x^2}{2\alpha}$: halving $\Delta x$ forces a four-times smaller step.
+
+**Implicit** (use the new temperatures on the right-hand side): $T_m^{i+1}$ appears on both sides, which needs a matrix solution each step, but it is **unconditionally stable**: any $\Delta t$ works (accuracy still needs a reasonable one). The **Crank–Nicolson** average of both is second-order in time.
+
+## Worked example 1: a square plate (steady 2-D)
+
+A square plate has its top edge at 100 °C and the other three edges at 0 °C. Using a $\Delta x=\Delta y$ grid with four interior nodes (two in the top row, called $a$, two in the bottom row, $b$; by left–right symmetry the two nodes in each row are equal):
+
+1. Top-left node $a$: neighbours are 100 (above), 0 (left), $a$ (right), $b$ (below): $4a=100+0+a+b$, so $3a-b=100$.
+2. Bottom-left node $b$: neighbours $a$ (above), 0 (left), $b$ (right), 0 (below): $4b=a+0+b+0$, so $3b=a$.
+3. Substitute: $3a-a/3=100$, so $\tfrac83a=100$, giving $a=\mathbf{37.5\ ^\circ C}$ and $b=\mathbf{12.5\ ^\circ C}$.
+
+*Check:* the average of the four edge temperatures is $25$ °C, and the average of the nodes $(37.5+12.5)/2=25$ °C: exactly right for a harmonic function in a symmetric problem (the mean value property).
+
+## Worked example 2: why the stability limit matters
+
+A wall with nodes 0 to 4 has the two outer nodes held at 0 and initial interior temperatures all 100 °C. With **$Fo=\tfrac12$** (limit): step 1: nodes 1, 2, 3 become $50,\ 100,\ 50$; step 2: $50,\ 50,\ 50$. The temperatures decrease smoothly. With **$Fo=1$** (too big a step): step 1 gives $T_1=0+100-100=0$, $T_2=100+100-100=100$, $T_3=0$; step 2: $T_1=0+100-0=100$, $T_2=0+0-100=-100$, $T_3=100$: **negative temperature** from positive data, and the oscillation doubles every step. A nonphysical result is the signature of violating the stability criterion.
+
+<Trap title="Two traps">
+
+1. The $\Delta t$ limit uses the **smallest** $\Delta x$ in the model and the **largest** $\alpha$.
+2. Boundary nodes have *half* the volume: their storage and generation terms are halved, and each surface node's equation has its own stability limit, usually the tightest of all.
+
+</Trap>
+
+<Examined>
+Not examined in MECH 346 (Chapter 5 is "recommended reading"), but the node-balance idea reappears in the radiosity network of Chapter 13 (nodal analysis of an electric circuit) and in every simulation tool on this site.
+</Examined>
+
+## Check yourself
+
+1. A node with neighbours at 20, 30, 40, 50 °C on a square grid, steady, no generation: $T$? *($35$ °C.)*
+2. $\alpha=10^{-5}$ m²/s, $\Delta x=1$ cm: what is the largest explicit time step in 1-D? *($\Delta t\le(10^{-4})/(2\cdot10^{-5})=5$ s.)*
+3. If the implicit scheme is unconditionally stable, why not use huge steps? *(Accuracy: it would smear fast changes.)*

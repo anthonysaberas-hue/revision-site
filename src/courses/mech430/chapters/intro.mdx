@@ -1,0 +1,57 @@
+<p className="eyebrow">Chapter 1</p>
+
+# The big picture
+
+<p className="lede">Compressible flow is what happens when a gas moves fast enough that its density changes noticeably. From about Mach 0.3 upward, pressure, density and temperature all move together with velocity — and past Mach 1 the rules flip.</p>
+
+## Why this course exists
+
+In Fluids 1 you treated density as a constant. That's fine for water, and for air below ~100 m/s. But a rocket nozzle, a jet inlet, a gas pipeline or a shock tube all move gas at speeds where
+
+- the **density changes** (so continuity involves $\rho$, not just $V A$),
+- the **temperature changes** (kinetic energy trades with enthalpy, $h + V^2/2 = $ const),
+- **information travels at a finite speed** — the speed of sound $c$. Once the flow outruns $c$, downstream can no longer "talk" to upstream. That single fact causes choking, shocks, and every surprise in this course.
+
+## The one problem that keeps coming back
+
+Prof. Higgins built the whole course around one device: **a converging–diverging nozzle fed by a reservoir and discharging into a back pressure**. Every chapter adds one ingredient to it:
+
+| Chapter | Ingredient added to the nozzle | New tool |
+|---|---|---|
+| 5–6 | area change only (isentropic) | Table A2: $T_0/T$, $p_0/p$, $A/A^*$ |
+| 7–8 | a normal shock inside | Table A3 |
+| 9 | the nozzle run backwards (an inlet) | starting / unstarting |
+| 10 | a pipe with friction after it | Table A4 (Fanno) |
+| 11 | a pipe with heat addition after it | Table A5 (Rayleigh) |
+| 12–14 | the jet leaving the exit (2-D waves) | oblique shocks, Prandtl–Meyer (A6) |
+| 15 | designing the nozzle shape itself | method of characteristics |
+| 16 | the reservoir suddenly opened | unsteady waves, shock tubes |
+
+Play with it now — you'll understand every regime by Chapter 8:
+
+<NozzleSim />
+
+## Notation you'll see everywhere
+
+| Symbol | Meaning |
+|---|---|
+| $0$ subscript | **stagnation** (total) state: the gas brought to rest isentropically — $T_0$, $p_0$, $\rho_0$ |
+| $^*$ superscript | **sonic** reference state (where $M = 1$) — $A^*$, $p^*$, $T^*$ |
+| $x$, $y$ | just **upstream** and **downstream** of a shock |
+| $\sigma$, $\delta$ | oblique shock angle, flow deflection angle (Higgins' notation; textbooks use $\beta$, $\theta$) |
+| $\nu$, $\mu$ | Prandtl–Meyer function, Mach angle |
+| $V'$ (prime) | a velocity measured in the **lab frame** (for moving shocks) |
+| $4fL/D$ | friction length with the **Fanning** friction factor $f$ |
+
+<Remember title="Tables used on every exam (γ = 1.4)">
+
+A2 isentropic · A3 normal shock · A4 Fanno · A5 Rayleigh · A6 Prandtl–Meyer · the θ-β-M (σ-δ-M) oblique-shock chart. **Read the nearest row, no interpolation** — markers accept ≈1%. The [calculators](#/mech430/calc/isentropic) on this site reproduce them and show the nearest printed row.
+
+</Remember>
+
+## How to use this guide
+
+1. Read a chapter: big idea → equations → play with the simulation.
+2. Do the matching **problem set** page: every problem has "what kind of problem is this?" before the solution. Try to answer that yourself first.
+3. Before an exam: the [recipes](#/mech430/page/recipes) page, then the [past exams](#/mech430/exam/q2-w2019) step by step.
+4. And for fun: [fire a rocket engine](#/mech430/lab/engine) — the plume obeys Chapters 6, 12 and 13.

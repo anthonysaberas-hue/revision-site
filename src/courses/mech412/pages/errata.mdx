@@ -1,0 +1,130 @@
+<p className="eyebrow">Exam toolkit · every mistake found in the slides, homework, tutorials and exams</p>
+
+# Errata: mistakes in the official solutions, the slides and Anthony's notes
+
+<div className="lede">
+
+This course was one of the most disorganised and the official material is full of errors. **Everything on this page was recomputed** (numpy, scipy, sympy, the course library) and the corrected version is what the rest of this site teaches. Legend: <strong>✘ definite error</strong> (recomputed), <strong>⚠ convention-dependent</strong>. Each problem page also shows its own errors inline as a "⚠ Official solution error" box. If you ever see a formula in this course that surprises you, **recompute before you trust it**.
+
+</div>
+
+<Callout kind="warn" title="The five that would cost the most marks">
+
+1. **HW7 Q3**: the official solution says the acceleration error of the PI design is **0**; it is $375/K_I=2.18$ (<Hw n="7">HW7</Hw>).
+2. **HW10 Q3** (Dorf AP10.9): the printed lead-lag compensator is **missing a gain of 50**: as printed $K_v=2$, not 100 (<Hw n="10">HW10</Hw>).
+3. **T07 Q1** and Anthony's crib: the DC-motor denominator has **$+K_bK_t$**, not a minus (<Ch slug="electromechanical">Chapter 11</Ch>).
+4. **MT1 W2019 Q4**: official undershoot 39 % is **40.7 %**, and "no way to reduce it" is false (lower $R_2/R_1$).
+5. **Final F2010 P7(c)**: the requested gain $K=5/3$ makes the loop **unstable**; there is no valid answer.
+
+</Callout>
+
+## A · Lectures and Anthony's review notes
+
+| # | Where | What it says | Correct |
+|---|---|---|---|
+| 1 | L2 | $\mathcal L\{\sin2t\}=4/(s^2+4)$ | $2/(s^2+4)$ (his next step uses the right value) |
+| 2 | L2 | $Y=\dfrac{U}{s^2+2s+2}+\dfrac{y(0)}{s^2+2s+2}$ for $y''+2y'+2y=u$ | free term is $\dfrac{y'(0)+(s+2)y(0)}{s^2+2s+2}$ |
+| 3 | L2 | $\sin t=(e^{jt}-e^{-jt})/2$ | divide by $2j$ |
+| 4 | L3 | signs wrong in the intermediate line | the boxed final $Y(s)$ is correct |
+| 5 | L5 | "zeros = roots of $Y(s)$, poles = roots of $U(s)$" | zeros = roots of the numerator of $G$, poles = roots of its denominator |
+| 6 | L6 | numerator angle $\tan^{-1}(4/\omega)$ | the angle of $4+j\omega$ is $\tan^{-1}(\omega/4)$ |
+| 7 | L7 | Mason's $\Delta$ with a two-node loop gain as a sum $(a_{12}+a_{21})$ | loop gain is the **product** $a_{12}a_{21}$ |
+| 8 | L8 | state-transition matrix $\Phi(s)=\det(sI-A)$ | $\Phi(s)=(sI-A)^{-1}$ (the determinant is the characteristic polynomial) |
+| 9 | L8 | $y=PC\hat x+Du$ and "$PA^{-1}P=\mathrm{diag}$" | $y=CP\hat x+Du$ and $P^{-1}AP=\mathrm{diag}(\lambda_i)$ |
+| 10 | L9 | transformer $e_{34}=e_{12}$ | $e_{34}=m\,e_{12}$ (his MT2 sheet is right) |
+| 11 | L9 | voltage divider $1/(RCs+L)$ | $1/(RCs+1)$ |
+| 12 | L9 | two-loop KVL mixes $R_1/R_2$ labels | $i_1=\dfrac{E_1(R_1+R_2)-E_2R_2}{R_1R_2+R_2R_3+R_3R_1}$ (⚠ ambiguous figure) |
+| 13 | L14 | pneumatic **PD** labelled $K_p(1+1/(T_ds))$ | that is the PI form; PD is $K_p(1+T_ds)$ |
+| 14 | L12 | DC motor $E_i/\omega=[K_tI_fK_b-(R_A+L_As)(J_As+B)]/(K_tI_f)$ | with the usual convention the sign is **plus**: $K_tI_fK_b+(R_A+L_As)(J_As+B)$ (⚠ his minus comes from defining $\tau_e$ the opposite way) |
+| 15 | L14 | bellows capacitance $C+1/(KA^2)$ | $C+A^2/K$ |
+| 16 | L11 | gear ratio $(n_2/n_1):1$ on both analogs | mobility $(m_2/m_1):1$, impedance $(m_1/m_2):1$ (⚠ verify against a solution) |
+| 17 | L16 | "0.0011 % = 0.11 %" | $0.0011=0.11\,\%$ (units slip) |
+| 18 | L17 | type 2 or higher: "$K_v=0$, $e_{ss}=\infty$" | $K_v=\infty$, $e_{ss}=0$ for a ramp |
+| 19 | L18 | special-case Routh entry $b_1=-24$ | $+24$ (carrying $-24$ gives 3 sign changes instead of 1) |
+| 20 | L19 | $G_c=6.39(s+1.49)^2/s$ | $6.32(s+1.42)^2/s$ (zeros at $-4/P_{cr}$) |
+| 21 | L20 | second $\zeta=0.4$ solution $k_2=K'/2$, $K'=28.26$ | $k_2=K'/20\approx1.4$, exact $K'\approx28.0$; this solution has a dominant real pole at $-0.68$ and is **not** a valid design |
+| 22 | L22 | Ex 11-7 uncompensated PM $=-20^\circ$ | $-13^\circ$ ($\omega_{gc}=1.80$) |
+| 23 | L22 | compensated PM $40^\circ$, GM 11 dB | PM $41.6^\circ$, GM 14.3 dB, $\omega_{gc}=0.454$ |
+| 24 | L20 | cylinder coefficient $2.488\times10^{-4}s^2$ | $2.488\times10^{-6}$ (needed for $\omega_n=46.3$) |
+| 25 | final crib | Z–N PI row "$0.3T/L$" | $0.9T/L$ ($T_i=L/0.3$) |
+| 26 | HW7 | $K_u=3.044$ | exact 3.030 (0.5 %, fine) |
+
+**Things that look wrong but are fine.** Anthony's $e_{34}=me_{12}$ on his MT2 sheet; his double-divider answer; his root-locus numbers (Ogata Ex 6-10: $K'=8.98$, $k=0.449$, departure $158.2^\circ$); the lead example $41.7(s+4.4)/(s+18.4)$ (PM $50.5^\circ$, $K_v=19.97$); the Z–N PID example ($K_{cr}=30$, $P_{cr}=2.81$).
+
+## B · Homework
+
+| Source | Problem | Official / Anthony says | Correct |
+|---|---|---|---|
+| HW1-sol | Q3b | $G=\frac1{s+1}+\frac{e^{-1}}{(s-1)^2}-\frac{e^{-1}}{s-1}$ (treats $1(t-1)$ as a ramp) | $G=\frac1{s+1}+\frac{e^{-s}}{s-1}$ |
+| Anthony | HW1 Q4b | $B=21\sqrt{31}/31$ | minus sign dropped: $B=-21\sqrt{31}/31$ |
+| HW2 statement | Q1a | $y=1+Ce^{-\sigma t}\cos(\omega_dt+\beta)$ | $1-Ce^{-\sigma t}\cos(\omega_dt+\beta)$ (with plus, $y(0)=2$) |
+| HW2-sol | Q1a | "$+$" and $2\zeta\omega_n$ | "$-$" and $2\zeta\omega_nz$ (units) |
+| HW2-sol | Q1b | $t_p=\frac1{\omega_d}[\tan^{-1}(\dots)+3\pi/2]$ | $t_p=[\pi-\operatorname{atan2}(\omega_n\sqrt{1-\zeta^2},\,z-\zeta\omega_n)]/\omega_d$ (official is half a period late: 6.65 s vs 3.02 s) |
+| HW2-sol | Q1b | $M_p=\frac1z\sqrt{z^2-z\zeta\omega_n+\omega_n^2}\,e^{-\sigma t_p}$ | $\frac1z\sqrt{z^2-2\zeta\omega_nz+\omega_n^2}\,e^{-\sigma t_p}$ (missing factor 2) |
+| HW2-sol file | whole file | "Solutions of Assignment 2" | a different Assignment 2; only problem 4 matches; Q2, Q3 have no official solution |
+| Anthony | HW2 Q3d | $x=F/k=0.8$ m | $x=2F/k=1.6$ m (the cable moves at $2\dot x$) |
+| Anthony | HW2 Q2c, d | $\omega_n=109.55$ "Hz"; plot peak 8.6 | 109.5 rad/s (17.4 Hz); peak $8.6\times10^{-3}$ rad for $x=1$ mm |
+| Anthony | HW2 Q1a, b | impulse response given as the step response; $\%OS=100e^{+\pi\sigma/\omega_d}$ | extra $1/s$ needed; minus sign, and only for a system without a zero |
+| HW3-sol file | layout | pp. 4–8 from other problems | HW3 Q2 (bridged-T) has no official solution |
+| HW3-sol | Q1b | denominator term $H_4H_7H_6M_5$ | $H_4H_7H_6H_5$ |
+| HW3-sol | Q5b | factors $3/(s-2)$, $(s^2+2.1s+1)/(s-2)$ | $0.75(s^2+2.1s+1)(1-s/2)^{-2}$: zeros $-0.73,-1.37$ and a double RHP pole at 2 |
+| Anthony | HW3 Q5 | "corner frequency" 0.1976, Inf, 1.23, NaN | (a) 0.2, 2; (b) 0.73, 1.37, 2, 2; (c) 1, 2, 4; (d) 3, 5, 8 (those were Matlab `bandwidth` outputs) |
+| Anthony | HW3 Q2d | "increase the damping ratio" | lower $R_2$ or raise $R_1$ (the poles are already overdamped; the dip is from the zeros) |
+| Anthony | HW4 Q1a | method-1 $\beta=(0,1,-3)$ | $\beta=(0,1,1)$ |
+| HW4 | Q1b | "benefits of feedback" | the loop is unstable with or without the controller (the plant has a RHP pole) |
+| Anthony | HW5 Q1 | $m\ddot z=mg-ki^2/z^2$ (gap downward): unstable | gap upward: oscillator $\dfrac{2g/i_0}{s^2+2g/z_0}$ |
+| Anthony | HW5 Q4b | velocity source drawn as a voltage source in the impedance analog | it is a **current** source there |
+| Anthony | HW5 Q5 | bar lumped as $\tfrac34m,\tfrac14m$; resistor "$1/c$" | $I_O=7mL^2/48$ ($7m/27$ at the right end); impedance resistor is $c$ |
+| Anthony | HW6 Q1 | $C_f/\rho$ and $R_{f2}$ in series | $R_{f2}$ hangs from the tank-bottom node; $C_f/\rho$ sits between the two nodes |
+| Anthony | HW6 Q3 | $+$ in the feedback bracket, denominator "$K+\dots$" | $\frac1{R_dCs+1}-\frac1{R_iCs+1}$ and denominator $1+K\dots$ |
+| HW6 file | layout | "HW06-07-sol" | HW6 only; Q2 has no official solution; Q3 numbers are from 2017 |
+| HW7-sol | Q3 | $e_v=e_{acc}=0$ | acceleration error $375/K_I=2.18$ |
+| HW7-sol file | Problem V | claimed to be HW7 Q5 | a sensitivity problem; Q5 has no official solution |
+| Anthony | HW7 Q2 | $-k^2-350k+1325$ | $+1375$ (answer 3.885, he wrote 3.9) |
+| classmate | HW7 Q5 | $(s+2)^2=s^2+2s+4$, $K=18.5$ | $s^2+4s+4$; valid $K$ is 194–523 |
+| HW8-sol | Q2 code | `num=[1702 172]` | 1720 (harmless) |
+| Dorf AP10.9 | HW10 Q3 | $\frac{(s+2.5)(s+0.9871)}{(s+36.54)(s+0.0675)}$ gives $K_v=100$ | as printed $K_v=2$, PM $32.6^\circ$, GM 46 dB: needs an extra gain 50 |
+| Dorf P9.2(b) | HW10 Q5 | "stable for all $K$" | that is for $K(s+1)/[s^2(s+6)]$; the sheet's $K(s+1)/[s^2(s^2+6)]$ is unstable for every $K$ |
+| Dorf P10.39 | HW10 Q2 | PM $28.85^\circ$ lag | misses the $30^\circ$ spec; HW8's lag gives $30.6^\circ$ |
+| HW9 Q1 | Z–N | "first cut" PID | gives OS 59 %, fails the 5 % spec |
+
+## C · Tutorials
+
+| Source | Problem | Official says | Correct |
+|---|---|---|---|
+| T01-sol | Q2 | "can't factor" | $(s+2)(s+3)(s+4)$ |
+| T01-sol | Q3 | transient $-0.338e^{-2.366t}+1.025e^{-0.634t}$ ($\theta(0)=0.658$) | $1.536e^{-0.634t}-0.5075e^{-2.366t}$ (factor $\tfrac23$ dropped) |
+| T05-sol | Φ(t) | rounded; one $e^{+4.89t}$ | $e^{-4.89t}$ |
+| T06-sol | Q1 | $2000/(0.0106s^2+2000)$: undamped | $2/(R^2C^2s^2+RCs+1)$, $\zeta=0.5$ |
+| T07-sol | Q1 | $\Omega/E_i=-K_tI_F/[\dots-K_bK_tI_F]$ | $+K_tI_F/[(L_As+R_A)(Js+B)+K_bK_tI_F]$ |
+| T07-sol | Q3 | wrong sign in the $V_1$ substitution; $(s+1)^2$ added | bracket $s^2(s^2+2s+2)$ |
+| T08-sol | Q3 | $Y/P_i=A/(ks/K_H+1)$ | $A/[k(s/K_H+1)]$ |
+| lecture 10 exercise | rep. problem | input vector $[\tfrac12;\tfrac12]$ | $[\tfrac12;\tfrac13]$ |
+| T6 digest | Q1 | 2nd-order section peaks "+1.9 dB" | $+1.25$ dB above its DC level |
+
+## D · Exams
+
+| Paper | Question | Official says | Correct |
+|---|---|---|---|
+| MT1 W2009 | Q1 | final line prints $K_pK_e$ | $K_fK_e$ |
+| MT1 W2009 | Q4(3) | hedges between (a) and (d) | $m/(M+m)$: 2.390 m/s, (a) |
+| MT1 F2011 | Q4 | $\alpha=10$ meets 16.3 % | gives 16.7 %; use $\alpha\ge20$ |
+| MT1 W2017 | Q2 | alternate Method 1: $\beta=(0.9,0,-1.62,3.2..)$ | $\beta=(0,0.9,0)$, $B=[0.9;0]$ |
+| MT1 W2017 | Q3 | "$i_L\approx1+\tfrac32\hat e_C$" | $i_2$ (notation slip) |
+| MT1 W2019 | Q1 | $sI-A$ with wrong off-diagonal signs; $\Phi(t)$ one entry | $[s+K_1\ -K_2;\ K_1\ s+K_2]$; all four entries |
+| MT1 W2019 | Q3 | phase = numerator angle only | numerator minus denominator angle |
+| MT1 W2019 | Q4 | Method 2 swapped; $v_{max}=0.61$, 39 %; "no way" | $C=[0\ -4]$, $D=1$; $0.593$, 40.7 %; lower $R_2/R_1$ |
+| MT2 W2009 | Q4(2) | ill-posed (all got +4) | needs the inflow and initial level |
+| MT2 W2010 | "solutions" | looks like a key | a graded student booklet; Q1(a) marked 3/25 |
+| MT2 W2019 | Q3 | limit "$K(36)/5$" | constant term is 30 (answer $K=10\,000$ unaffected) |
+| MT2 F2022 | Q1a | impedance capacitor labelled $kL^2/16$ | compliance $16/(kL^2)$ |
+| MT2 F2022 | Q1a | alternate EOM mixes coordinates | $(m+16I_G/L^2)\ddot x+9c\dot x+kx=3F$ |
+| MT2 W2024 | Q3 | "$\dot{\bar e}_A=6$"; node-A ends in "$i_2$" | $\bar e_A=6$; $i_L$ |
+| Final F2010 | P7(c) | $K=5/3$ for 0.6 | unstable ($K<2$): no steady state |
+| Final F2009/F2010, MT2 W2019 make-up, MT1 F2007 | all | — | **no official solutions**: every answer on this site is the digest author's |
+
+<Callout kind="note" title="How to use this page in the exam">
+
+When an official solution disagrees with you, check three things in this order: **signs** (back emf, feedback, disturbance), **units** (rad/s vs Hz, mass flow vs volume flow), **limits** (DC value, high-frequency value, a special case that must reduce to a known result). Almost every error above fails one of these.
+
+</Callout>

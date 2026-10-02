@@ -1,0 +1,178 @@
+<p className="eyebrow">Midterm 1 · October 2021 · Concordia MECH 352 (same instructor, Dr. W. Saleh) · 75 min · closed book</p>
+
+# Midterm 1, October 2021
+
+<div className="lede">
+
+The earliest paper from Dr. Saleh, given at Concordia as MECH 352 (a close sibling of MECH 346, with the same question types: six "select the wrong statement" items, a rectangular fin, and a conduction-with-generation problem). Marks: Q1 6, Q2 4, Q3 8. Statements below are paraphrased. Covers <Ch slug="intro">Ch 1</Ch>, <Ch slug="conduction-eq">Ch 2</Ch>, <Ch slug="steady-conduction">Ch 3</Ch> and <Ch slug="fins">fins</Ch>.
+
+</div>
+
+<Problem id="Q1" title="Six 'select the wrong statement' items" tags="conceptual, contact resistance, fins, radiation, convection, conduction equation">
+
+<Statement>
+
+For each item select the **wrong** statement. (i) Contact resistance depends on: (a) surface roughness, (b) material properties, (c) temperature and pressure at the interface, (d) convection heat transfer, (e) the type of fluid trapped at the interface. (ii) Fin heat dissipation is increased by: (a) higher conductivity, (b) insulating the tip, (c) increasing the distance between fins, (d) higher convection, (e) none. (iii) About radiation: it is energy emitted by matter as electromagnetic waves; (a) it requires an intervening medium; (b) it is fast (speed of light); (c) it is emitted because of temperature; (d) it is a surface phenomenon for opaque solids. (iv) About convection: it is energy transfer between a solid surface and adjacent fluid; (a) it combines conduction and fluid motion; (b) faster motion gives more convection; (c) it depends on the conductivity of the solid. (v) For the equation $\dfrac{\partial}{\partial z}\left(\dfrac{\partial T}{\partial z}\right)+\dfrac{\dot e_{gen}}k=\dfrac1\alpha\dfrac{\partial T}{\partial t}$: (a) transient; (b) two-dimensional; (c) generation exists; (d) $k$ constant. (vi) A 15 cm wall has surface temperatures 40 °C (inner) and 28 °C (outer): which $T(x)$, $x$ in m? (a) $28x+40$; (b) $-40x+28$; (c) $40x+28$; (d) $-80x+40$; (e) none.
+
+</Statement>
+
+<Think>
+
+Each item tests a concept from Chapter 1–3. For each wrong-statement item, test each option against the physics; for (vi) derive the profile.
+
+</Think>
+
+<Steps>
+<Step title="(i) Contact resistance">
+
+It arises from the roughness of the interface (air-filled gaps), the conductivities of the two materials, the contact pressure and interface temperature, and the fluid in the gaps (air vs helium vs grease). Convection plays no role in a solid–solid interface. **Wrong: (d).**
+
+</Step>
+<Step title="(ii) Fins">
+
+Heat rises with larger $k$ (more heat reaches the tip) and larger $h$. An **insulated tip** removes the tip convection, so it can only reduce $\dot Q$ (adiabatic-tip fin loses less than the same fin with convective tip). **Wrong: (b)**. (Statement (c) is true when wider spacing avoids boundary-layer interference, so it is not the intended wrong item.)
+
+</Step>
+<Step title="(iii) Radiation">
+
+Radiation travels through vacuum (the Sun's heat reaches the Earth): it does **not** need a medium. **Wrong: (a).**
+
+</Step>
+<Step title="(iv) Convection">
+
+$h$ depends on the **fluid** properties, the flow and the geometry, not on the conductivity of the solid. **Wrong: (c).**
+
+</Step>
+<Step title="(v) The equation">
+
+Derivatives in $z$ only: **one-dimensional**; the right side shows transient; $\dot e_{gen}$ is present; $k$ is taken outside the derivative: constant. **Wrong: (b)** (it is not two-dimensional).
+
+</Step>
+<Step title="(vi) Linear profile">
+
+$\dfrac{d^2T}{dx^2}=0\Rightarrow T=C_1x+C_2$. $T(0)=40\Rightarrow C_2=40$. $T(0.15)=28=0.15C_1+40\Rightarrow C_1=-80$ K/m. $T(x)=-80x+40$. **Answer (d).**
+
+</Step>
+</Steps>
+
+<Answer>
+
+**(i) d; (ii) b; (iii) a; (iv) c; (v) b; (vi) d.**
+
+</Answer>
+
+<Source>Paper: Concordia MECH 352 Midterm, 22 Oct 2021 (the same six items recur in MECH 346 Midterm 1, Oct 2023: see <Ex id="mt1-f2023">that paper</Ex>).</Source>
+
+</Problem>
+
+<Problem id="Q2" title="Rectangular aluminum fin for an electronics package" tags="adiabatic tip, efficiency, effectiveness">
+
+<Statement>
+
+Rectangular aluminum fins, 150 mm long ($L$), 250 mm wide ($w$), 2 mm thick ($t$), $k=177$ W/mK, base at 50 °C, air at 20 °C, $h=50$ W/m²K. Determine (a) the fin efficiency, (b) the heat lost from a fin, (c) the fin effectiveness. (The sheet gives $\eta=\dot Q_{fin}/\dot Q_{fin,max}$, $\varepsilon=\dot Q_{fin}/\dot Q_{no\ fin}$ and the formula for the fin area.)
+
+</Statement>
+
+<Think>
+
+Short question list, so compute the $\dot Q$ first: $m=\sqrt{hp/kA_c}$, $\dot Q=\sqrt{hpkA_c}\,\theta_b\tanh mL$. Then $\eta=\tanh(mL_c)/mL_c$ and $\varepsilon=\dot Q/(hA_c\theta_b)$.
+
+</Think>
+
+<Steps>
+<Step title="1. Geometry">
+
+$p=2(w+t)=0.504$ m; $A_c=wt=5\times10^{-4}$ m²; $L_c=L+t/2=0.151$ m.
+
+</Step>
+<Step title="2. $m$ and the heat rate">
+
+$m=\sqrt{\dfrac{50(0.504)}{177(5\times10^{-4})}}=16.87$ m⁻¹; $mL_c=2.547$; $\sqrt{hpkA_c}=1.4934$ W/K: $\dot Q=1.4934(30)\tanh(2.547)=44.25$ W.
+
+</Step>
+<Step title="3. (a) Efficiency">
+
+$A_{fin}=pL_c=0.0761$ m²; $\dot Q_{max}=50(0.0761)(30)=114.2$ W; $\eta=\dfrac{44.25}{114.2}=0.388$ (or $\tanh(mL_c)/mL_c=0.389$).
+
+</Step>
+<Step title="4. (c) Effectiveness">
+
+$\varepsilon=\dfrac{44.25}{50(5\times10^{-4})(30)}=59$: the fin multiplies the heat of its footprint by 59.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**(a) $\eta=0.39$; (b) $\dot Q=44.3$ W; (c) $\varepsilon=59$.**
+
+</Answer>
+
+<Source>Paper: Oct 2021 Q2 (the same fin recurs on Oct 2023, Q2: see <Ex id="mt1-f2023">that paper</Ex> for the extra part about the infinitely-long-fin error and <Ch slug="fins">the fins chapter</Ch>).</Source>
+
+</Problem>
+
+<Problem id="Q3" title="Nuclear fuel rod inside a stainless-steel tube" tags="cylinder with generation, thermal circuit, T_max, flux sketch">
+
+<Statement>
+
+An 8 cm diameter nuclear fuel rod ($k_f=55$ W/mK, $r_1=4$ cm) with uniform generation is encased in a perfectly fitting stainless-steel tube ($k_{ss}=17.5$ W/mK, outer radius $r_2=5$ cm), exposed to fluid at 250 °C with $h=3000$ W/m²K. The tube temperature must not exceed 300 °C. (a) Find the heat transfer rate per unit length. (b) Find the outer surface temperature $T_2$ of the tube. (c) Find the maximum temperature in the fuel rod (show the steps of the equation used). (d) Sketch the heat flux from $r=0$ to $\infty$.
+
+</Statement>
+
+<Think>
+
+In the tube there is no generation, so the heat rate per unit length is the same through the tube and the fluid film: a series circuit $R_{tube}+R_{conv}$. The hottest point of the tube is its inner surface ($r_1$), where $T=300$ °C. All the heat from the rod flows through this circuit; so $\dot Q'$ gives $\dot e_{gen}$, which gives the rod's centre temperature.
+
+</Think>
+
+<Plan>
+
+$R_{tube},R_{conv}\to\dot Q'=\dfrac{300-250}{R_{tube}+R_{conv}}\to T_2=T_\infty+\dot Q'R_{conv}\to\dot e_{gen}=\dfrac{\dot Q'}{\pi r_1^2}\to T_0=300+\dfrac{\dot e_{gen}r_1^2}{4k_f}$.
+
+</Plan>
+
+<Steps>
+<Step title="1. Resistances per metre">
+
+$R_{tube}=\dfrac{\ln(r_2/r_1)}{2\pi k_{ss}}=\dfrac{\ln1.25}{2\pi(17.5)}=0.002029$ m·K/W; $R_{conv}=\dfrac1{h(2\pi r_2)}=\dfrac1{3000(0.31416)}=0.001061$ m·K/W.
+
+</Step>
+<Step title="2. (a) Heat rate per metre">
+
+$\dot Q'=\dfrac{300-250}{0.002029+0.001061}=16\,180$ W/m.
+
+</Step>
+<Step title="3. (b) Outer surface of the tube">
+
+$T_2=250+16\,180(0.001061)=267.2$ °C. (Check: $T_1-T_2=16\,180(0.002029)=32.8$ K and $267.2+32.8=300$ ✓.)
+
+</Step>
+<Step title="4. (c) Maximum temperature in the rod">
+
+Generation per unit volume: $\dot e_{gen}=\dfrac{\dot Q'}{\pi r_1^2}=\dfrac{16\,180}{\pi(0.04)^2}=3.22\times10^6$ W/m³. Derivation: $\dfrac1r\dfrac d{dr}\left(r\dfrac{dT}{dr}\right)+\dfrac{\dot e}{k_f}=0$; integrate: $r\dfrac{dT}{dr}=-\dfrac{\dot er^2}{2k_f}+C_1$; $dT/dr$ finite at the centre $\Rightarrow C_1=0$; integrate again: $T=-\dfrac{\dot er^2}{4k_f}+C_2$; with $T(r_1)=300$: $T(r)=300+\dfrac{\dot e}{4k_f}(r_1^2-r^2)$. At the centre: $T_0=300+\dfrac{3.22\times10^6(0.04)^2}{4(55)}=323.4$ °C.
+
+</Step>
+<Step title="5. (d) Heat flux sketch">
+
+Inside the rod: $q''(r)=\dfrac{\dot er}2$, rising linearly from 0 at the centre to $q''(r_1)=\dfrac{3.22\times10^6(0.04)}2=64\,400$ W/m². In the tube there is no generation, so the heat rate per unit length is constant and $q''=\dfrac{\dot Q'}{2\pi r}$ falls as $1/r$ from $64\,400$ W/m² at $r_1$ (**continuous** with the rod value: same heat, same area at $r_1$) to $51\,500$ W/m² at $r_2$. Beyond $r_2$ the same total heat leaves into the fluid, so the flux keeps falling as $1/r$ as the area grows.
+</Step>
+</Steps>
+
+<Answer>
+
+**(a) 16.2 kW/m; (b) $T_2=267.2$ °C; (c) $T_{max}=323.4$ °C; (d) $q''$ rises linearly to 64.4 kW/m² at $r_1$, then decreases as $1/r$** (heat rate per unit length stays constant, area grows).
+
+</Answer>
+
+<Traps>
+
+- Do not use the fuel's $k$ in the tube or the tube's $k$ in the rod.
+- The wall has no generation: $\dot Q'$ is the same at every radius there.
+- $T_{max}$ is at the **centre** of the rod, not at $r_1$.
+
+</Traps>
+
+<Source>Paper: Oct 2021 Q3. Recomputed: identical (same numbers in <Ch slug="conduction-eq">the conduction-equation chapter</Ch>).</Source>
+
+</Problem>

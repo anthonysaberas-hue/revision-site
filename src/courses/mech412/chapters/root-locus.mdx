@@ -1,0 +1,114 @@
+<p className="eyebrow">Chapter 18 · Lecture 20 · HW7 Q5 · HW9 Q2–Q3</p>
+
+# Root-locus sketching and design
+
+<div className="lede">
+
+Turn the gain knob and the closed-loop poles *move*. The root locus is the picture of where they go. Because the time response is decided by the poles (Chapter 4), watching them travel tells you which gain gives the damping you want, when the loop goes unstable, and where to put a compensator to bend the paths.
+
+</div>
+
+<Idea title="The 30-second version">
+
+Closed-loop poles are the roots of $1+K\,G(s)H(s)=0$. A point $s$ is on the locus iff its **angle** condition holds, $\angle GH=\pm180^\circ(2k+1)$, and the gain there follows from the **magnitude** condition $|KGH|=1$. Ten sketching rules (below) give the shape from the open-loop poles and zeros; the calculator draws the exact picture.
+
+</Idea>
+
+<ToolLink tool="root-locus">Open the root-locus calculator</ToolLink> — the examples below all load as presets.
+
+## The two conditions
+
+$$
+1+KG(s)H(s)=0\;\Longleftrightarrow\;
+\begin{cases}\text{magnitude: }|KGH|=1\\[2pt]\text{angle: }\angle GH=\pm180^\circ(2k+1)\end{cases}
+$$
+
+- A point *on* the locus satisfies the angle condition; the **gain** at that point comes from the magnitude condition.
+- For $K=0$ the poles are the **open-loop poles**; as $K\to\infty$ they end at the **zeros** or run off to infinity along asymptotes.
+
+## The ten rules (Anthony's final crib sheet)
+
+For $KG(s)=K\,\dfrac{N(s)}{D(s)}$ with $n$ poles and $m$ zeros:
+
+1. Mark the poles (×) and zeros (○).
+2. **Real-axis segments:** the locus lies to the left of an **odd** number of real poles plus zeros (count a double zero twice).
+3. **Branches:** $n$ of them. $m$ end at zeros, $n-m$ go to infinity.
+4. **Centroid:** $\sigma_a=\dfrac{\sum p-\sum z}{n-m}$.
+5. **Asymptote angles:** $\dfrac{(2k+1)\,180^\circ}{n-m}$, $k=0,\dots,n-m-1$.
+6. **Breakaway / break-in points:** solve $\dfrac d{ds}\dfrac{N}{D}=0$ (equivalently $D'N-DN'=0$). Keep only real roots that are **on the locus** with $K>0$ (reject candidates with $K<0$).
+7. **Gain at a point:** $K=\dfrac{1}{|G(s)|}$ at a chosen $s$ on the locus.
+8. **Angle of departure** from a complex pole $s_1$: $\theta_d=180^\circ-\sum(\text{angles from the other poles})+\sum(\text{angles from zeros})$.
+9. **$j\omega$ crossings:** Routh (Chapter 16) or put $s=j\omega$ in $D+KN=0$ and solve real and imaginary parts for $\omega$ and $K$.
+10. **Gain for a damping ratio $\zeta$:** substitute $s=-\zeta\omega_n+j\omega_n\sqrt{1-\zeta^2}$ into $D(s)+KN(s)=0$ and solve.
+
+**Designing from specs.** $t_s<T_s\Rightarrow\sigma>4/T_s$ (left of a vertical line); $OS<M\,\%\Rightarrow\zeta>\zeta_{min}$, i.e. angle $\theta=\cos^{-1}\zeta<\tan^{-1}\dfrac{\pi}{\ln(100/M)}$ (inside a cone); and a minimum $\omega_n$ (outside a circle). Overshoot 25 % ⇒ $\zeta=0.404$, $\theta=66.2^\circ$.
+
+### Worked example 1 (the practice problem): $G=\dfrac{K}{s(s+1)(s+2)}$
+
+1. Poles $0,-1,-2$, no zeros; $n-m=3$.
+2. Real axis: $(-1,0)$ and $(-\infty,-2)$.
+3. Centroid $\dfrac{0-1-2}{3}=-1$; asymptotes at $\pm60^\circ$ and $180^\circ$.
+4. **Breakaway** between 0 and $-1$: $3s^2+6s+2=0\Rightarrow s=-0.4226$ (the other root, $-1.577$, is not on the locus). $K=|s(s+1)(s+2)|=0.385$.
+5. **$j\omega$ crossing:** Routh on $s^3+3s^2+2s+K$ ⇒ $K=6$ at $\omega=\sqrt2$.
+6. **$\zeta=0.5$:** gain $K\approx1.04$ at $s=-0.33\pm0.58j$.
+
+### Worked example 2: choosing the gain from specs (HW7 Q5)
+
+Controller $\dfrac{K(s+2)^2}{(s+10)(s+20)}$, process $\dfrac1{s(s^2+3s+3.5)}$; need OS $<10\,\%$ and $t_s<4$ s.
+
+1. Open-loop poles $0,\,-1.5\pm1.118j,\,-10,\,-20$; **double zero at $-2$** ($n=5,m=2$): asymptotes $\pm60^\circ,180^\circ$, centroid $-9.67$.
+2. Real-axis segments: $(-2,0)$: 1 to the right ⇒ on the locus; $(-10,-2)$: 3 ⇒ on; $(-20,-10)$: 4 ⇒ off; $(-\infty,-20)$: 5 ⇒ on.
+3. Closed-loop polynomial: $s^5+33s^4+293.5s^3+(705+K)s^2+(700+4K)s+4K$ (careful: $(s+2)^2=s^2+4s+4$).
+4. Specs: $\sigma>1$, $\zeta>0.59$. Compute poles versus $K$ and simulate the step: $K=100$: $t_s=7$ s ✘; $K=200$: $t_s=3.9$ s ✔; $K=460$: OS 7.3 % ✔; $K=520$: OS 9.9 %; $K=600$: OS 13 % ✘.
+5. **Valid range ≈ 194 ≤ K ≤ 523**; choose $K\approx300$–$460$ (the middle). The slow pole near the origin sets the settling time; the complex pair sets the overshoot.
+
+## Compensator design by the angle condition
+
+Want closed-loop poles at a specified $s_d$ that are not on the locus: add a compensator whose angle supplies the **angle deficiency**.
+
+**Worked example 3 (Anthony's pp.79–80):** plant $\dfrac{5}{s(0.5s+1)}$, desired poles $s_d=-2\pm j2\sqrt3$ (that is $\zeta=0.5$, $\omega_n=4$).
+
+1. Plant poles at $0$ and $-2$. Angles at $s_d$: from the pole at 0 is $-120^\circ$; from $-2$ is $-90^\circ$; total $-210^\circ\equiv+150^\circ$. We need $\pm180^\circ$ ⇒ the compensator must contribute **$+30^\circ$**.
+2. Use $\dfrac{s+2}{s+4}$: the zero at $-2$ gives $90^\circ$, the pole at $-4$ gives $60^\circ$ ⇒ net $+30^\circ$ ✔. **The zero cancels the slow plant pole at $-2$.**
+3. Gain: $\left|K\dfrac{s+2}{s+4}\cdot\dfrac5{s(0.5s+1)}\right|_{s_d}=1\Rightarrow K=1.6$.
+4. $G_c=1.6\dfrac{s+2}{s+4}$. Closed-loop poles $-2\pm j3.46$ and $-2$ (the cancelled one): a clean second-order response.
+
+**Design rule of thumb:** cancel the slow real pole with the compensator zero, use the compensator pole to place the locus where you want it, then compute the gain from the magnitude condition. *Always check that the chosen poles are dominant.*
+
+### Worked example 4: velocity loop of a hydraulic cylinder
+
+Open loop $\dfrac{X_c}{X_v}=\dfrac{0.01087}{2.488\times10^{-6}s^2+3.11\times10^{-10}s+0.00533}$: poles $-6\times10^{-5}\pm j46.3$ — **essentially undamped** (OS 99.9 %, $t_s$ in hours). Specs: $t_s<0.5$ s ($\sigma>8$), OS $<25\,\%$ ($\theta<66^\circ$). A single real zero $G_c=K_c(s+100)$ with $K_c=0.0523$ puts the poles at $-114\pm j109$: OS 24.4 % ✔. *(The slide's printed leading coefficient $10^{-4}$ is a typo for $10^{-6}$.)*
+
+### Worked example 5: tachometer feedback (Ogata Ex 6-10, $\zeta=0.4$)
+
+Two-loop system $\dfrac{20}{s(s+1)(s+4)}$ with tach gain $k$: $s^3+5s^2+4s+20k\,s+20=0$, i.e. $1+K'\dfrac{s}{s^3+5s^2+4s+20}=0$ with $K'=20k$.
+
+1. Open-loop poles of the fraction: $\pm j2$ and $-5$; zero at 0; $n-m=2$; centroid $-2.5$; asymptotes $\pm90^\circ$.
+2. **Departure angle** from $j2$: $180^\circ-21.8^\circ-90^\circ+90^\circ=158.2^\circ$.
+3. The $\zeta=0.4$ ray hits the locus at $s=-1.05+j2.40$: $K'=\left|\dfrac{(s^2+4)(s+5)}s\right|=8.98$ ⇒ **$k=K'/20=0.449$** (Ogata: $K=8.98$, $k=0.449$).
+4. Closed loop: $s^3+5s^2+13s+20=(s+1.05\pm j2.4)(s+2.9)$ — the real pole at $-2.9$ is farther left than the complex pair, so the pair **dominates ✔**.
+5. *The second intersection* $s=-2.16+j5$ has $K'\approx28$, so $k\approx1.4$ (Anthony's page divides by 2 instead of 20, a slip). It has a real pole at $-0.68$, which now *dominates*: not a good design, even though that pair has $\zeta=0.4$.
+
+<Trap title="Check dominance, always">
+
+A $\zeta$ for the complex pair is meaningless if a slower real pole survives. After choosing $K$ from a $\zeta$ ray, list *all* closed-loop poles.
+
+</Trap>
+
+## High-order shapes (HW9 Q3): what to expect
+
+The four root loci of the problem all follow from the rules: **bubbles** appear when two adjacent real-axis poles (or zeros) are connected by a segment; break points are roots of $D'N-DN'=0$ with $K>0$. For $\dfrac{s^2+7s+8.25}{s^3+6s^2+5s}$: break points at $-0.63$ ($K=0.24$), $-2.5$ ($3.1$), $-3.59$ ($3.3$) and $-7.28$ ($10.1$): two bubbles. For $\dfrac1{s^6+2s^5+s^4}$: a quadruple pole at the origin, break point at $-2/3$, centroid $-1/3$, six asymptotes.
+
+<Examined>
+
+- <Hw n="7">HW7</Hw> Q5, <Hw n="9">HW9</Hw> Q1–Q3, $\text{F2010 P7}$ (an unstable plant with a gain in the feedback path: $K>2$ for stability, $K<18$ for an oscillatory response), $\text{F2009 P5b}$ (PD locus: break-in at $-16.2$ at $K_p=258$).
+- Final-crib steps 1–10 are the standard marking scheme.
+
+</Examined>
+
+### Check yourself
+
+1. Poles at $0,-2,-4$ and no zeros: where is the centroid and what are the asymptote angles? *($-2$; $\pm60^\circ,180^\circ$.)*
+2. Which side of the real axis segments are on the locus? *(To the left of an odd number of poles and zeros.)*
+3. Compensator pole to the *left* of its zero: lead or lag? *(Lead: it adds positive angle.)*
+4. Why can't you pick $K$ from the $\zeta$ line alone? *(Other poles may dominate.)*

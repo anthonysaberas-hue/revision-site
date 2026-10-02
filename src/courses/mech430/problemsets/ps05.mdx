@@ -1,0 +1,405 @@
+<p className="eyebrow">Problem Set 5 · Winter 2025</p>
+
+# Normal shocks
+
+<p className="lede">Five problems on shock waves: why there is no rarefaction shock, shocks in gases where Table A3 doesn't apply, a shock inside a C-D nozzle, a supersonic pitot probe, and starting a wind tunnel. Air: γ = 1.4, R = 8314/28.8 J/(kg·K). Theory: <NoteRef ch="normal-shock">Chapter 7</NoteRef>, <NoteRef ch="shocks-in-flow">Chapter 8</NoteRef>, <NoteRef ch="inlets">Chapter 9</NoteRef>.</p>
+
+<Remember title="Two facts that solve this whole set">
+
+- Across a shock $T_0$ is constant, $p_0$ drops, and $p_{0x}A^*_x = p_{0y}A^*_y$.
+- With a subsonic exit, it is the **exit** pressure that equals $p_b$, not the pressure just behind the shock.
+
+</Remember>
+
+<Problem id="PS5 P1" title="Retracting piston: can a rarefaction shock form?" tags="x–t diagram, waves, second law">
+
+<Statement>
+
+In class, we looked at a piston that moves into a gas in steps of ever-increasing speed; the resulting compression waves merge into a shock. Now consider the opposite: the piston is **retracted** from the gas in a series of velocity steps $dV_1, dV_2, dV_3$, etc. It sends a series of acoustic rarefaction waves into the gas. Consider the speed at which the waves propagate relative to each other and construct a t–x diagram. Will the rarefaction waves overtake one another? What does this say about the existence of a rarefaction shock?
+
+</Statement>
+
+<Think>
+
+A qualitative wave-speed argument, the mirror image of the shock-formation story of <NoteRef ch="normal-shock" sec="how-a-shock-forms">§7.1</NoteRef>. In the lab every weak wave travels at $V + c$ of the gas it runs into. Ask how both terms change behind each wave.
+
+</Think>
+
+<Plan>
+
+Sound-wave relations ($c^2 = dp/d\rho$, $dV = (c/\rho)\,d\rho$) → sign of $dV$ and $dT$ behind a rarefaction → lab speed of each wave → draw the x–t diagram → do the lines meet?
+
+</Plan>
+
+<Steps>
+<Step title="1. What a rarefaction wave does to the gas">
+
+For a weak wave $c^2 = dp/d\rho$ and $dV = (c/\rho)\,d\rho$ (Chapter 4). A rarefaction has $dp \lt 0$, so $d\rho \lt 0$ (since $c^2 \gt 0$), so $dV \lt 0$: the gas behind it moves **toward the piston**. Sound is isentropic, so the expanded gas is also **colder**: $c$ drops.
+
+</Step>
+<Step title="2. Lab speed of each wave">
+
+Wave 1 runs into still gas: speed $c_1$. Wave 2 runs into gas moving at $dV_1 \lt 0$ with a lower $c_2$: lab speed $c_2 + dV_1 \lt c_1$. Wave 3: $c_3 + dV_1 + dV_2$, smaller still. So $c_1 \gt c_2 \gt c_3$ in the lab.
+
+</Step>
+<Step title="3. The x–t diagram">
+
+The piston path bends to the left as it speeds up. From each kink a straight wave line leaves to the right. Wave 1 is the flattest (fastest), wave 3 the steepest. The lines **fan apart and never cross**.
+
+<RetractingPistonXtFigure />
+
+</Step>
+<Step title="4. Conclusion">
+
+Since the waves never overtake each other, they cannot coalesce into a discontinuity. The result is an **expansion fan** that widens with time. A rarefaction shock cannot exist. The second law agrees: an expansion shock would have $\Delta s \lt 0$ (Chapter 7).
+
+</Step>
+</Steps>
+
+<Answer>
+
+- **No.** Each successive rarefaction wave is slower ($c_1 \gt c_2 \gt c_3$ in the lab) because the gas behind the earlier waves is colder **and** moving backward. The waves spread into a fan; a rarefaction shock cannot form.
+
+</Answer>
+
+Try it: press *Pull piston out*, then *Push piston in* to compare.
+
+<ShockFormationSim initialMode="pull" initialVp={0.6} />
+
+<Traps>
+
+- Anthony argued through the temperature drop alone. That is correct, but the gas velocity effect ($V \lt 0$) slows the later waves too. Mention both.
+- Compression is the mirror image: both $V$ and $c$ rise behind each wave, the later waves catch up, and a shock forms.
+
+</Traps>
+
+<Source>official 2025 solution · Anthony's tablet solution PS05-mine</Source>
+
+</Problem>
+
+<Problem id="PS5 P2" title="A 1000 m/s shock in argon, fluorine and CO2" tags="normal shock, arbitrary γ, formulas">
+
+<Statement>
+
+A shock wave propagates at 1000 m/s into a gas at 1 atm and 300 K. In the shock frame the flow has $V_x = 1000$ m/s, $T_x = 300$ K, $p_x = 1$ atm and approaches a stationary normal shock. Fill in $M_y$, $T_y$, $p_y$, $p_{0x}$, $p_{0y}$ and $p_{0y}/p_{0x}$ for:
+- argon: MW = 40, γ = 1.67
+- fluorine F₂: MW = 38, γ = 1.4
+- carbon dioxide: MW = 44, γ = 1.28
+
+</Statement>
+
+<Think>
+
+A normal shock with γ ≠ 1.4 (and even for F₂ the Mach number depends on MW). Table A3 is useless: use the formulas of <NoteRef ch="normal-shock" sec="working-relations-equation-sheet">§7.2</NoteRef>. The interesting part is the comparison: the same shock speed means a different Mach number in each gas.
+
+</Think>
+
+<Plan>
+
+$R = 8314/\text{MW}$ → $c_x = \sqrt{\gamma R T_x}$ → $M_x = V_x/c_x$ → $M_y$, $T_y/T_x$, $p_y/p_x$ from the formulas → $p_{0x}$ and $p_{0y}$ from the isentropic stagnation relation on each side → their ratio.
+
+<ShockCVFigure Mx={3.3} />
+
+</Plan>
+
+<Steps>
+<Step title="1. Mach number in each gas">
+
+Argon: $c_x = \sqrt{1.67 \times (8314/40) \times 300} = 322.7$ m/s → $M_x = 1000/322.7 = 3.099$.
+
+F₂: $c_x = \sqrt{1.4 \times 218.8 \times 300} = 303.1$ m/s → $M_x = 3.299$. CO₂: $c_x = \sqrt{1.28 \times 189.0 \times 300} = 269.4$ m/s → $M_x = 3.712$.
+
+</Step>
+<Step title="2. Downstream Mach number">
+
+$$
+M_y = \sqrt{\frac{2 + (\gamma-1)M_x^2}{2\gamma M_x^2 - (\gamma-1)}}
+$$
+
+Argon: $\sqrt{(2 + 0.67 \times 9.603)/(3.34 \times 9.603 - 0.67)} = \sqrt{8.434/31.40} = 0.518$. F₂: 0.460. CO₂: 0.409.
+
+</Step>
+<Step title="3. Temperature and pressure">
+
+$$
+\frac{T_y}{T_x} = \frac{\left[2\gamma M_x^2 - (\gamma-1)\right]\left[2 + (\gamma-1)M_x^2\right]}{(\gamma+1)^2M_x^2}, \qquad \frac{p_y}{p_x} = \frac{2\gamma M_x^2 - (\gamma-1)}{\gamma+1}
+$$
+
+Argon: $T_y = 300 \times (31.40 \times 8.434)/(2.67^2 \times 9.603) = 1161$ K, $p_y = 31.40/2.67 = 11.76$ atm.
+
+</Step>
+<Step title="4. Stagnation pressures">
+
+$$
+p_{0x} = p_x\left(1 + \tfrac{\gamma-1}{2}M_x^2\right)^{\frac{\gamma}{\gamma-1}}, \qquad p_{0y} = p_y\left(1 + \tfrac{\gamma-1}{2}M_y^2\right)^{\frac{\gamma}{\gamma-1}}
+$$
+
+Argon: $p_{0x} = (1 + 0.335 \times 9.603)^{2.493} = 36.13$ atm, $p_{0y} = 11.76 \times (1 + 0.335 \times 0.2686)^{2.493} = 14.58$ atm, ratio 0.4035. Cross-check with the direct $p_{0y}/p_{0x}$ formula: 0.4035. ✓
+
+</Step>
+<Step title="5. The full table">
+
+| gas | γ | Mₓ | M_y | T_y (K) | p_y (atm) | p₀ₓ (atm) | p₀ᵧ (atm) | p₀ᵧ/p₀ₓ |
+|---|---|---|---|---|---|---|---|---|
+| Ar | 1.67 | 3.099 | 0.518 | 1161 | 11.76 | 36.13 | 14.58 | 0.404 |
+| F₂ | 1.4 | 3.299 | 0.460 | 914 | 12.53 | 57.12 | 14.48 | 0.254 |
+| CO₂ | 1.28 | 3.712 | 0.409 | 859 | 15.35 | 136.1 | 17.07 | 0.125 |
+
+The official solution used γ = 1.666 for argon (Mₓ = 3.103, T_y = 1158 K, ratio 0.401); the small differences are only that. For F₂ you can check against <T>A3 @ Mₓ = 3.30: p₀ᵧ/p₀ₓ ≈ 0.254</T>.
+
+</Step>
+</Steps>
+
+<Answer>
+
+- Argon: $M_y \approx 0.52$, $T_y \approx 1160$ K, $p_y \approx 11.8$ atm, $p_{0y}/p_{0x} \approx 0.40$.
+- Fluorine: $M_y \approx 0.46$, $T_y \approx 914$ K, $p_y \approx 12.5$ atm, $p_{0y}/p_{0x} \approx 0.25$.
+- CO₂: $M_y \approx 0.41$, $T_y \approx 859$ K, $p_y \approx 15.4$ atm, $p_{0y}/p_{0x} \approx 0.125$.
+
+</Answer>
+
+Press the gas buttons and colour by T, then by p:
+
+<ShockDuctSim initialMx={3.099} initialGamma={1.67} />
+
+<Traps>
+
+- Table A3 is for γ = 1.4 only. And even for F₂ you must first compute $M_x$ with MW = 38.
+- Anthony's written $p_{0x}$ line dropped the exponent $\gamma/(\gamma-1)$, but his number (36.129) included it. Write the exponent every time.
+- Physics: the monatomic gas (high γ, no internal modes) gets the biggest **temperature** rise. The polyatomic gas (low γ) has the highest Mach number for the same speed, so the biggest **pressure** ratio and by far the biggest $p_0$ loss.
+
+</Traps>
+
+<Source>official 2025 solution · Anthony's tablet solution PS05-mine (Excel table)</Source>
+
+</Problem>
+
+<Problem id="PS5 P3" title="Nozzle designed for M = 3, run at p0/pb = 2: where is the shock?" tags="C-D nozzle, normal shock, iteration">
+
+<Statement>
+
+Air flows from a reservoir at $p_{0x}$ through a C-D nozzle designed for an exit Mach number of 3.0.
+
+(a) Find the exit-to-throat area ratio $A_e/A_t$.
+(b) What is $p_{0x}/p_b$ for the design case?
+(c) If the actual operating pressure ratio is $p_{0x}/p_b = 2.0$, find the exit Mach number and the area ratio at the shock location, $A_s/A_t$.
+(d) What $p_{0x}/p_b$ puts the shock exactly at the exit plane?
+
+</Statement>
+
+<Think>
+
+The back-pressure ladder of <NoteRef ch="shocks-in-flow" sec="back-pressure-regimes">§8.2</NoteRef>. (a), (b) are A2 lookups at M = 3. (d) is the $p_4$ case. (c) is the iteration of notes §8.2.1: guess a shock area, jump, carry the subsonic flow to the exit with the **new** $A^*_y$, compare $p_e$ with $p_b$, move the shock, interpolate. You can't know in advance there is a shock; you find out by running numbers.
+
+</Think>
+
+<Plan>
+
+reservoir → throat ($A^*_x = A_t$) → supersonic to $A_s$ (A2) → shock (A3: $M_y$, $p_{0y}/p_{0x}$) → $A^*_y = A^*_x/(p_{0y}/p_{0x})$ → subsonic to the exit at $A_e/A^*_y$ (A2) → $p_e = (p/p_0)_e \, p_{0y}$ → must equal $p_b = 0.5\,p_{0x}$.
+
+<ShockNozzlePressureFigure AR={4.2346} pb={0.5} />
+
+</Plan>
+
+<Steps>
+<Step title="(a) Area ratio">
+
+The flow goes supersonic, so the throat is sonic, $A_t = A^*$. <T>A2 @ M = 3.0: A/A\* = 4.2346</T> → $A_e/A_t = 4.2346$. This stays fixed. <CalcLink calc="isentropic" q="in=M&v=3">check</CalcLink>
+
+</Step>
+<Step title="(b) Design pressure ratio">
+
+At design $p_e = p_b$. <T>A2 @ M = 3.0: p/p₀ = 0.02722</T> → $p_{0x}/p_b = 1/0.02722 = 36.73$.
+
+</Step>
+<Step title="(c) Is there a shock? Bracket it">
+
+$p_{0x}/p_b = 2$ is nowhere near design (36.73). Shock at the exit (part d) needs $p_{0x}/p_b = 3.57$, and the subsonic-choked case needs $1/0.9867 = 1.013$. Since $1.013 \lt 2 \lt 3.57$, the shock is **inside** the diverging section.
+
+</Step>
+<Step title="(c) Guess 1: shock at A/A* = 2.0">
+
+<T>A2 @ A/A\* = 2.0 (sup): Mₓ = 2.20</T> → <T>A3 @ Mₓ = 2.20: M_y = 0.5471, p₀ᵧ/p₀ₓ = 0.6281</T>
+
+$A_e/A^*_y = (A_e/A^*_x)(A^*_x/A^*_y) = 4.2346 \times 0.6281 = 2.660$ → <T>A2 @ A/A\* = 2.66 (sub): M = 0.225, p/p₀ = 0.9643</T>
+
+$p_e = 0.9643 \times 0.6281\,p_{0x} = 0.6051\,p_{0x}$ → $p_{0x}/p_e = 1.653$. Too small: $p_e$ is too high, so the shock must move **downstream** (stronger shock, more loss).
+
+</Step>
+<Step title="(c) Guess 2: shock at A/A* = 2.5">
+
+<T>A2 @ A/A\* = 2.5 (sup): Mₓ = 2.44</T> → <T>A3 @ Mₓ = 2.44: M_y = 0.519, p₀ᵧ/p₀ₓ = 0.5234</T>
+
+$A_e/A^*_y = 4.2346 \times 0.5234 = 2.216$ → <T>A2 @ A/A\* = 2.21 (sub): M = 0.27, p/p₀ = 0.951</T>
+
+$p_e = 0.951 \times 0.5234\,p_{0x} = 0.4977\,p_{0x}$ → $p_{0x}/p_e = 2.009$. Very close to 2.
+
+</Step>
+<Step title="(c) Interpolate">
+
+| $A_s/A_t$ | $p_{0x}/p_e$ |
+|---|---|
+| 2.0 | 1.653 |
+| 2.5 | 2.009 |
+
+$$
+\frac{A_s}{A_t} \approx 2 + \frac{2 - 1.653}{2.009 - 1.653}(0.5) = 2.49, \qquad M_e \approx 0.27
+$$
+
+The exact solution (lib) is $A_s/A_t = 2.478$, $M_x = 2.43$, $M_e = 0.271$.
+
+</Step>
+<Step title="(d) Shock at the exit plane">
+
+$M_x = 3$, $p_x = 0.02722\,p_{0x}$. <T>A3 @ Mₓ = 3.0: M_y = 0.4752, p_y/pₓ = 10.33</T>
+
+$p_e = p_y = 10.33 \times 0.02722\,p_{0x} = 0.281\,p_{0x}$ → $p_{0x}/p_b = 3.56$ (official 3.57 from rounding $p_y$ to 0.28).
+
+</Step>
+</Steps>
+
+<Answer>
+
+- (a) $A_e/A_t = 4.2346$
+- (b) $p_{0x}/p_b = 36.73$
+- (c) shock at $A_s/A_t \approx 2.49$, subsonic exit $M_e \approx 0.27$
+- (d) $p_{0x}/p_b \approx 3.56$–3.57 ($p_b = 0.28\,p_{0x}$)
+
+Regimes for this nozzle: 36.73 design; between 3.57 and 36.73 over-expanded (oblique shocks outside); between 1.013 and 3.57 a shock inside.
+
+</Answer>
+
+<NozzleSim initialAR={4.2346} initialPb={0.5} />
+
+<Traps>
+
+- **Anthony's mistake in (c):** he set the static pressure **just behind the shock**, $p_y$, equal to $p_b$. With a "halfway" guess $A_s/A_t = 2.115$ ($M_x = 2.26$, $p_y/p_x = 5.792$) he got $p_{0x}/p_y = 2.02 \approx 2$ and stopped, giving $A_s/A_t \approx 2.1$. Wrong: after the shock the subsonic flow keeps diffusing from $A_s$ to $A_e$ and the pressure keeps rising (see the plot: $p_y = 0.44\,p_{0x}$ vs $p_e = 0.50\,p_{0x}$ here). Only $p_e$ must equal $p_b$, and only because the exit is subsonic. He never found $M_e$ either. His later redo switched to the correct $A^*_y$ method.
+- $A^*$ **grows** across the shock: $A^*_y = A^*_x/(p_{0y}/p_{0x})$. Use the subsonic branch after the shock.
+- Direction of iteration: $p_e$ too high → shock downstream; too low → upstream.
+
+</Traps>
+
+<Source>official 2025 solution · Anthony's tablet solution PS05-mine and the "Prob set again" redo p. 9</Source>
+
+</Problem>
+
+<Problem id="PS5 P4" title="Pitot probe in supersonic air" tags="pitot, Rayleigh pitot, Table A3">
+
+<Statement>
+
+A pitot probe is placed in a supersonic air flow. The static pressure and temperature are 45 kPa and −20 °C. The difference between the pitot probe's reading of stagnation pressure and the static pressure is 400 kPa. Find the Mach number and velocity of the flow.
+
+</Statement>
+
+<Think>
+
+Supersonic pitot: a bow shock stands in front of the probe, so it reads $p_{0y}$, not $p_{0x}$ (<NoteRef ch="inlets" sec="pitot-probe">§9.1</NoteRef>). The static port reads $p_x$. Use the $p_x/p_{0y}$ column of Table A3 (the Rayleigh pitot formula).
+
+</Think>
+
+<Plan>
+
+$p_{0y} = p_x + \Delta p$ → $p_x/p_{0y}$ → A3 → $M_x$ → $c_x$ from $T_x$ → $V = M_xc_x$.
+
+<PitotProbeFigure dp="400 kPa" M={2.7} />
+
+</Plan>
+
+<Steps>
+<Step title="1. What the probe reads">
+
+The manometer reads a difference: $p_{0y} = 45 + 400 = 445$ kPa. $p_x/p_{0y} = 45/445 = 0.1011$.
+
+</Step>
+<Step title="2. Mach number">
+
+<T>A3 @ pₓ/p₀ᵧ = 0.1011: Mₓ = 2.70</T> <CalcLink calc="normal" q="in=pitot&v=0.1011">check</CalcLink>
+
+</Step>
+<Step title="3. Velocity">
+
+$T_x = 253.15$ K, $c_x = \sqrt{1.4 \times (8314.5/28.8) \times 253.15} = 319.9$ m/s, so $V = 2.70 \times 319.9 = 864$ m/s.
+
+</Step>
+</Steps>
+
+<Answer>
+
+- $M_\infty \approx 2.70$, $V \approx 864$ m/s.
+
+</Answer>
+
+<PitotSim initialM={2.7038} />
+
+<Traps>
+
+- Using the isentropic $p_0/p = 445/45 = 9.89$ would give $M = 2.15$: 20 % low. The probe sits behind its own shock.
+- Add $p_x$ back: the manometer measures $p_{0y} - p_x$.
+- Anthony interpolated $M_x = 2.705$, which is fine; the exam reads the nearest row.
+
+</Traps>
+
+<Source>official 2025 solution · Anthony's tablet solution PS05-mine</Source>
+
+</Problem>
+
+<Problem id="PS5 P5" title="Film: starting and blocking of a supersonic wind tunnel" tags="wind tunnel, second throat, concepts">
+
+<Statement>
+
+Watch the NCFMF film "Channel Flow of a Compressible Fluid" and write one paragraph answering:
+(a) What is **starting** of a supersonic wind tunnel? What are the conditions for it to occur?
+(b) What is **blocking** of a supersonic wind tunnel? What are the conditions for it to occur?
+
+</Statement>
+
+<Think>
+
+A concept question about the two-throat tunnel of <NoteRef ch="inlets" sec="supersonic-wind-tunnel-the-second-throat">§9.3</NoteRef>. The key is that starting is an **area-ratio** condition, not only a pressure-ratio one. There is no official solution; the answer below is the standard theory, consistent with PS6 P1.
+
+</Think>
+
+<Plan>
+
+Follow the shock as $p_b$ drops: first throat chokes → shock marches down the nozzle → worst case at the test-section entrance → either it snaps through (started) or the second throat chokes first (blocked).
+
+<TunnelStartingFramesFigure Mtest={4} />
+
+</Plan>
+
+<Steps>
+<Step title="(a) Starting">
+
+As the pressure ratio increases, the first throat chokes and a normal shock forms downstream of it. Lowering $p_b$ pushes it down the nozzle; it gets stronger and $A^*_y$ grows. The tunnel **starts** when the shock is pushed through the test section and swallowed past the second throat, leaving supersonic flow in the test section. Conditions: enough pressure ratio, **and** a second throat that can pass the post-shock sonic area when the shock is at the test-section entrance:
+
+$$
+\frac{A_{t2}}{A_{t1}} \ge \frac{A^*_y}{A^*_x}\Big|_{M_{test}} = \frac{p_{0x}}{p_{0y}}\Big|_{M_{test}}
+$$
+
+</Step>
+<Step title="(b) Blocking">
+
+If $A_{t2}$ is smaller than that, the second throat **chokes on the post-shock flow** before the shock reaches the test section. The shock then sits where $p_{0y}\,A_{t2} = p_{0x}\,A_{t1}$ and lowering $p_b$ no longer moves it: the test section stays subsonic, and the tunnel is **blocked** (two throats choked in succession). If $A_{t2} \lt A_{t1}$ the second throat chokes first and the tunnel can never start.
+
+</Step>
+</Steps>
+
+<Answer>
+
+- **Starting** = swallowing the normal shock through the test section into the diffuser beyond the second throat. Needs enough pressure ratio **and** $A_{t2}/A_{t1} \ge (p_{0x}/p_{0y})$ at $M_{test}$.
+- **Blocking** = the second throat is too small, chokes on the post-shock flow, and holds the shock upstream of the test section no matter how low $p_b$ goes.
+
+</Answer>
+
+<WindTunnelStartSim initialMtest={4} initialAt2={6} initialProgress={0.75} />
+
+<Traps>
+
+- Anthony's (a) had the right idea (shock swallowing) but "first throat choked but not the second" is imprecise: after starting the second throat can run near-sonic. The missing condition is the **throat area ratio**.
+- Starting is an area problem: no amount of back-pressure lowering starts a tunnel whose second throat is too small. Once started, the second throat can be narrowed (variable geometry) to cut losses.
+
+</Traps>
+
+<Source>no official solution · Anthony's typed answer · clarification from the notes §9.3 and PS6 P1</Source>
+
+</Problem>

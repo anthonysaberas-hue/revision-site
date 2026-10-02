@@ -1,0 +1,83 @@
+<p className="eyebrow">Exam toolkit · the whole course on one page</p>
+
+# MECH 412 on one page
+
+<div className="lede">
+
+If you open this in five years and have ten minutes: this page is the course. Three blocks, one idea each, and the formulas you actually use. Every heading links to the chapter with the full explanation, the worked problems and the past-exam questions. **Guiding test:** after reading this, could you start the midterm? If a line feels unfamiliar, follow the link.
+
+</div>
+
+## The one-sentence course
+
+> **Model a system as a transfer function (or state model), look at its poles, and use feedback to move the poles where you want them.**
+
+Everything in the course is one of those three verbs: *model* (Block 1 and 2), *look at the poles* (Block 1 and 3: time response, stability), *move them* (Block 3: PID, root locus, Bode, compensators).
+
+## Block 1 · Mathematics and mechanics (MT1, Lectures 1–8)
+
+| Idea | The thing to remember | Chapter |
+|---|---|---|
+| Feedback loop | measure, compare, correct; disturbance and noise enter the loop | <Ch slug="intro">1</Ch> |
+| Laplace | calculus becomes algebra; $\mathcal L\{\dot f\}=sF-f(0)$; poles set the *shape*, residues the *amount*; check with IVT/FVT | <Ch slug="laplace">2</Ch> |
+| Mechanical models | Newton / energy; $\omega_n=\sqrt{k/m}$, $\zeta=\dfrac{c}{2\sqrt{km}}$; massless node = forces balance | <Ch slug="mech-models">3</Ch> |
+| Time response | $OS=100e^{-\pi\zeta/\sqrt{1-\zeta^2}}$, $t_p=\pi/\omega_d$, $t_s=4/(\zeta\omega_n)$; a nearby zero raises overshoot | <Ch slug="time-response">4</Ch> |
+| Block diagrams | $\dfrac{G}{1+GH}$; Mason $\sum P_k\Delta_k/\Delta$ | <Ch slug="block-diagrams">5</Ch> |
+| Frequency response | $s=j\omega$; $|G|$ and $\angle G$; corners, slopes | <Ch slug="frequency-basics">6</Ch> |
+| State space | $\dot x=Ax+Bu$; $G=C(sI-A)^{-1}B+D$; $\Phi=(sI-A)^{-1}$; Method 1/2; eigenvalues = poles | <Ch slug="state-space">7</Ch> |
+
+**Poles in one picture.** Left half-plane: decays; imaginary axis: sustained oscillation; right half-plane: grows. Real part sets the decay rate $\sigma$, imaginary part the oscillation $\omega_d$, the angle from the negative real axis $\cos^{-1}\zeta$.
+
+## Block 2 · Physical systems as circuits (MT2, Lectures 9–16)
+
+The trick of the whole block: **every physical system has potential and flux, so every system is a circuit.**
+
+| System | Potential | Flux | Chapter |
+|---|---|---|---|
+| electrical | voltage | current | <Ch slug="circuits-opamps">8</Ch> |
+| mechanical (mobility) | velocity | force | <Ch slug="analogies">10</Ch> |
+| mechanical (impedance) | force | velocity | <Ch slug="analogies">10</Ch> |
+| acoustic / hydraulic / pneumatic | pressure | volume (mass) flow | <Ch slug="acoustic-pneumatic">12</Ch>, <Ch slug="hydraulic-thermal">13</Ch> |
+| liquid level | head | volume flow | <Ch slug="hydraulic-thermal">13</Ch> |
+| thermal | temperature | heat flow | <Ch slug="hydraulic-thermal">13</Ch> |
+
+- **Circuits and op-amps:** $Z_R=R$, $Z_C=\tfrac1{Cs}$, $Z_L=Ls$; inverting op-amp $-Z_2/Z_1$; always take $i$ at nodes.
+- **Linearisation:** operating point (derivatives zero), Taylor expand, incremental resistance $=1/(di/de)$; never use Laplace before linearising. <Ch slug="linearization">Chapter 9</Ch>
+- **Analogies:** force source first; masses to ground in mobility; transformer for the same analog, gyrator for different analogs; lever = transformer. <Ch slug="analogies">Chapter 10</Ch>
+- **DC motor:** $\dfrac\Omega V=\dfrac{K_t}{(L_as+R_a)(Js+B)+K_bK_t}$ (**plus**); back emf is extra damping. <Ch slug="electromechanical">Chapter 11</Ch>
+- **Acoustic / pneumatic:** cavity = shunt capacitor, neck = series inductor; nozzle–flapper; pneumatic PID from two RC lags. <Ch slug="acoustic-pneumatic">Chapter 12</Ch>
+- **Hydraulic / thermal:** tank = capacitor, valve = resistor $2H/Q$; dashpot $T=\rho RA^2/k$; servo = integrator. <Ch slug="hydraulic-thermal">Chapter 13</Ch>
+- **Sensitivity:** $S^T_K=S^T_GS^G_K$, $S=\tfrac1{1+L}$: feedback buys low sensitivity at low frequency. <Ch slug="sensitivity">Chapter 14</Ch>
+
+## Block 3 · Feedback design (Final, Lectures 17–23)
+
+| Tool | Question it answers | Key formula | Chapter |
+|---|---|---|---|
+| Error constants | how accurate? | $K_p,K_v,K_a$; type decides | <Ch slug="steady-state-error">15</Ch> |
+| Routh | stable? for which $K$? | first-column sign changes | <Ch slug="routh">16</Ch> |
+| PID / Z–N | quick tuning | $K_p=0.6K_{cr}$, $T_i=0.5P_{cr}$, $T_d=0.125P_{cr}$ | <Ch slug="pid">17</Ch> |
+| Root locus | where do the poles go as $K$ grows? | 10 rules, $|KG|=1$ | <Ch slug="root-locus">18</Ch> |
+| Bode and margins | how far from instability? | $PM$ at gain crossover, $GM$ at phase crossover | <Ch slug="bode-margins">19</Ch> |
+| Lead / lag | fix transient / fix accuracy | $\alpha=\tfrac{1-\sin\varphi_m}{1+\sin\varphi_m}$; $K_c\beta=1$ | <Ch slug="lead-lag">20</Ch> |
+| Nyquist | stable by the curve | $Z=N+P$ | <Ch slug="nyquist">21</Ch> |
+
+**The Block 3 story in four lines.** Accuracy wants high gain and integrators; stability wants low gain. A gain alone cannot have both ($K/[s(s+1)(s+5)]$: $K=25$ gives $e_{ss}=0.2$ but $PM=4^\circ$). A **lag** buys accuracy at low frequency; a **lead** buys phase near crossover; PID does both. The root locus, Bode plot and Nyquist curve are three views of the same fact.
+
+## The ten things never to forget
+
+1. Poles decide everything about the shape; check the signs of their real parts first.
+2. Always check a transform or a model with its limits: $t=0$ (IVT), $t=\infty$ (FVT, only if stable), DC gain, high-frequency gain, a special case you know.
+3. State space: states are energy variables; convert back to $G(s)$ to verify.
+4. A massless node: forces sum to zero.
+5. Drawing an analog: force source first; nodes are velocities; same analog = transformer, different = gyrator.
+6. Nonlinear circuit: operating point, then Taylor, then (and only then) Laplace; incremental resistance is a slope.
+7. The back emf adds damping: $+K_bK_t$.
+8. Final-value theorem and Z–N need a stable closed loop / are first cuts, not designs.
+9. Always **verify** a compensator by recomputing the margins.
+10. **The official solutions contain errors**: recompute (see the errata page).
+
+## Where to go next
+
+- Rehearse: <Ex id="mt3-practice">the mock final</Ex>, the "Check yourself" boxes at the end of each chapter, and the exam recipes page.
+- Print: the three cheat sheets and the handouts page.
+- Play: the 3D labs (mass–spring–damper, DC motor, tanks, hydraulic servo, pendulum, cruise control) and the calculators (partial fractions, Routh, root locus, Bode, Nyquist, lead/lag, state space).
