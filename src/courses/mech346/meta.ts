@@ -35,7 +35,7 @@ export const ASSIGNMENTS: Entry[] = [
   { slug: 'a02', num: '2', title: 'Chapter 2 exercises (from your notes)', hint: '2-19 … 2-106, then extra practice' },
   { slug: 'a03', num: '3', title: 'Chapter 3 assignment (solutions provided)', hint: '3-25 … 3-145' },
   { slug: 'a03b', num: '3b', title: 'Fins practice', hint: 'original set' },
-  { slug: 'a04', num: '4', title: 'Chapter 4 practice: transient conduction', hint: 'original set' },
+  { slug: 'a04', num: '4', title: 'Chapter 4 exercises (from your notes)', hint: '4-16 … 4-118, then extra practice' },
   { slug: 'a06', num: '6', title: 'Chapter 6 practice: convection fundamentals', hint: 'original set' },
   { slug: 'a07', num: '7', title: 'Chapter 7 assignment (solutions provided)', hint: '7-26 … 7-106' },
   { slug: 'a08', num: '8', title: 'Chapter 8 practice: internal flow', hint: 'original set' },

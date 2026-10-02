@@ -34,3 +34,9 @@ Detailed explanations (every step, why, physical meaning, numeric check), real-l
 - 2026-10-02: tools (9) + labs (7) + sims/index done; tsc clean. NEXT: stage4: check-mdx+kt all, vitest, build, browser sweep (dev server port 5317), update memory
 - 2026-10-02 STAGE 4 DONE: tsc clean, check-mdx + kt on all 39 MDX, vitest 236 pass (37 in mech346), npm run build OK, browser sweep of all 55 routes (a03 had a stray `{C, B, C}` → fixed; tools+labs mount, WebGL labs render). Memory updated.
 - Possible follow-ups: lab visual polish (plume particle motion, exchanger colours), no past final available (mocks are reconstructions), MT1 Feb 2024 Q1/Q2 and MT2 2024 papers not provided, deploy not set up.
+
+## NOTES INGESTION (user's handwritten notes, zip of 2026-10-02)
+Source: D:\MCGILL\mech 346\notes\ (PDFs) and notes\img\<name>-<yymmdd>-<page>.png (80 dpi). Ink-page triage done (many versions are the same notebook with pages removed; the EARLIEST/longest export is usually the fullest, e.g. Exo_chap_2-240217 has 27 pages vs 24 later).
+Rule: use the user's real exercises and values; recompute; ✔/⚠; add "what it teaches". Replace my original practice sets by his exercises (keep mine under an "Extra practice" divider).
+- DONE: Chapter 2 → homework/a02.mdx (2-19, 2-43, 2-48, 2-59, 2-61, 2-77, 2-79, 2-87, 2-92, 2-94, 2-97, 2-106 + review notebook items). Chapter 2 review notes agree with chapters/conduction-eq.mdx.
+- TODO order: Exo chap 4 (0324a/b) + Chap 4 notes → a04; Exo chap 7 + Chap 7/6 → a07/a06; Exo chap 9 + Chap 9 → a09; Chap 13 exo (0429 fullest) + Chapter 12 → a12; Chap 8 → a08; Chapter 3 (58 pp, 0218 fullest) + Chapter 3 fins + Exercise/Question/Adam → a03/a03b; Lec 1, Notes, Past midterm/Past → exams/errata.

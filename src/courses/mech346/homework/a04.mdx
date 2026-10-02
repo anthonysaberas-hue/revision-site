@@ -1,12 +1,458 @@
-<p className="eyebrow">Practice set 4 · Chapter 4 · transient conduction · original problems</p>
+<p className="eyebrow">Chapter 4 exercises · taken from your own notes (Exo chap 4)</p>
 
-# Practice 4: lumped systems, one-term solutions, semi-infinite solids
+# Chapter 4: transient conduction, exercises 4-16 to 4-118
 
 <div className="lede">
 
-Midterm 2 has **Q1 lumped** and **Q2 one-term/product** every year. These original problems cover the whole decision tree of <Ch slug="transient">the transient chapter</Ch>: check $Bi$ → lumped or one-term → semi-infinite. Eigenvalues and coefficients come from Table 4-2 of the formula sheet (exact roots were computed for these answers, so they agree with the table to 4 decimals). All numbers were recomputed independently.
+The textbook exercises exactly as you worked them in your notebook (<Ch slug="transient">Chapter 4 notes</Ch>): the statement with your data, **your method and numbers**, an independent recomputation (✔ = matches, ⚠ = differs, with the reason), and what the exercise teaches. Eigenvalues and coefficients were recomputed from the exact characteristic equations; where you interpolated Table 4-2 by hand, small last-digit differences are expected and noted. Your extra practice and my earlier original set are kept at the bottom.
 
 </div>
+
+<Callout kind="note" title="The decision tree these exercises train">
+
+1. Compute $Bi$ with $L_c=V/A_s$. If $Bi\le0.1$: **lumped** $\dfrac{T-T_\infty}{T_i-T_\infty}=e^{-bt}$, $b=\dfrac{hA_s}{\rho Vc_p}$.
+2. If not: **one-term** with $Bi=hL/k$ ($L$ = half-thickness or radius, **not** $V/A$: your orange correction in 4-111). Table 4-2 gives $\lambda_1,A_1$; check $Fo>0.2$.
+3. Several directions (short cylinder, cube, block): **product** of the 1-D $\theta$ values.
+4. Heat transferred: $Q=Q_{max}(\ldots)$ with the actual volume.
+
+</Callout>
+
+<Problem id="4-16" title="800 W iron: how long to reach 140 °C? (lumped with heat input)" tags="lumped system with a heat source, steady-state temperature rise">
+
+<Statement>
+
+The base plate of an 800 W iron is 0.5 cm thick aluminum alloy 2024-T6 ($\rho=2770$, $c_p=875$ J/kgK, $\alpha=7.3\times10^{-5}$ m²/s), area $0.03$ m², initially at the ambient 22 °C, $h=12$ W/m²K; 85 % of the heater power goes to the plate. How long does the plate take to reach 140 °C? Is it realistic to assume the plate is uniform at all times?
+
+</Statement>
+
+<Think>
+
+Heating **with a source**: $\rho Vc_p\dfrac{dT}{dt}=\dot Q_{in}-hA(T-T_\infty)$, so $T-T_\infty=\dfrac{\dot Q_{in}}{hA}\left(1-e^{-t/\tau}\right)$ with $\tau=\dfrac{\rho c_pL}h$. First check $Bi$ with $k=\alpha\rho c_p$.
+
+</Think>
+
+<Steps>
+<Step title="Your steps">
+
+$k=\rho\alpha c_p=177$ W/mK; $Bi=\dfrac{hL_c}k=3.4\times10^{-4}\ll0.1$ (your $L_c=V/A=0.005$). Your first attempt used the **cooling** form $e^{-bt}$ (and solved for $T_i$, getting $t=2812$ s); you then switched to the heating form $\dfrac{T-T_\infty}{T_i-T_\infty}=1-e^{-bt}$ with $b=9.9\times10^{-4}$ s⁻¹, $0.06247=1-e^{-9.9\times10^{-4}t}$.
+
+</Step>
+<Step title="Recomputation">
+
+$\dot Q_{in}=0.85(800)=680$ W; $\dfrac{\dot Q_{in}}{hA}=1888.9$ K (the plate would end 1889 K above ambient); $\tau=\dfrac{2770(875)(0.005)}{12}=1010$ s. $\dfrac{118}{1888.9}=0.06247=1-e^{-t/\tau}\Rightarrow t=-1010\ln(0.93753)=65.1$ s.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**$t\approx65$ s**; yes, uniform plate is realistic ($Bi=3.4\times10^{-4}$).
+
+</Answer>
+
+<Callout kind="note" title="✔ Setup matches; the last digits you wrote read 65.7 vs my 65.1. What it teaches">
+
+Know which side of the equation the source is on: with heat **input** the exponential multiplies $(\dot Q/hA)$ and the temperature *rises toward* $T_\infty+\dot Q/hA$; with no source it decays to $T_\infty$. Your discarded first attempt (2812 s) treated the iron as a cooling body, which is why it failed. Because $t\ll\tau$, $T\approx T_\infty+\dot Q t/(\rho Vc_p)$: the plate heats almost adiabatically.
+
+</Callout>
+
+</Problem>
+
+<Problem id="4-31" title="Thermocouple junction: time to read 99 % of the temperature step" tags="lumped, time constant">
+
+<Statement>
+
+A thermocouple junction is a 1.2 mm sphere ($k=35$, $\rho=8500$, $c_p=320$), $h=110$ W/m²K in the gas. How long until it reads 99 % of the initial temperature difference? (Printed answer 22.8 s.)
+
+</Statement>
+
+<Steps>
+<Step title="Your steps">
+
+$A=4\pi r^2$, $V=\tfrac43\pi r^3$, $Bi=\dfrac{hV/A}k=110\cdot\dfrac r3\cdot\dfrac1{35}=6.3\times10^{-4}$; then $\ln(0.01)=-\dfrac{110\cdot4\pi r^2}{8500\cdot320\cdot\frac43\pi r^3}\,t$.
+
+</Step>
+<Step title="Recomputation">
+
+$L_c=r/3=0.2$ mm, $\tau=\dfrac{\rho c_pL_c}h=\dfrac{8500(320)(0.0002)}{110}=4.945$ s; $t=\tau\ln100=22.77$ s.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**$t=22.8$ s** (matches the printed 22.8 s).
+
+</Answer>
+
+<Callout kind="note" title="✔ Method matches (the last digit of your scan is hard to read: 21.7 vs 22.8). What it teaches">
+
+"Reads 99 %" means $\theta/\theta_i=0.01$, i.e. $4.6$ time constants. Halving the bead diameter halves $\tau$: that is how you make a fast sensor.
+
+</Callout>
+
+</Problem>
+
+<Problem id="4-38" title="Annealing carbon-steel balls, and the total heat rate for 2500 balls/h" tags="lumped, Q per ball, rate">
+
+<Statement>
+
+Carbon-steel balls ($\rho=7833$, $k=54$, $c_p=0.465$ kJ/kgK) of diameter 8 mm go from 900 °C to 100 °C in 35 °C air, $h=75$ W/m²K. How long does it take, and what is the total heat transfer rate if 2500 balls are annealed per hour?
+
+</Statement>
+
+<Steps>
+<Step title="Your steps">
+
+$Bi=\dfrac{h(r/3)}k=1.85\times10^{-3}$; $\ln\dfrac{100-35}{900-35}=-\dfrac{75(4\pi r^2)}{7833(465)\frac43\pi r^3}t$, giving $t=167.6$ s. Your note: "$c_p\to$ in Joules" (convert kJ to J).
+
+</Step>
+<Step title="Recomputation">
+
+$b=\dfrac{75}{7833(465)(0.004/3)}=0.01544$ s⁻¹, $t=\dfrac{2.588}{0.01544}=167.6$ s. One ball: $Q=\rho Vc_p\Delta T=7833(2.681\times10^{-7})(465)(800)=781.2$ J. Rate: $781.2\times\dfrac{2500}{3600}=542.5$ W.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**$t=167.6$ s; total rate $=542$ W.**
+
+</Answer>
+
+<Callout kind="note" title="✔ Matches (167.6 s). What it teaches">
+
+The heat **per object** is $mc_p\Delta T$ (independent of $h$); the **rate** for a production line is that times the throughput. The 8 mm cylinder of the 2022 midterm and this ball differ only by $L_c$ ($D/4$-style vs $D/6$).
+
+</Callout>
+
+</Problem>
+
+<Problem id="4-41" title="Silver sphere, cube and prism: time to warm from 0 °C to 25 °C" tags="L_c = V/A for different shapes">
+
+<Statement>
+
+A silver sphere of diameter 5 cm, a cube of side 5 cm and a $4\times5\times6$ cm prism ($k=429$, $\rho=10\,500$, $c_p=0.235$ kJ/kgK), all at 0 °C, sit in 33 °C air with $h=12$ W/m²K. How long until each reaches 25 °C?
+
+</Statement>
+
+<Steps>
+<Step title="Your steps">
+
+Sphere: $Bi=\dfrac{12(5\times10^{-2}/6)}{429}=2.3\times10^{-4}$; cube $Bi\approx2.3\times10^{-4}$; $\dfrac{25-33}{0-33}=e^{-\frac{12}{10\,500(235)}\frac1{L_c}t}$ with $t=2428$ s. Prism: $L_c=\dfrac{0.04(0.05)(0.06)}{2(0.04\cdot0.05+0.04\cdot0.06+0.05\cdot0.06)}=\dfrac{3}{370}$ m.
+
+</Step>
+<Step title="Recomputation">
+
+Sphere and cube both have $L_c=0.05/6=8.333$ mm, so $\tau=\dfrac{10\,500(235)(0.008333)}{12}=1713.5$ s and $t=\tau\ln\dfrac{33}{8}=2428$ s. Prism: $L_c=\dfrac{120}{148}=0.8108$ cm, $\tau=1667$ s, $t=2363$ s.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**Sphere 2428 s, cube 2428 s, prism 2363 s** (all $Bi\ll0.1$).
+
+</Answer>
+
+<Callout kind="note" title="✔ Matches (2428 s for the sphere and cube; $L_c=3/370$ m for the prism). What it teaches">
+
+A sphere and a cube of the **same side/diameter have the same $V/A=D/6$**, so in the lumped regime they warm at the same pace. The prism's larger area per volume makes it slightly faster: 2363 s.
+
+</Callout>
+
+</Problem>
+
+<Problem id="4-54" title="Brass plates through an oven: surface temperature (one-term) and the lumped check" tags="plane wall, one-term, Bi small so lumped also works">
+
+<Statement>
+
+Large 3 cm thick brass plates ($k=110$, $\rho=8530$, $c_p=380$, $\alpha=33.9\times10^{-6}$) at 25 °C pass through a 700 °C oven for 10 min with $h=80$ W/m²K. Find the surface temperature when they exit using the one-term solution. Can the problem be solved with the lumped model? Justify.
+
+</Statement>
+
+<Steps>
+<Step title="Your steps">
+
+Half-thickness $L=0.015$ m; $Bi=\dfrac{80(0.015)}{110}=0.0109$; table interpolation $\lambda_1=0.1035$, $A_1=1.0018$; $\tau=\dfrac{\alpha t}{L^2}=\dfrac{33.9\times10^{-6}(600)}{0.015^2}=90.4$; surface: $\dfrac{T-700}{25-700}=A_1e^{-\lambda_1^2\tau}\cos\lambda_1$. Your final value: $T=543.9$ °C.
+
+</Step>
+<Step title="Recomputation">
+
+$\lambda_1=0.1043$, $A_1=1.0018$; $\lambda_1^2\tau=0.983$, $e^{-0.983}=0.3742$; $\theta_s=1.0018(0.3742)\cos(0.1043)=0.3729$; $T_s=700-675(0.3729)=448.2$ °C. Lumped check: $T=700-675\,e^{-ht/\rho c_pL}=700-675e^{-0.9873}=448.4$ °C.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**$T_{surface}=448$ °C.** Yes, the lumped model works ($Bi=0.011<0.1$) and gives 448.4 °C (centre-to-surface difference only about 0.3 K).
+
+</Answer>
+
+<Callout kind="warn" title="⚠ Your final value (543.9 °C; 525.2 °C on the earlier export) is not reproduced">
+
+Every ingredient you wrote ($Bi$, $\lambda_1\approx0.1035$, $A_1=1.0018$, $\tau=90.4$) is right, so the slip is in the last evaluation: with those numbers the exponential is $e^{-0.1035^2\cdot90.4}=e^{-0.968}=0.380$, giving $T=700-675(0.378)=445$ °C, not 544 °C. A built-in check that catches this: since $Bi\ll0.1$, the lumped formula must agree with the one-term result; they differ by 100 K here, so something is off. **What it teaches:** when $Bi<0.1$ you can *verify* a one-term answer with the lumped model (and the surface is only a hair cooler than the centre).
+
+</Callout>
+
+</Problem>
+
+<Problem id="4-64" title="Plastic rod: find $h$ from a measured centre temperature (inverse problem)" tags="one-term, unknown Bi, iteration">
+
+<Statement>
+
+A 2 cm diameter plastic rod ($\rho=1190$, $c_p=1465$, $k=0.19$) at 70 °C cools in 25 °C air; after 1388 s the centre thermocouple reads 30 °C. Find $h$ with the one-term method.
+
+</Statement>
+
+<Steps>
+<Step title="Your steps (the notebook stops here)">
+
+$\alpha=\dfrac k{\rho c_p}$; $\tau=\dfrac{\alpha t}{r_0^2}=1.512$; $\dfrac{30-25}{70-25}=A_1e^{-\lambda_1^2(1.512)}$ (cylinder), unknown $Bi$ through $\lambda_1$ and $A_1$.
+
+</Step>
+<Step title="Completion (my values)">
+
+$\theta_0=5/45=0.1111$. Solve $A_1e^{-\lambda_1^2\tau}=0.1111$ with $\lambda_1J_1(\lambda_1)/J_0(\lambda_1)=Bi$: $Bi=1.000$ ($\lambda_1=1.2558$, $A_1=1.2071$; check $1.2071e^{-1.577(1.5127)}=0.1111$ ✓). $h=\dfrac{Bi\,k}{r_0}=\dfrac{1.0(0.19)}{0.01}=19.0$ W/m²K.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**$h\approx19$ W/m²K** ($Bi=1.0$).
+
+</Answer>
+
+<Callout kind="note" title="Your setup matches; the notebook stops before the iteration. What it teaches">
+
+An **inverse** problem: the unknown is inside $Bi$. Try a row of Table 4-2 (here $Bi=1$ is a table row, so the answer drops out at once) and check $A_1e^{-\lambda_1^2\tau}$ against the measured $\theta_0$; interpolate between rows if it misses. The "centre" value needs no position factor.
+
+</Callout>
+
+</Problem>
+
+<Problem id="4-73" title="Chilling a chicken in brine: centre and surface temperature after 2 h 45 min, will it freeze?" tags="sphere, equivalent radius from the mass, one-term">
+
+<Statement>
+
+A 1.7 kg chicken ($k=0.45$, $\alpha=0.13\times10^{-6}$ m²/s, $\rho=950$ kg/m³, initially 15 °C) is chilled in agitated brine at $-7$ °C with $h=440$ W/m²K, treated as a sphere. Find the centre and surface temperature after 2 h 45 min; does any part freeze?
+
+</Statement>
+
+<Steps>
+<Step title="Your steps">
+
+Radius from the mass: $V=\dfrac m\rho=\dfrac{1.7}{950\times10^{-3}\ \text{(kg/L)}}=1.789\times10^{-3}$ m³ (you wrote 1789.47 cm³), $V=\tfrac43\pi r_0^3\Rightarrow r_0=7.53$ cm; $Bi=\dfrac{440(0.0753)}{0.45}=73.62$; table (interpolating between $Bi=50$ and 100): $\lambda_1=3.125$, $A_1=1.999$; $\tau=\dfrac{\alpha t}{r_0^2}=0.227$; $\dfrac{T_0+7}{15+7}=1.999e^{-3.125^2(0.227)}$, giving $T_0=-2.16$ °C.
+
+</Step>
+<Step title="Recomputation">
+
+Exact roots at $Bi=73.64$: $\lambda_1=3.0990$, $A_1=1.9982$; $\theta_0=1.9982e^{-3.0990^2(0.2269)}=0.2261$; $T_0=-7+22(0.2261)=$ **$-2.03$ °C**. Surface: $\theta_s=\theta_0\dfrac{\sin\lambda_1}{\lambda_1}$, $T_s=-6.93$ °C.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**Centre $\approx-2.0$ °C, surface $\approx-6.9$ °C.** The temperatures are below 0 °C, so **the outer part (and even the centre, if freezing starts near $-2$ °C) is frozen**: the real chicken would freeze (latent heat ignored here).
+
+</Answer>
+
+<Callout kind="note" title="✔ Method and radius match; your centre value $-2.16$ °C differs by 0.13 K from the exact roots because of the interpolated $\lambda_1,A_1$. What it teaches">
+
+Turn a mass into an **equivalent sphere radius** $r_0=(3m/4\pi\rho)^{1/3}$. For large $Bi$ the surface is almost at the fluid temperature ($-6.9$ vs $-7$): the resistance is inside the chicken. Linear interpolation across a wide range ($Bi$ 50 to 100) is where small errors enter: compute the exact root if you can.
+
+</Callout>
+
+</Problem>
+
+<Problem id="4-75" title="Egg dropped into boiling water: time for the centre to reach 70 °C" tags="sphere, solve one-term for time">
+
+<Statement>
+
+A 5.5 cm egg ($k=0.6$, $\alpha=0.14\times10^{-6}$), initially 4 °C, is dropped into boiling water at 97 °C ($h=1400$). How long until the centre reaches 70 °C?
+
+</Statement>
+
+<Steps>
+<Step title="Your steps">
+
+$Bi=\dfrac{1400(0.0275)}{0.6}=64.17$; $\lambda_1\approx3.0877$ and $A_1\approx1.9969$ (interpolated); $\dfrac{70-97}{4-97}=1.9969\,e^{-3.0877^2\tau}\Rightarrow\tau=0.2017$; $t=\dfrac{\tau r_0^2}\alpha$ (the page ends with the expression $\dfrac{0.2017(0.0275)^2}{0.14\times10^{-6}}$).
+
+</Step>
+<Step title="Recomputation">
+
+Exact: $\lambda_1=3.0927$, $A_1=1.9977$; $\tau=\dfrac{-\ln(0.2903/1.9977)}{3.0927^2}=0.2017$ ✓; $t=\dfrac{0.2017(0.0275)^2}{0.14\times10^{-6}}=1089$ s.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**$t\approx1090$ s $\approx18$ min.** ($\tau=0.20$ is at the edge of validity $\tau>0.2$.)
+
+</Answer>
+
+<Callout kind="note" title="✔ Your $\tau=0.2017$ matches. What it teaches">
+
+Solving for **time** is easy once $\lambda_1,A_1$ are known: $\tau=\dfrac{-\ln(\theta_0/A_1)}{\lambda_1^2}$. The check $\tau>0.2$ matters: here it is satisfied only barely, so the one-term answer is marginal; a series with more terms would change it by under 1 %.
+
+</Callout>
+
+</Problem>
+
+<Problem id="4-111" title="Granite cube and cylinder in a furnace: centre temperature at 10, 20 and 60 min" tags="product solution, cube and short cylinder, correct Bi uses half-length">
+
+<Statement>
+
+A 5 cm granite cube and a cylinder (height = diameter = 5 cm), both initially 20 °C ($k=2.5$, $\alpha=1.15\times10^{-6}$), are exposed to 500 °C gases on all surfaces, $h=40$. Find the centre temperature of each after 10, 20 and 60 min.
+
+</Statement>
+
+<Steps>
+<Step title="Your steps (and your orange correction)">
+
+$\tau=\dfrac{\alpha t}{L^2}=\dfrac{1.15\times10^{-6}(600)}{0.025^2}=1.104$ at 10 min. You first wrote $Bi=\dfrac hk\dfrac VA$ (blue, crossed out) and corrected it to **$Bi=\dfrac hkL$ with $L=\dfrac{5}{2}$ cm**: $Bi=\dfrac{40}{2.5}(0.025)=0.4$; $\lambda_1=0.5932$, $A_1=1.0580$; $\theta_w=1.058e^{-0.5932^2(1.104)}=0.7717$; **cube**: $\theta_{cube}=\theta_w^3=0.369$, $T=500+0.369(20-500)=322.8$ °C. **Cylinder**: wall factor for the height ($Bi=0.4$) times a cylinder factor with $\lambda_1=0.8516$, $A_1=1.0931$: $\theta=0.352$, $T=330.97$ °C.
+
+</Step>
+<Step title="Recomputation (all three times)">
+
+| time | $\tau$ | cube centre | cylinder centre |
+|---|---|---|---|
+| 10 min | 1.104 | 322.8 °C | 331.0 °C |
+| 20 min | 2.208 | 444.8 °C | 448.5 °C |
+| 60 min | 6.624 | 499.5 °C | 499.6 °C |
+
+</Step>
+</Steps>
+
+<Answer>
+
+**10 min: cube 322.8 °C, cylinder 331.0 °C; 20 min: 444.8 / 448.5 °C; 60 min: 499.5 / 499.6 °C.**
+
+</Answer>
+
+<Callout kind="note" title="✔ Matches your 10-minute values (322.4/323.8 and 330.97). What it teaches">
+
+Your orange note is the key lesson: **in the one-term formulas $Bi=hL/k$ uses the half-thickness or radius, never $V/A$** ($V/A=1/6$ of the side would give $Bi=0.13$, wrong). For the cube the three directions are identical so $\theta_{cube}=\theta_{wall}^3$; for the cylinder with $H=D$, the wall factor uses $L=H/2=2.5$ cm and the cylinder factor $r_0=2.5$ cm, both with $Bi=0.4$ here.
+
+</Callout>
+
+</Problem>
+
+<Problem id="4-115" title="Ice block on a table: when do the first droplets appear, and where?" tags="product of three 1-D factors, insulated base = symmetry, surface temperature">
+
+<Statement>
+
+A 6 cm tall ice block with a $4\times4$ cm base ($k=2.22$, $\alpha=0.124\times10^{-6}$), initially $-18$ °C, stands on a table in 18 °C air ($h=12$ W/m²K on the exposed surfaces; no heat to the table). How long before liquid appears, and where first?
+
+</Statement>
+
+<Steps>
+<Step title="Your steps">
+
+Liquid first appears where the surface is warmest: **the top corners** (three surfaces meet). The insulated base is a plane of symmetry, so the height acts as a wall of half-thickness $L=6$ cm; the sides have half-thickness $2$ cm. Biot numbers: $Bi_{top}=\dfrac{12(0.06)}{2.22}=0.3243$ ($\lambda_1=0.5392$, $A_1=1.0482$), $Bi_{side}=\dfrac{12(0.02)}{2.22}=0.108$ ($\lambda_1=0.3229$, $A_1=1.0173$). Condition $T=0$ at the corner: $\dfrac{0-18}{-18-18}=\left(A_1e^{-\lambda_1^2\tau}\cos\lambda_1\right)^2_{side}\times\left(A_1e^{-\lambda_1^2\tau}\cos\lambda_1\right)_{top}$ with $\tau_{side}=\dfrac{\alpha t}{0.02^2}$, $\tau_{top}=\dfrac{\alpha t}{0.06^2}$ ("solve for $t$").
+
+</Step>
+<Step title="Recomputation">
+
+$\theta_{corner}=0.5$. Solving numerically: $t=6887$ s.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**First droplets after about 6900 s ($\approx1.9$ h = 115 min) at the top corners (edges where three faces meet).**
+
+</Answer>
+
+<Callout kind="note" title="✔ Setup matches; the notebook stops before the number. What it teaches">
+
+Surface points use $\cos\lambda_1$ (not 1) in each factor, and the **corner** is where all three surface factors multiply, so it warms first; the centre of a face is next, the middle of the block last. The $\tau>0.2$ condition: side $\tau=2.1$ ✓, top $\tau=0.24$ ✓.
+
+</Callout>
+
+</Problem>
+
+<Problem id="4-118" title="Short brass cylinder: centre, top-centre and total heat after 15 min" tags="product solution, Q/Qmax for a short cylinder">
+
+<Statement>
+
+A short brass cylinder ($\rho=8530$, $c_p=0.389$ kJ/kgK, $k=110$, $\alpha=3.39\times10^{-5}$), diameter 4 cm, height 20 cm, initially 150 °C, is placed in 20 °C air with $h=40$. Find (a) the centre temperature, (b) the centre temperature of the top surface, (c) the total heat transfer after 15 min. (Cylinder standing on a table is not stated: both ends exposed.)
+
+</Statement>
+
+<Steps>
+<Step title="Your steps">
+
+$\dfrac{T-20}{150-20}=\theta_{wall}\times\theta_{cyl}$. Wall (half-height $L=10$ cm): $Bi=\dfrac{40(0.1)}{110}=0.0364$, $\lambda_1=0.1882$, $A_1=1.006$, $\tau_w=3.051$; $\theta_w=0.902$. Cylinder ($r_0=2$ cm): $\tau_c=76.275$; you took the table row $Bi=0.01$: $\lambda_1=0.0998$, $A_1=1.0017$, giving $\theta_{cyl}=0.5686$ and $T=75$ °C. Heat: $\dfrac Q{Q_{max}}=\ldots$ with $Q_{max}=\rho Vc_p\Delta T$, $V=\pi r_0^2(0.2)$.
+
+</Step>
+<Step title="Recomputation">
+
+Cylinder: $Bi_c=\dfrac{40(0.02)}{110}=0.00727$, **cylinder column** $\lambda_1=0.1205$, $A_1=1.0017$: $\theta_{cyl}=1.0017e^{-0.1205^2(76.275)}=0.331$. Wall: $\lambda_1=0.1895$, $A_1=1.0059$: $\theta_w=0.9015$. Centre: $T=20+130(0.331)(0.9015)=58.8$ °C. Top centre (cosine factor): $T=20+130(0.331)(0.9015)\cos(0.1895)=58.1$ °C. Heat: $Q_{max}=8530(2.513\times10^{-4})(389)(130)=108.4$ kJ; wall fraction $0.1038$, cylinder fraction $0.6696$; $\dfrac Q{Q_{max}}=0.1038+0.6696(1-0.1038)=0.704$, $Q=76.3$ kJ.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**(a) 58.8 °C; (b) 58.1 °C; (c) $Q=76.3$ kJ.**
+
+</Answer>
+
+<Callout kind="warn" title="⚠ Your cylinder factor 0.5686 and $T=75$ °C are not reproduced: the $\lambda_1,A_1$ pair came from the plane-wall column">
+
+For $Bi\approx0.01$ the table has **different** rows for the three shapes: wall $\lambda_1=0.0998$, cylinder $\lambda_1=0.1412$, sphere $0.1730$. Your $(0.0998,\ 1.0017)$ is the *wall* row; the cylinder needs the cylinder row (and $Bi_c=0.0073$, not 0.01, gives $\lambda_1=0.1205$). With $\lambda_1=0.0998$: $\theta=1.0017e^{-0.0998^2(76.275)}=0.469$, and neither that nor 0.5686 gives the right answer. **What it teaches:** (i) always read the **column of the shape** you are solving; (ii) a short cylinder's long direction ($L=10$ cm, $\tau=3.05$) hardly cools while its radial direction does ($\tau=76$), so $\theta_{cyl}$ dominates; (iii) sanity check: for $Bi\ll0.1$ the lumped model with $L_c=V/A_s=0.91$ cm predicts $T=20+130e^{-\frac{40(900)}{8530(389)(0.00909)}}=59.4$ °C, within 1 K of the correct answer, nowhere near 75 °C.
+
+</Callout>
+
+</Problem>
+
+<Problem id="Lecture-soda" title="Soda can in a warm room (lecture example from your Chapter 4 notes)" tags="lumped system applied to a liquid, Bi check">
+
+<Statement>
+
+A can of soda (volume 355 cm³, $\rho=998.6$ kg/m³, $c_p=4186$ J/kgK, $k=0.595$ W/mK; diameter 6.5 cm, height 12.2 cm, insulated bottom) at 1 °C is placed in a room at 19.5 °C with $h=7.5$ W/m²K. How long until the soda reaches 15 °C?
+
+</Statement>
+
+<Steps>
+<Step title="Your steps">
+
+Exposed area (top + side): $A=\dfrac{\pi D^2}4+\pi DH=0.0282$ m². Lumped: $\tau=\dfrac{\rho Vc_p}{hA}=7016.7$ s; $\dfrac{15-19.5}{1-19.5}=e^{-t/\tau}\Rightarrow t=9978$ s $\approx2$ h 46 min. Then the check: $Bi=\dfrac{h(V/A)}k=0.152$ (you wrote 0.152): **not really valid.**
+
+</Step>
+<Step title="Recomputation">
+
+$A=0.02823$ m², $\tau=7009$ s, $t=7009\ln\dfrac{18.5}{4.5}=9908$ s $=2.75$ h; $Bi=7.5(0.01257)/0.595=0.159$.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**About 2 h 45 min** (lumped), with $Bi\approx0.16>0.1$: only an estimate.
+
+</Answer>
+
+<Callout kind="note" title="✔ Method matches (your 9978 s vs my 9908 s differ by 0.7 % from the $\tau$ digit). What it teaches">
+
+Always **finish with the Biot check**: here it fails slightly, and your note adds the physical reason, that a *liquid* mixes by internal convection so it is more uniform than its conductivity suggests, which makes the lumped answer a reasonable approximation anyway. For a solid with $Bi=0.16$ you would need the one-term solution.
+
+</Callout>
+
+</Problem>
+
+<div className="lede">
+
+**Extra practice below was written by me earlier (not from your notes).**
+
+</div>
+
 
 <Problem id="P4-1" title="Thermocouple response time" tags="lumped capacitance, time constant, Bi check">
 
