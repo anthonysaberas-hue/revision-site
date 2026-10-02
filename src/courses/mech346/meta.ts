@@ -32,7 +32,7 @@ export const CHAPTERS: Entry[] = [
 /** Assignment-style problem sets ("hw" routes). a01/a03/a07 are the instructor-solved sets; the rest are original practice sets. */
 export const ASSIGNMENTS: Entry[] = [
   { slug: 'a01', num: '1', title: 'Chapter 1 assignment (solutions provided)', hint: '1-19 … 1-137' },
-  { slug: 'a02', num: '2', title: 'Chapter 2 practice: conduction equation and generation', hint: 'original set' },
+  { slug: 'a02', num: '2', title: 'Chapter 2 exercises (from your notes)', hint: '2-19 … 2-106, then extra practice' },
   { slug: 'a03', num: '3', title: 'Chapter 3 assignment (solutions provided)', hint: '3-25 … 3-145' },
   { slug: 'a03b', num: '3b', title: 'Fins practice', hint: 'original set' },
   { slug: 'a04', num: '4', title: 'Chapter 4 practice: transient conduction', hint: 'original set' },
