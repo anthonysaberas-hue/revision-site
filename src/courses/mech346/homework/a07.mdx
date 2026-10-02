@@ -1,12 +1,342 @@
-<p className="eyebrow">Assignment 7 · Chapter 7 · external forced convection · instructor solutions provided</p>
+<p className="eyebrow">Chapter 7 · external forced convection · your notebook (Exo chap 7) first, then the instructor-solved set</p>
 
-# Assignment 7: flat plate, cylinder, sphere and tube bank
+# Chapter 7: flat plate, cylinder, sphere, tube bank
 
 <div className="lede">
 
-Eight textbook problems on <Ch slug="external-flow">external forced convection</Ch> (7-26, 7-35, 7-65, 7-69, 7-80, 7-87, 7-88, 7-106). Each one follows the same routine: (1) film temperature and properties, (2) $Re$ and regime, (3) the correlation of the geometry, (4) $Nu$ then $h$, (5) the energy balance. **One of the six final-exam problems comes from the assignments**, so be able to redo each of these cold. Every number below was recomputed; the printed solutions agree except for one small discrepancy in 7-88 (flagged).
+This page now has **two parts**. **Part A** is the set of textbook exercises *as you worked them* in your notebook (10 problems: 7-25, 7-28, 7-38, 7-51, 7-53, 7-71, 7-76, 7-88, 7-95, 7-96), each with your steps, my recomputation (✔/⚠) and the lesson. **Part B** (below) is the instructor-solved assignment (7-26, 7-35, 7-65, 7-69, 7-80, 7-87, 7-88, 7-106). The two use **different problem numbers and sometimes different data** because they come from different editions of the textbook: 7-28 ↔ 7-26 (transformer), 7-38 ↔ 7-35 (engine block), 7-71 ↔ 7-65 (steam pipe, but 12 cm and 65 km/h in yours, 8 cm and 50 km/h in the assignment), 7-76 ↔ 7-69 (geothermal pipe), 7-88 ↔ 7-80 (bottle), 7-95 ↔ 7-87 (head, 12 km/h vs 25 km/h), 7-96 ↔ 7-88 (light bulb). Background: <Ch slug="convection-basics">Ch 6</Ch> and <Ch slug="external-flow">Ch 7</Ch>.
 
 </div>
+
+<Callout kind="note" title="The routine your notebook follows every time">
+
+(1) $T_f=(T_s+T_\infty)/2$ and the air table at $T_f$ (a column of $\rho,c_p,k,\alpha,\mu,\nu,Pr$); (2) $Re=VL/\nu$ and compare with $5\times10^5$; (3) the right Nusselt formula; (4) $h=Nu\,k/L$; (5) $\dot Q=hA_s(T_s-T_\infty)$ plus radiation if asked. Your own check in 7-53: print $Re$ and say which side of the critical value it falls on.
+
+</Callout>
+
+## Part A: your notebook
+
+<Problem id="7-25" title="Plastic sheet cooled by air" tags="flat plate, laminar, geometry of the cooling section">
+
+<Statement>
+
+A continuous plastic sheet (1.2 m wide, 2 mm thick) leaves a forming section at 15 m/min at 90 °C. It is cooled on both surfaces by 30 °C air at 3 m/s blowing **across the sheet's width** (the flow length is the 1.2 m width). A fixed point of the sheet spends 2 s in the cooling section. Find the heat transfer rate from the sheet to the air.
+
+</Statement>
+
+<Steps>
+<Step title="Your steps">
+
+$T_f=60$ °C; air: $k=0.02808$, $\nu=1.896\times10^{-5}$, $Pr=0.7202$. $Re=\dfrac{VL}\nu=\dfrac{3(1.2)}{1.896\times10^{-5}}=1.90\times10^5<5\times10^5$: laminar. $Nu=0.664Re^{1/2}Pr^{1/3}$, $h=\dfrac kLNu=6.07$ W/m²K. Section length along the motion: $w=Vt=\dfrac{15}{60}(2)=0.5$ m; $A_s=2(1.2)(0.5)=1.2$ m² (both faces). $\dot Q=hA_s(T_s-T_\infty)=6.07(1.2)(60)$.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**$\dot Q=437$ W.**
+
+</Answer>
+
+<Callout kind="note" title="✔ Everything matches ($h=6.07$, $A_s=1.2$ m²); the first digit of your last line reads like 737, but 6.07·1.2·60 = 437 W. What it teaches">
+
+The **geometry bookkeeping** is the exam skill: the flow length for $Re$ is the 1.2 m the air travels across, while the area of the cooling section is length-of-sheet-in-section × width × 2 faces. Moving sheet: the section's length comes from speed × residence time.
+
+</Callout>
+
+</Problem>
+
+<Problem id="7-28" title="Transformer with a finned heat sink (same as assignment 7-26)" tags="finned surface area, laminar plate, inverse problem for V">
+
+<Statement>
+
+A 12 W transformer is cooled by a 10 cm × 6.2 cm polished-aluminum heat sink with seven fins (5 mm high, 2 mm thick, 10 cm long); fan air at 25 °C flows along the fins; the base must stay at 60 °C; fins and base isothermal, radiation negligible, laminar flow. Find the minimum fan velocity.
+
+</Statement>
+
+<Steps>
+<Step title="Your steps">
+
+$\dot Q=hA_s(T_s-T_\infty)$ with $A_s=A_{fin}+A_{unfin}$: $A_{fin}=0.005(0.1)(2)(7)=0.007$ m²; $A_{unfin}=0.1(0.062)-7(0.002)(0.1)=0.0048$ m²; $A_s=0.0118$ m². $h=\dfrac{12}{0.0118(60-25)}=29.05$ W/m²K; $Nu=\dfrac{hL}k=\dfrac{29.05(0.1)}{0.02681}=108.4$; $Re=\left(\dfrac{108.4}{0.664\,Pr^{1/3}}\right)^2=3.30\times10^4$; $V=\dfrac{Re\,\nu}L=5.7$ m/s.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**$V_{min}=5.7$ m/s.**
+
+</Answer>
+
+<Callout kind="note" title="✔ Matches the instructor's solution (5.70 m/s). What it teaches">
+
+An **inverse** problem: heat rate known → $h$ → $Nu$ → $Re$ → $V$, using the laminar formula in reverse. The total area includes the base between the fins.
+
+</Callout>
+
+</Problem>
+
+<Problem id="7-38" title="Hot engine block: convection plus radiation (same as assignment 7-35)" tags="turbulent over the entire surface, radiation">
+
+<Statement>
+
+The bottom of a hot automotive engine (0.5 m high, 0.40 m wide, 0.8 m long) is at 100 °C with $\varepsilon=0.95$. Air 20 °C, road 25 °C, car speed 80 km/h; assume turbulent over the whole surface. Find the convective plus radiative heat transfer from the bottom surface.
+
+</Statement>
+
+<Steps>
+<Step title="Your steps">
+
+$T_f=60$ °C; $k=0.02808$, $\nu=1.896\times10^{-5}$, $Pr=0.7202$. $Re=\dfrac{(80/3.6)(0.8)}{1.896\times10^{-5}}=9.37\times10^5$; $h=\dfrac kL(0.037Re^{0.8}Pr^{1/3})=69.7$; $A=0.8(0.4)=0.32$ m²; $\dot Q_{conv}=hA(100-20)$; $\dot Q_{rad}=\varepsilon A\sigma(T_s^4-T_{surr}^4)=0.95(0.32)(5.67\times10^{-8})\left[373^4-298^4\right]$; total $=\dot Q_{conv}+\dot Q_{rad}$.
+
+</Step>
+</Steps>
+
+<Answer>
+
+$\dot Q_{conv}=1786$ W, $\dot Q_{rad}=198$ W, **total $\approx1984$ W.**
+
+</Answer>
+
+<Callout kind="note" title="✔ Matches the instructor's 1984 W. What it teaches">
+
+"Assume turbulent over the entire surface" means $0.037Re^{0.8}Pr^{1/3}$ **without** the $-871$ correction, even though $Re_L>5\times10^5$. The radiation uses the road temperature (25 °C), not the air (20 °C).
+
+</Callout>
+
+</Problem>
+
+<Problem id="7-51" title="Solar collector: heat loss, efficiency and water temperature rise" tags="plate in wind plus sky radiation, collector efficiency, energy balance on the water">
+
+<Statement>
+
+Solar radiation of 700 W/m² hits the glass cover (transmits 88 %, $\varepsilon=0.90$) of a collector 1.2 m high and 1 m wide; two collectors are attached side by side (2.4 m² total). Glass at 35 °C, air 25 °C, wind 30 km/h, effective sky $-40$ °C. Water enters at 1 kg/min; the back is insulated so heat leaves only through the glass. Find (a) the total heat loss, (b) the collector efficiency (heat to water ÷ solar energy incident), (c) the water temperature rise.
+
+</Statement>
+
+<Steps>
+<Step title="Your steps">
+
+$V=30$ km/h $=8.33$ m/s; $T_f=30$ °C: $k=0.02588$, $\nu=1.608\times10^{-5}$, $Pr=0.7282$. $Re=\dfrac{8.33(2)}{1.608\times10^{-5}}=1.036\times10^6$: mixed, $Nu=(0.037Re^{0.8}-871)Pr^{1/3}=1377$ (your scan reads 2377; the digit before 377 is a 1), $h=\dfrac{0.02588}2(1377)=17.8$ W/m²K; $\dot Q_{conv}=h(2.4)(35-25)=428$ W; radiation to the sky: $\dot Q_{rad}=0.9\sigma A(T_s^4-T_{sky}^4)$ with $T_s=308$ K, $T_{sky}=233$ K; $\eta=\dfrac{\dot Q_{in}-\dot Q_{loss}}{\dot Q_{in}}$ with $\dot Q_{in}=0.88(700)(2.4)$; $\dot Q_{water}=\dot mc_p\Delta T$ gives $\Delta T$ (you wrote $\Delta T=4.5$ °C).
+
+</Step>
+<Step title="Recomputation">
+
+$\dot Q_{rad}=0.9(5.67\times10^{-8})(2.4)(308.15^4-233.15^4)=742$ W; total loss $=428+742=1170$ W. $\dot Q_{in}=0.88(700)(2.4)=1478$ W; useful $=1478-1170=308$ W; $\eta=20.8$ %; $\Delta T=\dfrac{308}{(1/60)(4180)}=4.42$ °C.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**(a) $\approx1170$ W (convection 428 W, radiation 742 W); (b) $\eta\approx21$ %; (c) $\Delta T\approx4.4$ °C.**
+
+</Answer>
+
+<Callout kind="note" title="✔ Your convection part ($h=17.8$, $\dot Q=427.7$ W) matches; your $\Delta T=4.5$ is within 2 % of mine. What it teaches">
+
+A solar collector is a **balance of three things**: solar energy absorbed (in), loss by convection to the wind and radiation to the *cold sky* (out), and the useful heat to the water (difference). Radiation to the sky ($-40$ °C) is larger than convection here: this is why collectors need selective coatings and double glazing. The efficiency is useful ÷ *incident*, not ÷ transmitted.
+
+</Callout>
+
+</Problem>
+
+<Problem id="7-53" title="Engine cover with a thermal barrier coating: will it stay below the autoignition limit?" tags="resistance network with an external flow, mixed plate, check against a limit">
+
+<Statement>
+
+An engine cover is 1 cm stainless steel ($k=14$) with hot air inside at 333 °C ($h=7$ W/m²K). The outside is cooled by 60 °C air at 7.1 m/s along the 2 m surface. A thermal barrier coating (4 mm, $k=1.1$) is applied on the outer surface. Evaluate air properties at 120 °C ($k=0.03235$, $\nu=2.522\times10^{-5}$, $Pr=0.7073$). Is the outer surface kept below 180 °C?
+
+</Statement>
+
+<Steps>
+<Step title="Your steps">
+
+$Re=\dfrac{7.1(2)}{2.522\times10^{-5}}=5.63\times10^5>5\times10^5$: mixed. $h=\dfrac kL(0.037Re^{0.8}-871)Pr^{1/3}=8.695$ W/m²K. Series: $\dfrac{333-60}{\frac1{7}+\frac{0.01}{14}+\frac{0.004}{1.1}+\frac1{8.695}}=1041$ W/m²; then $T_s$ from $\dfrac{333-T}{1/7+\ldots}$ at the outer surface: $T_s=179.8$ °C.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**$T_{surface}=179.7$ °C $<180$ °C: yes, but only just** (margin 0.3 K).
+
+</Answer>
+
+<Callout kind="note" title="✔ Matches (your 179.77 °C). What it teaches">
+
+The surface temperature follows from the **heat flux and the film**: $T_s=T_\infty+q''/h$. With a margin of 0.3 K the answer is sensitive to $h$: with the fully turbulent formula ($h\approx21$) the surface would be much cooler (about 126 °C), so the choice of the *mixed* formula (since $Re$ is just above $5\times10^5$) matters for the verdict.
+
+</Callout>
+
+</Problem>
+
+<Problem id="7-71" title="Steam pipe in the wind" tags="cylinder in crossflow, Churchill–Bernstein, heat loss per metre">
+
+<Statement>
+
+A 12 cm diameter steam pipe with external surface at 90 °C crosses open ground; air at 1 atm and 7 °C flows across it at 65 km/h. Find the heat loss per metre of pipe.
+
+</Statement>
+
+<Steps>
+<Step title="Your steps">
+
+$T_f=48.5$ °C: $k=0.02724$, $\nu=1.784\times10^{-5}$, $Pr=0.7232$. $Re=\dfrac{(65/3.6)(0.12)}{1.784\times10^{-5}}=1.21\times10^5$; Churchill–Bernstein: $Nu=246.85$; $h=\dfrac kDNu=56.1$ W/m²K; $A_s=\pi D(1\ \text{m})$; $\dot Q=hA_s(T_s-T_\infty)$.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**$\dot Q'\approx1755$ W/m.**
+
+</Answer>
+
+<Callout kind="note" title="✔ Matches (my Nu 247.5, 1758 W/m; ticked in your notebook). What it teaches">
+
+Same method as assignment 7-65, with $D=12$ cm and 65 km/h instead of 8 cm and 50 km/h: heat loss rises from 1130 to 1757 W/m because both $h$ and area are bigger. Remember the unit conversion $65/3.6=18.06$ m/s.
+
+</Callout>
+
+</Problem>
+
+<Problem id="7-76" title="Geothermal pipe: wind speed from the water's temperature drop (same as assignment 7-69)" tags="inverse problem, Churchill–Bernstein solved for Re">
+
+<Statement>
+
+Geothermal water at 8.5 kg/s enters a 15 cm, 400 m long uninsulated pipe at 80 °C and leaves at 70 °C; windy air at 15 °C flows across it. Disregard radiation. Find the average wind speed in km/h.
+
+</Statement>
+
+<Steps>
+<Step title="Your steps (both exports stop before the numbers)">
+
+$\dot Q=\dot mc_p\Delta T=8.5(4193)(80-70)$; $\dot Q=hA_s(T_s-T_\infty)$ with $A_s=\pi DL$, $T_s=75$ °C, $T_\infty=15$ °C ⇒ $h$ ⇒ $Nu$ ⇒ Churchill–Bernstein inverted for $Re$ ⇒ $V$. You noted (red): "no trial and error: use a solver."
+
+</Step>
+<Step title="Completion (my values)">
+
+$\dot Q=356.4$ kW, $A_s=188.5$ m², $h=31.5$ W/m²K, $Nu=175.1$, $Re\approx7.2\times10^4$, $V=8.4$ m/s $=30.2$ km/h.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**$V\approx30$ km/h.**
+
+</Answer>
+
+<Callout kind="note" title="✔ Setup matches the instructor's solution. What it teaches">
+
+For an inverse Churchill–Bernstein problem there is no closed form: iterate or use a solver (your note). On the exam it is a bisection by hand: guess $Re$, compute $Nu$, adjust (three tries is enough because $Nu$ rises slowly with $Re$).
+
+</Callout>
+
+</Problem>
+
+<Problem id="7-88 notebook" title="Bottle of cold water in the wind (same as assignment 7-80)" tags="energy stored gives the heat rate, cylinder in crossflow, inverse">
+
+<Statement>
+
+A 10 cm diameter, 30 cm high bottle of 3 °C water is placed in 27 °C windy air; after 45 min the water is at 11 °C. Neglect radiation and the top and bottom heat transfer. Estimate the average wind velocity.
+
+</Statement>
+
+<Steps>
+<Step title="Your steps">
+
+$T_f=\dfrac{7+27}2=17$ °C ($T_s\approx$ average water temperature 7 °C). $m=\rho V=999.8\,\pi(0.05)^2(0.3)=2.356$ kg; $Q=mc_p\Delta T=2.356(4200)(11-3)=79\,162$ J; $\dot Q=\dfrac{Q}{\Delta t}=\dfrac{79\,162}{45(60)}=29.3$ W; $h=\dfrac{\dot Q}{\pi DL(27-7)}=15.55$; $Nu=62.4$; Churchill–Bernstein inverted: $Re=12\,856$; $V=\dfrac{\nu Re}{D}=\dfrac{1.488\times10^{-5}(12\,856)}{0.1}=1.91$ m/s.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**$V\approx1.9$ m/s.**
+
+</Answer>
+
+<Callout kind="note" title="✔ Matches (1.91 m/s). What it teaches">
+
+The heat rate comes from the **energy stored in the water**, not from a thermal circuit; the bottle's surface is assumed at the mean water temperature (the bottle wall and the water's internal resistance are neglected).
+
+</Callout>
+
+</Problem>
+
+<Problem id="7-95" title="Surface temperature of a head in the wind (sphere)" tags="Whitaker sphere, viscosity ratio, assumed surface temperature check">
+
+<Statement>
+
+A resting person generates 84 W; one quarter is lost from the head (30 cm sphere). Wind at 10 °C and 12 km/h; neglect radiation; assume a surface temperature of 15 °C for $\mu_s$. Find the head's surface temperature; is the assumption good? (Printed answer 14.9 °C.)
+
+</Statement>
+
+<Steps>
+<Step title="Your steps (and your correction)">
+
+You first wrote the **cylinder** Churchill–Bernstein formula (crossed out in red) and replaced it by **Whitaker's sphere** formula: $Nu=2+\left(0.4Re^{1/2}+0.06Re^{2/3}\right)Pr^{0.4}\left(\dfrac{\mu_\infty}{\mu_s}\right)^{1/4}$. $Re=\dfrac{(12/3.6)(0.3)}{\nu}\approx7\times10^4$; $h\approx15$ W/m²K; $\dot Q=21=h\,4\pi(0.15)^2(T_s-10)$, so $T_s\approx15$ °C.
+
+</Step>
+<Step title="Recomputation">
+
+Whitaker's properties are taken at the **free-stream** temperature (10 °C): $k=0.02439$, $\nu=1.426\times10^{-5}$, $\mu_\infty=1.778\times10^{-5}$, $\mu_s(15\ ^\circ C)=1.802\times10^{-5}$, $Pr=0.7336$: $Re=7.01\times10^4$, $Nu=185.1$, $h=15.05$ W/m²K, $T_s=10+\dfrac{21}{15.05(0.2827)}=14.94$ °C.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**$T_s\approx14.9$ °C** (the assumed 15 °C is a good assumption).
+
+</Answer>
+
+<Callout kind="note" title="✔ Method matches; your red correction (use the sphere formula) is the key point. What it teaches">
+
+A head or a ball is a **sphere**, not a cylinder. Properties for the sphere correlation are taken at $T_\infty$, with only $\mu_s$ at the surface temperature. Note that your film-temperature value ($T_f=12.5$ °C) would shift $h$ by about 3 %: $\pm0.15$ K on $T_s$; always check which temperature the correlation asks for.
+
+</Callout>
+
+</Problem>
+
+<Problem id="7-96" title="Light bulb cooled by a fan (same as assignment 7-88): set up the energy balance" tags="sphere, convection plus radiation, nonlinear equation for T_s">
+
+<Statement>
+
+A 100 W bulb (10 cm diameter, $\varepsilon=0.9$) converts 10 % into light that leaves through the glass; the other 90 % is dissipated by the glass by convection and radiation. A fan blows 30 °C air at 2 m/s; surroundings at 30 °C. Find the equilibrium glass temperature; assume 100 °C for $\mu_s$; is that a good assumption?
+
+</Statement>
+
+<Steps>
+<Step title="Your steps">
+
+$\nu(30\ ^\circ C)=1.608\times10^{-5}$, $Pr=0.7282$, $\mu_s(100\ ^\circ C)=2.181\times10^{-5}$, $\mu_\infty=1.872\times10^{-5}$; $Re=\dfrac{2(0.1)}{1.608\times10^{-5}}=12\,438$; Whitaker $Nu=67.14$; $h=\dfrac{0.02588(67.14)}{0.1}=17.4$ W/m²K. Heat to dissipate: $\dot Q=0.9(100)=90$ W $=hA_s(T_s-T_\infty)+\varepsilon A_s\sigma(T_s^4-T_{surr}^4)$ with $A_s=0.0314$ m²: "solve for $T_s$."
+
+</Step>
+<Step title="Completion">
+
+Iterating: $T_s=409.9$ K $=136.8$ °C. The 100 °C assumption for $\mu_s$ is **not** good; redoing it with $\mu_s(137\ ^\circ C)=2.332\times10^{-5}$ gives 137.8 °C (<Asg n="07">see part B</Asg>).
+
+</Step>
+</Steps>
+
+<Answer>
+
+**$T_s\approx137$ °C.**
+
+</Answer>
+
+<Callout kind="note" title="✔ Your setup and every number match. What it teaches">
+
+When *both* modes act, write the energy balance with the two terms and solve the **nonlinear** equation (radiation is $\propto T^4$) by trial: the 90 W splits about 58 W convection and 32 W radiation at the solution.
+
+</Callout>
+
+</Problem>
+
+## Part B: the instructor-solved assignment
 
 <Problem id="7-26" title="Fan cooling of a transformer heat sink: find the minimum air speed" tags="flat plate, laminar, inverse problem, fin efficiency 1">
 
