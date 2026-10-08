@@ -39,7 +39,7 @@ export const ASSIGNMENTS: Entry[] = [
   { slug: 'a06', num: '6', title: 'Chapter 6 practice: convection fundamentals', hint: 'original set' },
   { slug: 'a07', num: '7', title: 'Chapter 7: your notebook + instructor-solved set', hint: '7-25 … 7-96; 7-26 … 7-106' },
   { slug: 'a08', num: '8', title: 'Chapter 8 practice: internal flow', hint: 'original set' },
-  { slug: 'a09', num: '9', title: 'Chapter 9 practice: natural convection', hint: 'original set' },
+  { slug: 'a09', num: '9', title: 'Chapter 9 exercises (from your notes)', hint: '9-31 … 9-75, then extra practice' },
   { slug: 'a11', num: '11', title: 'Chapter 11 practice: heat exchangers', hint: 'original set' },
   { slug: 'a12', num: '12', title: 'Chapter 12–13 practice: radiation', hint: 'original set' },
 ];
