@@ -1,10 +1,267 @@
-<p className="eyebrow">Practice set 8 · Chapter 8 · internal forced convection · original problems</p>
+<p className="eyebrow">Chapter 8 · internal forced convection · taken from your own notes (Chap 8)</p>
 
-# Practice 8: tubes, ducts, exit temperatures, pressure drop
+# Chapter 8: internal flow, exercises 8-26 to 8-101
 
 <div className="lede">
 
-Four original problems in the pattern of the **Final exam**: *find $Re$ and the regime, pick the correlation, get $h$, then either the exit temperature (given the length) or the length (given the exit temperature), and finish with the pressure drop and pumping power.* See <Ch slug="internal-flow">the chapter</Ch>. Properties are from CoolProp at the bulk mean temperature (they may differ from textbook tables in the third digit); every number was recomputed independently.
+The textbook exercises exactly as you worked them (<Ch slug="internal-flow">Chapter 8 notes</Ch>), from your two exports of the Chapter 8 notebook (25 Apr and 28 Apr; the later one is the fuller copy). Many pages carry the **setup and the first numbers** and stop; for those I complete the solution and label it so. Each problem has your steps, my recomputation (CoolProp properties, so the third digit may differ from the textbook tables) with ✔ / ⚠, and the lesson. My earlier original practice set stays at the bottom.
+
+</div>
+
+<Callout kind="note" title="The pattern in your notebook">
+
+(1) $Re=VD/\nu$ (or $4\dot m/\pi D\mu$) and the regime; (2) entry length $L_h\approx10D$ (turbulent) to justify "fully developed"; (3) $Nu$ from Dittus–Boelter $0.023Re^{0.8}Pr^{n}$ (you often use $Pr^{1/3}$) or Gnielinski, then $h=Nu\,k/D$; (4) $T_e=T_s-(T_s-T_i)e^{-hA_s/\dot mc_p}$, $\dot Q=\dot mc_p(T_e-T_i)=hA_s\Delta T_{lm}$; (5) $\Delta P=f\dfrac LD\dfrac{\rho V^2}2$, power $=\Delta P\,\dot V$.
+
+</Callout>
+
+<Problem id="8-26" title="Steam condenser tubes: h and the number of tubes" tags="constant wall temperature, LMTD, energy balance on the steam">
+
+<Statement>
+
+Cooling water at 10 °C condenses steam at 30 °C at 0.15 kg/s in a bank of 5 m long, 1.2 cm diameter thin copper tubes. Water enters at 4 m/s and leaves at 24 °C; the tubes are isothermal at 30 °C. Find the average heat transfer coefficient between the water and the tubes, and the number of tubes.
+
+</Statement>
+
+<Steps>
+<Step title="Your steps">
+
+Water properties at the mean temperature $\dfrac{10+24}2=17$ °C (you write $\rho=998.7$, $c_p=4183$, $\mu=1.066\times10^{-3}$) and $h_{fg}=2431$ kJ/kg at 30 °C. Per tube: $\dot m=\rho A_cV$, $A_c=\pi D^2/4$; heat per tube $\dot Q=\dot mc_p(T_e-T_i)$; and the tube equation $\dot Q=\rho\pi r^2V c_p(T_e-T_i)=h\pi DL\,\dfrac{T_e-T_i}{\ln\frac{T_s-T_i}{T_s-T_e}}$, "get $h$". (Page 2 ends there.)
+
+</Step>
+<Step title="Completion (my values)">
+
+$\dot m_1=998.8\,(1.131\times10^{-4})(4)=0.4518$ kg/s per tube; $\dot Q_1=0.4518(4186)(14)=26.5$ kW; steam side: $\dot Q=0.15(2431)=364.7$ kW, so $N=\dfrac{364.7}{26.5}=13.8\to14$ tubes. LMTD: $\dfrac{14}{\ln(20/6)}=11.63$ K, so $h=\dfrac{26\,480}{\pi(0.012)(5)(11.63)}=\mathbf{12\,080}$ W/m²K. Check with a correlation: $Re=44\,400$, Dittus–Boelter $h=13\,370$; Gnielinski 15 200: the LMTD value is the energy-balance truth.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**$h\approx12\,100$ W/m²K; $N\approx14$ tubes.**
+
+</Answer>
+
+<Callout kind="note" title="Your setup matches; the notebook stops before the numbers. What it teaches">
+
+For a tube with a **given outlet temperature** the heat transfer coefficient comes from the energy balance and the LMTD, with no correlation; the correlation is only a cross-check. The number of tubes is "total heat ÷ heat per tube", and the total comes from the **steam side** ($\dot m\,h_{fg}$).
+
+</Callout>
+
+</Problem>
+
+<Problem id="8-57" title="Pressure drop and pumping power for water in a 25 m pipe" tags="f from Re, ΔP, power, fully developed check">
+
+<Statement>
+
+Water at 15 °C ($\rho=999.1$, $\mu=1.138\times10^{-3}$) flows at 7 L/s in a 4 cm diameter, 25 m long horizontal stainless-steel pipe. Find (a) the pressure drop and (b) the pumping power. Is fully developed a good assumption?
+
+</Statement>
+
+<Steps>
+<Step title="Your steps">
+
+$7\ \text{L/s}=7\times10^{-3}$ m³/s; $V=\dfrac{\dot V}{A_c}=\dfrac{7\times10^{-3}}{\pi(0.02)^2}=5.57$ m/s. $Re=\dfrac{\rho VD}\mu=195\,606$; $L_h\approx10D=0.4$ m $\ll25$ m (fully developed ✓). $f=0.0161$ (smooth pipe, Moody/Colebrook); $\Delta P=f\dfrac LD\dfrac{\rho V^2}2=155\,957$ Pa $\approx156$ kPa; power $\dot W=\Delta P\dot V=156\times7\times10^{-3}=1.09$ kW.
+
+</Step>
+<Step title="Recomputation">
+
+Smooth-pipe $f=0.0157$ (Petukhov; Colebrook gives 0.0157): $\Delta P=152$ kPa, $\dot W=1.06$ kW.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**$\Delta P\approx152$–156 kPa; $\dot W\approx1.06$–1.09 kW.**
+
+</Answer>
+
+<Callout kind="note" title="✔ Your answer is within 2.6 % (your $f=0.0161$ is a chart reading). What it teaches">
+
+Units first: L/s to m³/s. The friction factor is read from the Moody chart for smooth pipes at $Re=2\times10^5$ (0.0157–0.016). Pressure drop grows as $V^2$ and pumping power as $V^3$ at fixed geometry, which is why high speeds are expensive.
+
+</Callout>
+
+</Problem>
+
+<Problem id="8-63" title="Air channel drilled through a printed circuit board" tags="rectangular channel, D_h, laminar check, constant heat flux">
+
+<Statement>
+
+A 15 cm × 20 cm board is cooled by 15 °C air through a 20 cm long, 0.2 cm × 14 cm rectangular channel; air enters at no more than 4 m/s, the channel surface must stay below 50 °C, the heat flux on the top surface is uniform and other surfaces are adiabatic. Find the maximum total power of the components (properties at a bulk mean 25 °C). Is the 25 °C assumption good?
+
+</Statement>
+
+<Steps>
+<Step title="Your steps">
+
+Properties at 25 °C: $\rho=1.184$, $c_p=1007$, $k=0.02551$, $\nu=1.561\times10^{-5}$, $Pr=0.7296$. $D_h=\dfrac{4A_c}p=\dfrac{4(0.002\times0.14)}{2(0.002+0.14)}=3.943\times10^{-3}$ m; $Re=\dfrac{VD_h}\nu=\dfrac{4(3.943\times10^{-3})}{1.561\times10^{-5}}=1009.9<2300$: **laminar**.
+
+</Step>
+<Step title="Completion">
+
+Laminar, $b/a=70$ (near parallel plates), constant flux: $Nu\approx8.24$; $h=\dfrac{8.24(0.02551)}{3.943\times10^{-3}}=53.3$ W/m²K. Entry lengths: $L_h=0.05ReD_h=0.20$ m, $L_t=0.14$ m: the channel is 20 cm long, so it is "just developed" at the exit. Flow: $\dot m=\rho VA_c=1.33\times10^{-3}$ kg/s, $\dot mc_p=1.34$ W/K. The surface hits 50 °C at the exit: $T_s=T_e+q''/h$ with $q''=\dot Q/0.028$ m² and $T_e=15+\dot Q/\dot mc_p$: $50=15+\dfrac{\dot Q}{1.34}+\dfrac{\dot Q}{0.028(53.3)}\Rightarrow\dot Q\approx25$ W. Then $T_e=33.6$ °C and the bulk mean $\approx24.3$ °C: the 25 °C assumption is good.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**$\dot Q_{max}\approx25$ W.**
+
+</Answer>
+
+<Callout kind="note" title="Your regime check is right; the rest is my completion. What it teaches">
+
+With $Re\approx1000$ the flow is **laminar**: do not use Dittus–Boelter. The wall temperature is hottest at the exit (constant flux), so the limit is applied there. A channel only 0.2 cm thick is a nearly parallel-plate flow: $Nu\to8.24$.
+
+</Callout>
+
+</Problem>
+
+<Problem id="8-66" title="Computer with eight PCBs: air flow rate, fan heat, inlet limit" tags="energy balance on the air stream, fan power adds to the air">
+
+<Statement>
+
+A computer contains eight PCBs of 12 W each, cooled by a 10 W fan at the inlet; the air temperature rise through the case must not exceed 10 °C. Find (a) the air flow rate the fan must deliver, (b) the fraction of the air's temperature rise due to the fan and its motor, and (c) the highest allowable inlet temperature if the component surface must not exceed 70 °C (fully developed, properties at 25 °C).
+
+</Statement>
+
+<Steps>
+<Step title="Your steps">
+
+$8\times12=\dot mc_p(10)$, $\dot m=0.0095$ kg/s (your digits read about 0.0097 kg/s).
+
+</Step>
+<Step title="Recomputation">
+
+Your energy balance **leaves out the fan**: the air also absorbs the 10 W of the fan and motor, so the total heat is $8(12)+10=106$ W: $\dot m=\dfrac{106}{1006(10)}=0.01053$ kg/s, $\dot V=\dfrac{\dot m}\rho=8.9\times10^{-3}$ m³/s. (b) The fan's share of the temperature rise is $\dfrac{10}{106}=9.4$ %.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**(a) $\dot m=0.0105$ kg/s ($\dot V=8.9\ \text{L/s}$); (b) 9.4 %.** Part (c) not on the page.
+
+</Answer>
+
+<Callout kind="warn" title="⚠ Add the fan power in (a)">
+
+Your $8\times12=\dot mc_p\Delta T$ gives $0.0095$ kg/s, 10 % too small, because the problem says explicitly (part b) that the fan's heat is part of the air's rise. **What it teaches:** read the whole problem before writing the energy balance; parts (a) and (b) are linked: (b) asks for exactly the term you forgot in (a).
+
+</Callout>
+
+</Problem>
+
+<Problem id="8-83" title="Air and water at 5 m/s in an 8 cm, 10 m tube: the convection coefficient" tags="turbulent, fully developed, Dittus–Boelter style, air versus water">
+
+<Statement>
+
+Find the convection coefficient for the flow of (a) air and (b) water at 5 m/s in an 8 cm diameter, 10 m long tube with uniform heat flux; properties at 25 °C.
+
+</Statement>
+
+<Steps>
+<Step title="Your steps">
+
+(a) Air: $Re=\dfrac{5(0.08)}{1.561\times10^{-5}}=25\,608$: turbulent; $L/D=125$: fully developed. $Nu=0.023Re^{0.8}Pr^{1/3}=69.62$; $h=\dfrac{kNu}D=22.2$ W/m²K (your page: 22.2, the first digit is hard to read). (b) Water: $Re=447\,577$, $Nu=1396.87$, **$h=10\,598$ W/m²K**.
+
+</Step>
+<Step title="Recomputation">
+
+Air: $Re=25\,680$, $Nu=69.06$, $h=22.7$ W/m²K (with the standard $Pr^{0.4}$ exponent for heating: 22.1; Gnielinski 20.6). Water: $Re=448\,100$, $Nu=1397.8$, $h=10\,598$ W/m²K.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**(a) $h\approx22$ W/m²K (air); (b) $h\approx10\,600$ W/m²K (water).**
+
+</Answer>
+
+<Callout kind="note" title="✔ Your water result matches to the digit; air within 2 %. What it teaches">
+
+Same velocity, **480× larger $h$ for water**: liquids are 25× more conductive ($k$) and much denser, so each Reynolds number carries far more heat. Note the exponent: you used $Pr^{1/3}$ (Colburn style); the formula sheet's Dittus–Boelter has $Pr^{0.4}$ (heating) and $Pr^{0.3}$ (cooling): check which one the sheet prints, since for water ($Pr=6$) the choice changes $h$ by 15 %.
+
+</Callout>
+
+</Problem>
+
+<Problem id="8-100" title="Square attic duct at 80 °C air: heat loss and pressure drop" tags="non-circular duct, relative roughness, Colebrook, exponential law">
+
+<Statement>
+
+An 8 m long uninsulated 0.2 m × 0.2 m duct (relative roughness $10^{-3}$) carries air entering at 80 °C at 0.15 m³/s through an attic; the duct surface is isothermal at 60 °C. Find the heat loss and the pressure drop (properties at 80 °C: $\rho=0.9994$, $c_p=1008$, $k=0.02953$, $Pr=0.7154$, $\nu=2.097\times10^{-5}$). Is the 80 °C bulk-mean assumption good?
+
+</Statement>
+
+<Steps>
+<Step title="Your steps">
+
+$D_h=\dfrac{4A}p=\dfrac{4(0.2)^2}{4(0.2)}=0.2$ m; $V=\dfrac{\dot V}{A}=\dfrac{0.15}{0.04}=3.75$ m/s; $Re=\dfrac{3.75(0.2)}{2.097\times10^{-5}}=35\,766$; $f=0.027$ (Moody, $\varepsilon/D=10^{-3}$); $Nu=90.36$, $h=13.34$ W/m²K; $\dot m=\rho\dot V$; $T_e=T_s-(T_s-T_i)e^{-hA_s/\dot mc_p}$ ($T_e\approx71$ °C), then $\dot Q=\dot mc_p(T_e-T_i)$ and $\Delta P=f\dfrac LD\dfrac{\rho V^2}2$.
+
+</Step>
+<Step title="Recomputation">
+
+$A_s=4(0.2)(8)=6.4$ m²; $\dot m=0.1499$ kg/s; $\dfrac{hA_s}{\dot mc_p}=0.565$; $T_e=60+20e^{-0.565}=71.4$ °C; $\dot Q=0.1499(1008)(71.4-80)=-1.30$ kW (the air loses 1.3 kW); $f=0.0252$ (Colebrook), $\Delta P=0.0252(40)\dfrac{0.9994(3.75)^2}{2}=7.1$ Pa.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**$\dot Q\approx1.3$ kW lost; $\Delta P\approx7$ Pa; $T_e\approx71$ °C** so the mean air temperature is $\approx75.7$ °C: the 80 °C assumption is fair (within about 5 K).
+
+</Answer>
+
+<Callout kind="note" title="✔ Your $Re$, $Nu$, $h$ match (13.34 vs 13.65). What it teaches">
+
+For a duct at fixed wall temperature, the exit temperature follows the **exponential law**, and $\dot Q$ is simply the stream's enthalpy change. $f$: read from the Moody chart with $\varepsilon/D$ (0.027 from the chart vs 0.0252 from Colebrook: the chart reading is rougher). The last two numeric lines of your page are partly illegible.
+
+</Callout>
+
+</Problem>
+
+<Problem id="8-101" title="Smaller square duct: exit temperature and heat loss" tags="exponential law, LMTD, same structure as 8-100">
+
+<Statement>
+
+Air at 1 atm and 75 °C enters a 10 m long, 0.15 m × 0.15 m duct at 0.2 m³/s; the duct is isothermal at 70 °C. Find the exit temperature and the heat loss (properties at 75 °C).
+
+</Statement>
+
+<Steps>
+<Step title="Your steps">
+
+$V=\dfrac{0.2}{0.15^2}=8.88$ m/s; $D_h=0.15$ m; $Re=\dfrac{8.88(0.15)}{2.046\times10^{-5}}=65\,100$; $Nu\approx146$ (you wrote 146), $h=27.99$; $T_e=T_s-(T_s-T_i)e^{-hA_s/\dot mc_p}$ with $A_s=4(0.15)(10)=6$ m²: **$T_e=72.1$ °C**; $\dot Q=\dot mc_p(T_e-T_i)$ or $hA_s\Delta T_{lm}$.
+
+</Step>
+<Step title="Recomputation">
+
+$Re=65\,000$, smooth duct $f=0.0198$, Gnielinski $Nu=128$, $h=25.5$ W/m²K; $\dot m=0.2028$ kg/s; $T_e=70+5e^{-0.745}=72.4$ °C; $\dot Q=0.2028(1009)(72.4-75)=-0.54$ kW.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**$T_e\approx72.4$ °C; $\dot Q\approx0.54$ kW** (your 72.1 °C is within 0.3 K).
+
+</Answer>
+
+<Callout kind="note" title="✔ Consistent with your value (72.1 vs 72.4). What it teaches">
+
+Your $Nu=146$ is higher than Gnielinski (128) because it comes from a Dittus-Boelter-type formula with a larger coefficient; the exit temperature is insensitive to that (it moves by 0.3 K) because $T_s-T_e$ is already small. When the wall is within a few degrees of the air, the heat loss is small whatever $h$ you pick.
+
+</Callout>
+
+</Problem>
+
+<div className="lede">
+
+**Extra practice below was written by me earlier (not from your notes).**
 
 </div>
 
