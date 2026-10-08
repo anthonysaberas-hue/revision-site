@@ -115,6 +115,12 @@ The given $k=90$ W/mK and $\alpha=33.9\times10^{-6}$ m²/s do not satisfy $\alph
 
 </Callout>
 
+<Callout kind="warn" title="⚠ Your notebook: wall half-thickness taken as 3 cm (answer 37.5 °C instead of 42.5 °C)">
+
+In your attempt you used $Bi_{wall}=\dfrac{60(0.03)}{90}=0.02$, $\lambda_1=0.141$, $A_1=1.0033$, $\tau_w=33.9$ and got $\theta_{wall}=0.5062$, so $T=25+95(0.5062)(0.2607)=37.5$ °C. The slip is the **length of the wall**: the base is insulated, so the wall's half-thickness is the **whole height**, $L=6$ cm, not $H/2=3$ cm. The instructor's handwritten solution says it in one line: the centre of the wall is where $dT/dx=0$; "interested location $x=6$ cm, system dimension $L=6$ cm for the wall; $r=0$, $r_0=3$ cm for the cylinder" (answer 42.48 °C, $Q=42\,528$ J). Your other two questions (lumped annealing: 179.57 s and 1464.67 J; plate with insulation: 7.457 mm) match to the digit. The instructor's closing challenge, *"repeat with the lumped method; does your solution make sense?"*: exposed area (top + side) gives $L_c=V/A_s=1.2$ cm, $Bi=0.008\ll0.1$, and the lumped model gives about 48.7 °C after 15 min. That is within 6 K of 42.5 °C (the exam's inconsistent $k$ and $\alpha$ explain part of it) but 11 K above your 37.5 °C: the check flags the slip.
+
+</Callout>
+
 <Traps>
 
 - Use the Biot number of **each** 1-D problem with its own length ($r_0$ for the cylinder, $L$ for the wall).

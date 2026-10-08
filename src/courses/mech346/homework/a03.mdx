@@ -8,6 +8,30 @@ Fifteen problems from <Ch slug="steady-conduction">Chapter 3</Ch> and <Ch slug="
 
 </div>
 
+<Callout kind="note" title="Cross-check against your own Chapter 3 notebook (all values recomputed)">
+
+Your tablet notebook works exactly these textbook exercises (the same numbers as the printed solutions below), and I compared every step:
+
+| Exercise | Your result | Recomputed | Verdict |
+|---|---|---|---|
+| 3-25 | 153.6 W, inner glass 16.73 °C | 154 W, 16.7 °C | ✔ |
+| 3-30 | $T_s=103.27$ °C, $T_\infty=127$ °C | 103.2, 127 | ✔ |
+| 3-33 | $L=3.4$ cm; payback 0.281 yr (3.4 months) | same | ✔ (payback lines struck through in pink, still correct) |
+| 3-52 | about 0.6 % | 0.62 % | ✔ |
+| 3-67 | 113 W; after "I forgot the convection" 685 W | 113 W, 683–685 W | ✔ (you caught the missing $1/hA$ yourself) |
+| 3-73 | representative section $A=0.65$ m²; first attempt with the whole wall area flagged "convection doesn't make sense" | 406 W | ✔ method (final number not legible) |
+| 3-75 | $R_T=0.351$, $\dot Q=569.7$ W per section, $T=261.2$ °C | 570 W, 261.4 °C | ✔ (last line, drop across F, not legible: 142–143 °C) |
+| 3-81 | drop across the insulation 257.85 °C | 257.6 °C | ✔ (first digit of $\dot Q$ unclear) |
+| 3-91 | 60.77 W, 15.2 %, 21 months | same | ✔ |
+| 3-94 | derived $h_{rad}=\varepsilon\sigma(T_s^2+T_{surr}^2)(T_s+T_{surr})$ step by step, assumed $T_s=80$ °C | 5.17 W/m²K | ✔ |
+| 3-102 | 208.8 kW, 1.055 kg/s; (b) 4233 W; (c) 15.11 W (ticked) | same | ✔ |
+| 3-127 | about 63.5 % | 63.5 % | ✔ |
+| 3-138 | $T_b=175.1$ °C, $\xi=0.245$, $\eta=0.94$, 178 W, 13.9 cm | same | ✔ |
+| 3-142 | $\eta=0.932$, $A_{fin}=2.45\times10^{-4}$ m² per fin, 15 521 W, total 17 636 W, $\varepsilon=7.2$ | 15 300 W, 17.4 kW, 7.1 | ⚠ 1.4 % high: see the note under 3-142 |
+| 3-145 | $R<1.75$ °C/W | same | ✔ |
+
+</Callout>
+
 <Problem id="3-25" title="Double-pane window" tags="series resistances, convection on both sides">
 
 <Statement>
@@ -686,6 +710,12 @@ Without fins: $35(1)(70)=2450$ W. $\varepsilon=\dfrac{17\,400}{2450}=7.1$.
 **$\dot Q\approx17.4$ kW (about 7× the bare plate); $\eta_{fin}=0.935$.**
 
 </Answer>
+
+<Callout kind="warn" title="⚠ Your notebook double-counts the fin tip (1.4 % too high)">
+
+You used the corrected length $L_c=L+D/4=3.06$ cm **and** then added the tip area $\pi D^2/4$ again (your $A_{fin}=2.45\times10^{-4}$ m² per fin). The corrected length already includes the tip: use $A_{fin}=\pi DL_c=2.405\times10^{-4}$ m² per fin ($6.68$ m² in total), which is exactly the printed 6.68 m². Then $\dot Q_{fins}=0.935(35)(6.68)(70)=15\,300$ W and the total is 17.4 kW. Rule: **corrected length OR (side area + tip area), never both.**
+
+</Callout>
 
 <Source>Textbook solution 3-142. Recomputed: identical within rounding.</Source>
 
