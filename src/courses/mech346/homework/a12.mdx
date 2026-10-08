@@ -1,10 +1,534 @@
-<p className="eyebrow">Practice set 12 · Chapters 12–13 · radiation · original problems</p>
+<p className="eyebrow">Chapters 12–13 · radiation · taken from your own notes (Chap 13 exo, Chapter 12)</p>
 
-# Practice 12: blackbody bands, view factors, concentric spheres, shields, three-surface networks
+# Chapters 12–13: radiation exercises 13-11 to 13-91
 
 <div className="lede">
 
-Five original problems for <Ch slug="radiation-basics">radiation fundamentals</Ch> and <Ch slug="radiation-exchange">radiation exchange</Ch>, in the pattern of the textbook examples the Final is drawn from: *spectrum bands, view-factor algebra, a series two-surface formula, shields, then the radiosity network of three surfaces (one possibly reradiating)*. Every number was recomputed independently, including a numerical integration of Planck's law for the band fractions.
+Your Chapter 12 file is a single page with no content, so this page is **Chapter 13 only**: the textbook exercises as you worked them (<Ch slug="radiation-exchange">Chapter 13 notes</Ch>), with your steps, my recomputation (✔ / ⚠) and the lesson. Many of your pages carry the **setup** (view-factor algebra, the node equations of the radiation network) and stop before the number; for those I give the number computed from your own setup and say so. My earlier original practice set stays at the bottom.
+
+</div>
+
+<Callout kind="note" title="The toolbox your notebook uses (all the exercises below)">
+
+1. **Summation** $\sum_jF_{ij}=1$, **reciprocity** $A_iF_{ij}=A_jF_{ji}$, flat surfaces $F_{ii}=0$, symmetry.
+2. Black surfaces: $\dot Q_{ij}=A_iF_{ij}\sigma(T_i^4-T_j^4)$.
+3. Grey surfaces: $R_i=\dfrac{1-\varepsilon_i}{A_i\varepsilon_i}$, $R_{ij}=\dfrac1{A_iF_{ij}}$, nodes $J_i$ with $E_{b,i}=\sigma T_i^4$; two surfaces: $\dot Q_{12}=\dfrac{\sigma(T_1^4-T_2^4)}{R_1+R_{12}+R_2}$.
+4. Reradiating surface: no current, $J_3=E_{b3}$; it adds the path $R_{13}+R_{23}$ in parallel with $R_{12}$.
+
+</Callout>
+
+<Problem id="13-11" title="View factor from the side of a cone to a hole in its base" tags="reciprocity, summation">
+
+<Statement>
+
+A conical enclosure of height $h$ and base diameter $D$. Find the view factor from the conical side surface to a hole of diameter $d$ at the centre of the base.
+
+</Statement>
+
+<Steps>
+<Step title="Your steps">
+
+Surface 1 = hole (flat), surface 2 = cone side, so $F_{11}=0$ and $F_{12}=1$ (the hole sees only the cone). Reciprocity: $A_1F_{12}=A_2F_{21}\Rightarrow F_{21}=\dfrac{A_1}{A_2}F_{12}=\dfrac{\pi d^2/4}{\pi D L/2}$ with $L$ the slant length of the cone. You simplify to $F_{21}=\dfrac{d^2}{2D\,L}$ (your last line writes the denominator with $h$, which stands for the slant length).
+
+</Step>
+</Steps>
+
+<Answer>
+
+$$F_{cone\to hole}=\frac{d^2}{2D\sqrt{h^2+D^2/4}}.$$
+
+</Answer>
+
+<Callout kind="note" title="✔ Method matches. Detail to watch: slant length, not height. What it teaches">
+
+The lateral area of a cone is $\pi rL$ with $L=\sqrt{h^2+r^2}=\sqrt{h^2+D^2/4}$. If you used the vertical height $h$ instead, the result would be wrong (too large). The trick (no integration): the hole sees only the cone, so $F_{hole\to cone}=1$ and reciprocity does the rest.
+
+</Callout>
+
+</Problem>
+
+<Problem id="13-13" title="View factors of three long grooves to the surroundings" tags="semicylinder, triangular and rectangular grooves">
+
+<Statement>
+
+Find, without tables, the view factors from the very long grooves (semicylinder of diameter $D$, triangular groove with two sides $b$ and opening $a$, rectangular groove with bottom $a$ and sides $b$) to the surroundings. Neglect end effects.
+
+</Statement>
+
+<Steps>
+<Step title="Your steps">
+
+(a) **Semicylinder**: surface 1 = curved wall (area $\pi DL/2$), surface 2 = opening (area $DL$). The opening sees only the groove: $F_{21}=1$; reciprocity $A_2F_{21}=A_1F_{12}$ gives $F_{12}=\dfrac{DL}{\pi DL/2}=\dfrac2\pi$ (your page ends "$=e/\pi$": the value $2/\pi$).
+
+(b) **Triangular groove**: sides 1 and 2 (each $b$), opening 3 (width $a$). By symmetry $F_{12}=F_{21}$; $F_{11}=0$; with $F_{12}+F_{13}=1$ and the pair $(1+2)\to3$: $A_{(1+2)}F_{(1+2)\to3}=A_3F_{3\to(1+2)}=aL\cdot1$, so $F_{(1+2)\to3}=\dfrac{aL}{2bL}=\dfrac a{2b}$.
+
+(c) **Rectangular groove**: same idea with the interior (2 sides $b$ plus bottom $a$): $F_{interior\to opening}=\dfrac{aL}{(2b+a)L}=\dfrac a{2b+a}$.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**(a) $2/\pi=0.637$; (b) $a/2b$; (c) $a/(a+2b)$.**
+
+</Answer>
+
+<Callout kind="note" title="✔ All three match the crossed-strings results. What it teaches">
+
+For a groove, **the opening sees only the groove**, so $F_{opening\to groove}=1$; the view factor of the whole interior to the opening is then just the area ratio. Check (b) with the crossed-string rule: one side to the opening is $\dfrac{b+a-b}{2b}=\dfrac a{2b}$ ✓ (the same as for the pair, by symmetry).
+
+</Callout>
+
+</Problem>
+
+<Problem id="13-14" title="Cylindrical enclosure: base-to-side view factor in terms of $K=L/D$" tags="coaxial disks formula, summation">
+
+<Statement>
+
+A cylindrical enclosure with base $A_1$, top $A_2$ and side $A_3$, $K=L/D$. (a) Find $F_{13}$ in terms of $K$; (b) its value for $L=D$. (Printed answers: (a) $2K\sqrt{K^2+1}-2K^2$, (b) 0.828.)
+
+</Statement>
+
+<Steps>
+<Step title="Your steps (the page stops early)">
+
+$F_{11}+F_{12}+F_{13}=1$ with $F_{11}=0$; $F_{12}$ for two coaxial equal disks: $F_{12}=\tfrac12\left[S-\sqrt{S^2-4}\right]$; so $F_{13}=1-F_{12}=1-\tfrac12(\cdots)$.
+
+</Step>
+<Step title="Completion">
+
+With $R=r/L=1/(2K)$: $S=2+1/R^2=2+4K^2$, so $F_{12}=1+2K^2-2K\sqrt{K^2+1}$ and **$F_{13}=2K\sqrt{K^2+1}-2K^2$**; for $K=1$: $2\sqrt2-2=0.828$.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**$F_{13}=2K\sqrt{K^2+1}-2K^2$; $0.828$ for $L=D$.**
+
+</Answer>
+
+<Callout kind="note" title="✔ Your setup leads exactly to the printed answers. What it teaches">
+
+Use the **coaxial-disk formula** once, then summation gives everything else. Sanity: $K\to0$ (a flat disk): $F_{13}\to0$; $K\to\infty$ (a long tube): $F_{13}\to1$.
+
+</Callout>
+
+</Problem>
+
+<Problem id="13-21" title="View factor between rectangles by superposition (three configurations)" tags="chart values, superposition, reciprocity">
+
+<Statement>
+
+Find $F_{12}$ for the three rectangle arrangements of Fig. P13-21 (a: perpendicular rectangles sharing an edge of 4 m; b: the same with one strip displaced; c: parallel rectangles 3 m apart).
+
+</Statement>
+
+<Steps>
+<Step title="Your steps">
+
+Your method is the standard one: enlarge the surfaces to ones whose factor is on the chart, then subtract. For (a) you write $F_{(1+3)\to(2+4)}=0.26$ and $F_{(1+3)\to2}=0.08$, then split with symmetry/reciprocity: $F_{2\to(1+3)}=F_{21}+F_{23}$ with $L_1=1$, $L_2=(1+3)=2$, $w=4$ read from the chart; then $F_{(2+4)\to(1+3)}=F_{(2+4)\to1}+F_{(2+4)\to3}$ and $A_1F_{1\to(2+4)}=A_{(2+4)}F_{(2+4)\to1}$. Chart readings you wrote: $0.27$, $0.26$, $0.17$, $0.07$ (several digits are hard to read in the scan).
+
+</Step>
+</Steps>
+
+<Answer>
+
+**Final $F_{12}$ values: not reliably readable in the scan (about 0.07 for the first configuration).**
+
+</Answer>
+
+<Callout kind="note" title="Setup only; what it teaches">
+
+**Superposition**: $F_{(1+3)\to2}=F_{1\to2}+F_{3\to2}$ is valid for the *receiving* side (add the target pieces); for the *emitting* side you must use reciprocity first: $A_{(1+3)}F_{(1+3)\to2}=A_1F_{12}+A_3F_{32}$. Use the chart or the formula only for the big rectangles that touch an edge (or are directly opposite), then subtract. On the exam the chart is given.
+
+</Callout>
+
+</Problem>
+
+<Problem id="13-22" title="Cylinder with height twice the diameter: side-to-base factor" tags="summation, reciprocity">
+
+<Statement>
+
+A cylindrical enclosure whose height is twice the diameter of its base. Find the view factor from the side surface to the base.
+
+</Statement>
+
+<Steps>
+<Step title="Your steps">
+
+$L=4r$, $L/r=4$: from the chart/formula $F_{12}$(base to top) $=0.05$, hence $F_{13}=0.95$ (base to side). Reciprocity: $A_1F_{13}=A_3F_{31}$ with $A_1=\dfrac{\pi D^2}4$, $A_3=\pi D(2D)$: $F_{31}=\dfrac{\pi D^2/4}{2\pi D^2}(0.95)=\dfrac{0.95}8=0.11875$.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**$F_{side\to base}=0.119$.**
+
+</Answer>
+
+<Callout kind="note" title="✔ Matches (exact $F_{12}=0.0557$ gives $F_{31}=0.118$). What it teaches">
+
+Same idea as 13-14: the base's factor to the side is $1-F_{12}$; then reciprocity converts it to the side's factor to the base, dividing by the (much larger) side area.
+
+</Callout>
+
+</Problem>
+
+<Problem id="13-44" title="Cylindrical furnace with black surfaces at 500, 700 and 1400 K: net heat from the top" tags="black surfaces, no network needed">
+
+<Statement>
+
+A cylindrical furnace $R=H=3$ m with black base (500 K), top (700 K) and side (1400 K). Find the net rate of radiation heat transfer to or from the top surface.
+
+</Statement>
+
+<Steps>
+<Step title="Your steps">
+
+You first drew a resistance network (crossed out in red) and replaced it by the black-surface sum $\dot Q_1=A_1F_{12}\sigma(T_1^4-T_2^4)+A_1F_{13}\sigma(T_1^4-T_3^4)$ with $F_{11}=0$, $F_{12}=0.38$, $F_{13}=0.62$; a numeric line from the network attempt ($\approx7.997\times10^5$) is also on the page.
+
+</Step>
+<Step title="Recomputation">
+
+$A_1=\pi R^2=28.27$ m²; $F_{12}=0.382$ (coaxial disks $r/L=1$), $F_{13}=0.618$: $\dot Q_1=28.27(5.67\times10^{-8})\left[0.382(700^4-500^4)+0.618(700^4-1400^4)\right]=-3.46\times10^{6}$ W.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**$\dot Q_{top}=-3.46$ MW: the top *receives* 3.46 MW** (mostly from the 1400 K side wall).
+
+</Answer>
+
+<Callout kind="warn" title="⚠ Your crossed-out network value (about 800 kW) is not the answer; the black-surface sum is">
+
+For **black** surfaces there is no surface resistance and no radiosity network: each pair exchanges $A_iF_{ij}\sigma(T_i^4-T_j^4)$ independently, and the top's net is the sum over its partners. Your red cross-out of the network was the right call. **What it teaches:** black enclosures are sums, grey ones are networks.
+
+</Callout>
+
+</Problem>
+
+<Problem id="13-57" title="Triangular duct furnace: base temperature" tags="two-surface treatment of a three-surface enclosure">
+
+<Statement>
+
+A long equilateral-triangle duct furnace with 2 m sides. The base ($\varepsilon_1=0.8$) supplies 800 W/m²; the two sides ($\varepsilon=0.4$) are at 600 K. Find the base temperature. Can the geometry be treated as a two-surface enclosure?
+
+</Statement>
+
+<Steps>
+<Step title="Your steps">
+
+Treat the two sides as one surface 2 ($A_2=2\times2$ m² per metre of length, $F_{12}=1$, since the flat base sees only the two sides): $800\,\text{W/m}^2=\dfrac{\sigma(T_1^4-T_2^4)}{\frac{1-\varepsilon_1}{A_1\varepsilon_1}+\frac1{A_1F_{12}}+\frac{1-\varepsilon_2}{A_2\varepsilon_2}}$, solve for $T_1$ (your page ends here).
+
+</Step>
+<Step title="Completion">
+
+Per metre of length: $A_1=2$ m², $A_2=4$ m²: $\dot Q=800(2)=1600$ W; total resistance $=\dfrac{0.2}{1.6}+\dfrac12+\dfrac{0.6}{1.6}=0.125+0.5+0.375=1.0$ m⁻² (a neat coincidence). Then $\sigma T_1^4=\sigma(600)^4+1600(1.0)=7348+1600=8948$ W/m², so $T_1=630$ K.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**$T_1\approx630$ K**; yes, the duct is a two-surface enclosure because the two equal, equal-temperature sides act as one surface.
+
+</Answer>
+
+<Callout kind="note" title="✔ Your setup is exactly right. What it teaches">
+
+Surfaces with the same temperature and emissivity can be **lumped** into one, which reduces a three-surface network to a single series line. Note the heat flow per unit area is given at the base, so multiply by $A_1$ to get the power in the formula.
+
+</Callout>
+
+</Problem>
+
+<Problem id="13-61" title="Hemispherical enclosure: emissivity of the dome" tags="two-surface enclosure with F12 from reciprocity">
+
+<Statement>
+
+A 30 cm diameter hemispherical enclosure: the dome at 600 K supplies 65 W; the base ($\varepsilon=0.55$) is at 400 K. Find the emissivity of the dome.
+
+</Statement>
+
+<Steps>
+<Step title="Your steps">
+
+$65=\dfrac{\sigma(600^4-400^4)}{\frac{1-\varepsilon_1}{A_1\varepsilon_1}+\frac1{A_1F_{12}}+\frac{1-\varepsilon_2}{A_2\varepsilon_2}}$ with surface 1 the dome, 2 the base; the view factor from reciprocity: $A_2F_{21}=A_1F_{12}$, $F_{21}=1$. On the next page you wrote $0.3\times1\cdot F_{21}=\pi\times0.3\,F_{12}\Rightarrow F_{12}=\dfrac1\pi$.
+
+</Step>
+<Step title="Recomputation">
+
+Hemisphere of radius $r=0.15$ m: $A_{dome}=2\pi r^2=0.1414$ m², $A_{base}=\pi r^2=0.0707$ m². Reciprocity: $F_{dome\to base}=\dfrac{A_{base}}{A_{dome}}=\dfrac12$. Solving the formula for $\varepsilon_{dome}$: **0.098** (with your $F_{12}=1/\pi$ it would be 0.111).
+
+</Step>
+</Steps>
+
+<Answer>
+
+**$\varepsilon_{dome}\approx0.10$.**
+
+</Answer>
+
+<Callout kind="warn" title="⚠ $F_{12}=1/\pi$ is not right for a hemisphere; it is $1/2$">
+
+The relations you wrote ($0.3\times1$ for the base, $\pi\times0.3$ for the dome) correspond to a **long semicircular groove** (area per metre $D$ and $\pi D/2$...), not a hemispherical dome: for the hemisphere $A_{base}=\pi r^2$ and $A_{dome}=2\pi r^2$, giving $F=\tfrac12$. The error moves the answer only from 0.098 to 0.111 because the dome's own resistance is small, but the exam would mark the view factor. **What it teaches:** write the *areas of the actual shape* before using reciprocity: sphere $4\pi r^2$, hemisphere dome $2\pi r^2$, flat base $\pi r^2$.
+
+</Callout>
+
+</Problem>
+
+<Problem id="13-64" title="Two very large parallel plates: net radiation per unit area" tags="parallel plates formula">
+
+<Statement>
+
+Very large parallel plates at $T_1=600$ K ($\varepsilon_1=0.5$) and $T_2=400$ K ($\varepsilon_2=0.9$): find the net radiative heat flux.
+
+</Statement>
+
+<Steps>
+<Step title="Your steps">
+
+General two-surface formula with $F_{12}=1$ and $A_1=A_2$ reduces to $\dot q=\dfrac{\sigma(T_1^4-T_2^4)}{\frac1{\varepsilon_1}+\frac1{\varepsilon_2}-1}$ (you wrote the full formula and then the reduced one).
+
+</Step>
+<Step title="Numbers">
+
+$\dfrac{5.67\times10^{-8}(600^4-400^4)}{\frac1{0.5}+\frac1{0.9}-1}=\dfrac{5897}{2.111}=2793$ W/m².
+
+</Step>
+</Steps>
+
+<Answer>
+
+**$\dot q=2793$ W/m².**
+
+</Answer>
+
+<Callout kind="note" title="✔ Setup matches (the numeric line is not written). What it teaches">
+
+Parallel plates are the case $A_1=A_2$, $F_{12}=1$: the two surface resistances $\dfrac{1-\varepsilon}\varepsilon$ and the unit space resistance collapse to $\dfrac1{\varepsilon_1}+\dfrac1{\varepsilon_2}-1$.
+
+</Callout>
+
+</Problem>
+
+<Problem id="13-68" title="Concentric long cylinders: heat per unit length" tags="concentric cylinders formula, black inner surface">
+
+<Statement>
+
+Two very long concentric cylinders: $D_1=0.35$ m ($T_1=950$ K, $\varepsilon_1=1$) and $D_2=0.5$ m ($T_2=500$ K, $\varepsilon_2=0.55$). Find the net radiation per unit length.
+
+</Statement>
+
+<Steps>
+<Step title="Your steps">
+
+$\dot Q_{12}=\dfrac{A_1\sigma(T_1^4-T_2^4)}{\frac1{\varepsilon_1}+\frac{1-\varepsilon_2}{\varepsilon_2}\frac{r_1}{r_2}}$ (your page stops at the formula).
+
+</Step>
+<Step title="Numbers">
+
+$A_1=\pi D_1(1\ \text{m})=1.1$ m²; denominator $=1+\dfrac{0.45}{0.55}\cdot0.7=1.573$; numerator $=1.1(5.67\times10^{-8})(950^4-500^4)=46\,890$ W/m: $\dot Q'=29.8$ kW/m.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**$\dot Q'\approx29.8$ kW/m.**
+
+</Answer>
+
+<Callout kind="note" title="✔ Formula matches. What it teaches">
+
+For concentric cylinders $A_1/A_2=r_1/r_2$ (for spheres it is $(r_1/r_2)^2$); the inner surface is the one that "sees only the outer", so $F_{12}=1$. The black inner surface ($\varepsilon_1=1$) removes its own resistance.
+
+</Callout>
+
+</Problem>
+
+<Problem id="13-77" title="Concentric spheres: heat transfer, and the outer-surface convection coefficient" tags="concentric spheres, combined convection and radiation at the outer surface">
+
+<Statement>
+
+Concentric spheres $D_1=0.3$ m ($T_1=800$ K, $\varepsilon_1=0.5$) and $D_2=0.6$ m ($T_2=500$ K, $\varepsilon_2=0.7$). Find the net radiation heat transfer between them, and the convection coefficient at the outer surface if the surroundings (medium and surfaces) are at 30 °C and the outer-surface emissivity is 0.35.
+
+</Statement>
+
+<Steps>
+<Step title="Your steps">
+
+$\dot Q_{12}=\dfrac{A_1\sigma(T_1^4-T_2^4)}{\frac1{\varepsilon_1}+\frac{1-\varepsilon_2}{\varepsilon_2}\left(\frac{r_1}{r_2}\right)^2}$ with $A_1=\pi D_1^2$ (you wrote "$\pi\times0.3^2$"); the value on the page ($9677$?) is not readable.
+
+</Step>
+<Step title="Recomputation">
+
+$A_1=0.2827$ m²; denominator $=2+\dfrac{0.3}{0.7}(0.25)=2.107$; $\dot Q=\dfrac{0.2827(5.67\times10^{-8})(800^4-500^4)}{2.107}=2641$ W. Outer surface: $A_2=1.131$ m²; all of this heat leaves by convection plus radiation to the 303 K surroundings: $2641=h(1.131)(500-303)+0.35(1.131)\sigma(500^4-303^4)$, so $h=6.4$ W/m²K.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**$\dot Q=2.64$ kW; $h_{outer}\approx6.4$ W/m²K.**
+
+</Answer>
+
+<Callout kind="note" title="Setup matches; numbers computed from your formula. What it teaches">
+
+Energy conservation links the **internal** radiation exchange to the **external** loss: what crosses the gap must leave the outer sphere by convection and radiation. The sphere uses $(r_1/r_2)^2$, not $r_1/r_2$.
+
+</Callout>
+
+</Problem>
+
+<Problem id="13-84" title="Cubic furnace with reradiating side walls" tags="three-surface network with a reradiating surface, F12 = 0.1998">
+
+<Statement>
+
+A 4 m cubic furnace: floor (550 K) and ceiling (1100 K) black, the four side surfaces reradiating. Find the net radiation between floor and ceiling.
+
+</Statement>
+
+<Steps>
+<Step title="Your steps">
+
+Network of three nodes with $R_{12}=\dfrac1{A_1F_{12}}$, $R_{13}=\dfrac1{A_1F_{13}}$, $R_{23}=\dfrac1{A_2F_{23}}$ (no surface resistances: black). Reradiating wall ⇒ the path $R_{13}+R_{23}$ is in parallel with $R_{12}$: $\dot Q_{12}=\dfrac{\sigma(T_1^4-T_2^4)}{\left[\frac1{R_{12}}+\frac1{R_{13}+R_{23}}\right]^{-1}}$ with $F_{12}+F_{13}=1$.
+
+</Step>
+<Step title="Numbers">
+
+$F_{12}=0.1998$ (squares, ratio 1), $F_{13}=0.8002$, $A=16$ m²: $R_{12}=0.3128$, $R_{13}=R_{23}=0.0781$ m⁻²; $R_{eff}=\left[\frac1{0.3128}+\frac1{0.1562}\right]^{-1}=0.1042$; $\dot Q=\dfrac{5.67\times10^{-8}(1100^4-550^4)}{0.1042}=7.47\times10^5$ W.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**$\dot Q_{floor\to ceiling}\approx747$ kW** (net from the 1100 K ceiling to the 550 K floor).
+
+</Answer>
+
+<Callout kind="note" title="✔ Network setup matches. What it teaches">
+
+Same structure as Example 13-9: the insulated walls act as a "conduit", raising the exchange from the direct term alone ($A F_{12}\sigma\Delta T^4=249$ kW) to 747 kW: the reradiating walls carry 67 % of the heat.
+
+</Callout>
+
+</Problem>
+
+<Problem id="13-85" title="Grill: coal bricks to steaks, with and without foil on the sides" tags="coaxial disks, reradiating side wall">
+
+<Statement>
+
+A circular grill of diameter 0.3 m: coal bricks at 950 K at the bottom, steaks at 5 °C on top, 0.20 m apart; both black. Find the initial rate of radiation to the steaks, and the rate if the side opening is covered with aluminum foil (reradiating). (Printed: 928 W, 2085 W.)
+
+</Statement>
+
+<Steps>
+<Step title="Your steps">
+
+$F_{12}=0.298$ (you read it as 0.298); $\dot Q=\dfrac{\sigma(T_1^4-T_2^4)}{1/(\pi\,0.15^2\,F_{12})}$ for the open grill; with foil: the three-node network of 13-84 (your pages 23 and 24: $R_{12}=\dfrac1{A_1F_{12}}$, $R_{13}=R_{23}=\dfrac1{A_1(1-F_{12})}$, and $\dot Q=\dfrac{\sigma(T_1^4-T_2^4)}{\left[\frac1{R_{12}}+\frac1{R_{13}+R_{23}}\right]^{-1}}$).
+
+</Step>
+<Step title="Recomputation">
+
+Coaxial disks $r=0.15$, $L=0.2$: $F_{12}=0.2864$ (you read 0.298 from the chart; the exact value is 0.286). $A=\pi(0.15)^2=0.0707$ m²: open: $\dot Q=0.0707(0.2864)\sigma(950^4-278^4)=928$ W; with foil: $2084$ W.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**928 W (open) and 2084 W (with foil)**, equal to the printed answers.
+
+</Answer>
+
+<Callout kind="note" title="✔ Your method gives the printed answers (the exact $F_{12}$ is 0.286). What it teaches">
+
+The foil makes the radiation to the steaks **2.2× larger**: without it the radiation escaping through the side opening is lost; with it, the foil re-radiates that energy back toward the steaks. This is the reradiating-surface trick of 13-84.
+
+</Callout>
+
+</Problem>
+
+<Problem id="13-91" title="Radiation shield between two large plates" tags="shield formula, per unit area">
+
+<Statement>
+
+A thin aluminum sheet ($\varepsilon=0.15$ on both sides) lies between two very large parallel plates at $T_1=900$ K ($\varepsilon_1=0.5$) and $T_2=650$ K ($\varepsilon_2=0.8$). Find the net radiation per unit area with the shield, and compare with no shield.
+
+</Statement>
+
+<Steps>
+<Step title="Your steps">
+
+No shield: $\dot q=\dfrac{\sigma(T_1^4-T_2^4)}{\frac1{\varepsilon_1}+\frac1{\varepsilon_2}-1}$. With the shield you start the expanded denominator $\left(\frac1{\varepsilon_1}+\frac1{\varepsilon_2}-1\right)+\left(\frac1{\varepsilon_{3,1}}+\frac1{\varepsilon_{3,2}}-1\right)$ (the page ends).
+
+</Step>
+<Step title="Completion">
+
+$\sigma(900^4-650^4)=5.67\times10^{-8}(6.561\times10^{11}-1.785\times10^{11})=27\,080$ W/m². No shield: denominator $\dfrac1{0.5}+\dfrac1{0.8}-1=2.25$, so $\dot q_0=\dfrac{27\,080}{2.25}=12\,035$ W/m². With the shield: denominator $2.25+\left(\dfrac2{0.15}-1\right)=2.25+12.33=14.58$, so $\dot q=1857$ W/m².
+
+</Step>
+</Steps>
+
+<Answer>
+
+**$\dot q$ without shield $\approx12.0$ kW/m²; with the shield $\approx1.86$ kW/m²**: an 85 % reduction.
+
+</Answer>
+
+<Callout kind="note" title="Setup matches. What it teaches">
+
+A shield of emissivity $\varepsilon_3$ on both sides adds $\left(\dfrac2{\varepsilon_3}-1\right)$ to the denominator: with $\varepsilon_3=0.15$ that is 12.3, which dwarfs the original 2.25. The lower the shield's emissivity (shiny metal), the better; its own thickness and conductivity do not matter.
+
+</Callout>
+
+</Problem>
+
+<Problem id="13-8" title="Cylindrical furnace with three grey surfaces (the textbook example, solved in your notebook)" tags="node equations, J1 and J2, heat rates">
+
+<Statement>
+
+Cylinder $r_0=H=1$ m. Top (1): $\varepsilon_1=0.8$, 700 K. Base (2): $\varepsilon_2=0.4$, 500 K. Side (3): black, 400 K. Find the heat rates.
+
+</Statement>
+
+<Steps>
+<Step title="Your steps (pages 26 to 30)">
+
+View factors: $F_{12}=0.38$, $F_{13}=0.62$ ($F_{11}=0$), $A_1=\pi$, $A_3=2\pi$, $A_1F_{13}=A_3F_{31}\Rightarrow F_{31}=0.31$, $F_{32}=0.31$. Resistances: **A** $R_1=\dfrac{1-\varepsilon_1}{A_1\varepsilon_1}=0.0795$; **B** $R_{12}=\dfrac1{\pi(0.38)}=0.837$; **C** $R_2=\dfrac{1-0.4}{\pi(0.4)}=0.4774$; **D** $R_{13}=R_{23}=\dfrac1{\pi(0.62)}$. Node equations at $J_1$ and $J_2$ (black side: $J_3=E_{b3}$); you solve: $J_1=11\,417.5$, $J_2=4560.66$, $J_3=1451.52$ W/m²; heat rates by $\dot Q_i=A_i\sum F_{ij}(J_i-J_j)$.
+
+</Step>
+<Step title="Recomputation">
+
+With exact view factors ($F_{12}=0.382$): $J_1=11\,420$, $J_2=4573$ W/m²; $\dot Q_1=27.6$ kW, $\dot Q_2=-2.15$ kW, $\dot Q_3=-25.4$ kW.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**$\dot Q_1\approx27.6$ kW, $\dot Q_2\approx-2.1$ kW, $\dot Q_3\approx-25.5$ kW.**
+
+</Answer>
+
+<Callout kind="note" title="✔ Your radiosities match to 0.3 % ($J_1$) and 0.3 % ($J_2$). What it teaches">
+
+This is the full recipe for a grey enclosure: write the **A, B, C, D resistances**, one node equation per unknown radiosity, solve the 2×2 system, then get each $\dot Q$. A black surface contributes no surface resistance, so $J_3=E_{b3}$ and one fewer unknown. The next pages of your notebook do the reradiating variant (surface 3 insulated): the node at 3 has no net current, which adds the unknown $J_3$ and the third equation.
+
+</Callout>
+
+</Problem>
+
+<div className="lede">
+
+**Extra practice below was written by me earlier (not from your notes).**
 
 </div>
 
