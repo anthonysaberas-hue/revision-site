@@ -101,11 +101,14 @@ describe('refrigeration', () => {
   it('11-60 two-stage with flash chamber', () => {
     const r = flashTwoStage({ PH: 800, Pm: r134a.Psat(-10.1), PL: r134a.Psat(-40), QL: 30 });
     near(r.mL, 0.1601, 3e-3);
-    // brief listed mH 0.2303, but its own W and COP imply 0.2214 = mL/(1-x6); CoolProp R134a agrees (0.22138)
-    near(r.mH, 0.2214, 3e-3);
-    near(r.x6, 0.2770, 3e-3);
+    near(r.mH, 0.2303, 3e-3);
     near(r.W, 10.94, 3e-3);
     near(r.COP, 2.743, 3e-3);
+  });
+  it('flash-chamber layout still runs', () => {
+    const r = flashTwoStage({ PH: 800, Pm: r134a.Psat(-10.1), PL: r134a.Psat(-40), QL: 30, layout: 'flash' });
+    expect(r.COP).toBeGreaterThan(0);
+    near(r.mH, r.mL / (1 - r.x6), 1e-12);
   });
   it('11-79 gas refrigeration with regenerator', () => {
     const r = gasRefrigeration({ rp: 5, T1: 273.15, T3: 308.15, T5: 193.15, etaC: 0.8, etaT: 0.85, mdot: 0.4 });

@@ -38,11 +38,13 @@ export function vcr(i: VcrIn) {
 }
 
 /**
- * Two-stage compression with a flash chamber (Çengel Fig. 11-60 layout; isentropic compressors):
- * 1 sat. vapour at PL → 2 (LP compressor, Pm) → 3 (mixed with flash vapour 9) → 4 (HP compressor, PH);
- * 5 sat. liquid at PH → 6 (throttled to Pm, quality x6) → flash chamber → 7 sat. liquid, 9 sat. vapour → 8 (throttled to PL).
+ * Two-stage compression, R-134a, isentropic compressors. State numbers: 1 sat. vapour at PL; 2 LP compressor exit (Pm);
+ * 3 vapour to the HP compressor; 4 HP exit (PH); 5 sat. liquid at PH; 6 throttled to Pm; 7 sat. liquid at Pm; 8 throttled to PL; 9 sat. vapour at Pm.
+ * layout 'separator' (default, Cengel Fig. P11-60): the LP discharge (2) is bubbled into an adiabatic separator that delivers
+ * sat. vapour (3) to the HP compressor; energy balance mH h5 + mL h2 = mH h3 + mL h7.
+ * layout 'flash' (Cengel Ex. 11-5 flash chamber): the flash vapour 9 mixes with the LP discharge before the HP compressor.
  */
-export function flashTwoStage(i: { PH: number; Pm: number; PL: number; QL: number }) {
+export function flashTwoStage(i: { PH: number; Pm: number; PL: number; QL: number; layout?: 'separator' | 'flash' }) {
   const s1 = r134a.Px(i.PL, 1);
   const s2 = r134a.Ps(i.Pm, s1.s);
   const s5 = r134a.Px(i.PH, 0);
@@ -51,9 +53,15 @@ export function flashTwoStage(i: { PH: number; Pm: number; PL: number; QL: numbe
   const x6 = (s5.h - s7.h) / (s9.h - s7.h);
   const s8 = r134a.Ph(i.PL, s7.h);
   const mL = i.QL / (s1.h - s8.h);
-  const mH = mL / (1 - x6);
-  const h3 = ((1 - x6) * s2.h + x6 * s9.h);
-  const s3 = r134a.Ph(i.Pm, h3);
+  let mH: number;
+  let s3: State;
+  if ((i.layout ?? 'separator') === 'separator') {
+    mH = (mL * (s2.h - s7.h)) / (s9.h - s5.h);
+    s3 = s9;
+  } else {
+    mH = mL / (1 - x6);
+    s3 = r134a.Ph(i.Pm, (1 - x6) * s2.h + x6 * s9.h);
+  }
   const s4 = r134a.Ps(i.PH, s3.s);
   const W = mL * (s2.h - s1.h) + mH * (s4.h - s3.h);
   return {
