@@ -177,12 +177,15 @@ export function rankine(i: RankineIn): RankineOut {
   const bleedP = i.ofwh?.P ?? i.cfwh?.P;
   // build the expansion line: inlet -> (bleed) -> (reheat) -> condenser; reheat is assumed above the bleed if both
   const line: { P: number; st: State }[] = [];
+  // textbook convention: within one turbine section (inlet or reheater exit -> next reheat / condenser) every extraction
+  // and the exit are found with the efficiency applied to the isentropic drop from the SECTION START (s_s = s_start)
   let cur = inlet;
+  let segStart = inlet;
   const stops = [i.reheat?.P, bleedP].filter((p): p is number => p !== undefined).sort((a, b) => b - a);
   let fracAfter = 1;
   const bleedAt: Record<number, State> = {};
   for (const P of stops) {
-    const out = expand(cur, P, eT);
+    const out = expand(segStart, P, eT);
     line.push({ P, st: out });
     cur = out;
     if (i.reheat && P === i.reheat.P) {
@@ -190,10 +193,11 @@ export function rankine(i: RankineIn): RankineOut {
       const rh = water.PT(P, i.reheat.T);
       S.reheatOut = L(rh, 'reheater exit');
       cur = rh;
+      segStart = rh;
     }
     if (P === bleedP) bleedAt[P] = out;
   }
-  const exit = expand(cur, i.Pc, eT);
+  const exit = expand(segStart, i.Pc, eT);
   S.turbineExit = L(exit, 'turbine exit');
   const s1 = water.Px(i.Pc, 0);
   S.condExit = L(s1, 'condenser exit (sat. liquid)');

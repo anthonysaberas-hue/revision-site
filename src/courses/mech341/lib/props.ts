@@ -17,6 +17,8 @@ export interface State {
   s: number;
   x?: number; // quality (only inside the dome; 0/1 on the lines)
   phase: Phase;
+  /** true when (P, T) lies outside the tabulated range (water T > 1300 C or P > 60 MPa, R-134a P > 4 MPa or T > 200 C) */
+  outOfRange?: boolean;
 }
 
 interface SatTable {
@@ -192,8 +194,14 @@ export class PureFluid {
     return { h: a.h + (b.h - a.h) * t, s: a.s + (b.s - a.s) * t, v: a.v + (b.v - a.v) * t };
   }
 
-  /** state from pressure (kPa) and temperature (°C) */
+  /** state from pressure (kPa) and temperature (C); sets outOfRange when beyond the data */
   PT(P: number, T: number): State {
+    const st = this.PT0(P, T);
+    const isW = this.name === 'water';
+    if (P > (isW ? 60000 : 4000) || T > (isW ? 1300 : 200)) st.outOfRange = true;
+    return st;
+  }
+  private PT0(P: number, T: number): State {
     if (P >= this.crit.P && this.sc) {
       const r = this.supercritical(P, T);
       return { T, P, ...r, u: r.h - P * r.v, phase: T < this.crit.T ? 'compressed liquid' : 'supercritical' };
