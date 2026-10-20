@@ -1,0 +1,621 @@
+<p className="eyebrow">Chapter 10 · Vapor power cycles · Midterm</p>
+
+# Vapor power cycles
+
+<div className="lede">
+
+Most of the world's electricity (coal, gas, nuclear, solar-thermal, biomass) is made by boiling water, expanding the steam in a turbine, condensing it and pumping it back: the **Rankine cycle**. The cycle is simple; the exam is long because every modification (superheat, reheat, open and closed **feedwater heaters**, cogeneration) adds states and an energy balance. The discipline is always the same: **draw the T–s diagram, number the states, and write one energy balance per component**. The efficiency questions are answered by one idea, Carnot: *raise the average temperature of heat addition or lower the average temperature of heat rejection*. Habashi says that, to the end of the semester, students still miss two things: *the area under the curve is the heat*, and *using the Carnot principle to judge a modification*. Both are below.
+
+</div>
+
+<Machine name="a combined-cycle plant and a pressurized-water reactor">
+
+- **Combined-cycle gas-and-steam plant**: **≈ 60–64 %** net efficiency, the highest of any thermal power plant. A gas turbine (≈ 40 % alone) exhausts at ≈ 600 °C into a **heat-recovery steam generator**, which raises steam for a bottoming Rankine cycle (typically 3 pressure levels with reheat, ≈ 125–170 bar, ≈ 565 °C).
+- **Pressurized-water reactor (PWR)**: **≈ 33 %**. The reactor coolant (≈ 155 bar, ≈ 300–325 °C) never boils; it makes **saturated steam at ≈ 7 MPa** (≈ 286 °C) in the steam generators. Course check on that steam: an *ideal* Rankine cycle on 7 MPa saturated steam with a 7 kPa condenser has $\eta=37$ % but leaves the turbine at **quality 0.68** (32 % liquid droplets, which erode blades), so real plants use **moisture separators and reheaters** and feedwater heating, finishing at ≈ 33 %.
+- **Ultra-supercritical coal plant**: ≈ 25–30 MPa, ≈ 600 °C, reheat: **≈ 42–47 %**. Same machine with a higher average $T_H$. (Course check: the ideal cycle at 25 MPa, 600 °C with reheat to 600 °C at 4 MPa gives $\eta=46$ %; with $\eta_T=0.9$, $\eta_P=0.85$ it is 42 %.)
+- **Condenser**: ≈ 5–10 kPa, i.e. 33–46 °C, cooled by river, sea or cooling-tower water. Its low pressure (a partial vacuum) is what makes the cycle work; the vacuum is also why a plant is physically large.
+
+</Machine>
+
+## The 30-second version
+
+<Idea title="The Rankine cycle in one box">
+
+1. **Ideal Rankine** (states 1 to 4): 1→2 pump (isentropic, **liquid**), 2→3 boiler (constant $P$), 3→4 turbine (isentropic), 4→1 condenser (constant $P$, **saturated liquid at 1**).
+2. $w_P=v_1(P_2-P_1)$, $q_{in}=h_3-h_2$, $w_T=h_3-h_4$, $q_{out}=h_4-h_1$; $\eta=\dfrac{w_T-w_P}{q_{in}}=1-\dfrac{q_{out}}{q_{in}}$.
+3. **Real**: $\eta_T=\dfrac{h_3-h_{4a}}{h_3-h_{4s}}$, $\eta_P=\dfrac{h_{2s}-h_1}{h_{2a}-h_1}=\dfrac{v_1\Delta P}{h_{2a}-h_1}$.
+4. **To increase $\eta$**: lower $P_{cond}$, superheat to higher $T$, raise $P_{boiler}$, add reheat, add feedwater heating. Each raises $T_{H,avg}$ or lowers $T_{L,avg}$.
+5. **Open feedwater heater** (a mixing chamber): $y=\dfrac{h_3-h_2}{h_6-h_2}$; needs a pump after it; heater pressure = bleed pressure.
+6. **Closed feedwater heater** (a heat exchanger): feedwater leaves at the bled steam's saturation temperature; the drain is throttled back (or pumped forward).
+7. **Cogeneration**: $\varepsilon_u=\dfrac{\dot W_{net}+\dot Q_p}{\dot Q_{in}}$.
+
+</Idea>
+
+## The ideal Rankine cycle
+
+Why not a Carnot cycle with steam? Compressing a *wet* mixture in a pump is impractical (two-phase compression, cavitation) and a turbine fed with a wet mixture is eroded. The Rankine cycle therefore (1) **condenses completely** so that the pump handles a liquid (small work), and (2) **superheats** before the turbine so the exhaust is dry enough. The pump compresses a liquid isentropically; the **specific volume is essentially constant**, so
+
+$$w_{P}=\int v\,dP\approx v_1(P_2-P_1)\qquad\Rightarrow\qquad h_2=h_1+w_P.$$
+
+State by state (his labels): point 1 is **saturated liquid** on the left of the dome (found with $P_1$, $x=0$); point 2 is compressed liquid ($h_2=h_1+w_P$, table A-7 or the approximation $h=h_f+v\,\Delta P$); point 3 is superheated vapour ($P_3$, $T_3$ from A-6); point 4 is in the dome (or just outside): $P_4=P_1$ and $s_4=s_3$; if $s_4<s_g$ you get a quality $x_4=\dfrac{s_4-s_f}{s_{fg}}$ and $h_4=h_f+x_4h_{fg}$.
+
+"Area under the curve" on the T–s diagram: the area under 2→3 is $q_{in}$, under 4→1 is $q_{out}$, the enclosed area is $w_{net}$, and the efficiency is the ratio of areas.
+
+<Problem id="Class example · Rankine" title="Ideal and actual Rankine cycle, 4 MPa / 400 °C / 10 kPa" tags="Rankine, steam tables, isentropic efficiency">
+
+<Statement>
+
+Steam leaves the boiler at 4 MPa and 400 °C; the condenser is at 10 kPa. Find $w_P$, $w_T$, $q_{in}$, $q_{out}$, the exit quality and $\eta$ for the ideal cycle. Then repeat with $\eta_T=\eta_P=0.85$ (the notebook leaves the efficiencies symbolic; these are my values).
+
+</Statement>
+
+<Think>
+
+The base case of the chapter. Tables: A-5 (saturated, by pressure) for state 1, A-6 (superheated) for state 3, A-5 again for state 4 (inside the dome since $s_3$ is below $s_g$ at 10 kPa). The new thing in the second half is how to *use* $\eta_T$ and $\eta_P$ to find the real states: compute $h_{2a}$ and $h_{4a}$ first, then find the state (and quality) at $(P,h)$.
+
+</Think>
+
+<Plan>
+
+State 1 (10 kPa, sat. liq) → pump → state 2 → state 3 (4 MPa, 400 °C) → state 4 by $s_4=s_3$ at 10 kPa → energy terms → $\eta$.
+
+</Plan>
+
+<Steps>
+<Step title="1. Condenser exit and pump">
+
+<T>A-5 at 10 kPa, saturated liquid: h₁ = 191.81 kJ/kg, v₁ = 0.001010 m³/kg, s₁ = 0.6492 kJ/kg·K</T>. $w_P=v_1(P_2-P_1)=0.001010(4000-10)=\mathbf{4.03}$ kJ/kg and $h_2=191.81+4.03=\mathbf{195.84}$ kJ/kg.
+
+*Check:* the pump work is 0.4 % of the turbine work (computed below). This is why the pump is neglected in rough estimates.
+
+</Step>
+<Step title="2. Turbine inlet">
+
+<T>A-6 at 4 MPa, 400 °C: h₃ = 3214.5 kJ/kg, s₃ = 6.7715 kJ/kg·K</T>
+
+</Step>
+<Step title="3. Turbine exit (isentropic)">
+
+$s_4=s_3=6.7715$ at 10 kPa: <T>A-5: s_f = 0.6492, s_fg = 7.4996 → x₄ = (6.7715 − 0.6492)/7.4996 = 0.8163</T>; $h_4=191.81+0.8163(2392.1)=\mathbf{2144.5}$ kJ/kg. (His page: $x$ about 0.817, $h_4=2144.5$.)
+
+</Step>
+<Step title="4. Energy terms and efficiency">
+
+$w_T=h_3-h_4=3214.5-2144.5=1070.0$ kJ/kg. $q_{in}=h_3-h_2=3214.5-195.84=3018.6$; $q_{out}=h_4-h_1=2144.5-191.81=1952.7$. $w_{net}=w_T-w_P=1066.0=q_{in}-q_{out}$ ✓. $\eta=\dfrac{1066.0}{3018.6}=\mathbf{0.3531}$ (or $1-\dfrac{1952.7}{3018.6}$).
+
+</Step>
+<Step title="5. Actual cycle: pump and turbine">
+
+$h_{2a}=h_1+\dfrac{w_P}{\eta_P}=191.81+\dfrac{4.03}{0.85}=196.55$ (no change in the table lookup: still compressed liquid at 4 MPa). $h_{4a}=h_3-\eta_T(h_3-h_{4s})=3214.5-0.85(1070.0)=2305.0$ kJ/kg, which at 10 kPa has $x_{4a}=\dfrac{2305.0-191.81}{2392.1}=\mathbf{0.883}$ (drier than the ideal exit, 0.816).
+
+</Step>
+<Step title="6. Actual efficiency">
+
+$w_T=909.5$, $w_P=4.74$, $w_{net}=904.7$ kJ/kg; $q_{in}=3214.5-196.55=3018.0$; $\eta=\dfrac{904.7}{3018.0}=\mathbf{0.2998}$. Five points of efficiency lost to turbine and pump irreversibilities (35.3 % to 30.0 %). The heat rejected rises to $2305.0-191.81=2113.2$ kJ/kg.
+
+</Step>
+</Steps>
+
+<Answer>
+
+Ideal: $w_P=4.03$, $w_T=1070.0$, $q_{in}=3018.6$, $q_{out}=1952.7$ kJ/kg, $x_4=0.816$, $\eta=35.3$ %. Actual ($\eta_T=\eta_P=0.85$): $x_{4a}=0.883$, $\eta=30.0$ %.
+
+</Answer>
+
+<RealWorld title="Read the exit quality">
+
+An exit quality of 0.82 means 18 % liquid by mass at the last turbine stage. Steel blades at 1500–3600 rpm cannot tolerate that for long; most turbines are designed for $x\ge0.88$–$0.90$ at the exit, which is exactly what superheat and reheat are for.
+
+</RealWorld>
+
+<Traps>
+
+- Taking state 1 as anything but **saturated liquid** at the condenser pressure: the condenser does *not* subcool in the ideal cycle.
+- Computing $w_P$ from $h$ differences at the wrong state: it is $v_1\Delta P$ with $v_1=v_f$ at state 1, in kPa $\times$ m³/kg = kJ/kg.
+- Applying $\eta_T$ to the exit temperature or quality: apply it to $h$, then find the quality.
+
+</Traps>
+
+<Source>Anthony's review class (Exam_review pp. 21–25): h₁ = 191.81, h₂ = 195.81, h₃ = 3214.5, s₃ = 6.7715 · lib <code>rankine</code></Source>
+
+</Problem>
+
+<TsDiagram fluid="water" points={[{ s: 0.6492, T: 45.81, P: 10, label: '1' }, { s: 0.6492, T: 45.9, P: 4000, label: '2' }, { s: 6.7714, T: 400, P: 4000, label: '3' }, { s: 6.7714, T: 45.81, P: 10, label: '4' }]} path={[0, 1, 2, 3, 0]} isobars={[400, 4000]} />
+
+## Raising the efficiency (Carnot reasoning)
+
+For an internally reversible cycle the efficiency equals that of a Carnot cycle running between the **average temperature of heat addition** and the **average temperature of heat rejection**:
+
+$$\eta=1-\frac{T_{L,avg}}{T_{H,avg}},\qquad T_{H,avg}=\frac{q_{in}}{\Delta s_{in}}.$$
+
+So any change that raises $T_{H,avg}$ or lowers $T_{L,avg}$ *must* raise efficiency; any change that lowers $T_{H,avg}$ (for instance adding a low-temperature heat addition) lowers it. This is the "Carnot principle for modifications" that Habashi tests. For the class cycle, the numbers from the lib:
+
+| Change | $\eta$ | $T_{H,avg}$ (K) | $T_{L}$ (K) | Exit quality |
+|---|---|---|---|---|
+| Base: 4 MPa, 400 °C, 10 kPa | 35.3 % | 493 | 319.0 | 0.816 |
+| Lower condenser to 5 kPa | 37.3 % | 488 | 306.0 | 0.795 |
+| Higher boiler pressure, 8 MPa | 38.0 % | 514 | 319.0 | 0.762 |
+| Superheat to 600 °C | 38.4 % | 518 | 319.0 | 0.896 |
+| Reheat at 400 kPa to 400 °C | 35.9 % | 497 | 319.0 | 0.967 |
+
+The identity $\eta=1-T_L/T_{H,avg}$ holds exactly in each row (try it: $1-319.0/493=0.353$). Three lessons:
+
+- **Lower condenser pressure** lowers $T_L$ (the saturation temperature at the condenser), but not below the cooling water: a practical limit of about 5 kPa, and it makes the exit **wetter** (0.795).
+- **Superheating** raises $T_{H,avg}$ **and** dries the exhaust (0.816 to 0.896): double benefit, limited only by metallurgy (about 600 °C).
+- **Higher boiler pressure** raises $T_{H,avg}$ but moves the expansion left on the T–s diagram into the wetter region (x falls from 0.816 to 0.762). That is the reason for **reheat**: expand part-way, take the steam back to the boiler, heat it to the original temperature, expand again.
+
+<RankineSim />
+
+## The ideal reheat Rankine cycle
+
+Expand in a high-pressure turbine to an intermediate pressure $P_{rh}$, return **all** the steam to the boiler's reheater, heat it at constant pressure (usually back to the original temperature), and expand in the low-pressure turbine to the condenser. With states 1 (cond exit), 2 (pump exit), 3 (HP turbine inlet), 4 (HP exit at $P_{rh}$), 5 (reheater exit), 6 (LP exit):
+
+$$w_T=(h_3-h_4)+(h_5-h_6),\qquad q_{in}=(h_3-h_2)+(h_5-h_4),\qquad w_P=v_1(P_2-P_1).$$
+
+**Why it works**: reheat adds heat at a *high average temperature* (the heat at 400 kPa and above 143.6 °C), so $T_{H,avg}$ rises a little (493 to 497 K, i.e. $\eta$ 35.3 to 35.9 %) and, more importantly, the exhaust is **much drier**. The **work rises** a lot (1066 to 1293 kJ/kg, +21 %). The best intermediate pressure is typically about **one fifth to one quarter of the boiler pressure** (see 10-61 and the examples).
+
+<Problem id="Class example · reheat" title="Reheat in the 4 MPa cycle: expand to 400 kPa, reheat to 400 °C" tags="reheat, quality, steam tables">
+
+<Statement>
+
+Take the ideal 4 MPa, 400 °C, 10 kPa cycle above and add a reheater at 400 kPa that returns the steam to 400 °C. Find the quality at the exit, the net work and the efficiency.
+
+</Statement>
+
+<Think>
+
+Two expansions and one extra heat addition. Each turbine section is isentropic from its *own* inlet: the first starts at state 3, the second at state 5. Check that state 4 is a mixture or just saturated (it is) and state 6 is dry.
+
+</Think>
+
+<Steps>
+<Step title="1. HP turbine">
+
+$s_4=s_3=6.7715$ at 400 kPa (<T>A-5: s_f = 1.7765, s_fg = 5.1191, Tsat = 143.6 °C, h_f = 604.66, h_fg = 2133.4</T>): $x_4=\dfrac{6.7715-1.7765}{5.1191}=0.9758$ and $h_4=604.66+0.9758(2133.4)=\mathbf{2686.3}$ kJ/kg (his notebook: 2686.3 ✓).
+
+</Step>
+<Step title="2. Reheat and LP turbine">
+
+<T>A-6 at 400 kPa, 400 °C: h₅ = 3273.9, s₅ = 7.9002</T> (his: 3273.1 and 7.9003 ✓). $s_6=s_5$ at 10 kPa: $x_6=\dfrac{7.9002-0.6492}{7.4996}=0.9669$ (his 0.966 ✓), $h_6=191.81+0.9669(2392.1)=\mathbf{2504.6}$ kJ/kg.
+
+</Step>
+<Step title="3. Energy terms">
+
+$w_T=(3214.5-2686.3)+(3273.9-2504.6)=528.2+769.3=1297.5$ kJ/kg; $w_P=4.03$; $q_{in}=(3214.5-195.84)+(3273.9-2686.3)=3018.6+587.6=3606.2$ kJ/kg.
+
+</Step>
+<Step title="4. Efficiency">
+
+$\eta=\dfrac{1297.5-4.03}{3606.2}=\mathbf{0.3587}$.
+
+</Step>
+</Steps>
+
+<Answer>
+
+$x_6=0.967$ (versus 0.816 without reheat), $w_{net}=1293.5$ kJ/kg (+21 %), $\eta=35.9$ % (+0.6 point).
+
+</Answer>
+
+<RealWorld title="Why every big steam turbine has a reheater">
+
+A utility steam turbine is built as HP, IP and LP sections; the piping that goes back to the boiler between them is the "cold reheat" and "hot reheat" line. Reheat's main job is to keep the last stages dry; its small efficiency gain is a bonus.
+
+</RealWorld>
+
+<Traps>
+
+- Reheat pressure must lie *between* boiler and condenser; the second expansion starts at the **reheater exit** state 5, not at state 3.
+- Heat added is **two** terms: boiler and reheater.
+
+</Traps>
+
+<Source>Anthony's review class (Exam_review pp. 24–26): h₄ = 2686.3, h₅ = 3273.1, s₅ = 7.9003, x₆ = 0.966, h₆ = 2504.65</Source>
+
+</Problem>
+
+## The ideal regenerative Rankine cycle
+
+In the plain cycle the water leaves the pump cold (≈ 46 °C) and enters the boiler, where the first part of the heat addition happens at a *low* temperature (the sloping part 2→2′ of the isobar), dragging $T_{H,avg}$ down. The fix: **take some steam out of the turbine** part-way (it has done some work already but still has plenty of energy) and use it to **preheat the feedwater**. That steam could have produced more work if it had expanded further, but the heat it saves in the boiler is worth more: the boiler no longer has to supply the coolest part of the heat addition, which is the part with the lowest temperature, so $T_{H,avg}$ rises.
+
+<FeedwaterHeatersFigure />
+
+There are two kinds of feedwater heater (FWH): **open** (the steam and the feedwater mix) and **closed** (a heat exchanger).
+
+## Open feedwater heaters
+
+An open (direct-contact) feedwater heater is a **mixing chamber**. Steam bled from the turbine at pressure $P_6$ mixes with the feedwater coming from the first pump. Ideally the mixture leaves as **saturated liquid** at the heater pressure ($x=0$ at state 3). Because streams mix, they must be at the **same pressure**: $P_2=P_3=P_6$.
+
+**Notation for one OFWH** (his): 1 condenser exit; 2 pump I exit at $P_6$; 3 OFWH exit (saturated liquid at $P_6$); 4 pump II exit at boiler pressure; 5 turbine inlet; 6 bleed (fraction $y$ of the boiler flow); 7 turbine exit. Take the heater as a control volume: no heat, no work, so $\sum\dot m_{in}h=\sum\dot m_{out}h$, per kg of boiler flow
+
+$$y\,h_6+(1-y)\,h_2=1\cdot h_3\quad\Rightarrow\quad\boxed{\,y=\frac{h_3-h_2}{h_6-h_2}\,}$$
+
+and then, per kg of **boiler** flow:
+
+$$w_T=(h_5-h_6)+(1-y)(h_6-h_7),\qquad w_P=(1-y)w_{PI}+w_{PII},\qquad q_{in}=h_5-h_4,\qquad q_{out}=(1-y)(h_7-h_1),$$
+
+with $w_{PI}=v_1(P_6-P_1)$ and $w_{PII}=v_3(P_5-P_3)$ (state 3 is saturated liquid at the heater pressure, so a second pump is needed: with each open heater you add a pump). The turbine work *after* the bleed is multiplied by $(1-y)$: **fraction accounting is the whole difficulty**. The efficiency can also be written $\eta=1-\dfrac{q_{out}}{q_{in}}=1-\dfrac{(1-y)(h_7-h_1)}{h_5-h_4}$.
+
+<Problem id="Class example · OFWH" title="One open feedwater heater on the 4 MPa cycle, bleed at 400 kPa" tags="regeneration, open feedwater heater, fraction y">
+
+<Statement>
+
+Add one open feedwater heater to the ideal 4 MPa, 400 °C, 10 kPa cycle; the steam is bled from the turbine at 400 kPa. Find the bled fraction $y$, the net work and the thermal efficiency, and compare with the plain cycle.
+
+</Statement>
+
+<Think>
+
+An OFWH problem in his sequence: state 6 (the bleed) is the *same* as the high-pressure exit state 4 of the reheat example (isentropic from state 5 to 400 kPa), state 3 is a saturated liquid, and the only unknown is $y$ from the heater's energy balance.
+
+</Think>
+
+<Plan>
+
+Bleed state 6 $(P=400,\ s=s_5)$ → pump I ($h_2=h_1+v_1\Delta P$) → saturated liquid state 3 at 400 kPa → $y$ → pump II → $w_T,\,w_P,\,q_{in}$.
+
+</Plan>
+
+<Steps>
+<Step title="1. States">
+
+$h_1=191.81$ (10 kPa, sat. liquid). Pump I: $w_{PI}=0.001010(400-10)=0.39$ so $h_2=\mathbf{192.20}$. At 400 kPa saturated liquid <T>A-5: h₃ = 604.66 kJ/kg, v₃ = 0.001084 m³/kg</T>. Pump II: $w_{PII}=0.001084(4000-400)=3.90$ so $h_4=\mathbf{608.56}$. Turbine inlet $h_5=3214.5$ ($s_5=6.7715$). Bleed (isentropic to 400 kPa): $h_6=\mathbf{2686.3}$ ($x=0.9758$). Exit (isentropic to 10 kPa): $h_7=2144.5$.
+
+</Step>
+<Step title="2. Bled fraction">
+
+$y=\dfrac{h_3-h_2}{h_6-h_2}=\dfrac{604.66-192.20}{2686.3-192.20}=\mathbf{0.1654}$: 16.5 % of the steam leaves the turbine at 400 kPa.
+
+*Check:* about 16 % of the flow carries about 2490 kJ/kg of enthalpy to warm 84 % of the flow by about 412 kJ/kg: $0.1654(2494)=412.5$ ✓.
+
+</Step>
+<Step title="3. Work and heat">
+
+$w_T=(3214.5-2686.3)+(1-0.1654)(2686.3-2144.5)=528.2+452.2=980.4$ kJ/kg. $w_P=(1-0.1654)(0.39)+3.90=4.23$. $w_{net}=976.1$. $q_{in}=h_5-h_4=3214.5-608.56=2605.9$.
+
+</Step>
+<Step title="4. Efficiency">
+
+$\eta=\dfrac{976.1}{2605.9}=\mathbf{0.3746}$. Check with the other form, $q_{out}=(1-y)(h_7-h_1)=0.8346(1952.7)=1629.8$: $\eta=1-\dfrac{1629.8}{2605.9}=0.3746$ ✓.
+
+</Step>
+<Step title="5. Compare">
+
+$\eta$ rises from 35.3 to **37.5 %** (+2.2 points, +6 % relative), while the net work *per kg of boiler steam* falls from 1066 to 976 kJ/kg (the bled steam does less turbine work). Moving the bleed pressure shows an optimum: $y$ = 0.100, 0.132, 0.165, 0.201, 0.239 and $\eta$ = 37.05, 37.34, 37.46, 37.36, 36.89 % for 100, 200, 400, 800 and 1600 kPa. The maximum is at a few hundred kPa, which is why real plants bleed at several pressures, and the Carnot argument says: $T_{H,avg}$ rises from 493 K to 522 K.
+
+</Step>
+</Steps>
+
+<Answer>
+
+$y=0.165$, $w_{net}=976$ kJ/kg, $q_{in}=2606$ kJ/kg, $\eta=37.5$ % (versus 35.3 % plain).
+
+</Answer>
+
+<RealWorld title="A typical coal plant has 6–8 feedwater heaters">
+
+A large coal unit extracts steam at 6–8 pressures (four or five closed heaters, one open "deaerator", more high-pressure heaters), raising the final feedwater temperature to about 250–300 °C. The deaerator is an *open* heater that also drives dissolved oxygen out of the water; this is why it is the one open heater in an otherwise closed arrangement.
+
+</RealWorld>
+
+<Traps>
+
+- The pump after the OFWH raises the **saturated liquid** from the heater pressure to the boiler pressure; forgetting pump II (or using the wrong $v$) is a classic slip.
+- The heater pressure equals the bleed pressure; $P_2=P_3=P_6$ is the key box in his notes. Plot the states on the T–s diagram first.
+- After the bleed, the flow through the rest of the turbine and the condenser is $(1-y)$, not 1.
+
+</Traps>
+
+<Source>Anthony's review class (Exam_review pp. 27–36), Tutorial chapter 10 and the Oct-15 video examples · lib <code>rankine</code> with <code>ofwh</code></Source>
+
+</Problem>
+
+<Problem id="10-98 (Tutorial)" title="OFWH with component efficiencies, 150 MW and the exergy destroyed in the heater" tags="regeneration, open feedwater heater, ηT, ηP, exergy">
+
+<Statement>
+
+A regenerative cycle with one open feedwater heater: boiler 10 MPa, 500 °C; heater at 500 kPa; condenser 10 kPa; $\eta_T=0.80$, $\eta_P=0.95$; net power 150 MW. Find the bled fraction, the steam flow, the thermal efficiency and the exergy destroyed in the heater ($T_0=298$ K).
+
+</Statement>
+
+<Think>
+
+Same as the class example but with efficiencies (apply them to each section of the turbine and to each pump) and a power requirement, which turns specific work into a flow rate: $\dot m=\dot W_{net}/w_{net}$. Heater irreversibility from an entropy balance: $i=T_0\left[s_3-y\,s_6-(1-y)\,s_2\right]$.
+
+</Think>
+
+<Steps>
+<Step title="1. States (tables or the lib's table functions)">
+
+$h_1=191.81$; pump I with $\eta_P$: $h_{2a}=191.81+\dfrac{0.001010(500-10)}{0.95}=192.33$; 500 kPa sat. liquid: $h_3=640.09$; pump II: $h_{4a}=640.09+\dfrac{0.001093(10\,000-500)}{0.95}=651.01$; turbine: $h_5=3375.1$ ($s_5=6.5995$); isentropic to 500 kPa: $h_{6s}=2654.1$ so $h_{6a}=3375.1-0.80(3375.1-2654.1)=2798.3$; isentropic from the **same** state 5 to 10 kPa: $h_{7s}=2089.8$ so $h_{7a}=2346.8$.
+
+</Step>
+<Step title="2. Fraction and work">
+
+$y=\dfrac{640.09-192.33}{2798.3-192.33}=\mathbf{0.1718}$. $w_T=(3375.1-2798.3)+(1-0.1718)(2798.3-2346.8)=576.8+373.9=950.7$; $w_P=(1-0.1718)(0.52)+10.9=11.3$; $w_{net}=939.4$ kJ/kg. $q_{in}=3375.1-651.01=2724.1$ kJ/kg.
+
+</Step>
+<Step title="3. Flow rate and efficiency">
+
+$\dot m=\dfrac{150\,000}{939.4}=\mathbf{159.7}$ kg/s. $\eta=\dfrac{939.4}{2724.1}=\mathbf{0.3448}$ (the printed answer is 159.7 kg/s and 34.5 %).
+
+</Step>
+<Step title="4. Exergy destroyed in the heater">
+
+Entropies: $s_2=0.6493$ ($T=45.8$ °C), $s_3=1.8604$, $s_6=6.9360$ (state 6a at 500 kPa, 173.6 °C). $s_{gen}=s_3-y\,s_6-(1-y)\,s_2=1.8604-0.1718(6.9360)-0.8282(0.6493)=0.1310$ kJ/kg·K per kg of heater outflow. $i=T_0\,s_{gen}=298(0.1310)=\mathbf{39}$ kJ/kg (≈ 6.2 MW over the plant's heater flow of 159.7 kg/s). Mixing steam at 174 °C with water at 46 °C is irreversible; that is the cost of the open heater's simplicity.
+
+</Step>
+</Steps>
+
+<Answer>
+
+$y=0.172$, $\dot m=159.7$ kg/s, $\eta=34.5$ %, exergy destruction ≈ 39 kJ/kg of heater outflow.
+
+</Answer>
+
+<Source>Tutorial chapter 10 (Oct 13) and Exam review re-solve · matches the printed 159.7 kg/s and 34.5 %</Source>
+
+</Problem>
+
+## Closed feedwater heaters
+
+A closed feedwater heater is a **shell-and-tube heat exchanger**: the bled steam condenses on the outside of the tubes, the feedwater flows inside, and the two streams **do not mix**, so they can be at **different pressures** and no second pump is needed for the bled stream. Two idealizations always apply (and Habashi marks them with a "!"):
+
+1. The feedwater leaves at the **saturation temperature of the bled steam**: $T_{fw,out}=T_{sat}(P_{bleed})$ (an ideal heat exchanger with zero temperature difference at the hot end). At the boiler pressure that water is a compressed liquid, $h_{fw}\approx h_f(T)+v_f\,(P_{boiler}-P_{sat})$.
+2. The drain leaves as **saturated liquid at the bleed pressure** (the steam has fully condensed).
+
+What happens to the drain gives two arrangements:
+
+- **Drain throttled back** (to a lower-pressure heater or to the condenser): a valve, $h=$ const. The whole boiler flow passes through the tubes (from the pump exit, state 2, to the feedwater leaving the heater) and the bled fraction $y$ condenses on the shell side. The heater's energy balance (heat lost by the bleed steam equals heat gained by the feedwater) is $y\,(h_{bleed}-h_{drain})=1\cdot(h_{fw,out}-h_{2})$, so
+
+$$y=\frac{h_{fw,out}-h_{2}}{h_{bleed}-h_{drain}}.$$
+
+- **Drain pumped forward** into the feedwater line (the 10-61 case, below): a pump raises the drain to boiler pressure and it mixes with the main feedwater.
+
+**The instructor's clarification of problem 10-61** (a one-page note from the course, Q10-65): the textbook's T–s figure for 10-61 is *wrong*, and the correct picture is: boiler 10 MPa (state 5), bleed at 0.8 MPa (state 6) to the closed heater, reheat at state 7, condenser 10 kPa. The drain (state 3, saturated liquid at 0.8 MPa) is **pumped forward** (3 → 10) to 10 MPa and mixes with the main feedwater (state 9) in a mixing chamber, giving state 4. Key relations: $T_9=T_3$ (feedwater leaves the closed heater at the drain's saturation temperature); $h_9\approx h_3+v_3(P_{10}-P_3)$; the drain pump gives the same $h_{10}=h_3+v_3(P_{10}-P_3)$; so $h_9=h_{10}$ and the **mixing-chamber exit satisfies $h_4=h_9=h_{10}$**. Do not rely on the textbook's state numbering for this problem.
+
+<Problem id="10-55" title="Closed feedwater heater, drain throttled back" tags="closed feedwater heater, throttling, y">
+
+<Statement>
+
+Steam enters the turbine at 3 MPa and 350 °C; the condenser is at 20 kPa. Some steam is bled at 1 MPa into a closed feedwater heater; the feedwater leaves at the bled steam's saturation temperature; the drain is throttled to the condenser. Find the turbine work, the pump work and the heat added per kg of boiler steam (printed answers: 741, 3.0 and 2353 kJ/kg).
+
+</Statement>
+
+<Think>
+
+CFWH: the key information is in the sentence "the feedwater leaves at the saturation temperature of the extracted steam". The heater's energy balance fixes $y$; then, as always, the turbine work is $(h_{in}-h_{bleed})+(1-y)(h_{bleed}-h_{exit})$.
+
+</Think>
+
+<Steps>
+<Step title="1. States">
+
+Inlet <T>A-6 at 3 MPa, 350 °C: h = 3116.1 kJ/kg, s = 6.7449 kJ/kg·K</T>. Bleed at 1 MPa (isentropic): $h_{bleed}=2851.9$ kJ/kg (his notebook: 2852.9). Exit at 20 kPa: <T>A-5: s_f = 0.8320, s_fg = 7.0752, h_f = 251.42, h_fg = 2357.5 → x = (6.7449 − 0.8320)/7.0752 = 0.836</T>, $h_{exit}=251.42+0.836(2357.5)=2221.6$ kJ/kg. Condenser exit $h_1=251.4$ (sat. liquid at 20 kPa); the pump (all the flow passes through it) $w_P=0.001017(3000-20)=3.03$ so $h_2=254.4$. Drain: $h_{drain}=h_f(1\ \text{MPa})=762.5$ (179.9 °C); feedwater out at 179.9 °C and 3 MPa: $h_{fw}=762.5+0.001127(3000-1000)=764.8$.
+
+</Step>
+<Step title="2. Bled fraction">
+
+$y=\dfrac{h_{fw}-h_2}{h_{bleed}-h_{drain}}=\dfrac{764.8-254.4}{2851.9-762.5}=\mathbf{0.244}$. (A large fraction: the heater lifts the feedwater from 60 °C to 180 °C.)
+
+</Step>
+<Step title="3. Work and heat">
+
+$w_T=(3116.1-2851.9)+(1-0.244)(2851.9-2221.6)=264.2+476.3=\mathbf{740.5}$ kJ/kg (printed 741 ✓). $w_P=3.03$ ✓. $q_{in}=3116.1-764.8=\mathbf{2351}$ kJ/kg (printed 2353).
+
+</Step>
+</Steps>
+
+<Callout kind="warn" title="⚠ A number in the notebook to double-check">
+
+The digest of his notebook quotes the exit state of this problem as $x=0.874$, $h=2279$ kJ/kg. At 20 kPa and $s=6.745$ the tables give $x=0.836$, $h=2221.6$; with that value the cycle reproduces the printed 741 kJ/kg. Use $x=0.836$.
+
+</Callout>
+
+<Answer>
+
+$w_T=741$, $w_P=3.0$, $q_{in}=2351$ kJ/kg (≈ 2353 printed), $y=0.244$.
+
+</Answer>
+
+<Source>Assignments 2/3 (10-55) · lib <code>rankine</code> with <code>cfwh</code> ✔; the notebook's printed values 741, 3.0, 2353 match</Source>
+
+</Problem>
+
+## Combined heaters and the 12.5 MPa example
+
+Real plants combine reheat with several heaters. The same two rules solve them: **one energy balance per heater, fraction bookkeeping per turbine section**. The video example from the review class is a good test:
+
+<Problem id="Oct-15 video · CFWH + OFWH" title="Closed heater at 0.8 MPa and open heater at 0.3 MPa, 12.5 MPa / 550 °C / 10 kPa, 250 MW" tags="regeneration, two heaters, mass-flow fractions">
+
+<Statement>
+
+Steam enters the turbine at 12.5 MPa and 550 °C; condenser 10 kPa. Steam is extracted at 0.8 MPa for a closed heater and at 0.3 MPa for an open heater. The closed heater heats the feedwater to the condensation temperature of the extracted steam; the extracted steam leaves it as saturated liquid and is then throttled into the open heater. Find the mass flow rate for a net power of 250 MW and the thermal efficiency.
+
+</Statement>
+
+<Think>
+
+Per kg of boiler flow: $y$ goes to the closed heater (0.8 MPa), $z$ to the open one (0.3 MPa); the condenser gets $1-y-z$. Heater balances in order: closed heater first (it needs only $y$), then the open heater (which then determines $z$).
+
+</Think>
+
+<Steps>
+<Step title="1. States">
+
+Turbine inlet (8): $h_8=3476.5$, $s_8=6.6315$. Isentropic to 0.8 MPa (9): $h_9=2754.9$; to 0.3 MPa (10): $h_{10}=2578.4$; to 10 kPa (11): $h_{11}=2099.9$ ($x=0.798$). Condenser exit (1): $h_1=191.81$; pump I (to 0.3 MPa): $h_2=192.10$. Open heater exit (3) saturated liquid at 0.3 MPa: $h_3=561.43$; pump II (to 12.5 MPa): $h_4=574.52$. Closed heater: drain (6) saturated liquid at 0.8 MPa, $h_6=720.86=h_7$ (throttled); feedwater out (5) at $T_5=170.4$ °C and 12.5 MPa: $h_5=733.91$.
+
+</Step>
+<Step title="2. Closed heater balance (all flow through the tubes)">
+
+$y\,(h_9-h_6)=(h_5-h_4)$, so $y=\dfrac{733.91-574.52}{2754.9-720.86}=\mathbf{0.0784}$.
+
+</Step>
+<Step title="3. Open heater balance">
+
+$z\,h_{10}+y\,h_7+(1-y-z)\,h_2=h_3$, so $z=\dfrac{(h_3-h_2)-y(h_7-h_2)}{h_{10}-h_2}=\dfrac{369.33-0.0784(528.76)}{2386.3}=\mathbf{0.1374}$.
+
+</Step>
+<Step title="4. Work and heat, per kg of boiler flow">
+
+$w_T=(h_8-h_9)+(1-y)(h_9-h_{10})+(1-y-z)(h_{10}-h_{11})=721.5+162.7+375.3=\mathbf{1259.5}$ kJ/kg. $w_P=(1-y-z)(0.29)+13.09=13.3$. $w_{net}=1246.2$ kJ/kg. $q_{in}=h_8-h_5=3476.5-733.9=2742.5$.
+
+</Step>
+<Step title="5. Flow and efficiency">
+
+$\dot m=\dfrac{250\,000}{1246.2}=\mathbf{200.6}$ kg/s; $\eta=\dfrac{1246.2}{2742.5}=\mathbf{0.4544}$.
+
+</Step>
+</Steps>
+
+<Answer>
+
+$y=0.078$, $z=0.137$, $\dot m=200.6$ kg/s, $\eta=45.4$ %. His notebook: $w_{net}\approx1249$ kJ/kg, $\dot m\approx202$ kg/s, $\eta=45.5$ % (hand-table differences of about 1 %). Compare with the same conditions with no heaters: 41.7 %.
+
+</Answer>
+
+<Traps>
+
+- ⚠ **Order of the heater equations**: the closed heater is solved *first* because its balance contains only $y$; the open heater's balance contains both $y$ and $z$.
+- The condenser sees $(1-y-z)$, so $q_{out}=(1-y-z)(h_{11}-h_1)=0.7842(1908.1)=1496.4$ kJ/kg; the sanity check $\eta=1-q_{out}/q_{in}=1-\dfrac{1496.4}{2742.5}=0.4544$ ✓.
+
+</Traps>
+
+<Source>Anthony's Oct-15 review notes (Exam_review pp. 34–42) · states recomputed with the lib's water properties</Source>
+
+</Problem>
+
+## Cogeneration
+
+A power plant rejects about two-thirds of its fuel energy in the condenser, at a temperature (≈ 40 °C) too low to be useful. A **cogeneration** plant turns the low-grade heat into a product: it takes some steam out at a **higher pressure** (process steam for a factory, district heating, a paper mill), so the "waste" heat is sold. The measure of performance is the **utilization factor**
+
+$$\varepsilon_u=\frac{\dot W_{net}+\dot Q_{process}}{\dot Q_{in}}=1-\frac{\dot Q_{out}}{\dot Q_{in}},$$
+
+which is *not* the thermal efficiency: counting a kilojoule of low-grade process heat as equal to one of electricity (it is not; see the exergy of heat in chapter 8) can make $\varepsilon_u$ look like 90 %. Look at how much *work* each plant produces too.
+
+<Problem id="Cogeneration" title="Boiler 7 MPa / 500 °C, 15 kg/s, process heater at 500 kPa: three operating modes" tags="cogeneration, utilization factor, process heater">
+
+<Statement>
+
+Steam leaves the boiler at 7 MPa and 500 °C at 15 kg/s. Turbine exit (condenser) pressure 5 kPa; process steam at 500 kPa, returning from the process heater as **saturated liquid at 500 kPa**. Find (a) the maximum process heat if all the steam bypasses the turbine through a throttling valve; (b) the power if there is no process heat; and (c) the process heat, the power and $\varepsilon_u$ if 10 % of the steam goes through the valve, 70 % is extracted from the turbine at 500 kPa, and the remaining 20 % goes to the condenser.
+
+</Statement>
+
+<Think>
+
+One boiler, one turbine, one process heater, two pumps (condenser condensate at 5 kPa; process condensate at 500 kPa), then a mixing chamber before the boiler. In every mode $\dot Q_{in}=\dot m(h_{boiler\ exit}-h_{mixed\ feed})$ — take the mix enthalpy from the flows. The method is the same as the regenerative cycle, with $\dot Q_p=\dot m_p(h_{in\ heater}-h_f@500\ kPa)$ as the "product".
+
+</Think>
+
+<Steps>
+<Step title="1. States">
+
+Boiler exit <T>A-6 at 7 MPa, 500 °C: h = 3411.4, s = 6.7998</T>. Extraction at 500 kPa (isentropic): $h=2739.2$ ($x=0.996$). Condenser inlet (5 kPa): $h=2072.9$ ($x=0.799$). Saturated liquids: $h_f(5\text{ kPa})=137.75$, $h_f(500\text{ kPa})=640.09$. Pumps to 7 MPa: $h=144.78$ (from 5 kPa) and $h=647.19$ (from 500 kPa).
+
+</Step>
+<Step title="2. (a) Maximum process heat (all through the valve)">
+
+$\dot Q_p=\dot m(h_{boiler}-h_{f,500})=15(3411.4-640.1)=\mathbf{41\,570\ kW}$ (his 41 155). No power: $\varepsilon_u\approx100$ %.
+
+</Step>
+<Step title="3. (b) No process heat">
+
+All 15 kg/s through the turbine: $\dot W_T=15(3411.4-2072.9)=20\,077$ kW (his 20 076 ✓), pump $\dot W_P=15(144.78-137.75)=105$ kW. $\dot W_{net}=19\,971$ kW; $\dot Q_{in}=15(3411.4-144.78)=48\,999$ kW. $\varepsilon_u=\eta=\dfrac{19\,971}{48\,999}=\mathbf{0.408}$.
+
+</Step>
+<Step title="4. (c) Mixed mode">
+
+Valve $\dot m_v=1.5$ kg/s, extracted $\dot m_x=10.5$ kg/s, condenser $\dot m_c=3$ kg/s. Process heater receives $12$ kg/s: $\dot Q_p=10.5(2739.2)+1.5(3411.4)-12(640.09)=\mathbf{26\,198\ kW}$ (his 26 185 ✓). Turbine: $\dot W_T=13.5(3411.4-2739.2)+3(2739.2-2072.9)=9073+1999=11\,073$ kW, pumps $\approx106$ kW, $\dot W_{net}=\mathbf{10\,966}$ kW. Boiler feed: $h_{mix}=\dfrac{3(144.78)+12(647.19)}{15}=546.7$; $\dot Q_{in}=15(3411.4-546.7)=42\,970$ kW. $\varepsilon_u=\dfrac{10\,966+26\,198}{42\,970}=\mathbf{0.865}$.
+
+</Step>
+</Steps>
+
+<Answer>
+
+(a) 41.6 MW of process heat (no power). (b) 19.97 MW of power, $\varepsilon_u=40.8$ %. (c) 26.2 MW of process heat and 10.97 MW of power, $\varepsilon_u=86.5$ %.
+
+</Answer>
+
+<RealWorld title="Cogeneration in practice">
+
+District-heating plants in Scandinavia and many industrial parks run exactly this way: when heat demand is high the steam is extracted before the low-pressure turbine, so power falls and the utilization factor rises. A combined heat-and-power plant can reach an overall $\varepsilon_u$ of 80–90 % (typical), against 35–45 % for electricity alone.
+
+</RealWorld>
+
+<Source>Anthony's review notes (Exam_review pp. 43–48), Çengel Ex. 10-8 structure · values recomputed with the lib (his: 41 155 / 20 076 / 26 185 kW)</Source>
+
+</Problem>
+
+## Combined gas–vapor cycles
+
+The gas turbine's exhaust (≈ 600 °C) is a ready-made heat source for a steam cycle. In a **combined cycle** the exhaust passes through a **heat-recovery steam generator (HRSG)**, an energy balance between exhaust and water: $\dot m_g\,c_{p,g}(T_{exh,in}-T_{exh,out})=\dot m_s\,(h_{steam}-h_{feed})$ (with a pinch-point limit on the approach). The steam then runs through a Rankine cycle. If the gas turbine has efficiency $\eta_g$, the steam cycle $\eta_s$, and the HRSG captures a fraction $\varepsilon_R$ of the leftover heat,
+
+$$\eta_{cc}=\eta_g+(1-\eta_g)\,\varepsilon_R\,\eta_s.$$
+
+Illustration (typical, not from the notes): $\eta_g=0.41$, $\varepsilon_R=0.85$, $\eta_s=0.40$ gives $\eta_{cc}=0.41+0.59(0.85)(0.40)=0.61$, in the 60–64 % range of the Machine box. Every part of the plant is a Brayton cycle on top and a Rankine on the bottom, rejecting heat at 40 °C instead of 600 °C: Carnot reasoning again.
+
+## Habashi's traps
+
+<Trap title="The two concepts the instructor says students still miss in chapter 10">
+
+1. **Area under the curve is the heat (or work in the enclosed area), not a property.** The area under 2→3 on the T–s diagram is $q_{in}$; the area enclosed is the net work. Compare modifications by *looking at what area is added or removed*.
+2. **Use the Carnot principle to judge a modification.** Ask what it does to $T_{H,avg}$ and $T_{L,avg}$: lowering the condenser pressure lowers $T_L$ (better); superheating and a higher boiler pressure raise $T_{H,avg}$ (better); adding a low-temperature heat addition lowers it (worse); feedwater heating *removes* the coldest heat addition (better), reheat adds a *hot* one (slightly better, and drier).
+3. **Check the quality.** A higher boiler pressure without reheat leaves the turbine with $x<0.8$: unacceptable.
+4. **Compressed liquid**: $h\approx h_f(T)+v_f\,(P-P_{sat})$ (his note: "$\Delta h=v\,\Delta P$").
+5. **A closed heater's feedwater leaves at the *bled steam's* saturation temperature**, and the **drain is saturated liquid at the bleed pressure**. An open heater's outflow is saturated liquid at the heater pressure.
+6. **Do not trust the textbook's figure for 10-61**; use the instructor's redrawn version (drain pumped forward, $h_4=h_9=h_{10}$).
+
+</Trap>
+
+<Examined>
+
+Assignments 2 and 3 (<Asg n="02" />) are this chapter: 10-28 (binary geothermal plant with isobutane: $\eta_T=78.8$ %, $\dot W_{net}=22.65$ MW, $\eta=13.7$ %), 10-52 (reheat-regenerative, 8 MPa/550 °C, OFWH at 0.6 MPa and CFWH: $y=0.0717$, $z=0.1085$, $\eta=42.2$ %, 28.8 MW), 10-55 (above), 10-61 (reheat with CFWH and OFWH, drain pumped forward), 10-98 and the 10-110 tutorial. The midterm review class (<Ex id="midterm-review" />) starts with the Rankine class example, the reheat example, the OFWH and CFWH sequence, the 12.5 MPa example and the cogeneration example. Expect on the midterm: one full cycle problem with an efficiency and a mass flow, with a T–s sketch, one heater, and a short Carnot-reasoning question.
+
+</Examined>
+
+## Check yourself
+
+1. In the class cycle, why does lowering the condenser pressure from 10 to 5 kPa raise $\eta$ from 35.3 to 37.3 % yet worsen the exit quality (0.816 to 0.795)?
+
+<details>
+<summary>Answer</summary>
+
+$T_L$ drops from 319 to 306 K, so Carnot reasoning says $\eta$ rises ($1-306/488=0.373$). But the isentropic expansion now ends further to the left in the dome (wetter). Efficiency goes up; the blade erosion risk goes up too.
+
+</details>
+
+2. What is the drain's enthalpy in a closed feedwater heater and why?
+
+<details>
+<summary>Answer</summary>
+
+$h_f$ at the bleed pressure: the steam has condensed to **saturated liquid** at that pressure (ideal heater). If the drain is then throttled it keeps this enthalpy ($h=$ const), but its quality rises as the pressure falls.
+
+</details>
+
+3. For an OFWH with $h_2=192$, $h_3=605$ and $h_6=2686$ kJ/kg, what is $y$? What does it mean physically?
+
+<details>
+<summary>Answer</summary>
+
+$y=\dfrac{605-192}{2686-192}=0.166$: 16.6 % of the boiler flow is bled out of the turbine to warm the other 83.4 % from 192 to 605 kJ/kg (i.e. to saturated liquid at the heater pressure).
+
+</details>
+
+4. A cogeneration plant has $\varepsilon_u=85$ % while a pure power plant has $\eta=41$ %. Is the cogeneration plant "twice as efficient"?
+
+<details>
+<summary>Answer</summary>
+
+No. $\varepsilon_u$ counts process heat (low-grade) as equal to work. In exergy terms heat at ≈ 150 °C is worth only ≈ 30 % of its energy as work; the plant makes less *power* (11 MW versus 20 MW in the 15 kg/s example) in exchange for 26 MW of heat that would otherwise be wasted.
+
+</details>
+
+5. Why does adding reheat only slightly improve $\eta$ but is nearly universal in big plants?
+
+<details>
+<summary>Answer</summary>
+
+The reheat heat addition is at a temperature near the top of the cycle, so $T_{H,avg}$ rises only a little (493 to 497 K here, i.e. +0.6 point). Its real job is to keep the LP turbine exhaust dry (0.82 → 0.97 here) and, with it, to allow a higher boiler pressure.
+
+</details>

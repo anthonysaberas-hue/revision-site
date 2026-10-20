@@ -1,0 +1,505 @@
+<p className="eyebrow">Chapter 9 · Gas power cycles and jet engines · Midterm</p>
+
+# Gas power cycles and jet engines
+
+<div className="lede">
+
+A gas turbine is three machines on one shaft: a **compressor** that raises the pressure of air, a **combustor** that adds heat at (nearly) constant pressure, and a **turbine** that expands the hot gas and gives back more work than the compressor took. What is left over is either **shaft power** (an industrial turbine, a helicopter, a ship) or **thrust** (a jet engine, where the leftover pressure is spent accelerating the exhaust). This chapter is the **Brayton cycle**: its ideal form, its real form with component efficiencies, the three modifications (regeneration, intercooling, reheat), stagnation properties (indispensable once the gas moves), and the turbojet and turbofan analysed on that basis. It is the heaviest chapter of the midterm and always on the exam.
+
+</div>
+
+<Machine name="the CFM56 turbofan and the GE 7FA industrial turbine">
+
+Two machines built on the same cycle, tuned for opposite goals. Approximate values (≈, from manufacturers' public data; treat as "typical"):
+
+- **CFM56-7B** (Boeing 737NG): bypass ratio **≈ 5.1**, overall pressure ratio **≈ 32** at take-off, take-off thrust **≈ 120 kN**, fan diameter ≈ 1.55 m. Most of the thrust comes from the cold bypass air, so the engine is quiet and has a low thrust-specific fuel consumption, **TSFC ≈ 17 mg/(N·s)** at cruise (≈ 0.6 lb/(lbf·h)).
+- **GE 7FA** (utility gas turbine): about **160 MW** from one machine at about **36 % simple-cycle efficiency**, pressure ratio **≈ 15–16**, turbine inlet **≈ 1290 °C** (the course's problem 9-109 uses 159 MW, 35.9 %, $r_p=14.7$, 1288 °C). Its exhaust leaves at **≈ 600 °C**, which is why a combined cycle (chapter 10) can recover it to reach **≈ 60 %**.
+- **Why the jet engine has a higher turbine temperature limit than the efficiency suggests**: the first-stage turbine blades see about **1600–1800 K** gas continuously; they survive because they are single-crystal alloys with internal cooling and a ceramic coating (the metal itself is kept below about 1300 K).
+- Pressure ratios have climbed from 6 to 8 in early engines to **40+** in the latest, because $\eta=1-r_p^{-(k-1)/k}$ rewards pressure ratio, and materials now allow it.
+
+</Machine>
+
+## The 30-second version
+
+<Idea title="What to know cold">
+
+1. **Ideal Brayton cycle** (air standard, cold air): 1→2 isentropic compression, 2→3 constant-$P$ heat addition, 3→4 isentropic expansion, 4→1 constant-$P$ heat rejection. $\eta=1-\dfrac{1}{r_p^{(k-1)/k}}$ depends **only** on the pressure ratio.
+2. **Net work** $w_{net}=c_p(T_3-T_4)-c_p(T_2-T_1)$ depends on $r_p$ **and** $T_3/T_1$ and has a **maximum** at $r_p=\left(\dfrac{T_3}{T_1}\right)^{k/(2(k-1))}$, where $T_2=T_4=\sqrt{T_1T_3}$. Maximum work is **not** at maximum efficiency.
+3. **Real cycle**: $\eta_C=\dfrac{h_{2s}-h_1}{h_{2a}-h_1}$, $\eta_T=\dfrac{h_3-h_{4a}}{h_3-h_{4s}}$. Back-work ratio $r_{bw}=w_C/w_T$ (about 40–60 % for a gas turbine, versus 1–2 % for a steam plant). No $c_p$ or $k$ given: use the air table and $P_{r2}/P_{r1}=P_2/P_1$.
+4. **Modifications**: regeneration raises $\eta$ with no change in work; intercooling and reheat raise work and lower $\eta$ unless combined with regeneration.
+5. **Stagnation**: $T_0=T+\dfrac{V^2}{2c_p}$ stays constant in adiabatic flow without work; $P_0/P=(T_0/T)^{k/(k-1)}$ drops with friction.
+6. **Turbojet**: $w_T=w_C$ fixes $T_{05}$; the nozzle takes the rest; thrust $F=\dot m\,(V_6-V_1)+A_6(P_6-P_a)$.
+
+</Idea>
+
+## The ideal Brayton cycle
+
+The combustion process of a real engine is replaced by constant-pressure heat addition from an external source and the exhaust by constant-pressure heat rejection to the atmosphere, so the **open** engine becomes a **closed** air-standard cycle. Assumptions: air-standard analysis (fixed mass of air, the fuel's mass is neglected), constant specific heats ($c_p=1.005$, $k=1.4$) unless told otherwise, and kinetic and potential energy neglected.
+
+<BraytonTsFigure />
+
+Because 2→3 and 4→1 are isobars and 1→2 and 3→4 are isentropes, the temperature ratios are tied together:
+
+$$\frac{T_2}{T_1}=\frac{T_3}{T_4}=r_p^{(k-1)/k}\equiv c,\qquad r_p=\frac{P_2}{P_1},\qquad t=\frac{T_3}{T_1}.$$
+
+### Efficiency
+
+$$q_{in}=c_p(T_3-T_2),\quad q_{out}=c_p(T_4-T_1),\quad \eta=1-\frac{T_4-T_1}{T_3-T_2}=1-\frac{T_1(T_4/T_1-1)}{T_2(T_3/T_2-1)}.$$
+
+Since $T_4/T_1=T_3/T_2$ the brackets cancel and
+
+$$\boxed{\,\eta=1-\frac{T_1}{T_2}=1-\frac{1}{r_p^{(k-1)/k}}\,}$$
+
+**Why**: the average temperature of heat addition rises with $r_p$ while heat is still rejected at $T_1$ (Carnot reasoning). The efficiency is independent of $T_3$.
+
+### Net work and the pressure ratio for maximum work
+
+$$\frac{w_{net}}{c_pT_1}=t\left(1-\frac1c\right)-(c-1).$$
+
+For fixed $T_1$ and $T_3$ this is zero at $c=1$ (no compression) and again at $c=t$ ($T_2=T_3$: no heat to add), so it has a maximum in between. Setting $dw/dT_2=0$ with $T_4=T_1T_3/T_2$:
+
+$$\frac{d}{dT_2}\Big[c_p(T_3-T_4-T_2+T_1)\Big]=c_p\left[\frac{T_1T_3}{T_2^2}-1\right]=0\ \Rightarrow\ \boxed{T_2=T_4=\sqrt{T_1T_3}},\qquad r_p=\left(\frac{T_3}{T_1}\right)^{k/(2(k-1))}.$$
+
+"For maximum work the temperature of the air at the compressor exit must equal the temperature of the gas at the turbine exit." For Ex. 9-5 ($T_1=300$ K, $T_3=1300$ K): $r_p=(4.333)^{1.75}=13.0$, $T_2=T_4=624.5$ K.
+
+<Remember title="Maximum work is NOT at maximum efficiency">
+
+Efficiency keeps rising with $r_p$ (it only depends on $r_p$). Work peaks at $r_p\approx13$ here and then falls because the compressor consumes more and more of the turbine's work. A **jet engine** is designed near the work/thrust optimum (small, light engine for a given power); a **power plant** goes for efficiency (higher $r_p$) because fuel cost dominates. In both cases, real losses push the work peak to a lower $r_p$ and flatten the efficiency curve.
+
+</Remember>
+
+<BraytonSim />
+
+## Actual cycles: component efficiencies and the air-table method
+
+Real compressors and turbines are not isentropic; the T–s diagram's end points move to the right (see the dashed cycle above). With the isentropic efficiencies:
+
+$$T_{2a}=T_1+\frac{T_{2s}-T_1}{\eta_C},\qquad T_{4a}=T_3-\eta_T\,(T_3-T_{4s}),\qquad \eta_{th}=\frac{w_T-w_C}{q_{in}}=\frac{(h_3-h_{4a})-(h_{2a}-h_1)}{h_3-h_{2a}}.$$
+
+**Back-work ratio** $r_{bw}=w_C/w_T$. A steam plant spends about 1–2 % of its turbine work on the pump (pumping a liquid is cheap); a gas turbine spends **40–60 %** on the compressor (compressing a gas is expensive). That is why a few percentage points of component efficiency swing a gas turbine's output so much: losses subtract from a small difference of two large numbers.
+
+**Which method?** Habashi's rule: *if they don't tell you $c_p$ and $k$, use the air table*. Take $T_1\to P_{r1}$, multiply by the pressure ratio to get $P_{r2}=P_{r1}(P_2/P_1)$, read $h_{2s}$; for the turbine take $T_3\to P_{r3}\to P_{r4}=P_{r3}/r_p\to h_{4s}$. You **cannot** use $T_2/T_1=(P_2/P_1)^{(k-1)/k}$ and $h=c_pT$ with variable specific heats; you can use constant-$c_p$ relations only if told to.
+
+<Problem id="Ex. 9-5" title="Simple Brayton cycle: constant-cp and variable-cp answers side by side" tags="Brayton, air table, Pr, back-work ratio">
+
+<Statement>
+
+A simple ideal Brayton cycle takes in air at 300 K and 100 kPa, compresses it to a pressure ratio of 8, and heats it to 1300 K at the turbine inlet. Find the compressor and turbine work, net work, back-work ratio and thermal efficiency using (a) the air table and (b) cold-air standard ($c_p=1.005$, $k=1.4$).
+
+</Statement>
+
+<Think>
+
+An ideal cycle with air tables: the method is $P_r$. The point of doing it twice is to see **how much the constant-$c_p$ shortcut costs**. It comes from his lecture notes (Notes 19 Sep) and is the standard textbook example.
+
+</Think>
+
+<Plan>
+
+State 1 $(T_1)\to h_1,P_{r1}$ $\to$ $P_{r2}=8P_{r1}\to h_{2s}$ $\to$ state 3 $(T_3)\to h_3,P_{r3}$ $\to$ $P_{r4}=P_{r3}/8\to h_{4s}$ $\to w_C,w_T,q_{in},\eta$.
+
+</Plan>
+
+<Steps>
+<Step title="1. Air table, variable cp">
+
+<T>A-17 at 300 K: h₁ = 300.19 kJ/kg, Pr₁ = 1.386</T>
+
+$P_{r2}=8(1.386)=11.088$ $\to$ <T>A-17: T₂ ≈ 540 K, h₂ = 544.35 kJ/kg</T>. At the turbine inlet: <T>A-17 at 1300 K: h₃ = 1395.97 kJ/kg, Pr₃ = 330.9</T>, so $P_{r4}=\dfrac{330.9}{8}=41.36$ $\to$ <T>A-17: T₄ ≈ 770 K, h₄ = 789.37 kJ/kg</T>.
+
+</Step>
+<Step title="2. Works, heat and efficiency (variable cp)">
+
+$w_C=h_2-h_1=544.35-300.19=244.16$; $w_T=h_3-h_4=1395.97-789.37=606.60$; $w_{net}=362.44$ kJ/kg. $q_{in}=h_3-h_2=851.62$ kJ/kg. $r_{bw}=\dfrac{244.16}{606.60}=0.402$; $\eta=\dfrac{362.44}{851.62}=\mathbf{0.4256}$. (Lib: 362.2 kJ/kg, 42.6 %, $r_{bw}=40.3$ %.)
+
+</Step>
+<Step title="3. Cold-air standard, constant cp">
+
+$c=8^{0.2857}=1.8114$, so $T_2=300(1.8114)=543.4$ K, $T_4=\dfrac{1300}{1.8114}=717.7$ K. $w_C=1.005(243.4)=244.7$, $w_T=1.005(1300-717.7)=585.3$, $w_{net}=340.6$ kJ/kg, $q_{in}=1.005(1300-543.4)=760.3$, $\eta=1-\dfrac1{1.8114}=\mathbf{0.448}$.
+
+</Step>
+<Step title="4. Compare">
+
+The constant-$c_p$ answer overestimates $\eta$ by about 2 points (44.8 versus 42.6 %) and underestimates $w_{net}$ by about 6 % (340.6 versus 362.4). Reason: $c_p$ of air grows with temperature (1.005 at 300 K, about 1.2 at 1300 K), so the hot turbine gives more work per kelvin than the constant value predicts and the heat needed to reach 1300 K is also larger. The error is small enough that cold-air standard is fine for a trend, not for a graded number.
+
+</Step>
+</Steps>
+
+<Answer>
+
+Air table: $w_C=244.2$, $w_T=606.6$, $w_{net}=362.4$ kJ/kg, $r_{bw}=0.40$, $\eta=42.6$ %. Cold air: $w_{net}=340.6$ kJ/kg, $\eta=44.8$ %.
+
+</Answer>
+
+<RealWorld title="Back-work ratio in a real machine">
+
+A back-work ratio of 40 % means the compressor eats two-fifths of the turbine's output. In a small turboshaft helicopter engine the ratio is closer to 50–60 %; this is why gas turbines are very sensitive to compressor fouling (a dirty compressor reduces $\eta_C$ and shaves several percent off the net output).
+
+</RealWorld>
+
+<Traps>
+
+- Using $T_2/T_1=(P_2/P_1)^{(k-1)/k}$ and then $h=c_pT$ **and** table values in the same problem: stay in one framework.
+- $P_r$ is a property (ratio of pressures **at the same entropy**); it is **not** the pressure and cannot be used across different entropies.
+
+</Traps>
+
+<Source>Anthony's lecture notes (19 Sep, Notes) and Çengel Ex. 9-5 · lib <code>braytonVariable</code> check</Source>
+
+</Problem>
+
+## Stagnation properties
+
+Once the gas moves fast (jet engines, ram effect, nozzles) the enthalpy that matters is the **stagnation enthalpy**: what the gas would have if it were brought to rest adiabatically with no work,
+
+$$h_0=h+\frac{V^2}{2},\qquad T_0=T+\frac{V^2}{2c_p}\ \ (V\text{ in m/s},\ c_p\text{ in kJ/kg·K: }T_0=T+\tfrac{V^2}{2000\,c_p}).$$
+
+From the steady-flow equation, if there is **no heat and no shaft work**, $T_0$ is constant along the flow, *even with friction and area changes*. The **stagnation pressure** is defined by bringing the gas to rest **isentropically**:
+
+$$\frac{P_0}{P}=\left(\frac{T_0}{T}\right)^{k/(k-1)}.$$
+
+$P_0$ stays constant only if the flow is also frictionless. With friction, $T_0$ is unchanged but $P_0$ **drops** (entropy increases, so the same $T_0$ corresponds to a lower $P_0$). For incompressible flow $P_0=P+\tfrac12\rho V^2$ (the "dynamic pressure" term); for compressible flow $P_0=P\left(1+\tfrac{k-1}{2}Ma^2\right)^{k/(k-1)}$, and the incompressible formula is only the low-Mach limit.
+
+**Consequence for engines** (the slide that many students never absorb): in a real compressor, friction means that $T_0$ rises more than the isentropic value, but the **stagnation pressure** reached is lower. If the engine must reach a given $P_{03}$, it must do **extra work** compared with the ideal cycle. Equivalently, for the same work you reach a lower pressure than the ideal compressor.
+
+From here on, jet-engine calculations are done with **stagnation** $T_0$ and $P_0$ at every station.
+
+## Brayton modifications: regeneration, intercooling and reheat
+
+### Regeneration
+
+The turbine exhaust (≈ 650 °C for a 7FA) is hotter than the air leaving the compressor (≈ 380 °C). A counterflow heat exchanger transfers that heat to the compressed air before the combustor, so less fuel is needed for the same work.
+
+$$\eta_{regen}=1-\frac{T_1}{T_3}\,r_p^{(k-1)/k}=1-\frac{c}{t},\qquad w_{net}\ \text{unchanged}.$$
+
+It is derived from $h_5=h_4$ (ideal regenerator, $T_5=T_4$): $q_{in}=c_p(T_3-T_4)$ instead of $c_p(T_3-T_2)$. **When does regeneration stop being useful?** When $t=c$, i.e. $T_4=T_2$, which is exactly the pressure ratio for maximum work. Above that, the exhaust is colder than the compressed air and the regenerator would cool it. Practical consequence: regeneration pays off at **low** pressure ratios and **high** $T_3/T_1$ (microturbines, tanks), while high-$r_p$ engines (jets) do not use it.
+
+**Actual regenerator**: it has an **effectiveness** $\varepsilon=\dfrac{T_{05}-T_{02}}{T_{04}-T_{02}}$ (not an efficiency: the streams meet too briefly to equalize temperatures). With the energy balance $c_{p,g}(T_{04}-T_{06})=c_{p,a}(T_{05}-T_{02})$ (hot side loses what the cold side gains) you solve for the two unknown temperatures.
+
+### Intercooling and reheat
+
+**Intercooling**: compress in two stages with cooling between, ideally with equal pressure ratios, $P_{2}=\sqrt{P_1P_4}$. The ideal compression is isothermal (smallest work for a given pressure ratio, since $v$ stays small); intercooling approximates it. With $c=r_p^{(k-1)/k}$ and $t=T_3/T_1$:
+
+$$\frac{w_{net}}{c_pT_1}=2-2\sqrt c-\frac tc+t,\qquad \frac{q_{in}}{c_pT_1}=t-\sqrt c\ \Rightarrow\ \eta=\frac{2-2\sqrt c-t/c+t}{t-\sqrt c}.$$
+
+**Reheat**: expand in two stages, reheat in between (ideal: equal pressure ratio each, $P_4=\sqrt{P_3P_6}$). The first turbine runs the compressor, the second delivers net power:
+
+$$\frac{w_{net}}{c_pT_1}=2t-\frac{2t}{\sqrt c}-c+1,\qquad \frac{q_{in}}{c_pT_1}=2t-c-\frac{t}{\sqrt c}\ \Rightarrow\ \eta=\frac{2t-2t/\sqrt c-c+1}{2t-c-t/\sqrt c}.$$
+
+Both raise the **work** and **lower** the efficiency: the extra part of the cycle has a lower average $T_H$ (a Carnot argument). The remedy is to add regeneration, which recovers the efficiency and lets the exhaust heat pay for the extra heat.
+
+<Remember title="Habashi's table of modifications (effect relative to the simple cycle)">
+
+| Modification | Effect on efficiency | Effect on work |
+|---|---|---|
+| Regeneration | +50 % | 0 % |
+| Intercooling | −6.5 % | +10.2 % |
+| Reheat | −10.4 % | +24.5 % |
+| Reheat + regeneration | +66.7 % | +24.5 % |
+| Intercooling + regeneration | +68.0 % | +10.2 % |
+| Intercooling + reheat | −18.2 % | +34.7 % |
+| Intercooling + reheat + regeneration | +80 % | +34.7 % |
+
+The numbers are for his reference engine; the **pattern** is what the exam tests: regeneration changes only the efficiency, intercooling and reheat change only the work (and hurt $\eta$), and the full combination (a three-stage "textbook" turbine) is the best of everything. The same signs appear if you vary the chapter's sim.
+
+</Remember>
+
+<Problem id="9-109 (back-solved)" title="GE 7FA: what component efficiencies explain 35.9 %?" tags="Brayton, air table, efficiency back-solve, regenerator">
+
+<Statement>
+
+A gas turbine (the GE 7FA class) has pressure ratio 14.7 and turbine inlet 1288 °C, delivers 159 MW from an air flow of 1536 t/h, with a simple-cycle efficiency of 35.9 %. Take $T_1=300$ K and use the air table. Find the isentropic efficiencies of the compressor and turbine (the notebook's values: $\eta_C=94.8$ %, $\eta_T=83.8$ %), and the efficiency with a 65 % effective regenerator.
+
+</Statement>
+
+<Think>
+
+The ideal cycle gives a far higher efficiency (≈ 50 %). Two unknowns (the efficiencies) and two data (net specific work and $\eta$). He solves both equations and checks; here we only *verify* that those efficiencies reproduce 159 MW and 35.9 %, and use the same machine to show what regeneration adds.
+
+</Think>
+
+<Steps>
+<Step title="1. Specific work required">
+
+$\dot m=1536\ \text{t/h}=426.7$ kg/s; $w_{net}=159\,000/426.7=372.6$ kJ/kg.
+
+</Step>
+<Step title="2. Ideal states">
+
+<T>A-17: h₁ = 300.19, Pr₁ = 1.386. Pr₂ = 14.7(1.386) = 20.4, h₂s ≈ 647–652 kJ/kg</T>; $T_3=1288+273=1561$ K, <T>h₃ ≈ 1709–1710 kJ/kg, Pr₃ ≈ 710; Pr₄s = 710/14.7 ≈ 48.3, h₄s ≈ 825 kJ/kg</T>. (Reading the table by hand gives $h_{2s}$ = 652.4 and $h_{4s}$ = 825.2 in the notebook; the lib's smooth table gives 646.8 and 824.7: a few kJ/kg of reading difference.)
+
+</Step>
+<Step title="3. With the notebook's efficiencies">
+
+$h_{2a}=h_1+\dfrac{h_{2s}-h_1}{0.948}\approx665.8$, $h_{4a}=h_3-0.838(h_3-h_{4s})\approx967.9$. $w_C=365.6$, $w_T=741.1$, $w_{net}=375.4$ kJ/kg ($\to160.2$ MW), $q_{in}=h_3-h_{2a}=1043.2$, $\eta=\mathbf{36.0\ \%}$ (the notebook: 372.65 kJ/kg and 35.9 %, within 1 %). Back-work ratio: $365.6/741.1=0.49$.
+
+</Step>
+<Step title="4. Add a regenerator with ε = 0.65">
+
+$T_{4a}\approx931$ K $>T_{2a}\approx655$ K, so regeneration works. $h_5=h_{2a}+\varepsilon(h_{4a}-h_{2a})$, so $q_{in}=h_3-h_5=846.8$ kJ/kg and $\eta=\dfrac{375.4}{846.8}=\mathbf{44.3\ \%}$ (notebook: 44.1 %). Same work, 8 points more efficiency: for 159 MW the fuel input falls from 443 MW to about 359 MW.
+
+</Step>
+</Steps>
+
+<Answer>
+
+$\eta_C\approx0.95$, $\eta_T\approx0.84$ reproduce 159 MW and 36 %; with $\varepsilon=0.65$ the efficiency rises to ≈ 44 % at constant work.
+
+</Answer>
+
+<RealWorld title="Why the 7FA is not regenerated">
+
+At $r_p\approx15$ the exhaust is still ≈ 650 °C and the compressed air ≈ 380 °C, so a regenerator is *possible*; but a modern plant sends the exhaust to a **heat-recovery steam generator** instead, getting a bottoming steam cycle that raises the plant to ≈ 60 % (chapter 10). Regeneration is for small units without a steam plant (≈ 100 kW microturbines reach ≈ 30 %).
+
+</RealWorld>
+
+<Traps>
+
+- The "turbine efficiency" of 83.8 % is low because it also absorbs the pressure losses and cooling-air penalties that an assignment problem lumps into $\eta_T$. Do not compare it with a standalone 90 % turbine.
+
+</Traps>
+
+<Source>Anthony's Assignment 1 re-solve (9-109, Exam review) · values via lib <code>braytonVariable</code></Source>
+
+</Problem>
+
+## Jet engines
+
+<TurbojetStationsFigure />
+
+A **turbojet** is a gas turbine whose turbine takes *only as much as the compressor needs*, $w_T=w_C$. The leftover high-pressure gas (at $P_{05}$ above ambient) expands in a **nozzle** and leaves at high speed; the thrust is the momentum change of the stream. A **turbofan** adds a ducted fan on the same shaft: a fraction of the air bypasses the core and is accelerated less, so the same fuel pushes a larger air mass more slowly, which is far more efficient at subsonic speeds (the **bypass ratio** is the ratio of the two flows). A **turboprop** and a **turboshaft** extend the idea further: a second turbine takes nearly all the leftover energy to turn a propeller or rotor.
+
+### Station-by-station analysis (his labels: 1 free stream, 2 after the intake, 3 compressor exit, 4 turbine inlet, 5 turbine exit, 6 nozzle exit)
+
+1. **Intake (1→2).** Adiabatic, no work: $T_{02}=T_{01}=T_1+\dfrac{V_1^2}{2000\,c_p}$. A perfect diffuser gives $P_{02}=P_{01}=P_1\left(\dfrac{T_{01}}{T_1}\right)^{k/(k-1)}$, the **ram** pressure ratio (1.69 at Ma 0.9, 11 km). If a diffuser efficiency $\eta_D$ is given: $\eta_D=\dfrac{T_{02s}-T_1}{T_{01}-T_1}$ and $P_{02}=P_1\left(\dfrac{T_{02s}}{T_1}\right)^{k/(k-1)}$.
+2. **Compressor (2→3).** $T_{03s}=T_{02}\,r_c^{(k-1)/k}$ and $T_{03}=T_{02}+\dfrac{T_{03s}-T_{02}}{\eta_C}$; $P_{03}=r_cP_{02}$; $w_C=c_{p,a}(T_{03}-T_{02})$.
+3. **Combustor (3→4).** $P_{04}=P_{03}$ (no pressure loss unless told). Heat per kg of air $q_A=c_{p,g}(T_{04}-T_{03})$ and fuel flow $\dot m_f=\dfrac{\dot m_a\,q_A}{HV}$ (fuel mass neglected in the flow, as on the exams).
+4. **Turbine (4→5).** $w_T=w_C$: $c_{p,g}(T_{04}-T_{05})=c_{p,a}(T_{03}-T_{02})$ gives $T_{05}$. If $\eta_T$ is given, $T_{05s}=T_{04}-\dfrac{T_{04}-T_{05}}{\eta_T}$ and $\dfrac{P_{05}}{P_{04}}=\left(\dfrac{T_{05s}}{T_{04}}\right)^{k_g/(k_g-1)}$. The gas has $c_{p,g}\approx1.147$, $k_g\approx1.333$ (hot combustion products); use them if given.
+5. **Nozzle (5→6).** *Converging–diverging, expanding to ambient:* $T_{6}=T_{05}\left(\dfrac{P_a}{P_{05}}\right)^{(k_g-1)/k_g}$ (for an ideal nozzle), $V_6=\sqrt{2000\,c_{p,g}(T_{05}-T_6)}$. *Converging only:* check for choking: it chokes if $\dfrac{P_{05}}{P_a}>\left(\dfrac{k_g+1}{2}\right)^{k_g/(k_g-1)}\approx1.85$ ($k_g=1.333$). If choked, $M_6=1$, $T_6=\dfrac{2T_{05}}{k_g+1}$, $V_6=\sqrt{k_gRT_6}$ and the exit pressure $P_6=P_{05}\left(\dfrac2{k_g+1}\right)^{k_g/(k_g-1)}>P_a$, which adds a **pressure thrust** $A_6(P_6-P_a)$.
+6. **Thrust and efficiency.**
+
+$$F_{net}=\dot m\,(V_6-V_1)+A_6\,(P_6-P_a),\qquad \dot W_{prop}=F_{net}\,V_1,\qquad TSFC=\frac{\dot m_f}{F_{net}},\qquad \eta_{o}=\frac{F_{net}V_1}{\dot m_f\,HV}.$$
+
+**Gross thrust** is the jet's momentum plus pressure term, $\dot m\,V_6+A_6(P_6-P_a)$; **net thrust** subtracts the momentum of the incoming air ($\dot m\,V_1$, "ram drag"). On a test stand ($V_1=0$) they coincide. For a turbofan, sum the contributions of the core and bypass streams: $F=\dot m_c(V_{j1}-V_a)+\dot m_b(V_{j2}-V_a)$.
+
+<Remember title="Propulsive power, ESHP and ESFC (comparing engine types)">
+
+Jet thrust and propeller shaft power are compared through the **equivalent shaft horsepower**, ESHP: for a jet, the thrust divided by a static conversion factor (his slide divides by 8.5), for a turboprop the shaft power plus the residual jet. The fuel use is then the **equivalent specific fuel consumption** $ESFC=\dfrac{3600\,\dot m_f}{ESHP}$. On the marathon slide, with the same fuel flow of 0.022 kg/s: turboprop ESHP 273.7 and ESFC ≈ 0.29, turbofan 145.1 and ≈ 0.55, turbojet 99.1 and ≈ 0.80. Same fuel, more power, lower consumption as you go from jet to fan to prop (at the speeds where props work).
+
+</Remember>
+
+<TurbojetSim />
+
+<Problem id="Class example · turbojet" title="Test-stand turbojet, rp = 12, T04 = 1400 K, converging versus converging–diverging nozzle" tags="turbojet, stagnation, nozzle choking, thrust, TSFC">
+
+<Statement>
+
+A turbojet on a test stand (no flight speed, so no ram) has a compressor pressure ratio of 12 with $\eta_C=0.87$; ambient air is at 15 °C and 100 kPa; the turbine inlet temperature is 1400 K. The notebook leaves the turbine efficiency symbolic; take $\eta_T=0.90$, an ideal nozzle, $c_{p,a}=1.005$, and $c_{p,g}=1.147$ kJ/kg·K, $k_g=1.333$ for the hot gas. Fuel heating value 42 700 kJ/kg. Per kilogram per second of air, find the compressor exit state, the turbine exit state, and for (a) a converging nozzle and (b) a converging–diverging nozzle expanding to ambient: exit velocity, thrust and TSFC.
+
+</Statement>
+
+<Think>
+
+The standard turbojet chain in his order: compressor $\to$ ($w_T=w_C$) $\to$ turbine exit $\to$ nozzle. It is a "no-ram" problem, so intake and ambient are the same ($T_{02}=288$ K, $P_{02}=100$ kPa), which removes the diffuser step. The new lesson is the **nozzle choice**: whether a converging nozzle chokes decides the exit pressure and whether a pressure-thrust term appears.
+
+</Think>
+
+<Plan>
+
+$T_{03s}\to w_C$ real $\to T_{03}$ $\to T_{05}$ from $w_T=w_C$ $\to P_{05}$ via $\eta_T$ $\to$ choke check $\to V_6$ (two nozzles) $\to F$, $f$, TSFC.
+
+</Plan>
+
+<Steps>
+<Step title="1. Compressor (isentropic, then real)">
+
+$T_{03s}=288(12)^{0.2857}=288(2.0339)=585.8$ K. $w_{C,s}=1.005(585.8-288)=299.3$ kJ/kg; $w_C=\dfrac{299.3}{0.87}=344.0$ kJ/kg. $T_{03}=288+\dfrac{344.0}{1.005}=630.3$ K. $P_{03}=12(100)=1200$ kPa.
+
+</Step>
+<Step title="2. Combustor: heat and fuel">
+
+$q_A=c_{p,g}(T_{04}-T_{03})=1.147(1400-630.3)=882.9$ kJ/kg, so $f=\dfrac{882.9}{42\,700}=0.02068$ kg fuel per kg of air. $P_{04}=1200$ kPa.
+
+</Step>
+<Step title="3. Turbine: work balance gives T05">
+
+$w_T=w_C$: $1.147(1400-T_{05})=344.0\Rightarrow T_{05}=1400-299.9=\mathbf{1100.1\ K}$ (his 1100 K ✓). With $\eta_T=0.90$: $T_{05s}=1400-\dfrac{299.9}{0.90}=1066.8$ K and $P_{05}=1200\left(\dfrac{1066.8}{1400}\right)^{4.0}=\mathbf{404.2}$ kPa.
+
+*Check:* $P_{05}/P_{04}=0.34$ for a 300 K temperature drop: consistent with $k_g/(k_g-1)=4$.
+
+</Step>
+<Step title="4a. Converging nozzle: choked">
+
+$\dfrac{P_{05}}{P_a}=4.04>1.85$, so it **chokes**: $P_6=404.2(0.5399)=218.2$ kPa, $T_6=\dfrac{2(1100.1)}{2.333}=943.1$ K, $V_6=\sqrt{2000(1.147)(1100.1-943.1)}=\mathbf{600.2\ m/s}$ (his "$C=\sqrt{kRT}=600$" ✓). Exit density $\rho_6=\dfrac{218.2}{0.287(943.1)}=0.806$ kg/m³, so $A_6/\dot m=\dfrac{1}{0.806(600.2)}=0.002067$ m² per kg/s. Pressure thrust $=(218.2-100)(1000)(0.002067)=244$ N per kg/s. $F=600.2+244.3=\mathbf{844.5\ N\cdot s/kg}$. TSFC $=\dfrac{0.02068}{844.5}=24.5\ \text{mg/(N·s)}$.
+
+</Step>
+<Step title="4b. Converging–diverging nozzle, expanded to ambient">
+
+$T_6=1100.1\left(\dfrac{100}{404.2}\right)^{0.25}=776.1$ K, $V_6=\sqrt{2000(1.147)(1100.1-776.1)}=\mathbf{862.2\ m/s}$. $P_6=P_a$: no pressure thrust, $F=862.2$ N·s/kg and TSFC $=\dfrac{0.02068}{862.2}=24.0$ mg/(N·s). The diverging section gains 2 % in thrust here and costs weight; at higher ratios the gain is larger.
+
+</Step>
+<Step title="5. What the losses cost">
+
+With ideal components ($\eta_C=\eta_T=1$) and the same CD nozzle: $T_{03}=585.8$ K, $T_{05}=1139.1$ K, $V_6=941.7$ m/s, $F=965.0$ N·s/kg: the realistic engine delivers 89 % of the ideal thrust.
+
+</Step>
+</Steps>
+
+<Answer>
+
+$T_{03}=630$ K, $T_{05}=1100$ K, $P_{05}=404$ kPa. (a) Converging nozzle: $V_6=600$ m/s, $F=845$ N·s/kg. (b) CD nozzle: $V_6=862$ m/s, $F=862$ N·s/kg. TSFC ≈ 24 mg/(N·s).
+
+</Answer>
+
+<RealWorld title="Early turbojets">
+
+A TSFC of 24 mg/(N·s) (≈ 0.85 lb/(lbf·h)) is typical of 1960s turbojets; today's CFM56 turbofan at cruise is ≈ 17 mg/(N·s), because the fan moves more air more slowly. Use the sim above to see how $T_{04}$ and $r_c$ change thrust and TSFC.
+
+</RealWorld>
+
+<Traps>
+
+- The exam gives $c_p$ separately for air and gas: use $c_{p,a}$ for the compressor and $c_{p,g}$ for the turbine and nozzle.
+- A converging nozzle that chokes has $P_6>P_a$; leaving out the $A_6(P_6-P_a)$ term is the most common thrust mistake (his notebook computes $F=\dot m(V_6-V_1)$ only when the nozzle is fully expanded).
+- Fuel convention: here $q_A=c_{p,g}(T_{04}-T_{03})$ as in his notes; an exact energy balance on the combustor, $f=\dfrac{c_{p,g}T_{04}-c_{p,a}T_{03}}{HV-c_{p,g}T_{04}}$, gives $f=0.0237$ (14 % more fuel) with the same HV. Follow the convention of the question.
+
+</Traps>
+
+<Source>Anthony's review class notes (Exam_review pp. 72–79) · turbojet in the lib · ηT and ambient pressure supplied here</Source>
+
+</Problem>
+
+<Problem id="9-136 / 9-137" title="Turbojet in flight: ram, thrust and fuel flow, ideal then with losses" tags="turbojet, ram effect, propulsive power, fuel flow">
+
+<Statement>
+
+A turbojet flies at 280 m/s where the ambient state is 32 kPa and −32 °C. It takes in 50 kg/s of air; $r_c=12$; the turbine inlet is 1100 K; $HV=42\,700$ kJ/kg; $c_p=1.005$, $k=1.4$ throughout. The nozzle expands fully to ambient. (a) Ideal components: find $T_{02},P_{02},T_{03},T_{05},V_6$, the propulsive power and the fuel flow. (b) Repeat with $\eta_C=0.80$, $\eta_T=0.85$.
+
+</Statement>
+
+<Think>
+
+The complete jet-engine chain *with* flight speed: the new step is the **ram** compression $1\to2$ (stagnation values at the intake); everything else is the previous example. Part (b) shows that the losses cost about 28 % of thrust for 13 % less fuel.
+
+</Think>
+
+<Steps>
+<Step title="1. Ram compression">
+
+$T_{02}=T_1+\dfrac{V_1^2}{2000c_p}=241.15+\dfrac{280^2}{2010}=280.2$ K (his 280.004 K). $P_{02}=32\left(\dfrac{280.2}{241.15}\right)^{3.5}=\mathbf{54.1}$ kPa (his 54.09).
+
+</Step>
+<Step title="2. Compressor, then turbine (ideal)">
+
+$T_{03}=280.2(12)^{0.2857}=\mathbf{569.8}$ K (his 569.5), $P_{03}=12(54.08)=649.0$ kPa. $w_T=w_C$ with the same $c_p$: $T_{05}=T_{04}-(T_{03}-T_{02})=1100-289.7=\mathbf{810.3}$ K. Ideal turbine: $P_{05}=649.0\left(\dfrac{810.3}{1100}\right)^{3.5}=222.7$ kPa.
+
+</Step>
+<Step title="3. Nozzle and thrust">
+
+Expand to $P_a$: $T_6=810.3\left(\dfrac{32}{222.7}\right)^{0.2857}=465.5$ K, $V_6=\sqrt{2000(1.005)(810.3-465.5)}=\mathbf{832.5}$ m/s. $F=\dot m(V_6-V_1)=50(832.5-280)=27\,625$ N. $\dot W_{prop}=FV_1=27\,625(280)=\mathbf{7735\ kW}$.
+
+</Step>
+<Step title="4. Fuel">
+
+$\dot m_f=\dfrac{\dot m\,c_p(T_{04}-T_{03})}{HV}=\dfrac{50(1.005)(1100-569.8)}{42\,700}=\mathbf{0.624}$ kg/s. Overall efficiency $=\dfrac{7735}{0.624(42\,700)}=29.0$ %; TSFC $=\dfrac{0.624}{27\,625}=22.6$ mg/(N·s).
+
+</Step>
+<Step title="5. With losses (η_C = 0.80, η_T = 0.85)">
+
+$T_{03}=280.2+\dfrac{569.8-280.2}{0.80}=642.2$ K; $T_{05}=1100-(642.2-280.2)=738.0$ K; $T_{05s}=1100-\dfrac{362.0}{0.85}=674.1$ K, $P_{05}=649.0\left(\dfrac{674.1}{1100}\right)^{3.5}=116.9$ kPa; $T_6=738.0\left(\dfrac{32}{116.9}\right)^{0.2857}=509.7$ K, $V_6=\mathbf{677.4}$ m/s. $F=50(677.4-280)=19\,870$ N, $\dot W_{prop}=\mathbf{5563\ kW}$. $\dot m_f=\dfrac{50(1.005)(1100-642.2)}{42\,700}=\mathbf{0.539}$ kg/s.
+
+</Step>
+</Steps>
+
+<Answer>
+
+(a) $V_6=832.5$ m/s, $\dot W_{prop}=7735$ kW, $\dot m_f=0.624$ kg/s. (b) $V_6=677.4$ m/s, $\dot W_{prop}=5563$ kW, $\dot m_f=0.539$ kg/s.
+
+</Answer>
+
+<RealWorld title="Ram at altitude">
+
+At 280 m/s and 32 kPa (about 7.5 km) the ram ratio is only 1.69, yet it saves the compressor almost 40 K of work. At Mach 2+ the ram does most of the compression, which is why ramjets need no compressor at all.
+
+</RealWorld>
+
+<Traps>
+
+- Use the **stagnation** temperature $T_{02}$ (not the static $T_1$) as the compressor inlet, or the work and every downstream temperature are wrong.
+- The thrust is $\dot m(V_6-V_1)$, not $\dot mV_6$: the engine also *captured* momentum in the incoming air.
+
+</Traps>
+
+<Source>Anthony's Assignment 1 (9-136, 9-137) and review class · matches the printed answers: 832.7 m/s, 7738 kW, 0.6253 kg/s; 677.8 m/s, 5569 kW, 0.5391 kg/s</Source>
+
+</Problem>
+
+## Industrial turbines: expanding to rest with an exhaust diffuser
+
+In a land-based turbine the exhaust gas leaves the last turbine stage with considerable kinetic energy that is simply lost to the atmosphere. An **exhaust diffuser** slows the gas to rest, so that the *static* pressure at the turbine exit can be **below atmospheric** (the diffuser recovers the pressure rise up to ambient). The turbine then expands over a larger ratio $P_{03}/P_4$ and delivers more work. Habashi marks this as the one concept "many students, to the end of the semester, have trouble understanding": the turbine efficiency is defined with the isentropic temperature drop $T_{03}-T_{04s}=T_{03}\left[1-\left(\dfrac{P_4}{P_{03}}\right)^{(k-1)/k}\right]$, where $P_4$ is the (lower) static exit pressure, not ambient.
+
+## Habashi's traps
+
+<Trap title="Concepts the instructor says students still get wrong in chapter 9">
+
+1. **Stagnation versus static**: after the intake, every station is a stagnation value; do not mix a static $T_1$ with stagnation $T_{03}$.
+2. **Friction keeps $T_0$ but lowers $P_0$**: the same $T_0$ at a lower $P_0$ means higher entropy; a real compressor needs extra work to reach a target $P_{03}$.
+3. **Maximum work is not maximum efficiency** (see the Brayton sim).
+4. **Regeneration changes efficiency, not work; intercooling and reheat change work, and (without regeneration) lower efficiency.**
+5. **Gross versus net thrust**: net thrust subtracts the ram drag $\dot mV_1$; a choked converging nozzle adds a pressure thrust.
+6. **Jet engine 2000 K versus piston engine 3000 K** (his slide): the piston engine's peak is brief and the walls are cooled; the turbine sees the gas all the time.
+
+</Trap>
+
+<Examined>
+
+Assignment 1 (<Asg n="01" />) contains this chapter: 9-95 (Brayton with $\eta_C=0.85$, $\eta_T=0.88$, $c_p=1.108$, $k=1.35$: $\dot W_{net}=6484$ kW, $r_{bw}=0.511$, $\eta=37.8$ %), 9-97 (ideal cycle with two turbines, $r_p=8$, $T_1=273$ K, $T_3=1500$ K: $T_4=1278.5$ K, $P_4=457$ kPa, $\dot m=442$ kg/s), 9-109 (the 7FA with regenerator), 9-126 (two-stage compression, intercooling and reheat: $r_{bw}=0.433$, $\eta=29.5$ %, with a 75 % regenerator 46.1 %) and 9-136/9-137 (above). The 2021 final (<Ex id="final-2021" />) opens with a mandatory 25-mark turbojet: static state, ram $P_{01}/P_1=1.694$, $\eta_C=0.85$ compressor at $r_c=15$, $w_T=w_C$ with $c_{p,g}=1.147$, converging or CD nozzle, thrust and propulsive power. The midterm review class (<Ex id="midterm-review" />) walks the class example above.
+
+</Examined>
+
+## Check yourself
+
+1. For $T_1=300$ K and $T_3=1300$ K, at what pressure ratio is the ideal net work maximum and what are $T_2$ and $T_4$ there?
+
+<details>
+<summary>Answer</summary>
+
+$r_p=(1300/300)^{1.75}=13.0$, $T_2=T_4=\sqrt{300\cdot1300}=624.5$ K. The efficiency there is $1-13^{-0.2857}=0.52$, not the maximum possible (which keeps rising with $r_p$).
+
+</details>
+
+2. At the pressure ratio of maximum work, would a regenerator help? Why?
+
+<details>
+<summary>Answer</summary>
+
+No: there $T_4=T_2$, so the exhaust is no hotter than the compressed air; $\eta_{regen}=\eta_{simple}$. Regeneration needs $T_4>T_2$, i.e. a pressure ratio below the work optimum.
+
+</details>
+
+3. A real compressor ($\eta_C=0.85$) raises air from 288 K by a pressure ratio of 10. What is the exit temperature and why is it higher than 556 K?
+
+<details>
+<summary>Answer</summary>
+
+$T_{2s}=288(10)^{0.2857}=556.0$ K; $T_{2a}=288+\dfrac{556.0-288}{0.85}=603$ K. Friction turns extra work into heat in the gas; the pressure ratio is the same, the entropy is higher.
+
+</details>
+
+4. When does a converging nozzle on a turbojet choke? What happens to the thrust formula?
+
+<details>
+<summary>Answer</summary>
+
+When $P_{05}/P_a>\left(\dfrac{k_g+1}{2}\right)^{k_g/(k_g-1)}\approx1.85$. Then $M_6=1$, $P_6>P_a$, and the thrust has an extra pressure term $A_6(P_6-P_a)$.
+
+</details>
+
+5. Why does net thrust fall with flight speed at fixed engine operation even though the exit velocity barely changes?
+
+<details>
+<summary>Answer</summary>
+
+$F=\dot m(V_6-V_1)$: the captured momentum $\dot mV_1$ grows with speed (ram drag). The ram pressure rise helps the cycle, but it never outweighs that term at constant fuel flow, which is why a turbojet's thrust decreases with $V_1$ at low Mach number.
+
+</details>

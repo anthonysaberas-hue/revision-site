@@ -1,0 +1,440 @@
+<p className="eyebrow">Chapter 12 · Thermodynamic property relations · Final</p>
+
+# Thermodynamic property relations
+
+<div className="lede">
+
+You can **measure** pressure, specific volume, temperature and $c_p$. You cannot measure $u$, $h$ or $s$. Every steam table and every "ideal-gas" formula is therefore built from measured quantities and **partial-derivative relations** that tie the unmeasurable properties to the measurable ones. This chapter derives those relations (the Gibbs equations, the Maxwell relations, the general $du$, $dh$, $ds$ expressions), uses them in two famous applications (the **Clapeyron equation** for the enthalpy of vaporization, and the **Joule–Thomson coefficient** for throttling), and then corrects the ideal-gas equation for real gases with the **compressibility factor** and the **departure charts**. It is the first chapter of the final: more derivation, fewer cycles, and every problem is one formula applied carefully.
+
+</div>
+
+<Machine name="liquefying natural gas by Joule–Thomson expansion, and pumping CO₂ underground">
+
+Approximate (≈) values:
+
+- **LNG**: methane boils at **−162 °C (111 K)** at 1 atm; liquefied natural gas takes **≈ 1/600 of the gas volume**, which is what makes sea transport economical. Liquefying costs roughly **0.3–0.5 kWh per kg** (≈ 10 % of the gas's own energy). The classical liquefier (Linde cycle) compresses the gas, cools it with the returning cold stream in a heat exchanger and **throttles it through a valve**: for a real gas, $\mu_{JT}=(\partial T/\partial P)_h>0$ below the inversion temperature, so the expansion cools it a little each pass (typically **0.2–0.5 K per bar** for N₂ and CH₄ near room temperature, about 1 K/bar for CO₂); regeneration accumulates the cooling until the gas liquefies. Modern large plants use a turbo-expander and mixed refrigerants, but the J–T valve is still the final step.
+- **CO₂ pipelines** carry the gas as a dense fluid at **≈ 10 MPa and ≈ 40 °C**, above the critical point of CO₂ (7.39 MPa, 31 °C). There the compressibility factor is **$Z\approx0.27$** (course check with the generalized chart: $T_R=1.03$, $P_R=1.35$, $Z=0.275$), so the real density is about **600 kg/m³**, not the ideal-gas value of **169 kg/m³**: the ideal-gas law would size the pipe 3.6 times too large.
+- **Natural-gas transmission** at ≈ 7 MPa and 300 K: $Z\approx0.89$ (course check, methane: $T_R=1.57$, $P_R=1.51$, $Z=0.891$). A billing error of 11 % if you assume an ideal gas.
+- **A refrigerator's expansion valve is a J–T device**: the liquid R-134a drops from 800 kPa to 106 kPa at constant enthalpy and flashes to a mixture at −25 °C (quality 0.35): chapter 11 in one line.
+
+</Machine>
+
+## The 30-second version
+
+<Idea title="What to know cold">
+
+1. **Gibbs equations**: $du=T\,ds-P\,dv$, $dh=T\,ds+v\,dP$, $da=-s\,dT-P\,dv$, $dg=-s\,dT+v\,dP$.
+2. **Maxwell relations** (from the exactness of those four): $\left(\dfrac{\partial T}{\partial v}\right)_s=-\left(\dfrac{\partial P}{\partial s}\right)_v$, $\left(\dfrac{\partial T}{\partial P}\right)_s=\left(\dfrac{\partial v}{\partial s}\right)_P$, $\left(\dfrac{\partial s}{\partial v}\right)_T=\left(\dfrac{\partial P}{\partial T}\right)_v$, $\left(\dfrac{\partial s}{\partial P}\right)_T=-\left(\dfrac{\partial v}{\partial T}\right)_P$.
+3. **General changes**: $du=c_v\,dT+\left[T\left(\dfrac{\partial P}{\partial T}\right)_v-P\right]dv$, $\ dh=c_p\,dT+\left[v-T\left(\dfrac{\partial v}{\partial T}\right)_P\right]dP$, $\ ds=\dfrac{c_p}{T}dT-\left(\dfrac{\partial v}{\partial T}\right)_P dP$. For an ideal gas these collapse to $du=c_vdT$, $dh=c_pdT$.
+4. **Clapeyron**: $\left(\dfrac{dP}{dT}\right)_{sat}=\dfrac{h_{fg}}{T\,v_{fg}}$ ($T$ in **kelvin**); **Clapeyron–Clausius** at low pressure: $\ln\dfrac{P_2}{P_1}=\dfrac{h_{fg}}{R}\left(\dfrac1{T_1}-\dfrac1{T_2}\right)$.
+5. **Joule–Thomson**: $\mu_{JT}=\left(\dfrac{\partial T}{\partial P}\right)_h=-\dfrac1{c_p}\left[v-T\left(\dfrac{\partial v}{\partial T}\right)_P\right]$; throttling is $h=$ const; $\mu_{JT}=0$ for an ideal gas.
+6. **Real gas**: $Pv=ZRT$; $\Delta\bar h=\Delta\bar h_{ideal}-R_uT_{cr}(Z_{h2}-Z_{h1})$, $\ \Delta\bar s=\Delta\bar s_{ideal}-R_u(Z_{s2}-Z_{s1})$ (departure charts, $T_R=T/T_{cr}$, $P_R=P/P_{cr}$). Use $R_u$ with molar quantities and $R$ with per-kg quantities.
+
+</Idea>
+
+## Why property relations
+
+The **state postulate** says a simple compressible substance is fixed by two independent intensive properties. Everything else is a *function* of those two: $s=s(T,P)$, $h=h(T,P)$, $u=u(T,v)$. We need the *derivatives* of these functions (how does $s$ change with $P$ at constant $T$?) and we want to express them through the quantities we can measure ($P$, $v$, $T$, $c_p$). The mathematics needed is only three facts.
+
+**Exact differentials.** If $dz=M\,dx+N\,dy$ and $z=z(x,y)$ is a point function, then
+
+$$M=\left(\frac{\partial z}{\partial x}\right)_y,\ \ N=\left(\frac{\partial z}{\partial y}\right)_x\ \Rightarrow\ \left(\frac{\partial M}{\partial y}\right)_x=\left(\frac{\partial N}{\partial x}\right)_y\quad(\text{the order of differentiation does not matter}).$$
+
+**Reciprocity** $\left(\dfrac{\partial x}{\partial y}\right)_z=\dfrac{1}{(\partial y/\partial x)_z}$ and the **cyclic relation** $\left(\dfrac{\partial x}{\partial y}\right)_z\left(\dfrac{\partial y}{\partial z}\right)_x\left(\dfrac{\partial z}{\partial x}\right)_y=-1$. These two let you flip, rearrange and eliminate derivatives.
+
+## The Gibbs equations and the Maxwell relations
+
+The first law for a simple compressible closed system, reversible: $\delta Q=T\,ds$ and $\delta W=P\,dv$, so $du=T\,ds-P\,dv$. Because it contains only properties, it holds for **any** process of a simple compressible substance. Define $h=u+Pv$, the Helmholtz function $a=u-Ts$ and the Gibbs function $g=h-Ts$ and you get the four forms:
+
+| $du=T\,ds-P\,dv$ | $dh=T\,ds+v\,dP$ |
+|---|---|
+| $da=-s\,dT-P\,dv$ | $dg=-s\,dT+v\,dP$ |
+
+Applying the exactness test to each gives the four **Maxwell relations**:
+
+$$\left(\frac{\partial T}{\partial v}\right)_s=-\left(\frac{\partial P}{\partial s}\right)_v,\qquad \left(\frac{\partial T}{\partial P}\right)_s=\left(\frac{\partial v}{\partial s}\right)_P,\qquad \left(\frac{\partial s}{\partial v}\right)_T=\left(\frac{\partial P}{\partial T}\right)_v,\qquad \left(\frac{\partial s}{\partial P}\right)_T=-\left(\frac{\partial v}{\partial T}\right)_P.$$
+
+**Why they matter.** The last two are the useful ones: they replace the derivative of the **unmeasurable entropy** by derivatives of the **measurable** $P$, $v$ and $T$. "They provide a means of determining the change in entropy, which cannot be measured directly, by simply measuring the changes in $P$, $v$, $T$."
+
+**Quick checks with an ideal gas** ($Pv=RT$): $\left(\dfrac{\partial v}{\partial T}\right)_P=\dfrac RP$ and $\left(\dfrac{\partial P}{\partial T}\right)_v=\dfrac Rv$. So the fourth Maxwell relation says $\left(\dfrac{\partial s}{\partial P}\right)_T=-\dfrac RP$ (which is just $ds=-R\,dP/P$ at constant $T$: ✓) and the third says $\left(\dfrac{\partial s}{\partial v}\right)_T=\dfrac Rv$ (✓ $ds=R\,dv/v$).
+
+**Other derivatives to know** (his sheet): the expansion coefficient $\beta=\dfrac1v\left(\dfrac{\partial v}{\partial T}\right)_P$ and the isothermal compressibility $\kappa=-\dfrac1v\left(\dfrac{\partial v}{\partial P}\right)_T$; $c_v=T\left(\dfrac{\partial s}{\partial T}\right)_v$ and $c_p=T\left(\dfrac{\partial s}{\partial T}\right)_P$. The **Gibbs-equation ingredients** from $dh=T\,ds+v\,dP$: $T=\left(\dfrac{\partial h}{\partial s}\right)_P$ and $v=\left(\dfrac{\partial h}{\partial P}\right)_s$ (from which $u=h-P\left(\dfrac{\partial h}{\partial P}\right)_s$, $a=u-Ts$, $g=h-Ts$: the 12-17 exercise).
+
+<Problem id="12-15 · Maxwell check" title="Verify (∂s/∂P)_T = −(∂v/∂T)_P for R-134a at 50 °C and 0.7 MPa" tags="Maxwell, finite differences, tables">
+
+<Statement>
+
+Verify the fourth Maxwell relation for R-134a at 50 °C and 0.7 MPa using the property tables with finite differences.
+
+</Statement>
+
+<Think>
+
+A relation between two derivatives that you cannot compute from a formula (R-134a has no simple equation of state) but can estimate from tables: take **central differences** across the two neighbouring table rows. It tests that you know which variable is held fixed in each: $T=50$ °C for the entropy derivative (vary $P$), $P=0.7$ MPa for the volume derivative (vary $T$).
+
+</Think>
+
+<Steps>
+<Step title="1. Left side: (∂s/∂P) at constant T = 50 °C">
+
+At 50 °C: $s(0.75\ \text{MPa})=0.98768$ and $s(0.65\ \text{MPa})=1.00357$ kJ/kg·K (superheated table, interpolating in the neighbouring rows). $\left(\dfrac{\partial s}{\partial P}\right)_T\approx\dfrac{0.98768-1.00357}{100\ \text{kPa}}=-1.589\times10^{-4}$ kJ/kg·K·kPa = $-1.589\times10^{-4}$ m³/kg·K (since kJ/kPa = m³).
+
+</Step>
+<Step title="2. Right side: −(∂v/∂T) at constant P = 0.7 MPa">
+
+$v(55\ °C)=0.034106$ and $v(45\ °C)=0.032520$ m³/kg: $\left(\dfrac{\partial v}{\partial T}\right)_P\approx\dfrac{0.034106-0.032520}{10\ \text{K}}=1.585\times10^{-4}$ m³/kg·K, so $-\left(\dfrac{\partial v}{\partial T}\right)_P=-1.585\times10^{-4}$.
+
+</Step>
+<Step title="3. Compare">
+
+$-1.589\times10^{-4}$ versus $-1.585\times10^{-4}$: agreement to 0.3 %. The relation is verified; the small difference is the finite-difference error. (His notebook: $-1.595\times10^{-4}$ versus $-1.5895\times10^{-4}$, also validated.)
+
+</Step>
+</Steps>
+
+<Answer>
+
+$\left(\partial s/\partial P\right)_T=-1.589\times10^{-4}$ and $-\left(\partial v/\partial T\right)_P=-1.585\times10^{-4}$ m³/kg·K: equal within 0.3 %.
+
+</Answer>
+
+<RealWorld title="Why this is useful">
+
+This is exactly how a thermodynamic table is *built*: nobody measures entropy; the metrologists measure $v(T,P)$ and $c_p$ and integrate with the Maxwell relations.
+
+</RealWorld>
+
+<Source>Anthony's Chapter 12 re-solve (12-15) and the lecture example · values from the lib's R-134a properties</Source>
+
+</Problem>
+
+## General relations for du, dh, ds, cp and cv
+
+Choose the independent variables that match the property: $u(T,v)$, $h(T,P)$, $s(T,v)$ or $s(T,P)$. Then the differential and the Maxwell relations give a result containing only $P,v,T$ and $c_v$ or $c_p$. For internal energy:
+
+$$du=\left(\frac{\partial u}{\partial T}\right)_vdT+\left(\frac{\partial u}{\partial v}\right)_Tdv=c_v\,dT+\left[T\left(\frac{\partial s}{\partial v}\right)_T-P\right]dv=c_v\,dT+\left[T\left(\frac{\partial P}{\partial T}\right)_v-P\right]dv.$$
+
+The second equality uses $du=T\,ds-P\,dv$ at constant $T$; the third uses the Maxwell relation $\left(\dfrac{\partial s}{\partial v}\right)_T=\left(\dfrac{\partial P}{\partial T}\right)_v$. Likewise (from $dh=T\,ds+v\,dP$ and $\left(\dfrac{\partial s}{\partial P}\right)_T=-\left(\dfrac{\partial v}{\partial T}\right)_P$):
+
+$$\boxed{\begin{aligned}du&=c_vdT+\left[T\left(\tfrac{\partial P}{\partial T}\right)_v-P\right]dv,\qquad dh=c_pdT+\left[v-T\left(\tfrac{\partial v}{\partial T}\right)_P\right]dP\\ ds&=\frac{c_v}{T}dT+\left(\tfrac{\partial P}{\partial T}\right)_vdv=\frac{c_p}{T}dT-\left(\tfrac{\partial v}{\partial T}\right)_PdP\end{aligned}}$$
+
+Integrate from 1 to 2 along any path (these are properties!), usually: first at constant $T_1$ then at constant pressure. Further relations the lecture lists: $c_p-c_v=-T\left(\dfrac{\partial v}{\partial T}\right)_P^2\left(\dfrac{\partial P}{\partial v}\right)_T=\dfrac{vT\beta^2}{\kappa}$ (always $\ge0$, and equal to $R$ for an ideal gas), and the pressure and volume dependence of the specific heats, $(c_v-c_{v0})_T=T\int_{\infty}^{v}\left(\dfrac{\partial^2P}{\partial T^2}\right)_vdv$, $(c_p-c_{p0})_T=-T\int_0^P\left(\dfrac{\partial^2v}{\partial T^2}\right)_PdP$.
+
+**Ideal gas as a test.** With $Pv=RT$: $T\left(\dfrac{\partial P}{\partial T}\right)_v-P=T\dfrac Rv-P=0$, so $du=c_vdT$ (the volume dependence vanishes: Joule's law). And $v-T\left(\dfrac{\partial v}{\partial T}\right)_P=v-\dfrac{RT}{P}=0$, so $dh=c_pdT$. With $\left(\dfrac{\partial v}{\partial T}\right)_P=\dfrac RP$: $ds=c_p\dfrac{dT}T-R\dfrac{dP}P$, the formula from chapter 8.
+
+**A "different" gas: $P(v-a)=RT$** (the notebook's 12-34, 12-35, 12-42 family; $a$ is a constant). Then $\left(\dfrac{\partial P}{\partial T}\right)_v=\dfrac{R}{v-a}$ and $T\dfrac{R}{v-a}-P=0$: $du=c_vdT$ again (like an ideal gas). But $v=\dfrac{RT}P+a$ gives $v-T\left(\dfrac{\partial v}{\partial T}\right)_P=a$, so $dh=c_pdT+a\,dP$. For an isothermal process: $\Delta u=0$, $\Delta h=a\,(P_2-P_1)$ and $\Delta s=-R\ln\dfrac{P_2}{P_1}$ (his 12-42 ✓). The **enthalpy depends on pressure** for this fluid; for an ideal gas it does not.
+
+## The Clapeyron equation
+
+During a phase change at fixed $T$, the pressure is fixed too: $P=P_{sat}(T)$, so the quantity $\left(\dfrac{\partial P}{\partial T}\right)_v$ in the third Maxwell relation is just the slope of the saturation curve on a P–T diagram. For the liquid-to-vapour change at constant $T$:
+
+$$\frac{dP}{dT}\bigg|_{sat}=\left(\frac{\partial s}{\partial v}\right)_T=\frac{s_g-s_f}{v_g-v_f}=\frac{s_{fg}}{v_{fg}}=\frac{h_{fg}}{T\,v_{fg}}\quad(\text{because } h_{fg}=T\,s_{fg}\text{ at constant }T\text{ and }P).$$
+
+$$\boxed{\left(\frac{dP}{dT}\right)_{sat}=\frac{h_{fg}}{T\,v_{fg}}}\qquad\text{(Clapeyron, } T\text{ in kelvin)}$$
+
+It works for **any** phase change (replace $fg$ by $12$: melting, sublimation). Two uses: (i) from the slope of the saturation curve and the two volumes you get $h_{fg}$ (or $h_{ig}$) *without a calorimeter*; (ii) from one measured point and $h_{fg}$ you can extend the saturation curve. At **low pressure**, with $v_f\ll v_g$ and the vapour ideal ($v_{fg}\approx v_g=RT/P$), it becomes the **Clapeyron–Clausius** equation
+
+$$\left(\frac{dP}{dT}\right)_{sat}=\frac{h_{fg}P}{RT^2}\ \Rightarrow\ \ln\frac{P_2}{P_1}\approx\frac{h_{fg}}{R}\left(\frac{1}{T_1}-\frac1{T_2}\right).$$
+
+Because $h_{fg}$ is nearly constant over a small temperature range, $\ln P_{sat}$ is nearly linear in $1/T$: this is how vapour-pressure charts are drawn and why antoine-type correlations work. The slope of the saturation curve is *positive* for liquid-vapour (always) and for solid-vapour (always); for solid-liquid it is positive for most substances but **negative for water**, because ice is less dense than water ($v_{12}<0$ while $h_{12}>0$).
+
+<ClapeyronSim />
+
+<Problem id="Lecture · Clapeyron" title="h_fg of R-134a at 20 °C from the slope of the saturation curve" tags="Clapeyron, R-134a, finite difference">
+
+<Statement>
+
+Estimate the enthalpy of vaporization of R-134a at 20 °C using the Clapeyron equation, using only the saturation pressures at 16 °C and 24 °C and the saturated volumes at 20 °C. Compare with the table value (182.3 kJ/kg).
+
+</Statement>
+
+<Think>
+
+Clapeyron needs three things at 20 °C: $T$ (in K!), $v_{fg}$ (from the saturation table) and the *slope* $dP/dT$. The slope is not in the table but can be approximated by a central difference over $\pm4$ K, which is exactly his method.
+
+</Think>
+
+<Steps>
+<Step title="1. The slope from two table rows">
+
+<T>A-11 (R-134a saturated, by temperature): P_sat(24 °C) = 645.8 kPa, P_sat(16 °C) = 504.3 kPa</T>: $\dfrac{dP}{dT}\approx\dfrac{645.8-504.3}{24-16}=\mathbf{17.69}$ kPa/K (his: 17.68).
+
+</Step>
+<Step title="2. Volumes and temperature at 20 °C">
+
+<T>A-11 at 20 °C: v_f = 0.000816, v_g = 0.035997 m³/kg → v_fg = 0.03518 m³/kg</T>, and $T=20+273.15=293.15$ K.
+
+</Step>
+<Step title="3. Clapeyron">
+
+$h_{fg}=T\,v_{fg}\dfrac{dP}{dT}=293.15(0.03518)(17.69)=\mathbf{182.5}$ kJ/kg. Units: K · m³/kg · kPa/K = kPa·m³/kg = kJ/kg ✓.
+
+</Step>
+<Step title="4. Compare">
+
+<T>A-11 at 20 °C: h_fg = 182.28 kJ/kg</T>: the Clapeyron value is off by +0.1 %. The error comes from replacing the tangent by a chord over ±4 K; the sim above lets you shrink the half-width and watch the error vanish (and also shows how bad the Clausius–Clapeyron shortcut is near the critical point: about 19 % here: 216.7 versus 182.3 kJ/kg).
+
+</Step>
+</Steps>
+
+<Answer>
+
+$h_{fg}\approx182.5$ kJ/kg, against 182.3 kJ/kg in the tables. (He wrote $17.68$ kPa/K and 182.3 kJ/kg.)
+
+</Answer>
+
+<RealWorld title="Boiling point versus altitude">
+
+The Clapeyron–Clausius equation with $h_{fg}=2257$ kJ/kg for water explains why water boils at ≈ 95 °C in Denver (≈ 84 kPa) and why a pressure cooker (≈ 200 kPa) reaches 120 °C.
+
+</RealWorld>
+
+<Traps>
+
+- **$T$ in kelvin.** Forgetting $+273.15$ gives an error of 7 % here. This is the first item on his "mistakes" sheet.
+- Use the **correct slope** $dP/dT$ along the saturation curve, not $\Delta P/\Delta T$ at constant volume of a single phase.
+- Clausius–Clapeyron is for **low pressure** only (ideal vapour, negligible liquid volume).
+
+</Traps>
+
+<Source>Anthony's Chapter 12 lecture notes (Final review, 29 Oct) and Review chapter 12 · lib saturation properties</Source>
+
+</Problem>
+
+**Sublimation example (12-28).** Estimate the sublimation pressure of ice at −30 °C from the triple point (273.16 K, 0.6117 kPa) with $h_{ig}=2834$ kJ/kg. Use Clausius–Clapeyron with $R=0.4615$: $\ln\dfrac{P_2}{P_1}=\dfrac{2834}{0.4615}\left(\dfrac1{273.16}-\dfrac1{243.15}\right)=-2.775$, so $P_2=0.6117\,e^{-2.775}=0.0381$ kPa, against 0.0380 kPa in Table A-8 (his notebook: 0.0378). Note "$h_{ig}$ not $h_{fg}$": the phase change is solid to vapour.
+
+## The Joule–Thomson coefficient
+
+A **throttling valve** (a porous plug, a capillary tube, a partly open valve) is a steady-flow device with no heat, no work and negligible kinetic energy change, so $h_1=h_2$: **throttling is isenthalpic**. Pressure drops; what does the temperature do? The answer is the **Joule–Thomson coefficient**, defined as the slope of a constant-enthalpy line on a T–P diagram:
+
+$$\mu_{JT}=\left(\frac{\partial T}{\partial P}\right)_h.$$
+
+From $dh=c_p\,dT+\left[v-T\left(\dfrac{\partial v}{\partial T}\right)_P\right]dP=0$:
+
+$$\boxed{\mu_{JT}=-\frac1{c_p}\left[v-T\left(\frac{\partial v}{\partial T}\right)_P\right]=\frac{1}{c_p}\left[T\left(\frac{\partial v}{\partial T}\right)_P-v\right]}$$
+
+So $\mu_{JT}$ is computed from $c_p$ and the $P$–$v$–$T$ behaviour. Reading it:
+
+- **$\mu_{JT}>0$**: the fluid **cools** on expansion (the pressure falls, $dP<0$, so $dT<0$). This is the case for most gases at room temperature, and the basis of liquefiers.
+- **$\mu_{JT}<0$**: the fluid **warms** on expansion (hydrogen and helium at room temperature; they must be pre-cooled before they liquefy by J–T).
+- **$\mu_{JT}=0$**: at the **inversion temperature** (the maximum-cooling boundary) *and for an ideal gas*: $T\dfrac RP-v=0$. Throttling an ideal gas does not change its temperature, since $h=h(T)$ and $h$ is constant (his 12-58C: "helium behaves as an ideal gas, so $T$ stays constant").
+
+Physically: expansion makes the molecules move apart, against intermolecular attraction; the work done against attraction lowers the kinetic energy (cooling) if attraction dominates, while at high temperature and high density the repulsion dominates and the gas warms.
+
+**A liquid throttled below its saturation pressure** is different: it **flashes**, a fraction $x$ of it boiling, and the mixture falls to $T_{sat}(P_2)$ with $h_2=h_1$, so $x_2=\dfrac{h_1-h_f(P_2)}{h_{fg}(P_2)}$: this is the expansion valve of a refrigerator (the quality of state 4 in chapter 11).
+
+<JouleThomsonSim />
+
+<Problem id="12-62 · J–T" title="Steam throttled from 1 MPa, 300 °C to 0.8 MPa: temperature change and μ_JT" tags="throttling, Joule–Thomson, steam tables">
+
+<Statement>
+
+Steam at 1 MPa and 300 °C is throttled to 0.8 MPa. Find its final temperature and estimate the Joule–Thomson coefficient, both from the steam tables and from the general formula.
+
+</Statement>
+
+<Think>
+
+Two independent routes to the same answer, which is the whole point: (i) the direct way, $h_2=h_1$ and a lookup at the new pressure; (ii) the thermodynamic way, from $\mu_{JT}=\dfrac{1}{c_p}\left[T\left(\partial v/\partial T\right)_P-v\right]$ with table differences.
+
+</Think>
+
+<Steps>
+<Step title="1. Direct, from the tables">
+
+<T>A-6 at 1 MPa, 300 °C: h₁ = 3051.6 kJ/kg</T>. At 0.8 MPa with $h_2=3051.6$: <T>A-6 at 0.8 MPa: T₂ = 297.5 °C</T> (his 297.5 ✓). $\mu_{JT}\approx\dfrac{\Delta T}{\Delta P}=\dfrac{297.5-300}{-200\ \text{kPa}}=\mathbf{0.0124}$ K/kPa = **12.4 K/MPa**: the steam cools by 2.5 K, and $\mu>0$.
+
+</Step>
+<Step title="2. Thermodynamic route">
+
+At 1 MPa, from the table rows 290 and 310 °C: $\left(\dfrac{\partial v}{\partial T}\right)_P\approx\dfrac{0.26293-0.25301}{20}=4.96\times10^{-4}$ m³/kg·K, $v(300\ °C)=0.25798$ m³/kg, $c_p\approx\dfrac{h(310)-h(290)}{20}=2.143$ kJ/kg·K. $T\left(\dfrac{\partial v}{\partial T}\right)_P=573.15(4.96\times10^{-4})=0.2845$ m³/kg, so $\mu_{JT}=\dfrac{0.2845-0.2580}{2.143}=\mathbf{0.0124}$ K/kPa ✓ (same answer).
+
+</Step>
+<Step title="3. Sanity check with an ideal gas">
+
+An ideal gas has $T(\partial v/\partial T)_P=v$ and so $\mu_{JT}=0$. Steam at 1 MPa is *close* to ideal ($T(\partial v/\partial T)_P=0.2845$ versus $v=0.2580$, 10 % apart): hence the small effect, 12 K per MPa.
+
+</Step>
+</Steps>
+
+<Answer>
+
+$T_2=297.5$ °C (cooling of 2.5 K), $\mu_{JT}=12.4$ K/MPa by both routes.
+
+</Answer>
+
+<RealWorld title="Why a steam leak does not cool you">
+
+A real steam system throttles steam through a pressure-reducing station: its temperature barely moves (about 12 K per MPa) while the pressure drops; the steam leaves *superheated* and hotter than saturation. For R-134a vapour at 800 kPa, 60 °C throttled to 101 kPa the coefficient is larger, 16 K/MPa, and the vapour leaves at 48.5 °C.
+
+</RealWorld>
+
+<Traps>
+
+- Do not use $T$ constant for a *real* gas through a throttle, and do not use $s$ constant either: $h$ is constant and $s$ increases.
+- $\mu_{JT}$ is the *local* slope: over a large pressure drop integrate along the isenthalp (the sim does this).
+
+</Traps>
+
+<Source>Anthony's Assignment 5 (12-62, 12-58C) ✔ T₂ = 297.5 °C · lib steam properties</Source>
+
+</Problem>
+
+## Real gases: compressibility and the departure charts
+
+The ideal-gas law fails at **high pressure** and **low temperature** (near the critical point). The simplest correction is the **compressibility factor**
+
+$$Z=\frac{Pv}{RT}=\frac{v_{actual}}{v_{ideal}},\qquad P_R=\frac{P}{P_{cr}},\quad T_R=\frac{T}{T_{cr}},\quad v_R=\frac{v_{actual}}{RT_{cr}/P_{cr}}.$$
+
+The **principle of corresponding states**: at the same reduced $(T_R,P_R)$ all gases have nearly the same $Z$. This gives one generalized chart (Nelson–Obert; the Lee–Kesler correlation is the numerical version used in the sim). Rules of thumb: $Z\approx1$ for $P_R\ll1$ (low pressure) and for $T_R>2$ at moderate pressure; $Z$ is lowest (≈ 0.3) near the critical point; for $T_R<1$ and $P_R$ above the saturation value the gas is a **liquid** and the vapour chart does not apply.
+
+<ZChartSim />
+
+### Enthalpy and entropy departure
+
+The ideal-gas $h$ and $s$ tables ignore pressure. The **enthalpy departure** is the difference between the ideal-gas enthalpy and the real enthalpy at the *same $T$ and $P$*, obtained from the $P$–$v$–$T$ data by integrating the general relation $dh=c_pdT+\left[v-T\left(\dfrac{\partial v}{\partial T}\right)_P\right]dP$ along $T=$ const from $P\to0$:
+
+$$Z_h=\frac{\bar h^*-\bar h}{R_uT_{cr}}\quad(\text{enthalpy departure factor}),\qquad Z_s=\frac{\bar s^*-\bar s}{R_u}\quad(\text{entropy departure factor}),$$
+
+where $*$ denotes the ideal gas at the same $(T,P)$. Both come from the lower charts as functions of $(T_R,P_R)$. For a change of state **1 → 2** of a real gas:
+
+$$\bar h_2-\bar h_1=\left(\bar h_2-\bar h_1\right)_{ideal}-R_uT_{cr}\left(Z_{h2}-Z_{h1}\right),\qquad \bar s_2-\bar s_1=\left(\bar s_2^\circ-\bar s_1^\circ-R_u\ln\frac{P_2}{P_1}\right)-R_u\left(Z_{s2}-Z_{s1}\right).$$
+
+The procedure: (1) $T_{cr}$, $P_{cr}$ from Table A-1 (or the lib's critical constants); (2) $T_R$, $P_R$ at each state; (3) $Z_h$, $Z_s$ from the charts (or Lee–Kesler); (4) the ideal-gas change from the molar tables A-17 to A-25 (or $\int c_pdT$); (5) apply the corrections. **Use $R_u=8.314$ with molar ($\bar h$ in kJ/kmol); use $R=R_u/M$ with per-kg quantities** (his highlighted rule). The same machinery gives **mixture** properties with Kay's rule $T_{cr}'=\sum y_iT_{cr,i}$ (chapter 13).
+
+<Problem id="12-72" title="Steam heated at constant pressure from sat. vapour at 300 °C to 700 °C: departure charts versus the steam tables" tags="departure charts, real gas, steam tables">
+
+<Statement>
+
+Saturated water vapour at 300 °C (8587.9 kPa) is heated at constant pressure to 700 °C. Find $\Delta h$ and $\Delta s$ with the generalized enthalpy and entropy departure charts, and compare with the steam tables.
+
+</Statement>
+
+<Think>
+
+The simple chain: ideal-gas change from the $\bar h$ table, then subtract the departure terms using $T_R$, $P_R$ at the two states. The point of the exercise is the **comparison**: charts are for "average" non-polar fluids, and steam near saturation is a worst case.
+
+</Think>
+
+<Steps>
+<Step title="1. Reduced properties">
+
+<T>A-1 for water: T_cr = 647.1 K, P_cr = 22.06 MPa</T>. $P_R=\dfrac{8.588}{22.06}=0.389$ (both states). $T_{R1}=\dfrac{573.15}{647.1}=0.886$, $T_{R2}=\dfrac{973.15}{647.1}=1.504$.
+
+</Step>
+<Step title="2. Departure factors">
+
+From the charts (Lee–Kesler in the sim): $Z_{h1}=0.601$, $Z_{s1}=0.476$ (state 1 on the vapour side of saturation); $Z_{h2}=0.189$, $Z_{s2}=0.091$. (His chart readings: 0.601, 0.481, 0.204, 0.105.)
+
+</Step>
+<Step title="3. Ideal-gas change">
+
+From the ideal-gas $\bar h$ and $\bar s^\circ$ tables for H₂O between 573 K and 973 K: $\Delta h_{ideal}=853.1$ kJ/kg, $\Delta s_{ideal}=1.123$ kJ/kg·K (no pressure term: same $P$).
+
+</Step>
+<Step title="4. Correct">
+
+$\dfrac{R_uT_{cr}}{M}=\dfrac{8.314(647.1)}{18.015}=298.6$ kJ/kg. $\Delta h=853.1-298.6(0.189-0.601)=853.1+123.1=\mathbf{976}$ kJ/kg. $\dfrac{R_u}{M}=0.4615$: $\Delta s=1.123-0.4615(0.091-0.476)=1.123+0.178=\mathbf{1.30}$ kJ/kg·K.
+
+</Step>
+<Step title="5. Compare with the steam tables">
+
+<T>A-6 at 8.588 MPa: h(sat. vap. 300 °C) = 2749.6, h(700 °C) = 3878.6; s = 5.7059 → 7.2465</T>: $\Delta h=1129.0$ and $\Delta s=1.541$. The charts under-predict by **14 %** in $\Delta h$ and 16 % in $\Delta s$ (his 972.9 and 1.2954).
+
+</Step>
+</Steps>
+
+<Answer>
+
+Charts: $\Delta h\approx976$ kJ/kg, $\Delta s\approx1.30$ kJ/kg·K. Tables: 1129 kJ/kg and 1.54 kJ/kg·K. The generalized charts are not reliable for steam near saturation (polar fluid, state 1 almost at the dome); always prefer the steam tables when you have them.
+
+</Answer>
+
+<Traps>
+
+- Using the **ideal-gas** change alone (853 kJ/kg) would be off by 24 %: the departure term *is* the answer to "how real is the gas".
+- Mixing $R_u$ and $R$: $R_uT_{cr}Z_h$ is per kmol; divide by $M$ for per-kg.
+- Reading $Z_h$ at the wrong $T_R$ (use the **same** $P_R$ for both states in a constant-pressure process, but a different $T_R$).
+
+</Traps>
+
+<Source>Anthony's Chapter 12 re-solve (12-72) ✔ chart route 972.9 kJ/kg, table 1129 kJ/kg · Lee–Kesler values from the lib, ideal-gas change from the H₂O molar data</Source>
+
+</Problem>
+
+<Remember title="When to use which tool">
+
+- **Table exists for the fluid** (water, R-134a): use it; it is the real-gas answer.
+- **Ideal gas** ($P_R<0.1$ or $T_R>2$ at moderate $P_R$): $Pv=RT$, $\Delta h=\int c_pdT$.
+- **No table, high pressure / low $T$**: $Z$ and the departure charts (or an equation of state: $P(v-a)=RT$, van der Waals, etc., with $du$, $dh$, $ds$ integrated from the general relations).
+- **Phase change**: Clapeyron (or tables).
+- **Throttling**: $h=$ const; compute $\mu_{JT}$ if you need the local cooling rate.
+
+</Remember>
+
+## Habashi's traps
+
+<Trap title="The slips on Anthony's own 'mistakes' sheet for chapter 12, and the instructor's remarks">
+
+1. **Clapeyron needs $T$ in kelvin**: $\left(\dfrac{dP}{dT}\right)_{sat}=\dfrac{h_{fg}}{T\,v_{fg}}$.
+2. **Throttled means $h$ is constant and $P$ drops** (not $T$ constant, not $s$ constant).
+3. **Ideal gas**: $\left(\dfrac{\partial v}{\partial T}\right)_P=\dfrac RP$, $\mu_{JT}=0$, $du=c_vdT$ and $dh=c_pdT$.
+4. **Departure formulas**: $\bar h_2-\bar h_1=(\bar h_2-\bar h_1)_{ideal}-R_uT_{cr}(Z_{h2}-Z_{h1})$; the entropy version has $-R_u\ln(P_2/P_1)$ inside the ideal part. **Use $R_u$ with molar $\bar h$; $R$ with $h$ per kg.**
+5. **Maxwell's relations, boxed with a warning**: three of the four have signs that are easy to flip; derive them from $dh=T\,ds+v\,dP$ and $du=T\,ds-P\,dv$ if in doubt (the minus sign appears in the relation involving $s$ and $P$ at constant $T$).
+6. **Sublimation uses $h_{ig}$, not $h_{fg}$.**
+7. **"The generalized chart gives the real gas"**: only on average; check with tables when available (12-72: 14 % error).
+
+</Trap>
+
+<Examined>
+
+Assignment 5 (<Asg n="05" />) is this chapter: 12-11 (the change of $v$ of an ideal gas from 400 K, 100 kPa to 404 K, 96 kPa: total differential with average values about 0.058–0.060 m³/kg, exact difference 0.0598 m³/kg), 12-15 (the Maxwell check above), 12-17 ($T=(\partial h/\partial s)_P$ and the others), 12-20 ($(\partial s/\partial v)_T=R/v$), 12-26 (Clapeyron at 300 kPa: 2162 versus table 2163.5 kJ/kg), 12-28 (sublimation), 12-34, 12-35 and 12-42 ($P(v-a)=RT$ family), 12-58C and 12-62 (throttling), 12-72, 12-73 and 12-75 (departure charts: 12-73, oxygen from 220 K, 5 MPa to 300 K, 10 MPa, $\Delta\bar s_{ideal}=3.30$ and with departure 3.69 kJ/kmol·K; 12-75, CO₂ nozzle, $V_2\approx395$ m/s from his chart readings; the printed answer is 384 m/s) and 12-97 (propane: $w=1121$ kJ/kg with the cubic $c_p$; $\Delta s=1.587$ kJ/kg·K). The final (<Ex id="final-2021" />) tests this chapter with a derivation or a Maxwell/Clapeyron/J–T item and a departure-chart or compressibility calculation. His re-solves (Review chapter 12) practise 12-28, 12-34, 12-35, 12-40 (β and κ of R-134a) and 12-97.
+
+</Examined>
+
+## Check yourself
+
+1. Starting from $dh=T\,ds+v\,dP$, show that $\left(\dfrac{\partial s}{\partial P}\right)_T=-\left(\dfrac{\partial v}{\partial T}\right)_P$.
+
+<details>
+<summary>Answer</summary>
+
+Define $g=h-Ts$, so $dg=dh-T\,ds-s\,dT=v\,dP-s\,dT$. Exactness: $\left(\dfrac{\partial v}{\partial T}\right)_P=-\left(\dfrac{\partial s}{\partial P}\right)_T$. (This is the Maxwell relation from the Gibbs function.)
+
+</details>
+
+2. Water has $h_{fg}=2257$ kJ/kg at 100 °C (101.3 kPa). Use Clausius–Clapeyron to estimate $P_{sat}$ at 90 °C.
+
+<details>
+<summary>Answer</summary>
+
+$\ln\dfrac{P_2}{101.3}=\dfrac{2257}{0.4615}\left(\dfrac1{373.15}-\dfrac1{363.15}\right)=4890(-7.38\times10^{-5})=-0.361$, so $P_2=70.6$ kPa (the tables: 70.1 kPa).
+
+</details>
+
+3. Why is $\mu_{JT}=0$ for an ideal gas, and what is it for steam at 1 MPa, 300 °C?
+
+<details>
+<summary>Answer</summary>
+
+$T(\partial v/\partial T)_P=T\,R/P=v$ makes the bracket vanish. Steam at 1 MPa is close to ideal, so $\mu_{JT}$ is small but positive: 12.4 K/MPa (it cools by 2.5 K for a 0.2 MPa drop).
+
+</details>
+
+4. A gas at $T_R=1.5$ and $P_R=1$ has $Z=0.91$. What volume does one kmol occupy relative to the ideal gas?
+
+<details>
+<summary>Answer</summary>
+
+$v_{actual}=Z\,v_{ideal}=0.91\,v_{ideal}$: 9 % smaller than the ideal gas predicts (attractive forces dominate).
+
+</details>
+
+5. Why is the generalized departure chart a poor tool for steam at 8.6 MPa near saturation?
+
+<details>
+<summary>Answer</summary>
+
+Water is polar and hydrogen-bonded, so it does not follow the "simple fluid" corresponding-states correlation; state 1 sits almost on the dome where $Z_h$ changes steeply. For water use the steam tables: the 12-72 comparison gives 976 versus 1129 kJ/kg.
+
+</details>

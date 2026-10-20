@@ -1,0 +1,370 @@
+<p className="eyebrow">Chapter 8 · Thermo 1 refresher, exergy and the second law · Midterm</p>
+
+# Thermo 1 refresher, exergy and the second law
+
+<div className="lede">
+
+Thermo 2 is mostly *applications* of a handful of Thermo 1 ideas: the first law for a control volume, the state postulate and the property tables, the second law and entropy, and the difference between an **ideal** device and a **real** one (isentropic efficiency). If these are solid, chapters 9 to 11 (jet engines, steam plants, refrigerators) are bookkeeping on a T–s diagram. This chapter is the minimum you "absolutely should know" before starting, plus the one extension that makes the second law quantitative: **exergy**, the useful work that a stream of energy is really worth.
+
+</div>
+
+<Machine name="a car engine, and where its fuel goes">
+
+A petrol car engine is the cleanest place to *feel* the second law. Typical values (all ≈, they vary with load and engine):
+
+- brake thermal efficiency **≈ 25–35 %** at best (≈ 20 % in ordinary driving; modern hybrids' Atkinson engines reach ≈ 40 %);
+- **≈ 30–35 %** of the fuel energy leaves in the exhaust (hot gas at ≈ 700–900 °C), **≈ 25–30 %** through the coolant and radiator;
+- peak in-cylinder gas temperature **≈ 2500–3000 K** for a few milliseconds, yet the cycle-average temperature the metal sees is far lower (the slide asks "jet engine 2000 K vs ICE 3000 K: why?", see the traps below);
+- a coal power plant: **≈ 33–40 %** thermal efficiency; a modern gas-and-steam combined cycle: **≈ 60 %**; the Carnot limit for a 2000 K source and a 300 K sink is **85 %**.
+
+Every number on this site's later chapters is some version of this audit: how much of the energy that enters leaves as work, and where the rest goes.
+
+</Machine>
+
+<EngineLossFigure />
+
+## The 30-second version
+
+<Idea title="What you must be able to do">
+
+1. **Closed system**: $\Delta E=Q_{in}-W_{by}$ (in a closed system with no motion, $\Delta E=\Delta U=m\,\Delta u$).
+2. **Steady-flow device** (turbine, compressor, pump, nozzle, boiler, condenser, mixing chamber, heat exchanger): $\dot Q-\dot W=\sum\dot m_{out}\left(h+\tfrac{V^2}{2}+gz\right)-\sum\dot m_{in}\left(h+\tfrac{V^2}{2}+gz\right)$. Mass: $\sum\dot m_{in}=\sum\dot m_{out}$. Kinetic and potential terms are dropped unless the problem is a nozzle or a jet.
+3. **State postulate**: any state of a simple compressible substance is fixed by two independent intensive properties. You *measure* $P,v,T$; you *look up or compute* $u,h,s$.
+4. **Pick the table by the region**: compressed liquid, saturated mixture (inside the dome), superheated vapour.
+5. **Second law**: $s_{gen}\ge0$ ($=0$ reversible). For an adiabatic steady device, $s_{out}\ge s_{in}$; "isentropic" is the **ideal** limit.
+6. **Real devices**: $\eta_T=\dfrac{w_a}{w_s}=\dfrac{h_1-h_{2a}}{h_1-h_{2s}}$ for a turbine and $\eta_C=\dfrac{w_s}{w_a}=\dfrac{h_{2s}-h_1}{h_{2a}-h_1}$ for a compressor or pump.
+7. **Exergy** (this chapter's extension): the reversible work between two states and an environment at $T_0$; **destroyed** exergy is $T_0\,s_{gen}$.
+
+</Idea>
+
+## Energy, heat, work and efficiency
+
+Energy crosses a boundary only as **heat** $Q$, **work** $W$, or with **mass flow** (carrying $h$). Properties ($u,h,s,P,v,T$) are *point functions*: they depend only on the state, not on the path. Heat and work are *path functions*: their value depends on how you went from 1 to 2. This is why you can compute $\Delta h$ or $\Delta s$ with *any* convenient path, but $Q$ and $W$ only with the actual process.
+
+Habashi insists on separating three words that students blur:
+
+- **Thermal efficiency** is the efficiency of an entire **cycle**, $\eta_{th}=\dfrac{w_{net}}{q_{in}}=1-\dfrac{q_{out}}{q_{in}}$, even if the cycle is ideal (all components isentropic).
+- **Isentropic efficiency** is the efficiency of a **single component** (one process 1 to 2) because of friction or heat loss.
+- **No isentropic process exists in real life.** We define isentropic efficiency just to *measure how far from ideal* a real turbine or compressor is.
+
+Cycle efficiency is bounded by Carnot: $\eta_{th}<1-\dfrac{T_L}{T_H}$ (always; a cycle with 100 % thermal efficiency would violate Kelvin–Planck).
+
+## Properties: tables, the state postulate and the ideal gas
+
+### Which region am I in?
+
+For water (tables A-4 to A-7) or R-134a (A-11 to A-13):
+
+| Given | Look at | Region |
+|---|---|---|
+| $T,P$ | compare $T$ with $T_{sat}(P)$ | $T<T_{sat}$: compressed liquid; $T>T_{sat}$: superheated vapour |
+| $P,v$ | compare $v$ with $v_f,v_g$ at $P$ | $v<v_f$ liquid; $v_f<v<v_g$ mixture; $v>v_g$ vapour |
+| $P,s$ or $P,h$ | compare with $s_f,s_g$ (or $h_f,h_g$) | same idea |
+| $T,x$ or $P,x$ | quality | inside the dome |
+
+Inside the dome, any extensive-per-mass property is a **linear mix** of the saturated values: $v=v_f+x\,v_{fg}$, $u=u_f+x\,u_{fg}$, $h=h_f+x\,h_{fg}$, $s=s_f+x\,s_{fg}$ with $x=\dfrac{m_g}{m_{total}}$. The temperature and the pressure are tied together ($T=T_{sat}(P)$) and are **not** independent there; that is why you need $x$ as the second property.
+
+**Compressed liquid** has no table in most problems; use $v\approx v_f(T)$, $h\approx h_f(T)+v_f(P-P_{sat})$, $s\approx s_f(T)$. For a **pump** this is exactly $w=v\,\Delta P$.
+
+### Ideal gas
+
+$Pv=RT$, with $R=R_u/M$ and $R_u=8.314$ kJ/kmol·K (air: $R=0.287$ kJ/kg·K). $\Delta u=\int c_v\,dT$, $\Delta h=\int c_p\,dT$, $c_p-c_v=R$, $k=c_p/c_v$ ($k_{air}=1.4$).
+
+- **Perfect gas** (constant $c_p$): $\Delta h=c_p\Delta T$. Use when the problem says "cold-air standard" or does not give the air tables.
+- **Semi-perfect gas** ($c_p=c_p(T)$): use the air table (A-17) with $h(T)$, $P_r(T)$, $v_r(T)$.
+
+<Trap title="Never interpolate a specific volume linearly across a wide pressure gap">
+
+For a vapour, $v\propto1/P$ is far from linear. Interpolate $Pv$ (nearly constant) or $1/v$, or use a closer table row. This is the trap in Anthony's own Assignment 1, problem 4-9 below: a linear interpolation between 0.1 and 0.2 MPa gave $v=1.6264$ m³/kg where the true value is 1.4445 m³/kg, an error of 12 %.
+
+</Trap>
+
+<Problem id="A1 · 4-9" title="Boundary work with an interpolation trap" tags="piston-cylinder, boundary work, interpolation">
+
+<Statement>
+
+A piston–cylinder device holds 5 kg of saturated water vapour at 150 kPa. It is heated at constant pressure until the temperature reaches 200 °C. Find the boundary work.
+
+</Statement>
+
+<Think>
+
+Constant pressure means $W_b=P(V_2-V_1)=mP(v_2-v_1)$. State 1 is saturated vapour (look up $v_g$ at 150 kPa); state 2 is superheated at 150 kPa and 200 °C. The only difficulty is getting $v_2$: many textbooks print the superheated table at 100 and 200 kPa but not at 150.
+
+</Think>
+
+<Plan>
+
+$v_1=v_g$ at 150 kPa $\to$ $v_2$ at (150 kPa, 200 °C), done by interpolating **$Pv$** between the 100 and 200 kPa tables $\to$ $W_b=mP(v_2-v_1)$.
+
+</Plan>
+
+<Steps>
+<Step title="1. State 1: saturated vapour at 150 kPa">
+
+Table A-5 at 150 kPa: $v_1=v_g=1.1594$ m³/kg.
+
+</Step>
+<Step title="2. State 2 by interpolating P·v, not v">
+
+At 200 °C: $v(100\ \text{kPa})=2.1725$ and $v(200\ \text{kPa})=1.0803$ m³/kg, so $Pv=217.25$ and $216.06$ kJ/kg. Their average at 150 kPa is $216.66$ kJ/kg, so $v_2=\dfrac{216.66}{150}=1.4444$ m³/kg. (Direct property evaluation: 1.4445.) Linear interpolation in $v$ itself would give $\tfrac12(2.1725+1.0803)=1.6264$ m³/kg: 12 % too large.
+
+</Step>
+<Step title="3. Work">
+
+$W_b=mP(v_2-v_1)=5(150)(1.4445-1.1594)=\mathbf{213.8\ kJ}$. The book's printed answer is 214 kJ; the linear-interpolation value gives about 359 kJ.
+
+</Step>
+</Steps>
+
+<Answer>
+
+$W_b\approx214$ kJ (positive: the gas does work on the piston).
+
+</Answer>
+
+<RealWorld title="The same arithmetic runs a steam engine">
+
+The 5 kg of steam at 1.5 bar is a small boiler-sized charge; the boundary work equals the area under the constant-pressure line on the P–V diagram. A steam locomotive does this arithmetic every stroke.
+
+</RealWorld>
+
+<Traps>
+
+- ⚠ **Anthony's own slip** (Assignment 1): $v_2=1.6264$ by linear interpolation gave 359 kJ; the correct value is 214 kJ. The lesson he wrote down: $v\propto1/P$, interpolate $Pv$ or $1/v$.
+- Do not mix $P$ in kPa with $v$ in m³/kg and expect kJ: $\text{kPa}\times\text{m}^3=\text{kJ}$ directly, so it works, but check units.
+
+</Traps>
+
+<Source>Anthony's Assignment 1 solution (Ass1, problem 4-9) · values rechecked with the steam tables</Source>
+
+</Problem>
+
+<Problem id="A1 · 4-11" title="Isothermal expansion of a saturated liquid to quality 0.8" tags="saturation, boundary work, mass">
+
+<Statement>
+
+One cubic metre of saturated liquid water at 200 °C is expanded isothermally in a closed piston–cylinder device until its quality is 0.8. Find the final volume and the boundary work.
+
+</Statement>
+
+<Think>
+
+Isothermal inside the dome means constant pressure too ($P_{sat}(200\,°C)$), so $W_b=P\,\Delta V$.
+
+</Think>
+
+<Steps>
+<Step title="1. Mass from the saturated-liquid volume">
+
+At 200 °C: $P_{sat}=1554.9$ kPa, $v_f=0.001157$ m³/kg, $v_g=0.12721$ m³/kg. $m=V_1/v_f=1/0.001157=864.3$ kg.
+
+</Step>
+<Step title="2. Final volume at x = 0.8">
+
+$v_2=v_f+x(v_g-v_f)=0.001157+0.8(0.12605)=0.10199$ m³/kg, so $V_2=mv_2=864.3(0.10199)=\mathbf{88.2\ m^3}$.
+
+</Step>
+<Step title="3. Work at constant P">
+
+$W_b=P(V_2-V_1)=1554.9(88.2-1)\approx\mathbf{1.356\times10^5\ kJ}$ (135.6 MJ).
+
+</Step>
+</Steps>
+
+<Answer>
+
+$V_2\approx88.2$ m³, $W_b\approx1.356\times10^5$ kJ. His notebook gives 135 523 kJ.
+
+</Answer>
+
+<Source>Anthony's Assignment 1 solution (4-11) ✔ matches the steam tables to 0.05 %</Source>
+
+</Problem>
+
+## Entropy and the second law
+
+**Statements.** Kelvin–Planck: no cyclic device can take heat from a single reservoir and deliver an equal amount of work. Clausius: heat cannot pass from cold to hot with no other effect. The two are equivalent. **Carnot principles**: (1) an irreversible engine is less efficient than a reversible one between the same two reservoirs; (2) all reversible engines between the same two reservoirs have the same efficiency, $1-T_L/T_H$.
+
+**Entropy.** $ds\ge\dfrac{\delta q}{T}$, equality for a reversible process. For an adiabatic device the entropy can only stay the same or increase: **$s_{gen}=s_2-s_1\ge0$** (per unit mass, steady flow). Entropy is "a measure of the loss of energy available to do work": every irreversibility (friction, mixing, heat transfer across a finite $\Delta T$) increases it.
+
+**Ideal-gas $\Delta s$**:
+
+$$s_2-s_1=c_p\ln\frac{T_2}{T_1}-R\ln\frac{P_2}{P_1}=c_v\ln\frac{T_2}{T_1}+R\ln\frac{v_2}{v_1}\qquad(\text{perfect gas}).$$
+
+For a semi-perfect gas, $s_2-s_1=s^\circ(T_2)-s^\circ(T_1)-R\ln\dfrac{P_2}{P_1}$ with $s^\circ$ from the table. **Isentropic** ($\Delta s=0$) for a perfect gas: $\dfrac{T_2}{T_1}=\left(\dfrac{P_2}{P_1}\right)^{(k-1)/k}=\left(\dfrac{v_1}{v_2}\right)^{k-1}$; with the table: $\dfrac{P_{r2}}{P_{r1}}=\dfrac{P_2}{P_1}$. **Liquids and vapours** have no such formula: use the tables with $s_2=s_1$.
+
+**The T–s diagram** is the language of Thermo 2: for an internally reversible process, $q=\int T\,ds$, the **area under the path** is the heat; for a cycle, the **enclosed area is the net work** ($w_{net}=q_{in}-q_{out}$). The most common confusion (Habashi says "many students have trouble to the end of the semester" with this): the area under a T–s path is **heat**, not work. Work is the *enclosed* area of the cycle, or $\Delta h$ across a turbine.
+
+## Isentropic efficiency of a turbine, compressor and pump
+
+<Remember title="The three formulas (the same idea each time: actual versus ideal for the SAME inlet and the SAME exit pressure)">
+
+$$\eta_T=\frac{w_a}{w_s}=\frac{h_1-h_{2a}}{h_1-h_{2s}},\qquad \eta_C=\frac{w_s}{w_a}=\frac{h_{2s}-h_1}{h_{2a}-h_1},\qquad \eta_P=\frac{w_s}{w_a}=\frac{v\,(P_2-P_1)}{h_{2a}-h_1}.$$
+
+A device that *produces* work: actual over ideal (the real output is smaller). A device that *consumes* work: ideal over actual (the real input is larger). To get $h_{2a}$ from $\eta_T$: $h_{2a}=h_1-\eta_T(h_1-h_{2s})$, then look up the state at $(P_2,h_{2a})$.
+
+</Remember>
+
+**A subtle difference that Habashi stresses** (slide on compressors): in a *pump* we put in a certain amount of work and, with losses, get to a **lower pressure**; in a *compressor* we must reach a **specified pressure**, so a real device does **more work** to get there. That is why $\eta_C$ uses the work needed for a given pressure ratio, and why the exit temperature of a real compressor is higher than the ideal one: $T_{2a}=T_1+\dfrac{T_{2s}-T_1}{\eta_C}$ (perfect gas).
+
+## Exergy: what work is really worth
+
+The first law counts energy; it does not distinguish a kilojoule of electricity from a kilojoule of lukewarm water. The second law does, through **exergy** (also called availability): the maximum useful work obtainable as a system comes to equilibrium with the **environment** at $T_0$ (usually 25 °C = 298.15 K, 101.3 kPa).
+
+For two states with the surroundings at $T_0$, the **reversible work** of a steady-flow device exchanging heat only with the environment is
+
+$$w_{rev}=(h_1-h_2)-T_0\,(s_1-s_2)\qquad(\text{ignoring } V^2\text{ and } z).$$
+
+The **actual** work of an adiabatic device is $w_a=h_1-h_2$, so
+
+$$\boxed{\,w_{rev}-w_a=T_0\,(s_2-s_1)=T_0\,s_{gen}=x_{dest}\,}$$
+
+**Exergy destroyed equals $T_0$ times entropy generated.** The **second-law efficiency** of a work-producing device is $\eta_{II}=\dfrac{w_a}{w_{rev}}$. Two further facts:
+
+- **Exergy of heat** $Q$ available at temperature $T$: $X_Q=Q\left(1-\dfrac{T_0}{T}\right)$, the Carnot factor. Heat at 2000 K is worth 85 %; heat at 350 K only 15 %.
+- A **flow stream** has specific flow exergy $\psi=(h-h_0)-T_0(s-s_0)+\tfrac{V^2}{2}+gz$. For a mixing chamber or feedwater heater the destruction is $x_{dest}=T_0\left[\sum\dot m_{out}s_{out}-\sum\dot m_{in}s_{in}\right]/\dot m$. This is what the Tutorial uses on the open feedwater heater (chapter 10): $i=T_0\left[s_3-y\,s_6-(1-y)\,s_2\right]$.
+
+<TurbineExergySim />
+
+<HeatExergySim />
+
+<Problem id="Exergy · turbine" title="Exergy destroyed in a real steam turbine" tags="isentropic efficiency, entropy generation, exergy">
+
+<Statement>
+
+Steam enters an adiabatic turbine at 4 MPa and 400 °C and leaves at 10 kPa. The isentropic efficiency is 0.85. The environment is at 25 °C. Find the actual work, the entropy generation, the destroyed exergy and the second-law efficiency. (These are the same boiler and condenser conditions as the Chapter 10 class example.)
+
+</Statement>
+
+<Think>
+
+Two lookups with the steam tables (superheated at the inlet; the ideal exit is inside the dome), the efficiency formula to get $h_{2a}$, a third lookup to get $s_{2a}$ at $(P_2,h_{2a})$, then the two exergy lines. It teaches that entropy is generated **only** in the real process: ideal exit and real exit have the same $P$ and different $s$.
+
+</Think>
+
+<Plan>
+
+State 1 $(P,T)\to h_1,s_1$ $\to$ state $2s$ $(10\ \text{kPa},s_1)\to h_{2s}$ $\to$ $w_s,\ w_a=\eta_Tw_s,\ h_{2a}$ $\to$ state $2a$ $(10\ \text{kPa},h_{2a})\to s_{2a}\to s_{gen},\ x_{dest},\ w_{rev},\ \eta_{II}$.
+
+</Plan>
+
+<Steps>
+<Step title="1. Inlet state">
+
+<T>A-6 at 4 MPa, 400 °C: h₁ = 3214.5 kJ/kg, s₁ = 6.7714 kJ/kg·K</T>
+
+</Step>
+<Step title="2. Ideal (isentropic) exit">
+
+At 10 kPa: $s_f=0.6492$, $s_{fg}=7.4996$ (so $s_{2s}=s_1$ lies inside the dome). $x_{2s}=\dfrac{6.7714-0.6492}{7.4996}=0.8163$ and $h_{2s}=191.81+0.8163(2392.1)=2144.5$ kJ/kg. $w_s=3214.5-2144.5=1070.0$ kJ/kg.
+
+</Step>
+<Step title="3. Real exit state">
+
+$w_a=\eta_Tw_s=0.85(1070.0)=909.5$ kJ/kg, so $h_{2a}=3214.5-909.5=2305.0$ kJ/kg. At 10 kPa this is $x_{2a}=\dfrac{2305.0-191.81}{2392.1}=0.8834$ and $s_{2a}=0.6492+0.8834(7.4996)=7.2745$ kJ/kg·K.
+
+*Check:* the real exit is **drier** ($x$ 0.883 versus 0.816): the irreversibility has reheated the steam. $s_{2a}>s_1$ ✓.
+
+</Step>
+<Step title="4. Entropy generation and destroyed exergy">
+
+$s_{gen}=s_{2a}-s_1=7.2745-6.7714=\mathbf{0.5032}$ kJ/kg·K. With $T_0=298.15$ K: $x_{dest}=T_0s_{gen}=298.15(0.5032)=\mathbf{150.0}$ kJ/kg.
+
+</Step>
+<Step title="5. Reversible work and second-law efficiency">
+
+$w_{rev}=(h_1-h_{2a})-T_0(s_1-s_{2a})=909.5+150.0=1059.5$ kJ/kg. $\eta_{II}=\dfrac{w_a}{w_{rev}}=\dfrac{909.5}{1059.5}=\mathbf{0.858}$.
+
+*Check:* $w_{rev}-w_a=150.0=x_{dest}$ ✓ (by construction). $\eta_{II}\ne\eta_T$: they differ because the reference ("best possible") is not the same: $\eta_T$ compares with the isentropic expansion to the *same pressure*, $\eta_{II}$ with the best that *these* end states allow.
+
+</Step>
+</Steps>
+
+<Answer>
+
+$w_a=909.5$ kJ/kg, $s_{gen}=0.503$ kJ/kg·K, $x_{dest}=150$ kJ/kg (14 % of the inlet-to-ideal work is lost), $\eta_{II}=0.858$.
+
+</Answer>
+
+<RealWorld title="A turbine in a coal plant">
+
+A large utility steam turbine has $\eta_T\approx0.88$–$0.92$ (typical); at 0.85 it would be a poor machine. Every 1 % of turbine efficiency on a 500 MW unit is worth about 5 MW of extra output for the same fuel.
+
+</RealWorld>
+
+<Traps>
+
+- Using $T_0$ in °C in $T_0s_{gen}$: it must be kelvin.
+- Finding $s_{2a}$ from $s_{2s}$: it is a **different state** at the same pressure; you need $h_{2a}$ first.
+
+</Traps>
+
+<Source>Constructed from the Chapter 10 class example (4 MPa, 400 °C, 10 kPa); numbers from the lib's water properties</Source>
+
+</Problem>
+
+## Habashi's traps
+
+<Trap title="Concepts students keep getting wrong (from the instructor's review)">
+
+1. **Thermal efficiency is a cycle quantity; isentropic efficiency is a component quantity.** A cycle can be ideal (all components isentropic) and still have a thermal efficiency far below 1 (the Carnot bound).
+2. **The area under the T–s curve is heat, not work.** Net work is the enclosed area.
+3. **Pump versus compressor**: a pump gets less pressure for its work; a compressor must reach the pressure and so does more work. Both are handled by $\eta=w_s/w_a$.
+4. **"Why 2000 K in a jet engine but 3000 K in a piston engine?"** The piston engine reaches 3000 K only for an instant in each cycle and the walls are cooled; the turbine blades see the hot gas **continuously**, so the allowable steady temperature (the material limit, helped by blade cooling) is lower than the engine's peak flame temperature.
+5. The perfect-gas assumption ($c_p$ constant) is a *subset* of the ideal gas, the same way "incompressible" is a subset of compressible. If a problem gives you the air table, do not use $T_2/T_1=(P_2/P_1)^{(k-1)/k}$; use $P_{r}$.
+
+</Trap>
+
+<Examined>
+
+Assignment 1 (<Asg n="01" />) opens with the Thermo 1 review problems: 4-9 (interpolation trap), 4-11 (saturation and mass), 4-15 (polytropic $PV^{1.5}$: $P_2=20.33$ kPa, $W=\dfrac{P_2V_2-P_1V_1}{1-n}=12.9$ kJ), 6-22 (a 150 MW plant burning 60 t/h of coal at 30 000 kJ/kg: $\eta=\dfrac{150\,000}{(60\,000/3600)(30\,000)}=30\ \%$) and 7-26. The midterm review class (<Ex id="midterm-review" />) starts with the same conventions: isentropic efficiency of the pump, compressor and turbine, and $q_{in}$, $q_{out}$ definitions. The exergy results above are used on the open feedwater heater in the Chapter 10 tutorial.
+
+</Examined>
+
+## Check yourself
+
+1. A steam turbine has $\eta_T=0.80$ and an ideal specific work of 1000 kJ/kg. What are the real work and the exit enthalpy relative to the ideal exit?
+
+<details>
+<summary>Answer</summary>
+
+$w_a=0.80(1000)=800$ kJ/kg, so the real exit enthalpy is 200 kJ/kg **higher** than $h_{2s}$ (the real exit is hotter and drier or more superheated). Never apply $\eta$ to the exit temperature of a vapour.
+
+</details>
+
+2. A compressor must raise air from 100 to 800 kPa. Is the exit temperature of the real (adiabatic) compressor higher or lower than the isentropic exit temperature? Why?
+
+<details>
+<summary>Answer</summary>
+
+Higher. The real machine needs more work for the same pressure ($w_a=w_s/\eta_C$), all of which is converted to enthalpy of the gas ($q=0$): $T_{2a}=T_1+(T_{2s}-T_1)/\eta_C$.
+
+</details>
+
+3. Heat of 1000 kJ is available at 600 K. The environment is at 300 K. What is the largest amount of work you could get from it, and what if the heat were at 400 K?
+
+<details>
+<summary>Answer</summary>
+
+$X=1000(1-300/600)=500$ kJ at 600 K; $1000(1-300/400)=250$ kJ at 400 K. Heat at lower temperature is worth less work.
+
+</details>
+
+4. In the turbine problem, why is $s_{gen}$ positive but $s_{2a}-s_{2s}$ also positive? Are they the same number?
+
+<details>
+<summary>Answer</summary>
+
+Yes: both exits are at the same pressure, $s_{2s}=s_1$, so $s_{2a}-s_{2s}=s_{2a}-s_1=s_{gen}=0.503$ kJ/kg·K. The isentropic exit is the reference with no generation.
+
+</details>
+
+5. A saturated mixture at 150 kPa has $v=0.5$ m³/kg. Which table, and how do you find $x$?
+
+<details>
+<summary>Answer</summary>
+
+Table A-5 (saturated, by pressure) at 150 kPa: $v_f=0.001053$, $v_g=1.1594$. Since $v_f<0.5<v_g$ it is a mixture, $x=\dfrac{v-v_f}{v_{fg}}=\dfrac{0.5-0.001053}{1.1583}=0.431$.
+
+</details>

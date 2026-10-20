@@ -1,0 +1,369 @@
+<p className="eyebrow">Chapter 11 · Refrigeration and heat pumps · Midterm</p>
+
+# Refrigeration and heat pumps
+
+<div className="lede">
+
+A refrigerator is a heat engine run backwards: it *spends* work to move heat from a cold space to a warm one. A heat pump is the same machine with the objective reversed (deliver the heat to the warm space). The performance measure is the **coefficient of performance**, COP, which is almost always greater than 1; a COP of 3 means 1 kW of electricity moves 3 kW of heat from the cold side. The hardware is four components (compressor, condenser, expansion valve, evaporator), and the exam is a T–s or P–h diagram plus a table lookup in R-134a. The only thing that changes between problems is the *variation*: superheat and subcooling, compressor efficiency, two stages with a flash chamber or a cascade, several evaporators, or air as the refrigerant.
+
+</div>
+
+<Machine name="a house heat pump, a fridge, a supermarket and an airliner">
+
+All typical or approximate (≈):
+
+- **Home heat pump**: seasonal **COP ≈ 2.5–4** (about 3 on a mild winter day, about 2 at −15 °C outdoors), because the COP falls as the temperature difference grows. 1 kW of electricity delivers ≈ 3 kW of heat: three times better than a resistance heater.
+- **Household fridge / freezer**: evaporator at **≈ −20 to −25 °C** (freezer) or ≈ −5 °C (fresh-food), condenser at ≈ 35–45 °C; **COP ≈ 2–3**, using R-134a, R-600a (isobutane) or R-290 depending on the market. A fridge's compressor draws about 100 W to remove about 250 W of heat. The numbers of the class example below (−25 °C evaporator) are a freezer.
+- **Supermarket cascade**: a low-temperature loop (CO₂ or R-134a) at ≈ −35 °C cools the freezer cases, and rejects its heat into the evaporator of a second loop (ammonia or another refrigerant) that rejects outdoors. Two loops, one heat exchanger: it is the cascade of this chapter.
+- **Aircraft air-cycle pack**: engine bleed air (≈ 200–250 °C) is cooled, compressed, cooled again and expanded through a turbine to well below zero: a *gas* refrigeration (reversed Brayton) cycle. Its COP is well below 1 but the "refrigerant" is the cabin air itself, weightless and leak-proof; the course's gas-refrigeration problem (11-79) has COP 0.48.
+- **Units**: 1 *ton of refrigeration* = 211 kJ/min = 3.517 kW (the cooling of melting a US ton of ice per day).
+
+</Machine>
+
+## The 30-second version
+
+<Idea title="What to remember">
+
+1. **COP**: refrigerator $COP_R=\dfrac{q_L}{w_{in}}=\dfrac{h_1-h_4}{h_2-h_1}$; heat pump $COP_{HP}=\dfrac{q_H}{w_{in}}=\dfrac{h_2-h_3}{h_2-h_1}=COP_R+1$.
+2. **Carnot (reversible) limits**: $COP_{R,rev}=\dfrac{1}{T_H/T_L-1}$, $COP_{HP,rev}=\dfrac{1}{1-T_L/T_H}$ (kelvin!). The bigger the "lift" $T_H-T_L$, the worse.
+3. **Ideal vapor-compression cycle**: 1 = **saturated vapour** at $P_L$ ($h_1=h_g$), 1→2 isentropic compression to $P_H$, 2→3 condensation to **saturated liquid** ($h_3=h_f$), 3→4 throttle ($h_4=h_3$, **constant enthalpy**), 4→1 evaporation.
+4. **Actual cycle**: compressor $\eta_C=\dfrac{h_{2s}-h_1}{h_{2a}-h_1}$, superheat at the evaporator exit, subcooling at the condenser exit, pressure drops. COP decreases.
+5. **Mass flow**: $\dot m=\dfrac{\dot Q_L}{h_1-h_4}$; power $\dot W=\dot m(h_2-h_1)$.
+6. **Two-stage, cascade, multi-evaporator**: each mixing point or heat exchanger is one energy balance $\sum\dot m_{in}h=\sum\dot m_{out}h$ (isolated: no heat, no work).
+7. **Gas refrigeration**: $COP=\dfrac{q_L}{w_C-w_T}$, with a regenerator effectiveness $\varepsilon=\dfrac{T_3-T_4}{T_3-T_6}$.
+
+</Idea>
+
+## Carnot refrigerators and heat pumps
+
+Energy conservation on a cycle that takes $Q_L$ from the cold reservoir and rejects $Q_H$ to the hot one: $Q_H=Q_L+W_{in}$, so $W_{in}=Q_H-Q_L$. For a reversible cycle $Q_H/Q_L=T_H/T_L$, which gives
+
+$$COP_{R}=\frac{Q_L}{W_{in}}=\frac{Q_L}{Q_H-Q_L}=\frac{1}{Q_H/Q_L-1}\ \to\ \frac{1}{T_H/T_L-1},\qquad COP_{HP}=\frac{Q_H}{W_{in}}=\frac{1}{1-Q_L/Q_H}\ \to\ \frac{1}{1-T_L/T_H}.$$
+
+Two consequences worth feeling. If $T_H\to T_L$ (a fridge in a room the same temperature as its contents) you need no work, $COP\to\infty$. If $T_L\to0$ K the COP goes to zero: infinite work to reach absolute zero. A **heat pump always has $COP_{HP}>1$** (the heat delivered includes the work); a refrigerator can have $COP_R<1$ (gas refrigeration).
+
+The **reversed Carnot cycle** (isothermal heat transfer, isentropic compression and expansion) is the ideal limit but is impractical: (1) compressing a *wet* mixture (state 1 inside the dome) damages the compressor, (2) the isentropic "turbine" that would recover work in the expansion process produces little work in a liquid or low-quality mixture and is expensive. So the real cycle *completely vaporises* the refrigerant before the compressor (state 1 on the saturated-vapour line: compress a gas) and **replaces the turbine by a throttle valve** (an **isenthalpic** process, $h_4=h_3$, instead of isentropic).
+
+## The ideal vapor-compression cycle
+
+<VcrPhFigure />
+
+States (P–h diagram, log pressure): **1** saturated vapour at $P_L$; **2** superheated vapour at $P_H$ with $s_2=s_1$; **3** saturated liquid at $P_H$; **4** throttled mixture at $P_L$ with $h_4=h_3$. The two shortcuts that give the table lookups (the notebook's boxed lines):
+
+$$h_1=h_g@P_1,\qquad h_3=h_f@P_3=h_4.$$
+
+The throttle is the only irreversible step in the ideal cycle: entropy is generated there ($s_4>s_3$) and no work is recovered. On the P–h diagram the throttle is a **vertical line** and the evaporator and condenser are horizontal lines; on the T–s diagram the isenthalpic step has no nice shape: that is why the P–h diagram is the working diagram of refrigeration.
+
+$$q_L=h_1-h_4,\quad q_H=h_2-h_3,\quad w_{in}=h_2-h_1,\quad COP_R=\frac{h_1-h_4}{h_2-h_1},\quad \dot m=\frac{\dot Q_L}{q_L},\quad \dot W=\dot m\,w_{in}.$$
+
+For a refrigeration load given in **tons**: $\dot Q_L=211\,N$ kJ/min, so $\dot m=\dfrac{3.5168\,N}{h_1-h_4}$ kg/s. To find the **compressor displacement** (the theoretical piston displacement per unit time, $\dot V=\dot m\,v_1$) and relate it to bore, stroke, cylinders and rpm: $\dot V=\dfrac{\pi D^2}{4}L\,N_{cyl}\,\text{rpm}$.
+
+<CopSim />
+
+The sim shows how steeply the COP drops with the lift. It also shows why the ideal VCR (solid) sits below the Carnot curve (dashed): the throttle wastes the expansion work and the compressor discharges superheated vapour, so heat is rejected over a range of temperatures, not at $T_H$.
+
+## The actual vapor-compression cycle
+
+The real cycle differs from the ideal one by (his list): **friction** (pressure drops in the pipes, condenser and evaporator), **heat losses**, **non-isentropic compression**, **superheated vapour** at the evaporator exit (to protect the compressor from liquid droplets), and **subcooled liquid** at the condenser exit (to make sure only liquid reaches the valve, and to raise $q_L$). The COP decreases.
+
+Habashi's remark on the compressor exit state $2'$: **friction increases entropy while heat loss decreases it**, so the real end point lies to the right of the isentropic point *or* may sit to its left if heat loss dominates. In an exam, you are given either $\eta_C$ (and compute $h_{2a}=h_1+\dfrac{h_{2s}-h_1}{\eta_C}$) or the actual exit temperature (look up $h_2$ at $P_H$, $T_2$). The superheat and subcooling are given as temperatures: look up $h_1$ at $(P_L,T_1)$ in the superheated table and $h_3\approx h_f@T_3$ (compressed-liquid approximation).
+
+For the class-example pressures below (evaporator −25 °C, condenser 800 kPa): ideal COP 3.34; with $\eta_C=0.80$, 5 K superheat and 5 K subcooling the COP is **2.81** (−16 %) and the cooling capacity per kg/s of refrigerant rises to 151 from 140 kJ/kg (subcooling and superheat add refrigeration effect, but the compressor work rises faster).
+
+## Heat pumps
+
+The same cycle with the *useful* effect on the other side: $COP_{HP}=\dfrac{q_H}{w}=\dfrac{h_2-h_3}{h_2-h_1}=COP_R+1$. A heat pump warms a house in winter and cools it in summer (a reversing valve swaps the roles of the two coils); an air-source unit's COP falls on the coldest days because the lift grows and the evaporator coil frosts. The comparison to resistance heating is the point of the exercise: any COP above 1 beats a resistance heater, which converts 1 kW of electricity to 1 kW of heat.
+
+<Problem id="11-46" title="Heat pump heating a house: mass flow, compressor power, saving over a resistance heater" tags="heat pump, R-134a, COP, subcooling">
+
+<Statement>
+
+A heat pump with R-134a heats a house at 60 000 kJ/h. The refrigerant enters the compressor at 280 kPa and 0 °C and leaves at 1 MPa and 60 °C; it leaves the condenser at 1 MPa and 30 °C (subcooled). Find the refrigerant flow rate, the compressor power, the heat taken from the outside, the COP, and how much electricity it saves compared to a resistance heater.
+
+</Statement>
+
+<Think>
+
+All four states are fully specified by $(P,T)$: no efficiency, no isentropic step. Heat pump: $\dot Q_H=\dot m(h_2-h_3)$ fixes $\dot m$; the compressor power and the heat extracted follow.
+
+</Think>
+
+<Steps>
+<Step title="1. States">
+
+<T>A-13 (superheated R-134a) at 280 kPa, 0 °C: h₁ = 250.8 kJ/kg</T>; <T>at 1 MPa, 60 °C: h₂ = 293.4 kJ/kg</T>; <T>condenser exit, compressed liquid ≈ h_f at 30 °C: h₃ = 93.6–93.8 kJ/kg</T>; throttle: $h_4=h_3$ (quality 0.22 at 280 kPa).
+
+</Step>
+<Step title="2. Mass flow and powers">
+
+$\dot Q_H=\dfrac{60\,000}{3600}=16.67$ kW. $\dot m=\dfrac{16.67}{293.4-93.8}=\mathbf{0.0835}$ kg/s. $\dot W=\dot m(h_2-h_1)=0.0835(42.55)=\mathbf{3.55}$ kW. $\dot Q_L=\dot m(h_1-h_4)=0.0835(157.1)=\mathbf{13.1}$ kW; check $\dot Q_H=\dot Q_L+\dot W=16.67$ ✓.
+
+</Step>
+<Step title="3. COP and saving">
+
+$COP_{HP}=\dfrac{16.67}{3.55}=\mathbf{4.69}$. A resistance heater would need 16.67 kW of electricity; the heat pump needs 3.55 kW: the electricity use falls by 13.1 kW (**79 %**), equal to $\dot Q_L$ (the heat taken from outdoors).
+
+</Step>
+</Steps>
+
+<Answer>
+
+$\dot m=0.0835$ kg/s, $\dot W=3.55$ kW, $\dot Q_L=13.1$ kW, $COP_{HP}=4.69$, savings 13.1 kW. (His: 3.549 kW and 13.12 kW ✓.)
+
+</Answer>
+
+<RealWorld title="A COP of 4.7 is a bench number">
+
+A COP of 4.7 needs a small lift (outside near 0 °C, delivery water at 30–35 °C). A real air-source unit averages 2.5–3.5 over a season because it spends hours at a larger lift and runs defrost cycles.
+
+</RealWorld>
+
+<Source>Tutorial chapter 11 (Oct 14) and Exam review (11-46) · lib <code>vcr</code> with explicit states</Source>
+
+</Problem>
+
+## Cascade and multistage systems
+
+When the temperature range is large (a −40 °C freezer rejecting at 40 °C), a single stage has a poor COP (high lift) and demands a very high compressor ratio. Two answers:
+
+**Cascade (2 compressors, 2 loops, same or different refrigerants).** The low-temperature loop B rejects its heat in a heat exchanger that is the *evaporator* of the high-temperature loop A. The heat exchanger is isolated, so $\dot m_A(h_5-h_8)=\dot m_B(h_2-h_3)$ and
+
+$$\dot m_A=\dot m_B\,\frac{h_2-h_3}{h_5-h_8},\qquad COP_{cascade}=\frac{\dot Q_L}{\dot W_{net}}=\frac{\dot m_B(h_1-h_4)}{\dot m_B(h_2-h_1)+\dot m_A(h_6-h_5)}.$$
+
+A convenient **intermediate pressure** is the geometric mean $P_i=\sqrt{P_LP_H}$ (equal pressure ratio on the two compressors).
+
+**Two-stage compression with a flash chamber or separator (one loop).** The liquid leaving the condenser (state 5) is throttled (state 6) to an intermediate pressure $P_m$ into a **flash chamber**. The vapour fraction $x_6=\dfrac{h_5-h_7}{h_3-h_7}$ (with 3 the saturated vapour and 7 the saturated liquid in the chamber, both at $P_m$) goes to the high-pressure compressor; the saturated liquid is throttled to $P_L$ (state 8) and does the evaporating. **Only the liquid fraction $1-x_6$ passes through the low-pressure compressor and the evaporator**, so $\dot m_H=\dfrac{\dot m_L}{1-x_6}$. In the energy balance of the mixing chamber before the high-pressure compressor you use the enthalpy of the **saturated vapour** from the chamber, not of the mixture state 6 right after the valve (his highlighted warning, "$h_3$ not $h_6$"): $x_6\,h_3+(1-x_6)\,h_2=h_9$, where $h_2$ is the low-pressure compressor exit and $h_9$ the mixed stream entering the second compressor. In the separator layout of Fig. P11-60 the low-pressure discharge is bubbled through the separator and the isolated balance is $\dot m_H h_5+\dot m_L h_2=\dot m_H h_3+\dot m_L h_7$.
+
+**Several evaporators, one compressor.** Route all evaporator outlets to a single compressor, mixing the streams first with an energy balance (the mixing chamber is adiabatic and does no work), then compress once.
+
+<TwoStageSim />
+
+<Problem id="Class example · 1 stage vs 2 stage" title="Single-stage versus two-stage (cascade) R-134a, 0.6 kg/s through the evaporator" tags="cascade, R-134a, COP, intermediate pressure">
+
+<Statement>
+
+An R-134a refrigeration plant has an evaporator at −25 °C (saturated vapour leaving) and a condenser at 800 kPa; the refrigerant flow through the evaporator is 0.6 kg/s. Compare (a) a single-stage cycle and (b) a two-stage cascade with the same refrigerant in both loops, the intermediate pressure being the geometric mean of the two. Ideal compressors. (These inputs reproduce the notebook's $h_1=235.3$, $h_2=277.2$ and $h_2'=255.6$ kJ/kg.)
+
+</Statement>
+
+<Think>
+
+Part (a) is the ideal cycle of this chapter. Part (b): two cycles share the heat exchanger at $P_i=\sqrt{P_LP_H}$; loop L runs between $P_L$ and $P_i$ (with its condenser exit at $h_f@P_i$, which is colder than $h_f@P_H$, so the refrigeration effect per kg increases), loop H between $P_i$ and $P_H$. The unknown $\dot m_H$ comes from the heat-exchanger balance.
+
+</Think>
+
+<Steps>
+<Step title="1. Single stage">
+
+$P_L=P_{sat}(-25\,°C)=106.4$ kPa. <T>A-12: h₁ = h_g = 235.3 kJ/kg, s₁ = 0.9505</T>; isentropic to 800 kPa: <T>A-13: h₂ = 277.2 kJ/kg</T>; <T>A-12 at 800 kPa: h₃ = h_f = 95.5 kJ/kg</T> $=h_4$. $\dot Q_L=0.6(235.3-95.5)=\mathbf{83.9}$ kW; $\dot W=0.6(277.2-235.3)=25.1$ kW (his 25.1 ✓); $COP=\dfrac{83.9}{25.1}=\mathbf{3.34}$.
+
+</Step>
+<Step title="2. Intermediate pressure and loop L">
+
+$P_i=\sqrt{106.4\times800}=291.8$ kPa (−0.1 °C). Loop L: 1 = sat. vapour at $P_L$ (235.3); 2 = isentropic to $P_i$: $h_2=\mathbf{255.6}$ kJ/kg (his 255.6 ✓); 3 = sat. liquid at $P_i$: $h_3=\mathbf{51.7}$ kJ/kg; $h_4=h_3$. $\dot Q_L=0.6(235.3-51.7)=\mathbf{110.2}$ kW.
+
+</Step>
+<Step title="3. Loop H and the heat exchanger">
+
+Loop H: 5 = sat. vapour at $P_i$: $h_5=250.4$; 6 = isentropic to 800 kPa: $h_6=271.3$; 7 = sat. liquid at 800 kPa: $h_7=95.5=h_8$. Heat exchanger: $\dot m_H=\dot m_L\dfrac{h_2-h_3}{h_5-h_8}=0.6\dfrac{255.6-51.7}{250.4-95.5}=\mathbf{0.790}$ kg/s.
+
+</Step>
+<Step title="4. Work and COP">
+
+$\dot W=\dot m_L(h_2-h_1)+\dot m_H(h_6-h_5)=0.6(20.3)+0.790(20.9)=12.2+16.5=\mathbf{28.7}$ kW. $COP=\dfrac{110.2}{28.7}=\mathbf{3.83}$.
+
+</Step>
+<Step title="5. Compare">
+
+For the same 0.6 kg/s through the evaporator the two-stage plant gives **31 % more cooling** (110.2 versus 83.9 kW) for 14 % more power (28.7 versus 25.1 kW) and a **15 % higher COP** (3.83 versus 3.34). (Cross-check: the lib's flash/separator two-stage cycle at the same pressures also gives 3.83; the two arrangements are thermodynamically the same ideal cycle.)
+
+</Step>
+</Steps>
+
+<Answer>
+
+Single stage: $\dot Q_L=83.9$ kW, $\dot W=25.1$ kW, $COP=3.34$. Two-stage cascade: $\dot Q_L=110.2$ kW, $\dot W=28.7$ kW, $COP=3.83$.
+
+</Answer>
+
+<Callout kind="warn" title="⚠ The notebook's table (78 kW, COP 3.10 → 106.2 kW, COP 3.68) is low because of two saturated-liquid enthalpies">
+
+His comparison table reads 78 kW and COP 3.10 for one stage, and 106.2 kW and COP 3.68 for two stages. Recomputed with the property tables: the compressor numbers agree ($h_1=235.3$, $h_2=277.2$, $h_2'=255.6$; $\dot W=25.1$ and 28.7–28.9 kW), but his two **saturated-liquid enthalpies are too large**: he used $h_3=h_4=105.3$ kJ/kg where $h_f$ at 800 kPa is 95.5, and 58.3 where $h_f$ at the intermediate pressure is 51.7. (The page also writes $P_i=365$ kPa; $\sqrt{106.4\times800}=291.8$ kPa, which is the pressure his $h_2'=255.6$ corresponds to. A displayed $h_6=277.7$ looks like a slip for ≈ 271.) With the corrected values the two-stage plant is still clearly better, as his table concludes: **3.34 → 3.83** and **83.9 → 110.2 kW**, rather than 3.10 → 3.68.
+
+</Callout>
+
+<RealWorld title="Why a supermarket uses a cascade">
+
+A −35 °C freezer rejecting heat at 35 °C has a lift of 70 K; a single R-134a stage would need a pressure ratio near 20 (the evaporator is almost at vacuum). Two loops, each with a ratio of about 4–5, run with far better volumetric and isentropic efficiency, and each loop can use the refrigerant best suited to its temperature range.
+
+</RealWorld>
+
+<Traps>
+
+- Both loops need their *own* saturated-liquid state: loop L ends at $h_f@P_i$, loop H at $h_f@P_H$.
+- $\dot m_H\neq\dot m_L$: the heat-exchanger balance gives the ratio.
+- Use the flow-rate-weighted work: $\dot W=\dot W_L+\dot W_H$, each with its own mass flow.
+
+</Traps>
+
+<Source>Anthony's review class (Exam_review pp. 53–55 and 59–66) · recomputed with the lib's R-134a properties</Source>
+
+</Problem>
+
+<Problem id="11-60" title="Two-stage compression with a separator: 30 kW at −40 °C" tags="two-stage, separator, flash, R-134a">
+
+<Statement>
+
+R-134a, evaporator at −40 °C delivering 30 kW of cooling, condenser at 800 kPa; the refrigerant is throttled to a separator at 200 kPa (the saturation pressure at −10 °C); the vapour is compressed by the second compressor and the liquid evaporates at −40 °C. Ideal compressors. Find the mass flow rates, power and COP and compare with a single stage.
+
+</Statement>
+
+<Steps>
+<Step title="1. States (his labels)">
+
+<T>A-12: h₁ = h_g@51.2 kPa = 225.9</T>; LP compressor to 200 kPa: $h_2=252.7$; separator vapour (sat. at 200 kPa) $h_3=244.5$; HP compressor out (800 kPa, $s_3$): $h_4=273.3$; condenser exit $h_5=95.5=h_6$; separator liquid $h_7=38.4=h_8$.
+
+</Step>
+<Step title="2. Mass flows">
+
+$\dot m_L=\dfrac{\dot Q_L}{h_1-h_8}=\dfrac{30}{225.9-38.4}=\mathbf{0.160}$ kg/s. Separator energy balance (isolated): $\dot m_Hh_5+\dot m_Lh_2=\dot m_Hh_3+\dot m_Lh_7$, so $\dot m_H=\dot m_L\dfrac{h_2-h_7}{h_3-h_5}=0.160\,\dfrac{252.7-38.4}{244.5-95.5}=\mathbf{0.230}$ kg/s (his 0.160 and 0.230 ✓).
+
+</Step>
+<Step title="3. Power and COP">
+
+$\dot W=\dot m_L(h_2-h_1)+\dot m_H(h_4-h_3)=0.160(26.9)+0.230(28.8)=4.3+6.6=\mathbf{10.9}$ kW; $COP=\dfrac{30}{10.9}=\mathbf{2.74}$. The single-stage plant at the same pressures needs 13.2 kW ($COP=2.28$): the separator saves about 17 % of the power.
+
+</Step>
+</Steps>
+
+<Source>Assignment 4 (11-60) ✔ 10.9 kW, COP 2.74 · lib <code>flashTwoStage</code></Source>
+
+</Problem>
+
+## Gas refrigeration cycles
+
+When the **refrigerant is a gas that never condenses** (air), the cycle is a reversed Brayton cycle: 1→2 compressor, 2→3 heat rejection at constant pressure (cooling the compressed air to near ambient), 3→4 a regenerator (hot side), 4→5 a **turbine** (expansion, recovering work and dropping the temperature far below the sink), 5→6 the refrigerated space, 6→1 the regenerator (cold side). With air and $c_p$ constant,
+
+$$COP=\frac{q_L}{w_C-w_T}=\frac{T_6-T_5}{(T_2-T_1)-(T_4-T_5)},\qquad \varepsilon=\frac{T_3-T_4}{T_3-T_6},$$
+
+(heat balance on the regenerator: $T_3-T_4=T_1-T_6$ for equal $c_p$ and flow). The gas cycle has a low COP (the heat is removed over a temperature *range*, not at constant temperature), but it is the right choice for aircraft cabins and cryogenic liquefiers because the working fluid is harmless, light, and works at very low temperature.
+
+<Problem id="11-79" title="Gas refrigeration with a regenerator" tags="gas refrigeration, reversed Brayton, regenerator">
+
+<Statement>
+
+An air refrigeration system with a regenerator takes air into the compressor at 0 °C with a pressure ratio of 5. The air leaves the heat-rejection step at 35 °C and leaves the turbine at −80 °C; $\eta_C=0.80$, $\eta_T=0.85$, 0.4 kg/s, $c_p=1.005$, $k=1.4$. Find the regenerator effectiveness, the cooling rate and the COP.
+
+</Statement>
+
+<Plan>
+
+Compressor ($T_2$) → turbine inlet $T_4$ from the turbine's $\eta_T$ and the known exit $T_5$ → regenerator energy balance for $T_6$ → $\varepsilon$ → $\dot Q_L$, $\dot W$, COP.
+
+</Plan>
+
+<Steps>
+<Step title="1. Compressor">
+
+$T_{2s}=273.15(5)^{0.2857}=432.6$ K (his 432.38 ✓); $T_2=273.15+\dfrac{432.6-273.15}{0.80}=\mathbf{472.5}$ K.
+
+</Step>
+<Step title="2. Turbine inlet">
+
+$T_5=T_4-\eta_T\left(T_4-\dfrac{T_4}{5^{0.2857}}\right)=T_4\left[1-0.85(1-0.6314)\right]$, so $T_4=\dfrac{193.15}{0.6867}=\mathbf{281.3}$ K.
+
+</Step>
+<Step title="3. Regenerator">
+
+The hot side cools from $T_3=308.15$ to $T_4=281.3$ K (26.9 K), so the cold side warms by the same amount: $T_6=T_1-(T_3-T_4)=273.15-26.9=\mathbf{246.3}$ K. $\varepsilon=\dfrac{T_3-T_4}{T_3-T_6}=\dfrac{26.9}{61.9}=\mathbf{0.434}$.
+
+</Step>
+<Step title="4. Cooling, work, COP">
+
+$\dot Q_L=\dot mc_p(T_6-T_5)=0.4(1.005)(53.1)=\mathbf{21.4}$ kW. $\dot W=\dot mc_p\left[(T_2-T_1)-(T_4-T_5)\right]=0.402(199.3-88.1)=44.7$ kW. $COP=\dfrac{21.4}{44.7}=\mathbf{0.478}$.
+
+</Step>
+</Steps>
+
+<Answer>
+
+$\varepsilon=0.434$, $\dot Q_L=21.4$ kW, $COP=0.478$.
+
+</Answer>
+
+<RealWorld title="Air cycle in an aircraft">
+
+At −80 °C the turbine exit would freeze cabin humidity, so aircraft packs use the turbine outlet only after water separation. The COP is poor by ground-plant standards but the system needs no refrigerant, and it uses engine bleed air that is available anyway.
+
+</RealWorld>
+
+<Source>Assignment 4 (11-79) ✔ ε = 0.434, 21.4 kW, COP 0.478 · lib <code>gasRefrigeration</code></Source>
+
+</Problem>
+
+## Habashi's traps
+
+<Trap title="What the instructor and the notebook warn about in chapter 11">
+
+1. **COP depends on the temperature lift**; the Carnot COP uses kelvin. Always check your answer against $COP_{rev}$: if it is larger, you made an error.
+2. **State 1 is saturated vapour; state 3 is saturated liquid** (ideal); the throttle is **isenthalpic**, not isentropic. State 4 is a mixture with a quality you may need only to answer a question.
+3. **Do not recover work from the throttle** and do not use an isentropic efficiency for it.
+4. **Superheat and subcooling add to the capacity** but raise the compressor work; do not "correct" the ideal answer by the same factor.
+5. **Flash chamber**: the vapour fraction $x_6$ comes from the *throttle* state; the mixing-chamber balance uses the **vapour** enthalpy (his reminder: "$h_3$ not $h_6$").
+6. **Cascade versus flash**: the cascade's two loops have *different* mass flows tied by the heat-exchanger balance; the single-loop two-stage plant has $\dot m_H=\dot m_L/(1-x_6)$ in the flash layout.
+7. **Refrigerator versus heat pump**: same cycle; only the objective changes. $COP_{HP}=COP_R+1$ holds for the same cycle.
+
+</Trap>
+
+<Examined>
+
+Assignment 4 (<Asg n="04" />) covers this chapter: 11-21 (single-stage with $\eta_C=0.88$, superheat and subcooling: $COP=2.72$, $\dot Q_L=3.32$ kW), 11-60 (two stages with separator: COP 2.74, 10.9 kW), 11-62 (two evaporators with one compressor: his notebook ≈ COP 4.03, 3.6 kW) and 11-79 (gas refrigeration, COP 0.478). The tutorial adds 11-46 (heat pump, 3.55 kW) and the flash-chamber sketch. The midterm review class (<Ex id="midterm-review" />) walks the single-stage versus two-stage comparison and the gas-refrigeration $COP=\dfrac{\dot Q_L}{\dot W_C-\dot W_T}$. Expect on the midterm: one refrigerator problem with R-134a tables and either an efficiency, a flash chamber or a second evaporator.
+
+</Examined>
+
+## Check yourself
+
+1. A refrigerator holds −5 °C in a 25 °C room. What is the best possible COP, and what does a real one of 3 tell you?
+
+<details>
+<summary>Answer</summary>
+
+$COP_{rev}=\dfrac{1}{298.15/268.15-1}=8.94$. A real COP of 3 is about a third of Carnot, typical for a household unit (the throttle and the superheated compressor discharge account for most of the gap).
+
+</details>
+
+2. In the ideal cycle, why is $h_4=h_3$, and what does the quality at state 4 mean physically?
+
+<details>
+<summary>Answer</summary>
+
+A throttling valve has no heat or work and negligible kinetic energy change, so $h$ is constant. The quality of state 4 is the vapour mass fraction produced by the sudden pressure drop ("flash"): that liquid already evaporated and cannot absorb heat in the evaporator, so a lower $x_4$ means a higher refrigeration effect $h_1-h_4$ (the single-stage example: $x_4=0.35$).
+
+</details>
+
+3. A heat pump has $COP_{HP}=4.2$. What is the $COP_R$ of the same machine, and how many kW of heat does it take from outdoors per kW of electricity?
+
+<details>
+<summary>Answer</summary>
+
+$COP_R=3.2$. For 1 kW of electricity it delivers 4.2 kW of heat and takes 3.2 kW from outdoors.
+
+</details>
+
+4. Why does two-stage compression with a flash chamber improve the COP, and where do you put the intermediate pressure?
+
+<details>
+<summary>Answer</summary>
+
+(i) The two compressions each have a lower pressure ratio and the gas going to the second compressor is cooled (the cold flash vapour), so less work. (ii) Flashing at $P_m$ removes the vapour that would otherwise be produced by the throttle at $P_L$, so less refrigerant has to be pumped through the cold, low-pressure part. The optimum is near $P_m=\sqrt{P_LP_H}$ (the sim's curve is flat there).
+
+</details>
+
+5. In the gas-refrigeration cycle, why is a turbine used instead of a throttle valve, and what does the regenerator do?
+
+<details>
+<summary>Answer</summary>
+
+A gas does not condense, and throttling an ideal gas does not change its temperature at all (chapter 12): to cool it you must extract work in a turbine. The regenerator uses the cold air leaving the refrigerated space to pre-cool the air entering the turbine, so the turbine can reach a much lower temperature for the same pressure ratio.
+
+</details>
