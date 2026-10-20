@@ -1,0 +1,353 @@
+<p className="eyebrow">Chapter 16 · Chemical and phase equilibrium · Final</p>
+
+# Chemical and phase equilibrium
+
+<div className="lede">
+
+Chapter 15 assumed that combustion goes to completion. At high temperature it does not: CO₂ splits back into CO and O₂, and N₂ and O₂ combine into NO. A reacting mixture at fixed $T$ and $P$ settles where the **Gibbs function is a minimum**, and that composition is fixed by one number, the **equilibrium constant** $K_p(T)$. The chapter is therefore short on theory and long on a recipe: write the reaction, write $K_p$ in terms of the unknown amounts, solve. Habashi lists **six remarks** about $K_p$ that "some students do not easily digest"; they are in a box below and are the most examinable part.
+
+</div>
+
+<Machine name="NOx in engines, the catalytic converter and the Haber process">
+
+Approximate or typical (≈):
+
+- **NOx in engines**: the NO that comes out of an engine is mostly **thermal NO**, made in the hot burned gas by the Zeldovich chain ($\mathrm{O}+\mathrm{N_2}\to\mathrm{NO}+\mathrm{N}$, $\mathrm{N}+\mathrm{O_2}\to\mathrm{NO}+\mathrm{O}$). It is **strongly temperature-dependent**: the equilibrium table A-28 value for ½N₂ + ½O₂ ⇌ NO gives, for air at 1 atm, about **0.13 % NO at 1500 K, 0.8 % at 2000 K and 2.3 % at 2500 K** (the lib's equilibrium calculation below). Real engines make far less (≈ hundreds to a few thousand ppm) because the reaction is *slower* than the cooling of the gas, but the trend is the same: this is why NOx is cut by lowering the peak flame temperature (exhaust gas recirculation, lean burn, staged combustion, water injection).
+- **Three-way catalytic converter**: at ≈ 300–800 °C a platinum–palladium–rhodium catalyst converts CO + ½O₂ → CO₂ (exothermic, so $K_p$ is huge at these temperatures), unburned HC → CO₂ + H₂O, and 2NO + 2CO → N₂ + 2CO₂ together, but only when the engine runs at $\lambda\approx1$ (chapter 15). The catalyst changes the **rate**; equilibrium decides how far the reaction *can* go, and at exhaust temperatures it favours the clean products completely.
+- **Haber–Bosch (ammonia)**: N₂ + 3H₂ ⇌ 2NH₃ is **exothermic** and reduces the number of moles ($\Delta\nu=-2$). Le Chatelier says *low T and high P* favour NH₃, but a low T is too slow, so plants compromise at **≈ 400–500 °C and 150–300 bar** over an iron catalyst, with unreacted gas recycled (≈ 15–25 % conversion per pass). The process feeds roughly half the world's food through fertiliser.
+
+</Machine>
+
+## The 30-second version
+
+<Idea title="Equilibrium in one box">
+
+1. **Criterion**: $(dG)_{T,P}=0$. A reaction at fixed $T,P$ can only go in the direction that *decreases* $G$; equilibrium is the minimum. For a reaction $\nu_AA+\nu_BB\rightleftharpoons\nu_CC+\nu_DD$: $\nu_C\bar g_C+\nu_D\bar g_D-\nu_A\bar g_A-\nu_B\bar g_B=0$.
+2. **Equilibrium constant** (ideal gases): $K_p=\dfrac{P_C^{\nu_C}P_D^{\nu_D}}{P_A^{\nu_A}P_B^{\nu_B}}=\dfrac{N_C^{\nu_C}N_D^{\nu_D}}{N_A^{\nu_A}N_B^{\nu_B}}\left(\dfrac{P}{N_{total}}\right)^{\Delta\nu}$, with $P$ in **atm** and $\Delta\nu=(\nu_C+\nu_D)-(\nu_A+\nu_B)$ (gas phase only; pure solids and liquids drop out).
+3. **From the Gibbs function**: $\ln K_p=-\dfrac{\Delta G^*(T)}{R_uT}$, with $\Delta G^*=\sum\nu\bar g^*_P-\sum\nu\bar g^*_R$ at 1 atm (table A-28 lists $\ln K_p$ for seven reactions).
+4. **Van 't Hoff**: $\dfrac{d\ln K_p}{dT}=\dfrac{\bar h_R(T)}{R_uT^2}$; with $\bar h_R$ constant, $\ln\dfrac{K_{p2}}{K_{p1}}=\dfrac{\bar h_R}{R_u}\left(\dfrac1{T_1}-\dfrac1{T_2}\right)$.
+5. **Six remarks**: see the box below.
+6. **Phase equilibrium**: two phases of a pure substance are in equilibrium when $g_f=g_g$ (same $T$ and $P$).
+7. **Recipe**: unknown coefficients $x,y,z$ from atom balances (and $K_p$), then $N_{total}$, then Kp relation, then solve; then an enthalpy balance as in chapter 15 if a heat transfer or flame temperature is wanted.
+
+</Idea>
+
+## Why equilibrium is a minimum of G
+
+Consider 1 kmol of CO₂ at fixed $T$ and $P$ and let $\xi$ kmol dissociate into CO and ½O₂. The mixture's Gibbs function $G(\xi)=\sum N_i[\bar g_i^*(T)+R_uT\ln(y_iP)]$ has two competing parts: the **chemical** part (CO₂ is more stable, so $G$ rises as it dissociates) and the **mixing** part (a mixture of three gases has a lower $G$ than a pure one, so $G$ falls as the mixture forms). The sum has a minimum between 0 and 1: that is the equilibrium. The sim moves it with $T$ and $P$.
+
+<GibbsMinimumSim />
+
+At the minimum the slope is zero, which is the equation $\sum\nu_i\bar g_i=0$ of item 1; with the ideal-gas $\bar g_i=\bar g_i^*+R_uT\ln(P_i/P_0)$ it becomes exactly the $K_p$ relation of item 2. So $K_p=\exp(-\Delta G^*/R_uT)$ is a statement about the *standard* Gibbs functions only, and therefore **depends on $T$ alone**.
+
+## The equilibrium constant and its six remarks
+
+<Idea title="Habashi's six remarks about Kp">
+
+1. **$K_p$ depends on $T$ only.** (Not on $P$, not on the amounts.)
+2. $K_p$ of the **reverse** reaction is $1/K_p$.
+3. **The larger $K_p$, the more complete the reaction** (products favoured); $\ln K_p>0$ means products win.
+4. **Pressure** affects the equilibrium *composition* but **not** $K_p$ (through $(P/N_{total})^{\Delta\nu}$).
+5. **Inert gases** affect the composition (they raise $N_{total}$) but **not** $K_p$.
+6. If the stoichiometric coefficients are **doubled**, $K_p$ is **squared** (and halved coefficients give $\sqrt{K_p}$): always use the $K_p$ of the reaction *as you wrote it*.
+
+</Idea>
+
+Remark 4 and 5 are two views of the same fact: in $K_p=\dots(P/N_{total})^{\Delta\nu}$, raising $P$ or lowering $N_{total}$ changes the factor in the same way. If $\Delta\nu>0$ (dissociation: more moles on the right), **lower pressure or added inert favours the products**; if $\Delta\nu<0$ (synthesis), **higher pressure** does. If $\Delta\nu=0$ (like NO formation), neither matters. This is Le Chatelier's principle in equations.
+
+<KpCurvesSim />
+
+<DissociationSim />
+
+## Van 't Hoff: temperature dependence
+
+$K_p$ depends on $T$ through $\Delta G^*/R_uT$, and differentiating gives $d\ln K_p/dT=\bar h_R/R_uT^2$. The sign of the reaction enthalpy therefore decides the direction: **endothermic ($\bar h_R>0$): $K_p$ rises with $T$** (dissociation is favoured at high $T$); **exothermic: $K_p$ falls with $T$**, so combustion products are *less complete* at higher temperature. It also works backward: from two values of $K_p$ you get $\bar h_R$ without the enthalpy tables, "from a knowledge of $K_p$ which is easier to determine" (Habashi's slide). In the first sim above, $\ln K_p$ against $1/T$ is nearly straight, with slope $-\bar h_R/R_u$.
+
+<Problem id="16-56" title="Reaction enthalpy of CO₂ → CO + ½O₂ at 2200 K, two ways" tags="van 't Hoff, enthalpy of reaction, Kp">
+
+<Statement>
+
+Estimate the enthalpy of reaction $\bar h_R$ of $\mathrm{CO_2}\rightleftharpoons\mathrm{CO}+\tfrac12\mathrm{O_2}$ at 2200 K (a) from the enthalpy data and (b) from the equilibrium constants at 2000 K and 2400 K.
+
+</Statement>
+
+<Think>
+
+The new idea is the **cross-check**: $\bar h_R$ is a property of the reaction, so the tables of $\bar h$ (first law) and the table of $K_p$ (second law, through $\Delta G$) must give the same number. (b) is the van 't Hoff equation integrated with $\bar h_R$ constant over 2000–2400 K.
+
+</Think>
+
+<Plan>
+
+(a) $\bar h_R=\sum N_P\bar h_P-\sum N_R\bar h_R$ at 2200 K with $\bar h=\bar h_f^\circ+\Delta\bar h$. (b) $\bar h_R=R_u\ln(K_{p2}/K_{p1})\big/(1/T_1-1/T_2)$.
+
+</Plan>
+
+<Steps>
+<Step title="1. Enthalpy data at 2200 K">
+
+<T>A-19, A-20, A-23: h̄ − h̄° at 2200 K: CO 63 976, O₂ 66 787, CO₂ 103 498 kJ/kmol; h̄f: CO −110 530, O₂ 0, CO₂ −393 520</T>. $\bar h_{CO}=-110\,530+63\,976=-46\,554$; $\tfrac12\bar h_{O_2}=\tfrac12(66\,787)=33\,394$; $\bar h_{CO_2}=-393\,520+103\,498=-290\,022$.
+
+</Step>
+<Step title="2. (a) Reaction enthalpy">
+
+$\bar h_R=-46\,554+33\,394-(-290\,022)=\mathbf{276\,862}$ kJ/kmol (his page: 276 875; Cantera/JANAF 276 830).
+
+</Step>
+<Step title="3. (b) From Kp">
+
+<T>A-28: ln Kp(2000 K) = −6.635; ln Kp(2400 K) = −3.860</T>. $\bar h_R=\dfrac{8.314(-3.860+6.635)}{\frac1{2000}-\frac1{2400}}=\dfrac{8.314(2.775)}{8.333\times10^{-5}}=\mathbf{276\,856}$ kJ/kmol (the lib's own ln Kp values, −6.629 and −3.854, give 276 925).
+
+</Step>
+</Steps>
+
+<Answer>
+
+(a) 276 860 kJ/kmol (his 276 875) and (b) 276 856 kJ/kmol agree to 0.01 %. A positive $\bar h_R$ confirms that dissociation is endothermic, so $K_p$ rises with $T$.
+
+</Answer>
+
+<RealWorld title="Two tables, one reaction">
+
+The $K_p$ column and the enthalpy columns of the property tables come from different measurements; their agreement is a consistency check of thermodynamic data that the chemists build tables from (JANAF). In practice engineers use whichever is easier to extend: $K_p$ at one temperature and $\bar h_R$ give $K_p$ at any other.
+
+</RealWorld>
+
+<Traps>
+
+- Using $T$ in °C in the $1/T$ difference (kelvin only).
+- Taking $\bar h_f^\circ$ instead of $\bar h_f^\circ+\Delta\bar h$ at 2200 K: the formation values alone give 283 000 kJ/kmol (the 25 °C reaction enthalpy).
+- Sign of the difference: $1/T_1-1/T_2$ with $T_1<T_2$ is positive and $\ln K_{p2}-\ln K_{p1}$ is positive for an endothermic reaction.
+
+</Traps>
+
+<Source>Anthony's Chapter 16 pages (16-56): 276 875 (data) and 276 856 (Kp) · lib <code>hR</code>, <code>vantHoff</code></Source>
+
+</Problem>
+
+## The recipe: composition from Kp
+
+1. Write the balanced reaction as **the A-28 reaction** you will use, with its $\ln K_p$ (or the reverse, with a sign change).
+2. Write the amounts at equilibrium in terms of one unknown $x$ (the extent), from initial amounts and stoichiometry.
+3. Write $N_{total}$ (include inerts, **exclude pure solids/liquids**).
+4. Write $K_p=\prod N_i^{\nu_i}\,(P/N_{total})^{\Delta\nu}$ with $P$ in atm and solve (by hand or iteration).
+5. If the question asks for a heat transfer or a temperature, then do an enthalpy balance with the *actual* product amounts.
+
+<Problem id="16-31" title="NO formation in heated air at 2000 K and 2 atm" tags="Kp, NO, inert N2, Δν = 0">
+
+<Statement>
+
+Air (1 kmol O₂ + 3.76 kmol N₂) is heated to 2000 K at a constant pressure of 2 atm. Assuming the products are NO, N₂ and O₂ only, find the equilibrium composition. Is the result affected by the pressure? What if O and N atoms are also considered?
+
+</Statement>
+
+<Think>
+
+One reaction, $\tfrac12\mathrm{N_2}+\tfrac12\mathrm{O_2}\rightleftharpoons\mathrm{NO}$, with $\Delta\nu=1-\tfrac12-\tfrac12=0$: pressure and total moles cancel out of $K_p$. That is the new feature to notice.
+
+</Think>
+
+<Plan>
+
+Equation with the unknown $x$ → $K_p$ expression → solve for $x$ → composition → remarks 4 and the atom question.
+
+</Plan>
+
+<Steps>
+<Step title="1. Atom balance">
+
+$\mathrm{O_2}+3.76\,\mathrm{N_2}\to x\,\mathrm{NO}+\left(3.76-\tfrac{x}{2}\right)\mathrm{N_2}+\left(1-\tfrac{x}{2}\right)\mathrm{O_2}$. $N_{total}=4.76$ regardless of $x$.
+
+</Step>
+<Step title="2. Equilibrium constant">
+
+<T>A-28 at 2000 K: ln Kp = −3.931</T>, $K_p=e^{-3.931}=0.01962$. $K_p=\dfrac{x}{(3.76-x/2)^{1/2}(1-x/2)^{1/2}}\left(\dfrac{2}{4.76}\right)^{0}=0.01962$.
+
+</Step>
+<Step title="3. Solve">
+
+$x$ is small, so try $x=0.0376$: denominator $\sqrt{(3.7412)(0.9812)}=1.916$, $x/1.916=0.01962$ ✓. $x=\mathbf{0.0376}$ kmol NO; N₂ $=3.741$, O₂ $=0.981$ (his page: x ≈ 0.0376, 3.7412 N₂, 0.9812 O₂ ✔).
+
+</Step>
+<Step title="4. The remarks">
+
+$\Delta\nu=0$ so **doubling the pressure changes nothing**. O and N atoms: <T>A-28 at 2000 K: ln Kp(O₂ ⇌ 2O) = −14.6, ln Kp(N₂ ⇌ 2N) = −41.7</T>, i.e. $K_p\approx4\times10^{-7}$ and $10^{-18}$: **negligible** (they matter only above ≈ 3000 K).
+
+</Step>
+</Steps>
+
+<Answer>
+
+0.0376 kmol NO (0.79 % of the products, about 7900 ppm), 3.741 N₂, 0.981 O₂; independent of pressure; atomic O and N negligible at 2000 K.
+
+</Answer>
+
+<RealWorld title="Why engines make NO">
+
+At 2000 K the equilibrium is already 0.8 % NO; at 1500 K it would be 0.13 %. The gas in an engine cylinder is above 2000 K for only about a millisecond, so the real NO is lower than equilibrium, but the exponential temperature dependence is why 100 K of flame temperature matters so much to NOx.
+
+</RealWorld>
+
+<Traps>
+
+- Using $P_{total}$ in $K_p$ here: with $\Delta\nu=0$ it cancels (that is remark 4).
+- Using the reaction for 2 NO instead of 1 NO without squaring $K_p$ (remark 6): ln Kp would be −7.862.
+- Forgetting $N_{total}=4.76$ includes the N₂ that does not react.
+
+</Traps>
+
+<Source>Anthony's Chapter 16 notes (16-31); lib <code>equilibrium</code> + <code>lnKpAt</code></Source>
+
+</Problem>
+
+<Problem id="16-33" title="Methane partially decomposing in a nitrogen stream at 1000 K" tags="Kp, solid carbon, inert, composition">
+
+<Statement>
+
+A mixture of 1 kmol CH₄ and 1 kmol N₂ (50 % each) is held at 1000 K and 1 atm. Methane can decompose to solid carbon and hydrogen; use $\mathrm{C}+2\,\mathrm{H_2}\rightleftharpoons\mathrm{CH_4}$ with $\ln K_p=2.328$. Find the equilibrium composition.
+
+</Statement>
+
+<Think>
+
+Two new things: **solid carbon** does not appear in $K_p$ or in $N_{total}$ (a pure solid has unit activity), and the **N₂ is inert**: it enters only through $N_{total}$.
+
+</Think>
+
+<Plan>
+
+CH₄ → $x$ C + $2x$ H₂ and $(1-x)$ CH₄ left; N₂ = 1 → $N_{total}=2+x$ (gas) → $K_p=\dfrac{N_{CH_4}}{N_{H_2}^2}\dfrac{N_{total}}{P}$ → solve.
+
+</Plan>
+
+<Steps>
+<Step title="1. Amounts">
+
+$\mathrm{CH_4}\to(1-x)\,\mathrm{CH_4}+x\,\mathrm{C(s)}+2x\,\mathrm{H_2}$, with 1 kmol N₂. Gas moles: $N_{total}=(1-x)+2x+1=2+x$. $\Delta\nu=1-2=-1$ for the synthesis as written.
+
+</Step>
+<Step title="2. Kp relation">
+
+$K_p=e^{2.328}=10.26=\dfrac{(1-x)}{(2x)^2}\cdot\dfrac{2+x}{1}$ (P = 1 atm). Iterating: $x=0.2$: $\dfrac{0.8(2.2)}{0.16}=11.0$ (too high); $x=0.2066$: $\dfrac{0.7934(2.2066)}{0.17073}=10.25$ ✓. $x=\mathbf{0.2066}$ kmol of carbon formed.
+
+</Step>
+<Step title="3. Composition">
+
+$N_{CH_4}=0.7934$, $N_{H_2}=0.4131$, $N_{N_2}=1$, $N_{total}=2.2066$ (gas) giving $y_{CH_4}=\mathbf{0.360}$, $y_{H_2}=\mathbf{0.187}$, $y_{N_2}=\mathbf{0.453}$. Check: $y_{CH_4}/y_{H_2}^2=0.3596/0.03504=10.26$ ✓.
+
+</Step>
+</Steps>
+
+<Answer>
+
+0.793 kmol CH₄ left, 0.207 kmol C(s), 0.413 kmol H₂, 1 kmol N₂; mole fractions 0.360 / 0.187 / 0.453 (carbon not counted).
+
+</Answer>
+
+<RealWorld title="Pyrolysis">
+
+This is the soot-and-hydrogen decomposition of natural gas: at 1000 K only 20 % goes, which is why industrial "methane pyrolysis" for hydrogen needs a higher temperature (or a catalyst) to push this equilibrium further to the right.
+
+</RealWorld>
+
+<Callout kind="warn" title="⚠ Your solution stops at the setup">
+
+Your Chapter 16 pages set up the algebra with trial values but the solution is unfinished, and the numbers listed beside it do not satisfy $K_p=e^{2.328}$. The recomputed composition above does (to 4 digits). Treat 0.360 / 0.187 / 0.453 as the answer; flagged for the errata page.
+
+</Callout>
+
+<Traps>
+
+- Counting **C(s) in $N_{total}$**: it is not a gas.
+- Putting the carbon in the numerator of $K_p$: pure solids drop out.
+- Reading $\ln K_p=2.328$ for the *decomposition*: A-28 style values here are for the synthesis reaction as written; decomposition has $\ln K_p=-2.328$.
+
+</Traps>
+
+<Source>Anthony's Chapter 16 v2 (16-33, setup only) · lib <code>equilibrium</code> with <code>condensed</code></Source>
+
+</Problem>
+
+## Dissociation changes the flame temperature
+
+When CO₂ and H₂O dissociate, the reaction is endothermic, so it **absorbs** heat and lowers the flame temperature, and the products contain CO, H₂, O₂, OH. Habashi's recipe for such problems: use excess air, write the equation with CO₂, CO and O₂ in the products, write the $K_p$ relation for CO₂ ⇌ CO + ½O₂ to find the coefficients, *then* do the enthalpy balance as in chapter 15. If nothing dissociates, $Q=\dot n(h_2-h_1)$. For example (16-40): heating O₂ from 25 °C to 3000 K at 1 atm with the O₂ ⇌ 2O reaction ($\ln K_p=-4.357$) gives 0.113 kmol of O per kmol of O₂ at equilibrium; the heat transfer is 1986 kJ/min for 0.5 kg/min (your 1966), against 1533 kJ/min without dissociation (your 1532.7). The dissociated oxygen alone costs ≈ 30 % more heat.
+
+At 4000 K, which is more likely: CO₂ → CO + ½O₂ ($\ln K_p=+1.61$) or N₂ + O₂ → 2NO (½-form: $\ln K_p=-1.21$)? The first: $K_p>1$ means it is **past 50 %** (the 2021 final problem 3, a pure comparison of $\ln K_p$ values).
+
+## Phase equilibrium (short)
+
+Two phases of a pure substance at the same $T$ and $P$ are in equilibrium when their specific Gibbs functions are equal, $g_f=g_g$. That is why $h_{fg}=Ts_{fg}$ on the saturation line (since $g=h-Ts$) and the foundation of the Clapeyron equation of chapter 12.
+
+## Habashi's traps and your own mistakes
+
+<Trap>
+
+- **$K_p$ depends on $T$ only**: exothermic → higher $T$ → lower $K_p$ (less complete). Heating can make a product mixture *worse*.
+- **16-4C** ($\mathrm{CO}+\tfrac12\mathrm{O_2}\rightleftharpoons\mathrm{CO_2}$): raising $T$ lowers $K_p$ and CO₂; raising $P$ at constant $T$ ($\Delta\nu=-\tfrac12$) *increases* CO₂.
+- **16-8C** (NO/O₂/N₂ with $P$ tripled): $K_p$ unchanged and $\Delta\nu=0$, so the composition is unchanged.
+- **16-52C**: combustion is more complete at 2000 K than at 3000 K: less dissociation.
+- **Inert gases at constant total $P$**: they lower $P/N_{total}$, so they shift the equilibrium *exactly like a pressure decrease*, toward the side with **more moles**.
+- **P in atm**: $K_p$ is defined with $P_0=1$ atm; with $P$ in kPa you must divide by 101.325.
+- **Coefficients**: halving or doubling the reaction squares or roots $K_p$; the reverse reaction inverts it.
+- **Liquid fuel in 16-38**: use $\bar h_f(liq)$ (your note "liquid!!"): $Q=190\,300$ kJ/kmol, 5180 kJ/min for 1.2 kg/min of propane (printed 5066: 2 % lower).
+
+</Trap>
+
+<Callout kind="warn" title="⚠ 16-6C: your v2 re-solve has the wrong sign">
+
+Adding N₂ at constant $T$ and $P$ to a CO₂/CO/O₂ equilibrium: the inert raises $N_{total}$, lowers $P/N_{total}$, and for CO₂ ⇌ CO + ½O₂ ($\Delta\nu=+\tfrac12$) shifts the equilibrium **toward CO and O₂**. Your Dec 17 solution says so (✔: CO₂ decreases, CO and O₂ increase). The Dec 18 re-solve says "O₂ will decrease": **wrong**, the O₂ increases.
+
+</Callout>
+
+<Examined>
+
+Assignment 9 (<Asg n="09" />) is this chapter: 16-4C, 16-6C, 16-8C, 16-31, 16-33, 16-38 (liquid propane at 1200 K), 16-40, 16-52C, 16-56. Habashi's *uncovered* tutorial problems are on <Ex id="tutorial-16" /> (read them: the 2021 final has one, problem 3, with a $K_p$ comparison and the $\bar h_f$ of liquid water). The marathon slides give the six remarks (Habashi flags them as the part students find hardest to digest). Expect: one dissociation or $K_p$ computation, one van 't Hoff or $\ln K_p$ comparison, and conceptual remarks on pressure, inerts and temperature.
+
+</Examined>
+
+## Check yourself
+
+1. For $\mathrm{N_2}+3\mathrm{H_2}\rightleftharpoons2\mathrm{NH_3}$ (exothermic), what do higher $T$ and higher $P$ do to the NH₃ yield?
+
+<details>
+<summary>Answer</summary>
+
+Higher $T$ lowers $K_p$ (exothermic) and so lowers the yield. Higher $P$ raises it, because $\Delta\nu=-2$ and the product side has fewer moles. Industry compromises: 400–500 °C for speed, 150–300 bar to win back the yield.
+
+</details>
+
+2. If $\ln K_p=-5$ for a reaction, is it nearly complete?
+
+<details>
+<summary>Answer</summary>
+
+$K_p=0.0067$, so the reactants are strongly favoured: the reaction hardly proceeds. Products are only a small fraction. The reverse reaction has $K_p=150$ and is nearly complete.
+
+</details>
+
+3. Why does adding N₂ at constant $T$ and $P$ shift CO₂ ⇌ CO + ½O₂ to the right?
+
+<details>
+<summary>Answer</summary>
+
+$K_p$ is fixed; $N_{total}$ increases, so $(P/N_{total})^{1/2}$ decreases and the mole ratio $\dfrac{N_{CO}N_{O_2}^{1/2}}{N_{CO_2}}$ must increase to compensate. The side with more moles wins (Le Chatelier).
+
+</details>
+
+4. Doubling the reaction $\mathrm{H_2O}\rightleftharpoons\mathrm{H_2}+\tfrac12\mathrm{O_2}$ to $2\mathrm{H_2O}\rightleftharpoons2\mathrm{H_2}+\mathrm{O_2}$: what is the new $K_p$?
+
+<details>
+<summary>Answer</summary>
+
+$K_{p,new}=K_p^2$ (remark 6), i.e. $\ln K_{p,new}=2\ln K_p$. Using the table value without doubling it is the standard error.
+
+</details>
+
+5. How does the equilibrium NO from 1500 K to 2500 K change in air at 1 atm?
+
+<details>
+<summary>Answer</summary>
+
+It rises from about 0.13 % to 2.3 %, a factor of about 18 for 1000 K (or about 3 % per 10 K near 2000 K). The reaction is endothermic ($\bar h_R=+90$ MJ/kmol), so $K_p$ and the NO fraction climb with $T$; real engines stay below this because the reaction is kinetically limited.
+
+</details>

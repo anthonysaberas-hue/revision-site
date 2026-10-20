@@ -1,0 +1,384 @@
+<p className="eyebrow">Chapter 15 · Combustion and adiabatic flame temperature · Final</p>
+
+# Combustion and adiabatic flame temperature
+
+<div className="lede">
+
+Burning a fuel is a chemical reaction that **conserves atoms, not moles**, and the energy bookkeeping adds one new idea to the first law: every substance's enthalpy has a **reference** (the enthalpy of formation) so that reactants and products, which are different molecules, can be compared. Chapter 15 therefore has three skills: (1) **balance the equation** and compute air–fuel ratio, products and dew point; (2) apply the first law with **formation enthalpies** to get the heat released ($Q$, HHV, LHV); (3) find the **adiabatic flame temperature** (AFT) by iteration. Habashi's closing slide says where students get trapped: *the meaning of AFT, balancing equations, mol versus kmol versus kg, what "percent excess air" means, HHV versus LHV*. This chapter is organised around those.
+
+</div>
+
+<Machine name="a car engine, a condensing boiler and a jet combustor">
+
+Approximate or typical (≈):
+
+- **Car engine**: the stoichiometric air–fuel ratio of gasoline is **≈ 14.7 kg air per kg fuel** (pure octane gives 15.09 in this chapter's equations; real gasoline contains oxygenates and aromatics). An **oxygen (λ) sensor** in the exhaust keeps the engine at **λ ≈ 1** (equivalence ratio 1) by trimming the injected fuel, because the **three-way catalyst** only removes CO, unburned HC and NOx together within a very narrow window around stoichiometric. Slightly lean gives NOx; slightly rich gives CO.
+- **Condensing boiler** (home furnace): natural gas has HHV ≈ 55.5 MJ/kg and LHV ≈ 50.0 MJ/kg, so HHV/LHV = 1.11. Flue gas cooled below its **dew point (≈ 55–57 °C)** condenses the water vapour and recovers its latent heat. The result is a thermal efficiency of **≈ 90–98 % on the HHV basis**, which is **≈ 100–109 % on the LHV basis**: "more than 100 %" without violating anything, because the LHV never counted that latent heat.
+- **Jet combustor**: overall the mixture is **very lean**, fuel–air ratio **f ≈ 0.02** (stoichiometric kerosene is f ≈ 0.067, so $\lambda\approx3.3$, equivalence ratio ≈ 0.3), because the turbine cannot take the stoichiometric flame temperature (≈ 2400 K); the flame burns near stoichiometric in the **primary zone** and the rest of the air is added downstream to dilute the gas to the turbine inlet temperature (≈ 1400–1700 K).
+- Course connection: 2021 final problem 2 is exactly this: decane, $f=0.0206$, air at the compressor exit temperature, find T₄ (≈ 1360 K).
+
+</Machine>
+
+## The 30-second version
+
+<Idea title="Combustion in one box">
+
+1. **Air**: 21 % O₂, 79 % N₂, so **3.76 kmol N₂ per kmol O₂** and 4.76 kmol of air per kmol O₂. Air $M=28.97$.
+2. **Theoretical (stoichiometric) air** = exactly enough O₂ for complete combustion; no O₂ in the products. **Excess air** is extra: 50 % excess = 150 % theoretical. $\lambda=\%$ theoretical air $/100$; equivalence ratio $\phi=1/\lambda$.
+3. $AF=\dfrac{m_{air}}{m_{fuel}}=\dfrac{N_{air}M_{air}}{N_{fuel}M_{fuel}}$ (kg/kg), $FA=1/AF$.
+4. **Dew point of products**: $P_v=y_{H_2O}P$, $T_{dp}=T_{sat}(P_v)$.
+5. **Enthalpy of a substance**: $\bar h=\bar h_f^\circ+(\bar h-\bar h^\circ)$ (formation + sensible); closed system add $-R_uT$ per kmol of gas ($\bar u=\bar h-R_uT$).
+6. **Steady flow**: $Q-W=\sum N_P(\bar h_f^\circ+\bar h-\bar h^\circ)_P-\sum N_R(\bar h_f^\circ+\bar h-\bar h^\circ)_R$ (kJ/kmol fuel, $Q$ positive *into* the system).
+7. **Heating values**: $HHV=|\bar h_c|$ with liquid water; $LHV=HHV-m_wh_{fg}$, i.e. $|LHV|=|HHV|-2441.7\,m_w$ (open) or $-2304.3\,m_w$ (closed).
+8. **AFT** ($Q=0$, $W=0$): $H_P=H_R$, solved by iteration on $T_P$.
+9. **Liquid fuel**: $\bar h_f(liq)=\bar h_f(gas)-M\,h_{fg}$.
+
+</Idea>
+
+## Balancing: atoms in, atoms out
+
+Write the fuel, then the air as $a_{th}(\mathrm{O_2}+3.76\,\mathrm{N_2})$, and balance **carbon, hydrogen, then oxygen**. For $\mathrm{C}_x\mathrm{H}_y$ with theoretical air:
+
+$$\mathrm{C}_x\mathrm{H}_y+\left(x+\tfrac{y}{4}\right)(\mathrm{O_2}+3.76\,\mathrm{N_2})\to x\,\mathrm{CO_2}+\tfrac{y}{2}\,\mathrm{H_2O}+3.76\left(x+\tfrac{y}{4}\right)\mathrm{N_2}.$$
+
+For excess air, multiply the air by $\lambda$ and add the leftover $(\lambda-1)a_{th}$ O₂ to the right side. For incomplete combustion move a fraction of C into CO and recompute the O₂ balance. Habashi's two rules of thumb (from your notes): **"always balance with O₂"** (the last element to balance) and **"when you compute the stoichiometric coefficient you assume perfect combustion"**: $a_{th}$ is defined by complete oxidation, even if the actual products contain CO.
+
+<Problem id="Class example 1 · Chapter 15 lecture" title="Butane burned with an air–fuel ratio of 20: percent air, composition, dew point" tags="AF, % theoretical air, dew point">
+
+<Statement>
+
+n-Butane (C₄H₁₀) is burned with an air–fuel ratio of 20 kg air per kg fuel at 101 kPa. Find the percent of theoretical air, the balanced equation, the mole fraction of CO₂ in the products and the dew point of the products.
+
+</Statement>
+
+<Think>
+
+The percentage is a *ratio of air amounts*, so first compute the **stoichiometric** AF, then divide. The new thing is that the equation is then written with $\lambda\,a_{th}$ and the leftover O₂.
+
+</Think>
+
+<Plan>
+
+$a_{th}=4+10/4=6.5$ → $AF_{th}$ → $\lambda=20/AF_{th}$ → balance with $a=\lambda a_{th}$ → total moles → $y_{H_2O}$ → $T_{dp}$.
+
+</Plan>
+
+<Steps>
+<Step title="1. Stoichiometric air–fuel ratio">
+
+$AF_{th}=\dfrac{4.76(6.5)(29)}{58}=\mathbf{15.47}$ kg/kg (his page). With the lib's $M_{fuel}=58.12$ and $M_{air}=28.97$ it is 15.42.
+
+</Step>
+<Step title="2. Percent theoretical air">
+
+$\lambda=\dfrac{20}{15.47}=1.2928$: **129.3 % theoretical air** (29.3 % excess).
+
+</Step>
+<Step title="3. Equation">
+
+$a=1.2928(6.5)=8.403$: $\mathrm{C_4H_{10}}+8.403(\mathrm{O_2}+3.76\mathrm{N_2})\to4\,\mathrm{CO_2}+5\,\mathrm{H_2O}+1.903\,\mathrm{O_2}+31.6\,\mathrm{N_2}$, with excess O₂ $=8.403-6.5=1.903$ and N₂ $=3.76(8.403)=31.6$.
+
+</Step>
+<Step title="4. CO₂ fraction and dew point">
+
+Total products $=4+5+1.903+31.6=42.5$ kmol. $y_{CO_2}=\dfrac{4}{42.5}=9.4$ %, $y_{H_2O}=\dfrac{5}{42.5}=0.1176$, $P_v=0.1176(101)=\mathbf{11.87}$ kPa, so $T_{dp}=T_{sat}(11.87\ kPa)\approx\mathbf{49}$ °C (the lib gives 49.2 °C).
+
+</Step>
+</Steps>
+
+<Answer>
+
+129.3 % theoretical air; 4 CO₂ + 5 H₂O + 1.903 O₂ + 31.6 N₂; $y_{CO_2}=9.4$ %; $T_{dp}\approx49$ °C.
+
+</Answer>
+
+<RealWorld title="Reading a flue-gas analyser">
+
+A technician measures O₂ and CO₂ in a boiler stack. This calculation is the reverse: from the excess O₂ (here 1.9/42.5 = 4.5 % in the wet products) you can recover the air supply. A typical gas boiler runs at 10–15 % excess air.
+
+</RealWorld>
+
+<Traps>
+
+- **Percent excess vs percent theoretical**: 50 % excess = **150 %** theoretical; 200 % excess = 300 % theoretical; 90 % theoretical = 10 % *deficiency*.
+- Putting the excess O₂ on the wrong side, or forgetting that N₂ scales with *all* the air, not just the theoretical part.
+- Mixing **kmol and kg**: $AF$ is kg/kg; the equation's coefficients are kmol.
+
+</Traps>
+
+<Source>Anthony's Chapter 15 lecture notes (Example 1) · lib <code>burn</code>, <code>dewPoint</code></Source>
+
+</Problem>
+
+<CombustionSim />
+
+## Enthalpy of formation, HHV and LHV
+
+Reactants and products are different molecules, so the enthalpy zero must be **common**. The convention: **the enthalpy of formation $\bar h_f^\circ$ of each stable element (O₂, N₂, H₂, C) is zero at 25 °C and 1 atm**, and a compound's $\bar h_f^\circ$ is the heat released or absorbed forming it from the elements. The absolute enthalpy of a substance at $T$ is then
+
+$$\bar h(T)=\bar h_f^\circ+\big(\bar h(T)-\bar h^\circ\big),\qquad \bar h^\circ=\bar h(298\ K)\ \text{(tabulated)}.$$
+
+The **enthalpy of combustion** $\bar h_c=\sum N_P\bar h_f-\sum N_R\bar h_f$ is the heat released when a fuel burns completely at 25 °C and 1 atm and the products return to 25 °C. If the water is **liquid** it is the **HHV** (higher heating value); if it is **vapour** it is the **LHV**; they differ by the latent heat of the water formed:
+
+$$|LHV|=|HHV|-m_wh_{fg}=|HHV|-2441.7\,m_w=|HHV|-44\,000\,N_w\quad(\text{open}),$$
+
+and with the **internal-energy** analogue $u_{fg}=2304.3$ kJ/kg (41 523 kJ/kmol) for a constant-volume process. For methane the lib gives HHV 55 496 and LHV 50 010 kJ/kg (the table A-27 values are 55 530 and 50 050); the ratio is 1.110. His own check: for n-octane gas HHV = 48 255 kJ/kg and LHV = 44 790 kJ/kg ($\bar h_c=5\,512\,180$ and 5 116 090 kJ/kmol; the Dec-9 pass used $M=114$ and gave 44 877, slightly off).
+
+For a **liquid fuel**: $\bar h_f(liq)=\bar h_f(gas)-M\,h_{fg}$ (propane: $-103\,850-44.097(335)=-118\,622$ kJ/kmol). His highlighted note on the 16-38 page: "liquid!!".
+
+<HhvLhvSim />
+
+## The first law for reacting flows
+
+For a **steady** combustor with no work, per kmol of fuel (Q positive into the system):
+
+$$Q=\sum N_P\big(\bar h_f^\circ+\bar h-\bar h^\circ\big)_P-\sum N_R\big(\bar h_f^\circ+\bar h-\bar h^\circ\big)_R,$$
+
+so the heat given to the surroundings is $q_{out}=H_R-H_P$. Note: fuel is normally at 25 °C so its enthalpy is $\bar h_f$ alone; the air may be at a different temperature. For a **closed rigid** system (a bomb calorimeter, an engine at constant volume) the same balance uses $\bar u=\bar h-P\bar v=\bar h-R_uT$ for every gas (and ≈ 0 for solids and liquids):
+
+$$Q-W=\sum N_P\big(\bar h_f^\circ+\bar h-\bar h^\circ-R_uT_P\big)-\sum N_R\big(\bar h_f^\circ+\bar h-\bar h^\circ-R_uT_R\big).$$
+
+<Problem id="Example 15-7 · Chapter 15 lecture" title="Liquid propane with 50 % excess air: heat released, AF and air flow" tags="steady-flow combustion, liquid fuel, incomplete combustion, heat of reaction">
+
+<Statement>
+
+Liquid propane (C₃H₈) enters a combustion chamber at 25 °C at 0.05 kg/min and burns with 50 % excess air at 7 °C. 90 % of the carbon burns to CO₂ and 10 % to CO. The products leave at 1500 K. Find the air–fuel ratio, the mass flow of air and the rate of heat transfer from the chamber.
+
+</Statement>
+
+<Think>
+
+Three new things: a *liquid* fuel (so $\bar h_f$ is the liquid value), *incomplete* combustion (so CO appears and the O₂ balance changes) and *air not at 25 °C* (so its sensible enthalpy is not zero). The percent theoretical is 150 %.
+
+</Think>
+
+<Plan>
+
+Balance → $AF$ and $\dot m_{air}$ → $H_R$ with the air at 280 K → $H_P$ at 1500 K → $q_{out}=H_R-H_P$ per kmol → per kg → multiply by 0.05 kg/min.
+
+</Plan>
+
+<Steps>
+<Step title="1. Balance">
+
+$a_{th}=3+8/4=5$; $a=1.5(5)=7.5$. $\mathrm{C_3H_8(l)}+7.5(\mathrm{O_2}+3.76\mathrm{N_2})\to2.7\,\mathrm{CO_2}+0.3\,\mathrm{CO}+4\,\mathrm{H_2O}+2.65\,\mathrm{O_2}+28.2\,\mathrm{N_2}$. O check: $15=5.4+0.3+4+5.3$ ✓. (O₂ balance: $2(7.5)=2(2.7)+0.3+4+2z$, so $z=2.65$.)
+
+</Step>
+<Step title="2. Air–fuel ratio and air flow">
+
+$AF=\dfrac{4.76(7.5)(29)}{1(44)}=\mathbf{23.52}$ kg air/kg fuel (with $M=44.097$ and 28.97: 23.45). $\dot m_{air}=AF\,\dot m_f=23.52(0.05)=\mathbf{1.176}$ kg/min.
+
+</Step>
+<Step title="3. Reactants (air at 280 K)">
+
+<T>A-26: h̄f(C₃H₈ gas) = −103 850 kJ/kmol; hfg = 335 kJ/kg; A-18/A-19: h̄ at 280 K: O₂ 8154, N₂ 8145; h̄° = 8682, 8669</T>. $\bar h_{f,liq}=-103\,850-44.097(335)=-118\,622$. $H_R=-118\,622+7.5\big[(8154-8682)+3.76(8145-8669)\big]=-118\,622+7.5(-528-1970)=-137\,357$ kJ/kmol (lib: −137 363).
+
+</Step>
+<Step title="4. Products at 1500 K">
+
+<T>A-18…A-23 at 1500 K: h̄ − h̄° = CO₂ 61 617, CO 38 804, H₂O 48 239, O₂ 40 568, N₂ 38 369 kJ/kmol</T>. $H_P=2.7(-393\,520+61\,617)+0.3(-110\,530+38\,804)+4(-241\,820+48\,239)+2.65(40\,568)+28.2(38\,369)$ $=-896\,138-21\,518-774\,323+107\,504+1\,081\,974=\mathbf{-502\,501}$ kJ/kmol (lib −502 476).
+
+</Step>
+<Step title="5. Heat transfer">
+
+$q_{out}=H_R-H_P=-137\,363-(-502\,476)=\mathbf{365\,113}$ kJ/kmol (your page: 363 763; the textbook: 363 880). Per kg: $\dfrac{365\,113}{44.097}=8280$ kJ/kg; $\dot Q_{out}=0.05(8280)=\mathbf{414}$ kJ/min (your page 413 kJ/min).
+
+</Step>
+</Steps>
+
+<Answer>
+
+$AF=23.5$, $\dot m_{air}=1.176$ kg/min, $\dot Q_{out}\approx413$–414 kJ/min (≈ 6.9 kW).
+
+</Answer>
+
+<RealWorld title="How much is that?">
+
+Propane's LHV is 46 350 kJ/kg, so 0.05 kg/min of it is 2318 kJ/min of heat release. The chamber loses only 414 kJ/min (18 %) because the products leave at 1500 K carrying the rest: heat transfer is the *difference* between what the fuel released and what the hot exhaust takes away.
+
+</RealWorld>
+
+<Traps>
+
+- Using the gas-phase $\bar h_f$ for a liquid fuel (the error is $M\,h_{fg}=14\,770$ kJ/kmol, 4 % here).
+- Treating air at 7 °C as zero sensible enthalpy: its $\bar h-\bar h^\circ$ is **negative**, $-528$ and $-524$ kJ/kmol.
+- Forgetting that CO has its own $\bar h_f$ ($-110\,530$): incomplete combustion releases less heat.
+
+</Traps>
+
+<Source>Anthony's Chapter 15 lecture notes (Example 15-7, pp. 8–12) · lib <code>burn</code>, <code>steadyQ</code> with <code>'C3H8_l'</code></Source>
+
+</Problem>
+
+## Adiabatic flame temperature
+
+If a combustor loses no heat ($Q=0$, $W=0$), the products reach their **maximum temperature**, the **adiabatic flame temperature**: $H_P(T_{ad})=H_R$. Habashi's students are still puzzled by the idea that "enthalpy does not change": the **total** enthalpy (formation + sensible) is conserved, so as the chemical enthalpy is released (the products' $\bar h_f$ sum is much lower than the reactants'), the *sensible* enthalpy rises by the same amount. The released energy heats the products.
+
+<AftGraphicalFigure fuel="CH4" airs={[1, 1.5, 2.5]} />
+
+With tables, $T_{ad}$ requires iteration: guess $T_P$, evaluate $H_P$, compare with $H_R$, adjust (interpolate). The products are mostly N₂, so a good first guess uses N₂ alone. With constant specific heats it is direct. Three consequences to remember: (1) *more excess air → lower $T_{ad}$* (the same heat warms more gas); (2) **preheated air → higher $T_{ad}$** (more $H_R$); (3) the numbers are *upper bounds*, since real flames lose heat and **dissociate** (chapter 16 shows CO₂ and H₂O dissociating above ≈ 2000 K, which can lower the true stoichiometric flame temperature by 100–300 K).
+
+| fuel, air at 298 K | 100 % air | 120 % | 150 % | 200 % | 300 % |
+|---|---|---|---|---|---|
+| CH₄ | 2326 K | 2069 | 1789 | 1481 | 1138 |
+| C₃H₈ | 2393 K | 2123 | 1831 | 1511 | 1158 |
+| C₈H₁₈ (liquid) | 2393 K | 2121 | 1828 | 1507 | 1154 |
+| H₂ | 2520 K | 2263 | 1974 | 1647 | 1270 |
+
+<Problem id="15-79" title="Acetylene burned with 30 % excess air, with heat loss: flame temperature" tags="AFT, iteration, heat loss">
+
+<Statement>
+
+Acetylene (C₂H₂) at 25 °C is burned with 30 % excess air at 27 °C in a steady-flow combustor, and 75 000 kJ per kmol of fuel is lost to the surroundings. Find the temperature of the products.
+
+</Statement>
+
+<Think>
+
+Not exactly "adiabatic": with heat loss, $H_P=H_R-Q_{out}$. The new ingredient is the *loss term* and a clean iteration on a two-point bracket.
+
+</Think>
+
+<Plan>
+
+Balance (130 % air) → $H_R$ → target $H_P=H_R-75\,000$ → evaluate $H_P$ at 2300 K and 2350 K → interpolate.
+
+</Plan>
+
+<Steps>
+<Step title="1. Balance">
+
+$a_{th}=2+2/4=2.5$, $a=1.3(2.5)=3.25$: $\mathrm{C_2H_2}+3.25(\mathrm{O_2}+3.76\mathrm{N_2})\to2\,\mathrm{CO_2}+1\,\mathrm{H_2O}+0.75\,\mathrm{O_2}+12.22\,\mathrm{N_2}$.
+
+</Step>
+<Step title="2. Reactants (air at 300 K)">
+
+$\bar h_f=+226\,730$ (acetylene is *endothermic* to form). $H_R=226\,730+3.25\big[59+3.76(58)\big]\approx227\,640$ (sensible parts at 300 K: 59 and 58 kJ/kmol) kJ/kmol, so the target is $H_P=227\,633-75\,000=\mathbf{152\,633}$.
+
+</Step>
+<Step title="3. Products at two guesses">
+
+Sum of $N_P\bar h_f=2(-393\,520)+(-241\,820)=-1\,028\,860$. At 2300 K: $2(109\,613)+88\,863+0.75(70\,632)+12.22(66\,968)=1\,179\,414$ for the sensible part, so $H_P=150\,554$. At 2350 K: $H_P=183\,129$. (Your sums were of full table values $\bar h$, i.e. they include $\bar h^\circ$ terms and exclude $\bar h_f$: 1 320 517 at 2300 K and 1 352 961 at 2350 K against a right-hand side 1 321 784: the same crossing point.)
+
+</Step>
+<Step title="4. Interpolate">
+
+$T=2300+50\dfrac{152\,633-150\,554}{183\,129-150\,554}=\mathbf{2303}$ K (your page: 2301–2302 K; the book prints 2301).
+
+</Step>
+</Steps>
+
+<Answer>
+
+$T_P\approx2302$ K (2303 from the lib table; the printed answer is 2301 K).
+
+</Answer>
+
+<RealWorld title="The oxy-acetylene torch">
+
+Acetylene's large positive formation enthalpy is why an oxy-acetylene flame (pure O₂, no N₂ ballast to heat) is so hot, roughly 3000 K, and cuts steel; with air the flame is several hundred kelvin cooler.
+
+</RealWorld>
+
+<Traps>
+
+- Forgetting the sign: heat loss *lowers* the target $H_P$.
+- Using the fuel at the air's temperature: the fuel is at 25 °C ($\bar h=\bar h_f$) unless told otherwise.
+- Taking 2300 and 2350 K as exact: the answer is a *linear interpolation* of two table-based values.
+
+</Traps>
+
+<Source>Anthony's Notes-231117 and Chap 15 v2 (15-79); his answer 2301/2302 K · lib <code>aft</code> with <code>Qloss</code></Source>
+
+</Problem>
+
+<Callout kind="note" title="The 2021 final (decane, jet combustor)">
+
+Problem 2 of the April 2021 final: decane (C₁₀H₂₂, $\bar h_f=-300\,000$ kJ/kmol) is burned with air from the compressor at 616 K, $f=0.0206$, so $a=49.85$ kmol O₂ per kmol fuel (theoretical air 15.5, i.e. 322 % theoretical): $10\,\mathrm{CO_2}+11\,\mathrm{H_2O}+35.35\,\mathrm{O_2}+187.4\,\mathrm{N_2}$. The enthalpy balance gives the turbine inlet temperature **≈ 1365 K** (the exam's "given 1400" is within the two-trial iteration the question allows). This is the jet-engine combustor of the machine box.
+
+</Callout>
+
+## Entropy of reacting systems
+
+The third law fixes an **absolute entropy** $\bar s^\circ$ for each substance at 25 °C and 1 atm (table A-26), and for an ideal gas at pressure $P_i$ and temperature $T$: $\bar s_i(T,P_i)=\bar s_i^\circ(T)-R_u\ln\dfrac{y_iP_m}{P_0}$ with the **partial** pressure (as in chapter 13). The second-law balance for a reactor is $S_{gen}=S_P-S_R+\dfrac{Q_{out}}{T_{surr}}$. It is what tells you, for example, that burning a fuel to heat water at 60 °C throws away most of its exergy (chapter 8).
+
+## Habashi's traps and your own mistakes
+
+<Trap>
+
+- **Meaning of AFT**: "enthalpy doesn't change" means $H_P=H_R$ with formation enthalpies included, not that nothing happens. If you balance only sensible enthalpies you lose the whole point.
+- **Balancing equations**: balance atoms, not moles; do O last (your note: "always balance with O₂").
+- **Mol vs kmol vs kg**: the equation is per kmol of fuel; $AF$ is per kg. $Q$ per kmol times kmol/s gives kW only if $\bar h$ is in kJ/kmol.
+- **% excess air**: 20 % excess = 120 % theoretical. "Stoichiometric" means complete combustion with *no* free O₂; "complete" combustion may still have excess O₂ (the marathon slides draw this distinction).
+- **HHV vs LHV**: LHV = HHV − 2441.7 $m_w$ (open) or − 2304.3 $m_w$ (closed). Heat *transfer* problems use the actual product temperatures; "efficiency" problems must name the basis.
+- **H₂O is gas in the products unless told otherwise**; it condenses only below the dew point (Pv = $y_{H_2O}P$).
+- **Fuel at 25 °C** in the tables; the air can be at any temperature.
+- **Closed (rigid) vessels**: add the $-R_uT$ terms (his reminder "fixed volume → $-R_uT$").
+- **Heat of formation of a liquid fuel = gas value − $M\,h_{fg}$.**
+
+</Trap>
+
+<Callout kind="warn" title="⚠ Your 15-59 re-solves disagree: trust the Dec 9 value">
+
+15-59 (propane burned with AF = 25, products cooled to the dew point, 100 kPa): $\lambda=25/15.68=1.60$, $\mathrm{C_3H_8}+8(\mathrm{O_2}+3.76\mathrm{N_2})\to3\,\mathrm{CO_2}+4\,\mathrm{H_2O}+3\,\mathrm{O_2}+30.08\,\mathrm{N_2}$, $y_v=0.0998$, $T_{dp}=46.0$ °C. The heat transfer is **$-2.018\times10^6$ kJ/kmol** ($-45\,770$ kJ/kg with the lib; $-45\,850$ from his hand arithmetic). The Dec-9 solution wrote $-2\,017\,510$ ✔; the Dec-16 re-solve wrote $-2\,297\,160$, **more than the propane's HHV** (≈ $2.22\times10^6$ kJ/kmol), which is physically impossible: the heat released cannot exceed the heating value.
+
+</Callout>
+
+<Callout kind="warn" title="⚠ 15-68: 5251 kJ, not 5951">
+
+Rigid tank, 120 g CH₄ + 600 g O₂ at 25 °C and 200 kPa, heated products at 1200 K: $P_2=805$ kPa ✔ and $Q_{out}=5251$ kJ with the $-R_uT$ terms (lib). Your v3 re-solve has 5951 kJ: an arithmetic slip of 700 kJ in the sum.
+
+</Callout>
+
+<Examined>
+
+Assignment 8 (<Asg n="08" />) is this chapter: 15-24 (ethane, 20 % excess air: AF = 19.3, $T_{dp}\approx52.4$ °C), 15-26 (butane at 200 % with water injection: 9.8 kmol), 15-33 (dry-product analysis: AF = 34.5, 200 % theoretical), 15-36 (octane, 60 % excess, 15 % C to CO: $T_{dp}=44$ °C), 15-37 (coal, 50 % excess), 15-46, 15-52 (octane HHV/LHV), 15-59, 15-67 (propane + methane mixture, theoretical air, products at 125 °C: $T_{dp}=56.7$ °C, $q=1\,247\,300$ kJ/kmol, AF = 16.2, 2.12 kg/h), 15-68, 15-79. The 2021 final (<Ex id="final-2021" />) has the decane AFT and a part (b) on h̄f of liquid water ($-241\,820-44\,010=-285\,830$). Expect on the final: balance + dew point + heat transfer (steady or rigid tank) + AFT with 1–2 iterations.
+
+</Examined>
+
+## Check yourself
+
+1. Propane burned with 150 % theoretical air: what is the O₂ in the products, and the AF?
+
+<details>
+<summary>Answer</summary>
+
+$a_{th}=5$, $a=7.5$, leftover O₂ $=2.5$ kmol (before any CO). $AF=\dfrac{4.76(7.5)(29)}{44}=23.5$ kg/kg.
+
+</details>
+
+2. Why is the LHV efficiency of a condensing boiler allowed to exceed 100 %?
+
+<details>
+<summary>Answer</summary>
+
+The LHV is defined as if the water in the products leaves as vapour; a condensing boiler cools the flue gas below its dew point and recovers that latent heat, which was never counted in the LHV. On the HHV basis the efficiency stays below 100 %. For methane the ratio is HHV/LHV = 1.11, so 90 % HHV = 100 % LHV.
+
+</details>
+
+3. Why does adding air lower the adiabatic flame temperature?
+
+<details>
+<summary>Answer</summary>
+
+The heat release is fixed by the fuel; more air means more moles of N₂ and O₂ in the products to share it. $T_{ad}$ falls from ≈ 2330 K at stoichiometric methane to ≈ 1480 K at 200 % theoretical air.
+
+</details>
+
+4. A fuel is burned in a rigid vessel instead of a steady-flow combustor. What changes in the energy balance?
+
+<details>
+<summary>Answer</summary>
+
+Use internal energy: for every gas $\bar u=\bar h-R_uT$, so each term $N(\bar h_f+\bar h-\bar h^\circ)$ gets $-N R_uT$ (initial and final temperatures). Solids and liquids need no correction.
+
+</details>
+
+5. The stoichiometric equation uses theoretical O₂ even if the problem says 15 % of the carbon burns to CO. Why?
+
+<details>
+<summary>Answer</summary>
+
+$a_{th}$ is *defined* as the O₂ for complete combustion and sets the percent theoretical air. The actual air is $\lambda a_{th}$, and the *product* balance (with CO and leftover O₂) is then done with the actual O₂.
+
+</details>

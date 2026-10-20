@@ -1,0 +1,339 @@
+<p className="eyebrow">Chapter 17 · Compressible flow and nozzles · Final</p>
+
+# Compressible flow and nozzles
+
+<div className="lede">
+
+When a gas moves at a good fraction of the speed of sound its density changes along the flow, and the simple "incompressible" intuition fails: a converging duct *slows* a supersonic flow and a diverging one *accelerates* it. The chapter is four things: **stagnation properties** (what a probe reads), the **Mach number** (flow speed against sound speed), **isentropic flow with area change** (nozzles and diffusers), and **choking** (why a nozzle's flow rate cannot grow beyond the sonic throat). Habashi's last warning of the semester: "many students, now at the end of the semester, are still not able to make the difference between **static and total**".
+
+</div>
+
+<Machine name="an airliner at cruise and a rocket nozzle">
+
+Approximate or typical (≈):
+
+- **Airliner cruise**: **Ma ≈ 0.78–0.85 at ≈ 11 km** (36 000 ft). At 11 km the standard atmosphere is 216.65 K (−56.5 °C) and 22.6 kPa, so the speed of sound is $c=\sqrt{kRT}=295$ m/s and the flight speed is **≈ 230–251 m/s (≈ 830–900 km/h)**. A pitot-static probe sees the *stagnation* values: $T_0\approx243$–248 K (≈ −30 to −25 °C: **the skin of the nose is 26–31 K warmer than the air**) and $P_0\approx33.8$–36.3 kPa. Cruise is held *below* Ma 1 because local flow over the wing reaches Ma 1 first and wave drag rises sharply (the drag-divergence Mach number). The Airbus A340 problem (17-26): 945 km/h at −60 °C is Ma = 0.897.
+- **Rocket nozzle**: the combustion chamber (≈ 10–20 MPa, $T_0\approx3500$ K, $k\approx1.2$) feeds a **converging–diverging (de Laval) nozzle**: the sonic throat sets the mass flow and the diverging bell expands the gas to **Ma ≈ 3–5**. For $k=1.2$, an area ratio $A_e/A^*=15$ gives $Ma_e=3.56$ and $77.5$ gives 4.7 (the lib's numbers). Sea-level nozzles are kept short to avoid flow separation; vacuum nozzles are long and wide. More on shocks, over- and under-expansion in the MECH 430 compressible-flow course ([MECH 430](#/mech430)).
+- **Converging nozzle**: a garden hose or an aircraft engine's nozzle (turbofan exhausts such as the CFM56's are convergent and choke at high thrust). Once the nozzle pressure ratio $P_0/P_{amb}$ exceeds ≈ 1.9 the nozzle is choked.
+
+</Machine>
+
+<NozzleContourFigure AeAt={4} k={1.2} />
+
+## The 30-second version
+
+<Idea title="Compressible flow in one box">
+
+1. **Stagnation enthalpy** $h_0=h+\dfrac{V^2}{2}$. For an ideal gas: $T_0=T+\dfrac{V^2}{2c_p}$ (with $c_p$ in kJ/kg·K divide $V^2/2$ by 1000), $\dfrac{P_0}{P}=\left(\dfrac{T_0}{T}\right)^{k/(k-1)}$ (isentropic), $\dfrac{\rho_0}{\rho}=\left(\dfrac{T_0}{T}\right)^{1/(k-1)}$.
+2. **Speed of sound** $c=\sqrt{kRT}$ (R in J/kg·K), **Mach number** $Ma=V/c$. $\dfrac{T_0}{T}=1+\dfrac{k-1}{2}Ma^2$.
+3. **Critical (sonic) ratios**: $\dfrac{T^*}{T_0}=\dfrac{2}{k+1}$, $\dfrac{P^*}{P_0}=\left(\dfrac{2}{k+1}\right)^{k/(k-1)}$, $\dfrac{\rho^*}{\rho_0}=\left(\dfrac{2}{k+1}\right)^{1/(k-1)}$. For $k=1.4$: 0.8333, **0.5283**, 0.6339.
+4. **Area change**: $\dfrac{dA}{A}=\dfrac{dP}{\rho V^2}\left(1-Ma^2\right)$.
+5. **Area ratio**: $\dfrac{A}{A^*}=\dfrac{1}{Ma}\left[\dfrac{2}{k+1}\left(1+\dfrac{k-1}{2}Ma^2\right)\right]^{\frac{k+1}{2(k-1)}}$, minimum 1 at $Ma=1$.
+6. **Choked flow**: $\dot m_{max}=A^*P_0\sqrt{\dfrac{k}{RT_0}}\left(\dfrac{2}{k+1}\right)^{\frac{k+1}{2(k-1)}}$; converging nozzle chokes when $P_b/P_0\le P^*/P_0$.
+
+</Idea>
+
+## Static versus stagnation
+
+The **static** temperature and pressure are what a thermometer or gauge moving *with the flow* would read. The **stagnation** (total) values are what you get by bringing the fluid to rest **isentropically**: $h_0=h+V^2/2$ is the energy the flow *would have if its kinetic energy were converted into enthalpy*. They are not two different states of the fluid; they are two ways of reading one flowing state. In an adiabatic flow with no work, **$h_0$ (and so $T_0$ for an ideal gas) is constant**; in an *isentropic* flow, $P_0$ is also constant. Real friction and shocks leave $T_0$ unchanged and **lower $P_0$**, which is why $P_0$ is the measure of loss in this chapter.
+
+<Problem id="Example 17-1" title="Stagnation temperature and pressure of air entering a compressor" tags="stagnation, T0, P0, Mach">
+
+<Statement>
+
+Air enters the inlet of a compressor with a static temperature of 255.7 K and static pressure of 54.05 kPa, moving at 250 m/s. Find the stagnation temperature and pressure and the Mach number.
+
+</Statement>
+
+<Think>
+
+Treat the probe as bringing the flow to rest isentropically: $T_0$ from the energy balance, then $P_0$ from the isentropic relation with the *temperature* ratio (not the pressure ratio). The unit trap is $V^2/2c_p$: with $V$ in m/s and $c_p$ in kJ/kg·K there is a factor of 1000.
+
+</Think>
+
+<Plan>
+
+$T_0=T+V^2/(2000c_p)$ → $P_0=P(T_0/T)^{k/(k-1)}$ → $c=\sqrt{kRT}$ → $Ma=V/c$.
+
+</Plan>
+
+<Steps>
+<Step title="1. Stagnation temperature">
+
+$T_0=255.7+\dfrac{250^2}{2(1.005)(1000)}=255.7+31.09=\mathbf{286.8}$ K.
+
+</Step>
+<Step title="2. Stagnation pressure">
+
+$P_0=54.05\left(\dfrac{286.8}{255.7}\right)^{3.5}=54.05(1.1216)^{3.5}=\mathbf{80.77}$ kPa. (The stagnation pressure is 49 % higher than the static: that is the *ram* effect on the compressor inlet.)
+
+</Step>
+<Step title="3. Mach number">
+
+$c=\sqrt{1.4(287)(255.7)}=320.5$ m/s; $Ma=\dfrac{250}{320.5}=\mathbf{0.78}$ (the textbook comparison: $T_0/T=1+0.2(0.78)^2=1.122$ ✓).
+
+</Step>
+</Steps>
+
+<Answer>
+
+$T_0=286.8$ K, $P_0=80.77$ kPa, $Ma=0.78$.
+
+</Answer>
+
+<RealWorld title="What the engine intake does">
+
+At Ma ≈ 0.8 the air arrives with 49 % more pressure than the ambient: before the compressor does anything, the *inlet* has done the first part of the compression for free ("ram rise"), the same effect as the ram ratio of the turbojet in chapter 9 (there $P_{01}/P=1.69$ at Ma 0.9). The airliner example above is the same calculation at 11 km.
+
+</RealWorld>
+
+<Traps>
+
+- Using the wrong **cp unit**: $V^2/2$ is J/kg, so $V^2/(2c_p)$ with $c_p$ in kJ/kg·K needs ÷1000 (his box: "$T_0=T+V^2/(2000\,c_p)$").
+- Using the **pressure ratio** in $P_0/P=(T_0/T)^{k/(k-1)}$ the wrong way round.
+- Mistaking static for stagnation in a **table lookup** (A-32 is a function of the *Mach number*, not of $T_0$).
+
+</Traps>
+
+<Source>Anthony's Chapter 17 pages (Example 17-1): T₀ = 286.8 K, P₀ = 80.77 kPa · lib <code>stagnationT</code>, <code>P0_P</code></Source>
+
+</Problem>
+
+## Mach number and the shape of the flow
+
+The speed of sound in an ideal gas is $c=\sqrt{kRT}$, which depends only on the **static** temperature (with $R$ in J/kg·K), so the *same* flight speed is a different Mach number at different altitudes. Using $T_0/T=1+\tfrac{k-1}{2}Ma^2$ you can go from Mach number to every static-to-stagnation ratio: for $k=1.4$, $T/T_0$ drops to 0.833 and $P/P_0$ to 0.528 at $Ma=1$, and the density ratio is no longer ≈ 1 above $Ma\approx0.3$ (the incompressible limit: at $Ma=0.3$ the density change is already 4.5 %).
+
+<IsentropicRatiosSim />
+
+## How the area controls the flow
+
+Combine continuity ($d\rho/\rho+dV/V+dA/A=0$), momentum ($dP=-\rho V\,dV$) and the isentropic relation ($dP=c^2d\rho$, so $d\rho/\rho=Ma^2\,dP/\rho V^2$):
+
+$$\frac{dA}{A}=\frac{dP}{\rho V^2}\left(1-Ma^2\right).$$
+
+The factor $(1-Ma^2)$ flips sign at Ma = 1 and with it every intuition:
+
+| | **subsonic** ($Ma<1$) | **supersonic** ($Ma>1$) |
+|---|---|---|
+| Nozzle ($dP<0$, speed up) | **converging** ($dA<0$) | **diverging** ($dA>0$) |
+| Diffuser ($dP>0$, slow down) | **diverging** | **converging** |
+
+Why: in subsonic flow density changes little, so the speed is set by the area (continuity: smaller area, faster). In supersonic flow the density drops faster than the speed rises, so the area has to *grow* to pass the flow. At $Ma=1$ the area is a **minimum**: the **throat**. That is why a supersonic nozzle must be **converging–diverging**, with $Ma=1$ at the throat: the area ratio $A/A^*$ is the one function that tells you the Mach number once you know which branch (subsonic or supersonic) you are on.
+
+<Problem id="17-62" title="Air accelerated isentropically to the sonic point" tags="stagnation, critical properties, A/A*, continuity">
+
+<Statement>
+
+Air at 0.5 MPa and 420 K flows at 110 m/s through a duct and then isentropically to a section where the flow is sonic. Find the stagnation temperature and pressure, the critical temperature and pressure, and the ratio of the sonic area to the initial area.
+
+</Statement>
+
+<Think>
+
+Two ways to the answer for the area, which is a good habit on an exam: (1) the $A/A^*$ formula at the initial Mach number; (2) mass conservation between the two sections using the critical properties. The two should agree.
+
+</Think>
+
+<Plan>
+
+$T_0$ → $Ma_1$ → $P_0$ → $T^*=0.8333T_0$, $P^*=0.5283P_0$ → $A^*/A_1$ both ways.
+
+</Plan>
+
+<Steps>
+<Step title="1. Stagnation temperature and initial Mach number">
+
+$T_0=420+\dfrac{110^2}{2(1.005)(1000)}=\mathbf{426.0}$ K. $c_1=\sqrt{1.4(287)(420)}=410.8$ m/s; $Ma_1=\dfrac{110}{410.8}=0.2678$.
+
+</Step>
+<Step title="2. Stagnation pressure">
+
+$P_0=500\left(\dfrac{426.0}{420}\right)^{3.5}=\mathbf{525.5}$ kPa.
+
+</Step>
+<Step title="3. Critical properties">
+
+<T>A-32 (k = 1.4): T*/T₀ = 0.8333, P*/P₀ = 0.5283</T>. $T^*=0.8333(426.0)=\mathbf{355.0}$ K; $P^*=0.5283(525.5)=\mathbf{277.6}$ kPa.
+
+</Step>
+<Step title="4. Area ratio, method 1">
+
+$\dfrac{A}{A^*}=\dfrac{1}{0.2678}\left[\dfrac{1}{1.2}\left(1+0.2(0.2678)^2\right)\right]^{3}=2.2553$, so $\dfrac{A^*}{A_1}=\mathbf{0.4434}$.
+
+</Step>
+<Step title="5. Area ratio, method 2 (continuity)">
+
+$\rho_1=\dfrac{500}{0.287(420)}=4.148$, $\rho^*=\dfrac{277.6}{0.287(355.0)}=2.725$ kg/m³, $V^*=c^*=\sqrt{1.4(287)(355.0)}=377.7$ m/s. $\dfrac{A^*}{A_1}=\dfrac{\rho_1V_1}{\rho^*V^*}=\dfrac{4.148(110)}{2.725(377.7)}=\mathbf{0.4434}$ ✓.
+
+</Step>
+</Steps>
+
+<Answer>
+
+$T_0=426.0$ K, $P_0=525.5$ kPa, $T^*=355.0$ K, $P^*=277.6$ kPa, $A^*/A_1=0.443$.
+
+</Answer>
+
+<RealWorld title="How much does the duct have to shrink?">
+
+To take a 110 m/s stream to Mach 1 the duct must narrow to 44 % of its starting area, and the pressure drops to 55 % of the initial 0.5 MPa. Those are the proportions of a converging nozzle on a cold-gas thruster or a steam jet.
+
+</RealWorld>
+
+<Callout kind="warn" title="⚠ The printed area ratio 0.428 does not check">
+
+The textbook-style answer lists $A^*/A_1=0.428$. The formula (method 1) and the continuity balance (method 2) both give **0.4434**, so 0.428 is a misprint; your page's temperature and pressure (355 K, 277–278 kPa) agree with the calculation. To be listed in the errata page.
+
+</Callout>
+
+<Traps>
+
+- Taking $A^*/A$ instead of $A/A^*$ (the table lists $A/A^*\ge1$).
+- Using $T_1$ in $c^*$: the sonic speed uses the **critical** temperature $T^*$.
+- Taking $P_0$ equal to $P_1(1+0.2Ma^2)^{3.5}$ and forgetting the exponent: the $P$ ratio is the *temperature* ratio to the power $k/(k-1)=3.5$.
+
+</Traps>
+
+<Source>Anthony's Chapter 17 pages and Assignment 10 (17-62): T* = 355 K, P* = 277.6 kPa · lib <code>machFromAreaRatio</code>, <code>critical</code></Source>
+
+</Problem>
+
+## Choking and back pressure
+
+Take a nozzle fed from a large reservoir ($P_0,T_0$ fixed) and lower the **back pressure** $P_b$. At first the whole flow responds: the flow speeds up and the flow rate rises. The throat is the fastest point; when it reaches **Ma = 1** the flow is *choked* and $\dot m$ reaches its maximum $A^*P_0\sqrt{k/RT_0}(2/(k+1))^{(k+1)/(2(k-1))}$. Lowering $P_b$ further changes nothing upstream of the throat, because **pressure signals travel at the speed of sound and cannot propagate upstream against a sonic flow**: the flow rate, the throat state and the pressure field up to the throat are frozen. What changes is downstream:
+
+- **Converging nozzle**: choked when $P_b/P_0\le P^*/P_0=0.528$ (for $k=1.4$); the exit pressure stays at $P^*$ and the rest of the expansion happens *outside* (an underexpanded jet). Reducing the exit area reduces $\dot m$ but the exit stays sonic: the speed does not change (his note on 17-33C, "can't go supersonic").
+- **Converging–diverging nozzle**: the throat chokes at the first critical $P_b/P_0$ (the *subsonic-venturi* solution). Between the first and second critical, a **normal shock** stands in the diverging section and moves toward the exit as $P_b$ falls; at the second critical it sits at the exit; between the second and the third (the **design** value) the nozzle is *overexpanded* (oblique shocks outside); below the design value it is *underexpanded*.
+
+<NozzleChokingSim />
+
+The whole discussion is "why is it that in 17-48C the exit velocity, exit pressure and mass flow don't change when you lower the back pressure far below critical?" (answer: choked).
+
+## Habashi's traps and your own mistakes
+
+<Trap>
+
+- **Static versus stagnation** (his closing slide): a probe facing the flow reads $T_0$, $P_0$; the *state* of the gas is $T$, $P$. Use static values in $c=\sqrt{kRT}$ and for $\rho$, stagnation in $h_0$ and $P_0$.
+- **Cp unit**: $T_0=T+V^2/(2000c_p)$ (his note). In m/s and J/kg you need $c_p$ in J/kg·K.
+- **Constant versus variable $c_p$** (17-18): with constant room-temperature values (k = 1.289, $c_p=0.846$) CO₂ expanding from 800 K to 400 K gives $Ma_1=0.113$, $V_2=824$ m/s, $Ma_2=2.64$. If you use $c_p(T)$ at each end ($k=1.193$ at 800 K and 1.252 at 400 K) $Ma_2$ becomes 2.82: "significant difference in Mach number" (your own comment).
+- **$Ma=V/c$ with $c$ at the *static* temperature** at the same point.
+- **$P^*/P_0=0.5283$ only for $k=1.4$** (air); for $k=1.33$ it is 0.540 and for $k=1.2$ it is 0.564.
+- **17-39**: the lowest throat pressure of a C-D nozzle with $P_0=1200$ kPa is $P^*=0.5283(1200)=634$ kPa.
+- **Choked flow does not depend on $P_b$** (17-48C), only on $P_0$, $T_0$, $A^*$.
+
+</Trap>
+
+<Callout kind="warn" title="⚠ 17-18: Ma at the inlet">
+
+Your page has $Ma_1=0.0923$ with $c_1=541$ m/s. That speed of sound corresponds to a static temperature of about 1200 K, not the 800 K inlet; with 800 K, $c_1=441$ m/s and $Ma_1=\mathbf{0.113}$ (which also matches the textbook answer). $V_2=824$ and $Ma_2=2.64$ on your page are right.
+
+</Callout>
+
+<Problem id="17-26 and 17-40" title="Short Mach number checks" tags="Mach, T0">
+
+<Statement>
+
+(17-26) An airliner flies at 945 km/h where the ambient temperature is −60 °C. (17-40) At a point in a flow of air the temperature is 236.15 K and the Mach number is 1.1. Find the Mach numbers and stagnation temperature.
+
+</Statement>
+
+<Think>
+
+Two one-line problems that test unit discipline: km/h to m/s, °C to K, and $c$ from the *static* temperature.
+
+</Think>
+
+<Plan>
+
+17-26: $V=945/3.6$, $c=\sqrt{kRT}$ → Ma. 17-40: $T_0=T(1+0.2Ma^2)$, $V=Ma\cdot c$.
+
+</Plan>
+
+<Steps>
+<Step title="1. 17-26">
+
+$V=\dfrac{945}{3.6}=262.5$ m/s; $T=213.15$ K; $c=\sqrt{1.4(287)(213.15)}=292.6$ m/s; $Ma=\dfrac{262.5}{292.6}=\mathbf{0.897}$: subsonic (a long-haul cruise, close to the drag-rise region).
+
+</Step>
+<Step title="2. 17-40">
+
+$c=\sqrt{1.4(287)(236.15)}=308.0$ m/s, $V=1.1(308)=338.8$ m/s, $T_0=236.15(1+0.2(1.1)^2)=\mathbf{293.3}$ K (the stagnation temperature is **57 K above** the static one).
+
+</Step>
+</Steps>
+
+<Answer>
+
+17-26: $Ma=0.897$. 17-40: $c=308$ m/s, $V=338.8$ m/s, $T_0=293.3$ K.
+
+</Answer>
+
+<RealWorld title="Skin temperature">
+
+At Ma 1.1 the leading edges approach the stagnation temperature, 57 K above the air; at Ma 2.2 the ratio $T_0/T=1+0.2(2.2)^2=1.97$ would double the absolute temperature. This is why a supersonic airliner such as Concorde (Ma 2) had a fuselage that grew by roughly 20 cm in flight and a skin of heat-resistant aluminium alloy.
+
+</RealWorld>
+
+<Traps>
+
+- Forgetting °C → K in $c$.
+- Using the stagnation temperature in $c=\sqrt{kRT}$ (it must be the static value).
+
+</Traps>
+
+<Source>Anthony's Chapter 17 and Ass12 pages (17-26, 17-40) · lib <code>soundSpeed</code>, <code>T0_T</code></Source>
+
+</Problem>
+
+<Examined>
+
+Assignment 10 (<Asg n="10" />) is this chapter: 17-18 (CO₂ nozzle), 17-26, 17-33C, 17-40, 17-62 and the conceptual 17-39 / 17-48C. Habashi's uncovered tutorial problems are on <Ex id="tutorial-17" />. Expect on the final: one nozzle problem (stagnation properties, Mach number, area ratio or the choked exit state) and one or two conceptual questions on static versus stagnation and on converging versus diverging for sub- and supersonic flow.
+
+</Examined>
+
+## Check yourself
+
+1. A converging nozzle is fed at $P_0=500$ kPa and exhausts into 100 kPa. Is it choked? What is the exit pressure?
+
+<details>
+<summary>Answer</summary>
+
+$P_b/P_0=0.2<0.528$: **choked**, exit Ma = 1, exit pressure $P^*=0.528(500)=264$ kPa, *above* the ambient 100 kPa (the rest of the expansion happens outside the nozzle).
+
+</details>
+
+2. Why must a supersonic nozzle diverge, while a supersonic diffuser must converge?
+
+<details>
+<summary>Answer</summary>
+
+$dA/A=(dP/\rho V^2)(1-Ma^2)$: for $Ma>1$ the bracket is negative, so a *pressure drop* ($dP<0$, acceleration) needs $dA>0$ (diverging); a pressure rise (deceleration) needs $dA<0$ (converging).
+
+</details>
+
+3. An aircraft flies at 250 m/s in air at 230 K. Find $T_0$ and $Ma$.
+
+<details>
+<summary>Answer</summary>
+
+$T_0=230+\dfrac{250^2}{2010}=261.1$ K; $c=\sqrt{1.4(287)(230)}=304.0$ m/s, $Ma=0.822$.
+
+</details>
+
+4. What does "choked" tell you about the effect of lowering the back pressure?
+
+<details>
+<summary>Answer</summary>
+
+Nothing changes upstream of the throat: the mass flow rate, the throat state ($Ma=1$) and the pressure along the converging part are all frozen, because signals cannot travel upstream through a sonic throat. Only the flow downstream of the throat (shocks, exit pressure) changes.
+
+</details>
+
+5. Why do $T_0$ and $P_0$ behave differently across a normal shock?
+
+<details>
+<summary>Answer</summary>
+
+The shock is adiabatic with no work, so $h_0$ (and $T_0$ for an ideal gas) is **unchanged**; but it is irreversible, so entropy rises and the stagnation **pressure drops**. $P_0$ is the measure of the loss, and it is why the choked mass flow, which depends on $P_0$, shrinks after a shock.
+
+</details>

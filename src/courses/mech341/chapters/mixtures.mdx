@@ -1,0 +1,357 @@
+<p className="eyebrow">Chapter 13 · Gas mixtures · Final</p>
+
+# Gas mixtures
+
+<div className="lede">
+
+So far every gas was a pure substance. Real machines run on **mixtures**: air (N₂ + O₂ + …), natural gas, exhaust, the nitrox in a diver's tank. The chapter has one idea and a handful of bookkeeping rules. The idea (the **Gibbs–Dalton law**): *an ideal gas in a mixture behaves as if it were alone in the container, at the mixture temperature and its own partial pressure*. So $u$, $h$, $c_p$, $c_v$ depend on $T$ only and **add up by mass**; $s$ also depends on the **partial pressure**, which is where most mistakes happen. Real (non-ideal) mixtures are handled by **Kay's rule**: treat the mixture as one pseudo-pure gas with averaged critical constants. Habashi's advice for the slides: "review the Gibbs–Dalton law carefully".
+
+</div>
+
+<Machine name="scuba nitrox and natural gas">
+
+All numbers typical or approximate (≈):
+
+- **Scuba nitrox EAN32**: **32 % O₂, 68 % N₂** by mole. Oxygen turns toxic above a **partial pressure ≈ 1.4 bar**, and Dalton says $p_{O_2}=y_{O_2}P$, so the deepest safe depth is where $P=1.4/0.32=4.375$ bar, i.e. **≈ 34 m** (≈ 10 m of seawater per bar). Air (21 % O₂) would allow 57 m on oxygen alone, but nitrogen narcosis limits air to far less; trimix replaces some N₂ by helium for the same reason.
+- **Natural gas** in a pipeline: **≈ 85–95 % CH₄**, a few percent C₂H₆ and C₃H₈, a little N₂ and CO₂. A typical blend has $M\approx18$ kg/kmol, $R\approx0.466$ kJ/kg·K and $k\approx1.28$: it is a lighter gas than air ($M=28.97$) and its $c_p$ is twice as large, which matters for compressor stations and for burner design (chapter 15).
+- **Ambient air** is the mixture you use most: $M=28.97$, $R=0.287$, $k=1.4$. Add 5 % more O₂ and the molar mass becomes 28.99 (the 13-34 problem below).
+
+</Machine>
+
+## The 30-second version
+
+<Idea title="Mixtures in one box">
+
+1. **Fractions**: mass fraction $mf_i=\dfrac{m_i}{m_m}$, mole fraction $y_i=\dfrac{N_i}{N_m}$; $\sum mf_i=\sum y_i=1$. Convert with $mf_i=y_i\dfrac{M_i}{M_m}$.
+2. **Mixture molar mass**: $M_m=\dfrac{m_m}{N_m}=\sum y_iM_i=\dfrac{1}{\sum mf_i/M_i}$; $R_m=\dfrac{R_u}{M_m}$ (use $R_u=8.314$ with kmol, $R_m$ with kg).
+3. **Dalton** (add pressures at $T_m,V_m$): $P_m=\sum p_i$. **Amagat** (add volumes at $T_m,P_m$): $V_m=\sum V_i$. For ideal gases the two laws agree and $\dfrac{p_i}{P_m}=\dfrac{V_i}{V_m}=\dfrac{N_i}{N_m}=y_i$.
+4. **Properties** (ideal gas): $u_m=\sum mf_iu_i$, $h_m=\sum mf_ih_i$, $c_{v,m}=\sum mf_ic_{v,i}$, $c_{p,m}=\sum mf_ic_{p,i}$ (mass fractions with per-kg values, mole fractions with per-kmol values), $k=c_p/c_v$.
+5. **Entropy changes use partial pressures**: $\Delta s_i=c_{p,i}\ln\dfrac{T_2}{T_1}-R_i\ln\dfrac{p_{i,2}}{p_{i,1}}$ with $p_i=y_iP_m$; $\Delta S=\sum m_i\Delta s_i$.
+6. **Real gases (Kay)**: $T'_{cr}=\sum y_iT_{cr,i}$, $P'_{cr}=\sum y_iP_{cr,i}$, then $Z_m$ from the generalized chart at $T_R=T/T'_{cr}$, $P_R=P/P'_{cr}$; accurate to about 10 %. **Amagat form**: $Z_m=\sum y_iZ_i$.
+
+</Idea>
+
+## Fractions: mass, mole and volume
+
+A mixture is described by *how much of each*. Moles and masses are two different bookkeepings of the same gas, linked by the molar masses. The mixture's molar mass is the *mole-weighted* average $M_m=\sum y_iM_i$; the reciprocal form $1/\sum(mf_i/M_i)$ is the same formula when you start from mass fractions (it is the number of moles per kg inverted: his boxed note "$M_m=1/\sum N_i$ per unit mass").
+
+His headline reminder: **the volume fraction and the pressure fraction both equal the mole fraction** (for ideal gases), but **not** the mass fraction. Half of the mistakes in the assignment (13-34, 13-41) are mixing up these two.
+
+<Problem id="Class example 1 and 2 · Review chapter 13" title="Mass fractions to mole fractions, then nitrogen added to an oxygen tank" tags="fractions, Dalton, partial pressure">
+
+<Statement>
+
+(1) A mixture is 10 % H₂, 48 % O₂, 42 % CO by mass. Find the mole fractions and $M_m$. (2) A rigid tank holds 0.5 kg of O₂ at 3 bar and 40 °C. How much N₂ must be added, at the same temperature, to bring the total pressure to 4 bar?
+
+</Statement>
+
+<Think>
+
+Part 1 is the conversion recipe: take **1 kg** of mixture, so the mass fractions are the masses; divide by $M_i$ for moles, then normalise. Part 2 uses Dalton: at fixed $V$ and $T$ the oxygen keeps its own partial pressure (3 bar) no matter what is added, so nitrogen supplies the *extra* 1 bar, and $p_i\propto N_i$.
+
+</Think>
+
+<Plan>
+
+Part 1: masses → moles $N_i=m_i/M_i$ → $y_i=N_i/\sum N$ → $M_m=1/\sum N$ (per kg). Part 2: $p_{N_2}=4-3=1$ bar → $N_{N_2}/N_{O_2}=p_{N_2}/p_{O_2}=1/3$ → mass.
+
+</Plan>
+
+<Steps>
+<Step title="1. Moles per kg of mixture">
+
+Using $M=2,32,28$ kg/kmol: $N_{H_2}=\dfrac{0.10}{2}=0.050$, $N_{O_2}=\dfrac{0.48}{32}=0.015$, $N_{CO}=\dfrac{0.42}{28}=0.015$ kmol, total $N=0.080$ kmol per kg.
+
+</Step>
+<Step title="2. Mole fractions and molar mass">
+
+$y_{H_2}=\dfrac{0.050}{0.080}=\mathbf{0.625}$, $y_{O_2}=y_{CO}=\dfrac{0.015}{0.080}=\mathbf{0.1875}$. $M_m=\dfrac{1}{0.080}=\mathbf{12.5}$ kg/kmol. (With 2.016, 31.999, 28.011 the lib gives 12.51; the tiny hydrogen fraction by mass is 62.5 % of the molecules.)
+
+*Check:* $M_m=\sum y_iM_i=0.625(2)+0.1875(32)+0.1875(28)=12.5$ ✓.
+
+</Step>
+<Step title="3. Partial pressures in the tank">
+
+Same $V$ and $T$, so $p\propto N$: $\dfrac{N_{N_2}}{N_{O_2}}=\dfrac{p_{N_2}}{p_{O_2}}=\dfrac{4-3}{3}=\dfrac13$.
+
+</Step>
+<Step title="4. Mass of nitrogen">
+
+$N_{O_2}=\dfrac{0.5}{32}=0.015625$ kmol, so $N_{N_2}=\dfrac{0.015625}{3}=0.005208$ kmol and $m_{N_2}=0.005208(28)=\mathbf{0.146}$ kg (his number: 0.0051 kmol, 0.146 kg).
+
+</Step>
+</Steps>
+
+<Answer>
+
+$y_{H_2}=0.625$, $y_{O_2}=y_{CO}=0.1875$, $M_m=12.5$ kg/kmol. Add **0.146 kg** of N₂ (the temperature never enters: it cancels in the ratio).
+
+</Answer>
+
+<RealWorld title="Why divers care about the same rule">
+
+A nitrox tank filled by "partial-pressure blending" does exactly part 2: the fill station adds O₂ to a given pressure first, then tops up with air, so $p_{O_2}$ in the final mixture is fixed by the first step. Dalton's law is the filling procedure.
+
+</RealWorld>
+
+<Traps>
+
+- Reading "by mass" as "by mole". Always write which one you have, then convert once.
+- Using the *mass* fraction as the partial-pressure fraction. Pressure and volume follow **moles**.
+- In part 2, forgetting that the oxygen is *already* in the tank: you add enough N₂ for the *difference* in pressure, not for 4 bar.
+
+</Traps>
+
+<Source>Anthony's Review chapter 13 (pp. 2–3) · lib <code>mixtureFromMoles</code></Source>
+
+</Problem>
+
+<DaltonAmagatFigure yA={0.3} />
+
+<MixtureSim />
+
+## Gibbs–Dalton: what adds and what does not
+
+Under the ideal-gas model each component is unaware of the others, so **properties that depend only on temperature add directly**: $u$, $h$, $c_v$, $c_p$ are mass-weighted averages. **Entropy does not**, because $s$ also depends on the pressure the gas is *at*, and a component's pressure in the mixture is its partial pressure $y_iP_m$:
+
+$$\Delta s_i=\bar s^{\,o}_{i,2}-\bar s^{\,o}_{i,1}-R_u\ln\frac{p_{i,2}}{p_{i,1}}\quad\text{or}\quad c_{p,i}\ln\frac{T_2}{T_1}-R_i\ln\frac{y_{i,2}P_2}{y_{i,1}P_1}.$$
+
+When the composition does not change and $y_i$ cancels, $\Delta s_i=c_{p,i}\ln(T_2/T_1)-R_i\ln(P_2/P_1)$ as for a pure gas. When two gases are *mixed* from separate states into one container, $y_i$ does not cancel, and the $-R_i\ln y_i$ term is the **entropy of mixing**: it is always positive, which is why mixing is irreversible.
+
+The other consequence is a trick with $k$: a mixture of ideal gases with constant specific heats is itself an ideal gas with $c_{p,m}=\sum mf_ic_{p,i}$ and $c_{v,m}=\sum mf_ic_{v,i}$ (his "mixing air with N₂O" example: build $k_m$ from the mass-weighted $c_p$ and $c_v$, then use the isentropic relations as for a single gas).
+
+<Callout kind="warn" title="⚠ Mass-weighted, not mole-weighted">
+
+$c_p=\sum mf_ic_{p,i}$ uses **mass** fractions and per-kg specific heats. If you use mole fractions you must use molar specific heats $\bar c_p$. Mixing the two (mole fractions with kJ/kg·K values) is the classic error behind a wrong $k$.
+
+</Callout>
+
+## Real-gas mixtures: Kay's rule
+
+At high pressure or low temperature the ideal gas law fails. For a mixture there is no chart of its own, so **Kay's rule** invents a pseudo-pure substance with $T'_{cr}=\sum y_iT_{cr,i}$ and $P'_{cr}=\sum y_iP_{cr,i}$ and reads $Z$ from the generalized compressibility chart; then $PV=ZN R_uT$. The *Amagat* alternative adds the components' $Z$ at the mixture $T$ and $P$: $Z_m=\sum y_iZ_i$. Habashi: Kay's rule is good to within about 10 % over a wide range, and the marathon slides say a final will only ask qualitative questions about the *departure* charts.
+
+<Problem id="Class example 3 · Review chapter 13" title="Tank of 2 kmol N₂ + 6 kmol CO₂ at 300 K and 15 MPa" tags="Kay, Z, real gas">
+
+<Statement>
+
+A rigid tank contains 2 kmol of N₂ and 6 kmol of CO₂ at 300 K and 15 MPa. Estimate the tank volume (a) as an ideal gas and (b) with Kay's rule.
+
+</Statement>
+
+<Think>
+
+The new thing is the real-gas correction. Part (a) is $V=NR_uT/P$ with the *total* $N=8$, not $R=R_u/M_m$ with a made-up mass: he crossed out a first attempt with $R$ and wrote "we need $R_u$". Part (b): $y_{N_2}=0.25$, $y_{CO_2}=0.75$.
+
+</Think>
+
+<Plan>
+
+$V_{ideal}$ → $T'_{cr}$, $P'_{cr}$ → $T_R$, $P_R$ → $Z$ from the chart → $V=Z\,V_{ideal}$.
+
+</Plan>
+
+<Steps>
+<Step title="1. Ideal gas">
+
+$V=\dfrac{NR_uT}{P}=\dfrac{8(8.314)(300)}{15\,000}=\mathbf{1.330}$ m³.
+
+</Step>
+<Step title="2. Kay's pseudo-critical constants">
+
+<T>A-1: N₂ Tcr 126.2 K, Pcr 3.39 MPa; CO₂ Tcr 304.2 K, Pcr 7.39 MPa</T>. $T'_{cr}=0.25(126.2)+0.75(304.2)=\mathbf{259.7}$ K and $P'_{cr}=0.25(3.39)+0.75(7.39)=\mathbf{6.39}$ MPa.
+
+</Step>
+<Step title="3. Reduced state and Z">
+
+$T_R=\dfrac{300}{259.7}=1.155$, $P_R=\dfrac{15}{6.39}=2.35$ (his page: 1.15 and 2.347). <T>Generalized Z chart: Z ≈ 0.49 (his reading)</T>; the Lee–Kesler correlation in the lib gives 0.474.
+
+</Step>
+<Step title="4. Real volume">
+
+$V=ZV_{ideal}=0.49(1.330)=\mathbf{0.65}$ m³ (0.63 m³ with 0.474). He wrote "volume out of the tank": the ideal-gas answer is **twice** the real one.
+
+</Step>
+</Steps>
+
+<Answer>
+
+(a) 1.33 m³; (b) about 0.65 m³ ($Z\approx0.49$). At $P_R>2$ the ideal gas model is off by a factor of 2.
+
+</Answer>
+
+<RealWorld title="Why gas companies do this">
+
+A natural-gas storage cavern at 20–30 MPa is a real-gas mixture: using $Z\approx0.85$–$0.9$ instead of 1 changes the stored mass by 10–15 %, which is a contractual quantity worth money.
+
+</RealWorld>
+
+<Traps>
+
+- Using $R=R_u/M_m$ before you know the mass: with moles given, use $R_u$.
+- Reading the chart at the wrong reduced pressure: $P_R=P/P'_{cr}$ with *both in the same unit* (his MPa conversion: $15\times10^3$ kPa over $6.39\times10^3$ kPa).
+
+</Traps>
+
+<Source>Anthony's Review chapter 13 (pp. 4–5) · lib <code>kay</code>, <code>leeKesler</code></Source>
+
+</Problem>
+
+<KaySim />
+
+<NitroxDepthSim />
+
+## A closed-system mixing problem: 13-56
+
+The assignment problem that contains everything: separate gases at different states, a mixing process, a closed-system energy balance **without** using $c_p$, and an entropy balance with **partial pressures**.
+
+<Problem id="13-56" title="Oxygen and nitrogen mixed in a rigid tank, cooled to 25 °C" tags="mixing, closed system, entropy generation">
+
+<Statement>
+
+A rigid tank has two compartments. One holds 1 kg of O₂ at 15 °C and 300 kPa, the other holds 2 m³ of N₂ at 50 °C and 500 kPa. The partition is removed and the mixture comes to equilibrium with the surroundings at 25 °C. Find the volume of the O₂ compartment, the mass of N₂, the final pressure, the heat transferred and the entropy generated.
+
+</Statement>
+
+<Think>
+
+Tank is rigid and the total volume is the sum of the two compartments. No work is done, so $Q=\Delta U$. **Do not use $c_p$** (the process is not at constant pressure). The entropy of each gas is evaluated with its own partial pressure before and after.
+
+</Think>
+
+<Plan>
+
+$V_{O_2}=mR T/P$ → $m_{N_2}=PV/RT$ → moles → $P_2=N R_uT_2/V$ → $Q=\sum m c_v\Delta T$ → $\Delta s_i$ with $p_{i,2}=y_iP_2$ → $S_{gen}=\sum m\Delta s+Q_{out}/T_{surr}$.
+
+</Plan>
+
+<Steps>
+<Step title="1. Volumes and masses">
+
+<T>A-1: O₂ M 31.999, R 0.2598, cv 0.658; N₂ M 28.013, R 0.2968, cv 0.743</T>. $V_{O_2}=\dfrac{1(0.2598)(288.15)}{300}=\mathbf{0.2496}$ m³; $m_{N_2}=\dfrac{500(2)}{0.2968(323.15)}=\mathbf{10.43}$ kg. Total $V=2.2496$ m³.
+
+</Step>
+<Step title="2. Moles and final pressure">
+
+$N_{O_2}=\dfrac{1}{31.999}=0.03125$, $N_{N_2}=\dfrac{10.43}{28.013}=0.3722$, $N_m=0.4035$ kmol, so $y_{O_2}=0.0775$, $y_{N_2}=0.9225$. $P_2=\dfrac{N_mR_uT_2}{V}=\dfrac{0.4035(8.314)(298.15)}{2.2496}=\mathbf{444.6}$ kPa (printed 445).
+
+</Step>
+<Step title="3. Heat transfer from the energy balance">
+
+$Q_{out}=-\Delta U=-\big[m_{O_2}c_v(T_2-T_1)+m_{N_2}c_v(T_2-T_1)\big]=-\big[1(0.658)(10)+10.43(0.743)(-25)\big]=-[6.58-193.7]=\mathbf{187.1}$ kJ out (printed 187).
+
+</Step>
+<Step title="4. Entropy changes with partial pressures">
+
+$\Delta S_{O_2}=m\Big[c_p\ln\dfrac{T_2}{T_1}-R\ln\dfrac{y_{O_2}P_2}{P_{O_2,1}}\Big]=1\Big[0.918\ln\dfrac{298.15}{288.15}-0.2598\ln\dfrac{0.0775(444.6)}{300}\Big]=+0.594$ kJ/K. $\Delta S_{N_2}=10.43\Big[1.039\ln\dfrac{298.15}{323.15}-0.2968\ln\dfrac{0.9225(444.6)}{500}\Big]=-0.259$ kJ/K.
+
+The N₂ side has $\Delta S<0$: it is cooled and its pressure drops slightly; the O₂ side gains 0.594 because its partial pressure falls from 300 to 34 kPa (expansion into the whole tank).
+
+</Step>
+<Step title="5. Entropy generation">
+
+$S_{gen}=\Delta S_{O_2}+\Delta S_{N_2}+\dfrac{Q_{out}}{T_{surr}}=0.594-0.259+\dfrac{187.1}{298.15}=\mathbf{0.962}$ kJ/K (printed 0.962).
+
+</Step>
+</Steps>
+
+<Answer>
+
+$V_{O_2}=0.2496$ m³, $m_{N_2}=10.43$ kg, $P_2=444.6$ kPa, $Q_{out}=187.1$ kJ, $S_{gen}=0.962$ kJ/K.
+
+</Answer>
+
+<RealWorld title="Where this appears">
+
+Any gas blending (hydrogen into a natural-gas line, oxygen into a breathing loop) generates entropy: part of it is mixing (different partial pressures), part is the temperature difference between the streams.
+
+</RealWorld>
+
+<Callout kind="warn" title="⚠ Your re-solve gave 190.5 kJ">
+
+In the day-before-the-final re-solve the heat was written as 190.5 kJ. The assignment value 187.1 kJ is right: the nitrogen term needs $c_v=0.743$, not another value. The final pressure printed in the assignment (445 kPa) is consistent with the 444.6 computed here.
+
+</Callout>
+
+<Traps>
+
+- Using $c_p$ for $Q$: the heat is $\Delta U$, so $c_v$ per component.
+- Using the **total** pressure $P_2$ in each $\ln$ instead of $y_iP_2$ (his boxed reminder "$P_i$ in $s$ is partial!").
+- Forgetting $+Q_{out}/T_{surr}$ (kelvin) in the entropy generation.
+
+</Traps>
+
+<Source>Anthony's Assignment 6 (13-56) and re-solves · lib <code>mixtureFromMoles</code> and <code>GASES</code></Source>
+
+</Problem>
+
+## Habashi's traps and your own mistakes
+
+<Trap>
+
+- **"5 % by volume"** (13-34): adding 5 % O₂ *per mole of air* means 0.05 kmol O₂ per kmol air ($y_{O_2}=0.26/1.05=0.2476$, $M_m=28.99$). Per 4.76 (the usual "per kmol of O₂" basis) it would be 0.238. Read the basis.
+- **4-stroke engine at 3000 rpm** (13-41): one intake every **two** revolutions, so $\dot V=n\,V_d/2=7.5$ m³/min for a 5 L engine ($M_m=27.0$, $v=1.127$ m³/kg, $\dot m=6.65$ kg/min).
+- **A total mole count $N=2.5$ with $P=250$ kPa** is the *mixture*; the partial pressure of 50 kPa belongs to the component. Be sure which one a symbol means.
+- **Different initial pressures** (13-56): the closed system loses heat as $Q=\sum m c_v\Delta T$, not $m c_p\Delta T$.
+- **Isothermal compression** (13-59): $w=RT\ln(P_2/P_1)$ and $R=R_u/M_m$ depends on the mixture. The result ($w=232$ kJ/kg, $M_m=21.85$) equals $q_{out}$ because $\Delta u=0$.
+- **Dalton vs Amagat**: identical for ideal gases; they differ only in the real-gas treatment (Kay vs $\sum y_iZ_i$).
+
+</Trap>
+
+<Callout kind="warn" title="⚠ 13-62: his arithmetic slip">
+
+For the equimolar He–Ar turbine (2.5 MPa, 1300 K to 200 kPa, isentropic), $M_m=21.98$, $c_p=0.9458$, $k=1.667$, so $T_2=1300(200/2500)^{0.4}=473.4$ K and the work is $0.9458(1300-473.4)=\mathbf{781.9}$ kJ/kg. His page has $T_2$ right but writes 787.1 kJ/kg: an arithmetic slip in the last multiplication.
+
+</Callout>
+
+<Examined>
+
+Assignment 6 (<Asg n="06" />) is this chapter: 13-34, 13-35 (V = 23.3 m³, $P_2=357$ kPa), 13-41, 13-42 (two tanks of N₂ and O₂ connected: V = 0.322 and 2.065 m³, P = 204 kPa), 13-56, 13-59, 13-62, 13-63 (products mixture: $M_m=28.62$, $y_v=0.065$, $P_v=13$ kPa), 13-72 (H₂–N₂ with departure charts). On the final (<Ex id="final-2021" />) the mixture ideas hide inside chapter 14 and 15 problems (partial pressure of water vapour, products mixture). Habashi's marathon slide: the *departure charts* come as qualitative questions.
+
+</Examined>
+
+## Check yourself
+
+1. A tank of N₂ at 2 bar has O₂ added at the same $T$ until the pressure is 3 bar. What is $y_{O_2}$? What is the mass fraction?
+
+<details>
+<summary>Answer</summary>
+
+$y_{O_2}=p_{O_2}/P=1/3=0.333$. The mass fraction is $\dfrac{0.333(32)}{0.333(32)+0.667(28)}=0.364$, larger than $y$ because O₂ is heavier than N₂.
+
+</details>
+
+2. Why is $c_{p,m}=\sum mf_ic_{p,i}$ and not $\sum y_ic_{p,i}$?
+
+<details>
+<summary>Answer</summary>
+
+$c_p$ in kJ/kg·K is energy per kilogram, and the mixture's energy is the sum of the components' energies, which are proportional to the *mass* of each. With molar $\bar c_p$ you would use mole fractions instead.
+
+</details>
+
+3. For the entropy change of an ideal-gas component, which pressure appears in the logarithm?
+
+<details>
+<summary>Answer</summary>
+
+Its **partial pressure** $y_iP_m$, before and after. Using $P_m$ is the error his box warns about; if $y_i$ is unchanged it cancels and $\ln(P_2/P_1)$ is fine.
+
+</details>
+
+4. EAN36 (36 % O₂) with ppO₂ limit 1.4 bar: maximum depth?
+
+<details>
+<summary>Answer</summary>
+
+$P=1.4/0.36=3.889$ bar, depth $=(3.889-1)\times10\approx29$ m. A richer mix gives a shallower limit.
+
+</details>
+
+5. Why does Kay's rule treat the mixture as one gas, and how good is it?
+
+<details>
+<summary>Answer</summary>
+
+It averages the critical constants by mole fraction so the generalized chart (law of corresponding states) applies. It is accurate to about 10 % over wide ranges, worst when the components differ greatly in size or polarity.
+
+</details>
