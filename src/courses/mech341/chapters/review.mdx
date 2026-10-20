@@ -75,7 +75,7 @@ $Pv=RT$, with $R=R_u/M$ and $R_u=8.314$ kJ/kmol·K (air: $R=0.287$ kJ/kg·K). $\
 
 <Trap title="Never interpolate a specific volume linearly across a wide pressure gap">
 
-For a vapour, $v\propto1/P$ is far from linear. Interpolate $Pv$ (nearly constant) or $1/v$, or use a closer table row. This is the trap in Anthony's own Assignment 1, problem 4-9 below: a linear interpolation between 0.1 and 0.2 MPa gave $v=1.6264$ m³/kg where the true value is 1.4445 m³/kg, an error of 12 %.
+For a vapour, $v\propto1/P$ is far from linear. Interpolate $Pv$ (nearly constant) or $1/v$, or use a closer table row. This is the trap in Anthony's own Assignment 1, problem 4-9 below: a linear interpolation between 0.1 and 0.2 MPa gave $v=1.6264$ m³/kg (and $W=350.28$ kJ) where the true value is 1.4445 m³/kg (213.8 kJ), an error of 12 % in $v$.
 
 </Trap>
 
@@ -112,7 +112,7 @@ At 200 °C: $v(100\ \text{kPa})=2.1725$ and $v(200\ \text{kPa})=1.0803$ m³/kg, 
 </Step>
 <Step title="3. Work">
 
-$W_b=mP(v_2-v_1)=5(150)(1.4445-1.1594)=\mathbf{213.8\ kJ}$. The book's printed answer is 214 kJ; the linear-interpolation value gives about 359 kJ.
+$W_b=mP(v_2-v_1)=5(150)(1.4445-1.1594)=\mathbf{213.8\ kJ}$. The book's printed answer is 214 kJ; the linear-interpolation value gives about 350 kJ (his page: 350.28 kJ).
 
 </Step>
 </Steps>
@@ -131,7 +131,7 @@ The 5 kg of steam at 1.5 bar is a small boiler-sized charge; the boundary work e
 
 <Traps>
 
-- ⚠ **Anthony's own slip** (Assignment 1): $v_2=1.6264$ by linear interpolation gave 359 kJ; the correct value is 214 kJ. The lesson he wrote down: $v\propto1/P$, interpolate $Pv$ or $1/v$.
+- ⚠ **Anthony's own slip** (Assignment 1): $v_2=1.6264$ by linear interpolation gave 350.28 kJ; the correct value is 213.8 kJ (printed 214). The lesson he wrote down: $v\propto1/P$, interpolate $Pv$ or $1/v$.
 - Do not mix $P$ in kPa with $v$ in m³/kg and expect kJ: $\text{kPa}\times\text{m}^3=\text{kJ}$ directly, so it works, but check units.
 
 </Traps>

@@ -208,7 +208,7 @@ $w_T=(h_4-h_5)+(1-y)(h_5-h_6)=(3116.1-2851.9)+0.756(2851.9-2221.6)=264.2+476.3=\
 
 <Callout kind="warn" title="⚠ h₃ = 1008 should be 764.8: the feedwater leaves at the drain's saturation temperature, not at the boiler's">
 
-On the Assignment page the feedwater-exit enthalpy is written $h_3=1008.x$. That is the saturated-liquid enthalpy at **3000 kPa** (233.9 °C: $h_f=1008.3$), i.e. the water would leave the heater hotter than the steam that heats it: impossible for a heat exchanger. With 1008 the heat input would be $3116.1-1008=2108$ kJ/kg instead of 2351. Your Tutorial page (13 Oct) writes the correct line, $h_3=762.51+(3000-1000)(0.001127)=764.8$, and your red notes on the Assignment page say that the water leaves at the temperature of the extracted steam ("$T_3=T_5$").
+On the Assignment page the feedwater-exit enthalpy is written $h_3=1008.x$. That is the saturated-liquid enthalpy at **3000 kPa** (233.9 °C: $h_f=1008.3$), i.e. the water would leave the heater hotter than the steam that heats it: impossible for a heat exchanger. With 1008 the heat input would be $3116.1-1008=2108$ kJ/kg instead of 2351. Your Tutorial page (13 Oct) writes the correct line, $h_3=762.51+(3000-1000)(0.001127)=764.8$, and your red notes on the Assignment page say that the water leaves at the temperature of the extracted steam ("$T_3=T_5$"). The slip was also corrected in your own later re-solve (Revision general, p. 33-34): $h_3=762.51+0.001127(2000)=764.265$, $y=0.244$, $w_T=740.92$, $q_{in}=2351.78$ kJ/kg.
 
 </Callout>
 
@@ -285,7 +285,7 @@ $q_{in}=(h_5-h_4)+(1-y)(h_7-h_6)=(3502.0-731.1)+0.798(3481.3-2812.1)=2770.9+534.
 
 <Callout kind="warn" title="⚠ s₅ = 6.785 should be 6.7585: one transposed digit gives h₆ = 2825.7 instead of 2812.1">
 
-On the Assignment page the turbine-inlet entropy is written $s_5=6.785$ (three times, and the interpolation $x=\dfrac{6.785-6.6616}{6.8177-6.6616}=0.7905$ uses it). The table value is $s_5=6.7585$ kJ/kg·K (digits transposed). The isentropic bleed state then comes out at $h_6=2825.7$ kJ/kg on your page, 13.6 kJ/kg too high, which would push $y$ up to 0.2009 and $\dot m$ to 55.0 kg/s (instead of 0.2020 and 54.5). Checking the entropy of a state against its neighbors is the cheap defense: $s_5$ must lie between 6.66 (saturated vapor at 0.8 MPa) and 6.82 (200 °C) for the bleed to be a *superheated* state, and 6.7585 does.
+On the Assignment page the turbine-inlet entropy is written $s_5=6.785$ (three times, and the interpolation $x=\dfrac{6.785-6.6616}{6.8177-6.6616}=0.7905$ uses it). The table value is $s_5=6.7585$ kJ/kg·K (digits transposed). The isentropic bleed state then comes out at $h_6=2825.7$ kJ/kg on your page, 13.6 kJ/kg too high, which would push $y$ up to 0.2009 and $\dot m$ to 55.0 kg/s (instead of 0.2020 and 54.5). Your later re-solve (Revision general, p. 35) writes $s_5=6.785$ again. Checking the entropy of a state against its neighbors is the cheap defense: $s_5$ must lie between 6.66 (saturated vapor at 0.8 MPa) and 6.82 (200 °C) for the bleed to be a *superheated* state, and 6.7585 does.
 
 </Callout>
 
