@@ -23,8 +23,8 @@ export function Machine({ name, children }: { name: string; children?: ReactNode
   );
 }
 
-export function TsDiagram({ fluid, points, path, height }: { fluid: 'water' | 'r134a'; points: TsPoint[]; path?: number[]; height?: number }) {
-  return <TsDiagramView fluid={fluid} points={points} path={path} height={height} />;
+export function TsDiagram({ fluid, points, path, height, isobars }: { fluid: 'water' | 'r134a'; points: TsPoint[]; path?: number[]; height?: number; isobars?: number[] }) {
+  return <TsDiagramView fluid={fluid} points={points} path={path} height={height} isobars={isobars} />;
 }
 
 export function PsychroChart({ points, P }: { points?: PsyPoint[]; P?: number }) {

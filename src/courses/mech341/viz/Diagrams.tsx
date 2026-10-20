@@ -6,6 +6,8 @@ export interface TsPoint {
   s: number;
   T: number;
   label?: string;
+  /** pressure in kPa; consecutive path points with the same P are joined along the isobar */
+  P?: number;
 }
 
 /** Saturation dome (sf, sg vs T) for a fluid. */
@@ -28,12 +30,17 @@ function dome(fluid: 'water' | 'r134a') {
       /* outside table range: skip */
     }
   }
-  return { liq, vap, Tc, T0 };
+  if (liq.length) {
+    const sc = (liq[liq.length - 1].x + vap[vap.length - 1].x) / 2;
+    liq.push({ x: sc, y: Tc });
+    vap.push({ x: sc, y: Tc });
+  }
+  return { liq, vap, Tc, T0, f };
 }
 
 /** T-s diagram: saturation dome for the fluid plus a cycle polyline through `path` (indices into `points`). */
-export function TsDiagramView({ fluid, points, path, height = 340 }: { fluid: 'water' | 'r134a'; points: TsPoint[]; path?: number[]; height?: number }) {
-  const { liq, vap, Tc, T0 } = dome(fluid);
+export function TsDiagramView({ fluid, points, path, height = 340, isobars = [] }: { fluid: 'water' | 'r134a'; points: TsPoint[]; path?: number[]; height?: number; isobars?: number[] }) {
+  const { liq, vap, Tc, T0, f } = dome(fluid);
   const smax = Math.max(...vap.map((p) => p.x), ...points.map((p) => p.s)) * 1.05;
   const smin = Math.min(0, ...liq.map((p) => p.x), ...points.map((p) => p.s));
   const Tmax = Math.max(Tc, ...points.map((p) => p.T)) + 40;
@@ -43,7 +50,31 @@ export function TsDiagramView({ fluid, points, path, height = 340 }: { fluid: 'w
     { points: vap, color: 'var(--muted)', width: 1.8 },
   ];
   const idx = path ?? points.map((_, i) => i);
-  const cyc = idx.filter((i) => points[i]).map((i) => ({ x: points[i].s, y: points[i].T }));
+  const isobar = (P: number, a: number, b: number, n = 40) => {
+    const out: { x: number; y: number }[] = [];
+    for (let k = 0; k <= n; k++) {
+      const sv = a + ((b - a) * k) / n;
+      try {
+        const T = f.Ps(P, sv).T;
+        if (isFinite(T)) out.push({ x: sv, y: T });
+      } catch {
+        /* skip */
+      }
+    }
+    return out;
+  };
+  for (const P of isobars) {
+    const pts = isobar(P, smin, smax, 120);
+    if (pts.length > 1) series.push({ points: pts, color: 'var(--muted)', width: 0.9, dash: true });
+  }
+  const cyc: { x: number; y: number }[] = [];
+  for (let k = 0; k < idx.length; k++) {
+    const pb = points[idx[k]];
+    if (!pb) continue;
+    const pa = k > 0 ? points[idx[k - 1]] : undefined;
+    if (pa && pa.P && pb.P && Math.abs(pa.P - pb.P) / pb.P < 0.005 && pa.s !== pb.s) cyc.push(...isobar(pb.P, pa.s, pb.s));
+    else cyc.push({ x: pb.s, y: pb.T });
+  }
   if (cyc.length > 1) series.push({ points: cyc, color: 'var(--c1)', width: 2.4 });
   return (
     <Plot
