@@ -4,6 +4,7 @@ import { COURSES } from './courses';
 import Mech430 from './courses/mech430/Course';
 import Mech412 from './courses/mech412/Course';
 import Mech346 from './courses/mech346/Course';
+import Mech341 from './courses/mech341/Course';
 
 function Home() {
   return (
@@ -49,6 +50,7 @@ export default function App() {
         <Route path="/mech430/*" element={<Mech430 />} />
         <Route path="/mech412/*" element={<Mech412 />} />
         <Route path="/mech346/*" element={<Mech346 />} />
+        <Route path="/mech341/*" element={<Mech341 />} />
       </Routes>
     </HashRouter>
   );

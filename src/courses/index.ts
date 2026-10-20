@@ -34,6 +34,14 @@ export const COURSES: CourseInfo[] = [
     status: 'live',
   },
   {
+    code: 'MECH 341',
+    slug: 'mech341',
+    title: 'Thermodynamics 2',
+    term: 'Fall 2023 · Prof. Wagdi Habashi',
+    blurb: 'Jet engines, power plants, refrigeration, mixtures, psychrometrics, combustion, chemical equilibrium and nozzles.',
+    status: 'live',
+  },
+  {
     code: 'MECH 331',
     slug: 'mech331',
     title: 'Fluid Mechanics 1',
