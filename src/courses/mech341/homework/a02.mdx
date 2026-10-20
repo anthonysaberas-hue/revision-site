@@ -1,0 +1,460 @@
+<p className="eyebrow">Assignment 2/3 · vapor power cycles (ch 10) · from your own notebooks</p>
+
+# Assignment 2/3: vapor power cycles
+
+<div className="lede">
+
+The four assigned problems (10-28, 10-52, 10-55, 10-61) and the two tutorial problems from your notebook (10-98 and 10-110), with the instructor's clarification note for 10-61 (<Ch slug="vapor-cycles">chapter 10 notes</Ch>). Your steps and numbers come from the notebooks *Assignment 2*, *Tutorial chapter 10* and the review class; my recomputation uses the lib's steam tables. ⚠ means your legible digits disagree with the recomputation beyond rounding; "Check your page" marks ambiguous handwriting or a method point.
+
+</div>
+
+<Callout kind="note" title="The recipe for every regenerative cycle in this assignment">
+
+(1) Number the states on the **T–s diagram first** and mark the mass fractions ($y$ at the first heater, $z$ at the second, $1-y-z$ in the condenser). (2) One **energy balance per heater** fixes the fractions: open heater $y\,h_{bleed}+(1-y)h_{in}=h_{out}$ with $h_{out}$ a saturated liquid at the heater pressure; closed heater $y(h_{bleed}-h_{drain})=(1-y)(h_{fw,out}-h_{fw,in})$ with the feedwater leaving at the **bled steam's saturation temperature**. (3) Turbine work $=\sum$ (flow in that section) × (drop). (4) Pump work for compressed liquid: $h_{out}=h_{in}+v\,\Delta P$ (divide by $\eta_P$ if given). (5) $q_{in}=h_{boiler\ out}-h_{boiler\ in}$ (+ reheat), $\eta=1-q_{out}/q_{in}$.
+
+</Callout>
+
+<Problem id="10-28" title="Binary geothermal plant with isobutane" tags="Rankine, organic fluid, pump efficiency, heat exchanger energy balance">
+
+<Statement>
+
+A binary geothermal plant uses geothermal water at 160 °C as the heat source and a simple Rankine cycle with **isobutane** as the working fluid. The geothermal liquid enters the heat exchanger at 555.9 kg/s at 160 °C and leaves at 90 °C. Isobutane enters the turbine at 3.25 MPa, 147 °C and leaves at 79.5 °C, 410 kPa; it is condensed in an air-cooled condenser and pumped to the heat-exchanger pressure with $\eta_P=0.90$. Given: $h_1=273.01$ kJ/kg, $v_1=0.001842$ m³/kg, $h_3=761.54$, $h_4=689.74$, $h_{4s}=670.40$ kJ/kg, and $c_p=4.258$ kJ/kg·°C for the water. Find (a) the turbine's isentropic efficiency, (b) the net power, (c) the thermal efficiency.
+
+</Statement>
+
+<Think>
+
+A Rankine problem where the **fluid is not water**, so you cannot use the steam tables: the problem gives the enthalpies. What is new: the *heat source is a stream of hot water*, so the boiler is a heat exchanger and the **working-fluid mass flow comes from an energy balance on it**: $\dot m_{iso}(h_3-h_2)=\dot m_{water}c_p(T_5-T_6)$. The pump uses the efficiency form $w_P=v_1\Delta P/\eta_P$.
+
+</Think>
+
+<Plan>
+
+$\eta_T$ from the three given turbine enthalpies $\to$ pump work and $h_2$ $\to$ $\dot Q_{in}$ from the water side $\to$ $\dot m_{iso}$ from the heat-exchanger balance $\to$ net power and $\eta$.
+
+</Plan>
+
+<Steps>
+<Step title="1. Turbine efficiency">
+
+$\eta_T=\dfrac{h_3-h_4}{h_3-h_{4s}}=\dfrac{761.54-689.74}{761.54-670.40}=\dfrac{71.80}{91.14}=\mathbf{0.788}$ (your page ✔).
+
+</Step>
+<Step title="2. Pump">
+
+$w_P=\dfrac{v_1(P_2-P_1)}{\eta_P}=\dfrac{0.001842(3250-410)}{0.90}=5.81$ kJ/kg, so $h_2=h_1+w_P=273.01+5.81=\mathbf{278.82}$ kJ/kg.
+
+</Step>
+<Step title="3. Heat from the geothermal water and the isobutane flow">
+
+$\dot Q_{in}=\dot m_wc_p(T_5-T_6)=555.9(4.258)(160-90)=\mathbf{165\,692}$ kW (your page: 165 691.55 ✔). The same heat raises the isobutane from $h_2$ to $h_3$: $\dot m_{iso}=\dfrac{165\,692}{761.54-278.82}=\mathbf{343.2}$ kg/s.
+
+</Step>
+<Step title="4. Net power and efficiency">
+
+$w_T=h_3-h_4=71.80$ kJ/kg, $w_{net}=71.80-5.81=65.99$ kJ/kg, $\dot W_{net}=343.2(65.99)=\mathbf{22\,650}$ kW $=22.65$ MW. $\eta=\dfrac{22\,650}{165\,692}=\mathbf{0.137}$.
+
+</Step>
+</Steps>
+
+<Callout kind="note" title="Check your page: it stops after Q̇ᵢₙ, and the red notes mark what was missing">
+
+Your page has (a) and $\dot Q_{in}$, then writes "$\dot Q_{in}=\dot m(h_3-h_2)$ … $h_{2a}$" and a first attempt at the pump. The red margin notes you added later give the two corrections used above: the pump line $w_P=v(P_2-P_1)/\eta$ and the heat-exchanger balance $\dot m_wc_p(T_{in}-T_{out})=\dot m_{iso}(h_3-h_2)$. The remaining numbers (343.2 kg/s, 22.65 MW, 13.7 %) are my completion.
+
+</Callout>
+
+<Answer>
+
+(a) **$\eta_T=78.8\ \%$**; (b) **$\dot W_{net}=22.65$ MW** ($\dot m_{iso}=343.2$ kg/s); (c) **$\eta=13.7\ \%$**.
+
+</Answer>
+
+<RealWorld title="Binary geothermal plants">
+
+A binary (organic Rankine) plant is used when the geothermal water is too cool for steam, typically 100–180 °C: the water never flashes; it heats a low-boiling fluid such as isobutane or pentane in a heat exchanger and is reinjected. Efficiencies of **10–15 %** are typical (this problem: 13.7 %), versus the Carnot limit of about 31 % between 160 °C and 25 °C. The air-cooled condenser is used where no cooling water is available, as at many desert plants (Nevada, for example).
+
+</RealWorld>
+
+<Traps>
+
+- Do not use the steam tables for isobutane; take $h$ from the statement.
+- The thermal efficiency is divided by the heat taken **from the geothermal water**, $\dot Q_{in}$, not by $\dot m_{iso}(h_3-h_1)$.
+- A pump with $\eta_P$ needs *more* work: divide by $\eta_P$.
+
+</Traps>
+
+<Source>Anthony's Assignment 2, pp. 1–3 (Assignment_2-231011-01…03; red margin notes) · hand check in <code>hw.test.ts</code></Source>
+
+</Problem>
+
+<Problem id="10-52" title="Ideal regenerative cycle with two open feedwater heaters" tags="regeneration, two OFWH, fractions y and z, three pumps">
+
+<Statement>
+
+A steam plant operates on an ideal regenerative Rankine cycle with **two open feedwater heaters**. Steam enters the turbine at 8 MPa and 550 °C and exhausts to the condenser at 15 kPa. Steam is extracted at 0.6 and 0.2 MPa; both heaters deliver saturated liquid. The boiler flow is 24 kg/s. Show the cycle on a T–s diagram and find (a) the net power, (b) the thermal efficiency. (Printed: 28.8 MW, 42.2 %.)
+
+</Statement>
+
+<Think>
+
+Two mixing chambers in series, so three pumps (condenser $\to$ 0.2 MPa $\to$ 0.6 MPa $\to$ boiler). The mass fractions are found **from the high-pressure heater down**: first $y$ (at 0.6 MPa) from its balance, because its inlet is the pump-II outflow; then $z$ (at 0.2 MPa) using $y$. Your numbering: 1 condenser exit… see the table in step 1.
+
+</Think>
+
+<Plan>
+
+States by pressure $\to$ $y$ from the 0.6 MPa heater $\to$ $z$ from the 0.2 MPa heater $\to$ $q_{in}=h_8-h_7$, $q_{out}=(1-y-z)(h_{11}-h_1)$ $\to$ $w_{net}=q_{in}-q_{out}$, power, $\eta$.
+
+</Plan>
+
+<TsDiagram fluid="water" points={[{ s: 0.7549, T: 54, P: 15, label: '1' }, { s: 0.7549, T: 54, P: 200, label: '2' }, { s: 1.5302, T: 120.2, P: 200, label: '3' }, { s: 1.5302, T: 120.2, P: 600, label: '4' }, { s: 1.9308, T: 158.8, P: 600, label: '5' }, { s: 1.9308, T: 158.8, P: 8000, label: '6' }, { s: 6.88, T: 550, P: 8000, label: '8' }, { s: 6.88, T: 181.6, P: 600, label: '9' }, { s: 6.88, T: 120.2, P: 200, label: '10' }, { s: 6.88, T: 54, P: 15, label: '11' }]} path={[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0]} isobars={[15, 200, 600, 8000]} />
+
+<Steps>
+<Step title="1. States (your numbering: 2 and 3 around pump I, 4 and 5 around pump II, 6 and 7 around pump III, 8 boiler exit)">
+
+<T>A-5, 15 kPa sat. liquid: h = 225.94 kJ/kg, v = 0.001014</T> ($h_2$ in your page, 15 kPa). Pump I: $h_3=225.94+0.001014(200-15)=\mathbf{226.13}$ ✔. <T>A-5, 200 kPa sat. liquid: h = 504.71, v = 0.001061</T> ✔. Pump II: $h_5=504.71+0.001061(600-200)=\mathbf{505.13}$ ✔. <T>A-5, 600 kPa sat. liquid: h = 670.38, v = 0.001101</T> ✔. Pump III: $h_7=670.38+0.001101(8000-600)=\mathbf{678.52}$ ✔ (your page 678.53). <T>A-6, 8 MPa, 550 °C: h₈ = 3521.8 kJ/kg, s₈ = 6.880</T> ✔. Isentropic bleeds with $s=6.880$: at 0.6 MPa <T>(superheated, 181.6 °C) h₉ = 2810 kJ/kg</T> (your page 2810.7; the lib gives 2809.6), at 0.2 MPa <T>x₁₀ = 0.956, h₁₀ = 2609.1 kJ/kg</T> ✔, at 15 kPa <T>x = 0.8446, h₁₁ = 225.94 + 0.8446(2372.3) = 2229.5 kJ/kg</T> (your page 2229.5 ✔).
+
+</Step>
+<Step title="2. The 0.6 MPa heater: the fraction y">
+
+$y\,h_9+(1-y)\,h_5=h_6\Rightarrow y=\dfrac{h_6-h_5}{h_9-h_5}=\dfrac{670.38-505.13}{2810.7-505.13}=\mathbf{0.0717}$ (your page: 0.071x, the last digits are hard to read; it feeds $z=0.1085$).
+
+</Step>
+<Step title="3. The 0.2 MPa heater: the fraction z">
+
+$z\,h_{10}+(1-y-z)\,h_3=(1-y)\,h_4\Rightarrow z=\dfrac{(1-y)(h_4-h_3)}{h_{10}-h_3}=\dfrac{0.9283(504.71-226.13)}{2609.1-226.13}=\mathbf{0.1085}$ ✔ (your page 0.1085). The condenser flow is $1-y-z=0.8198$.
+
+</Step>
+<Step title="4. Heat, work, efficiency, power">
+
+$q_{in}=h_8-h_7=3521.8-678.5=\mathbf{2843.3}$ kJ/kg. $q_{out}=(1-y-z)(h_{11}-h_1)=0.8198(2229.5-225.94)=\mathbf{1642.5}$ kJ/kg (your page: $1-1641/2847$). $w_{net}=q_{in}-q_{out}=1200.8$ kJ/kg; $\dot W=24(1200.8)=\mathbf{28.8}$ MW. $\eta=1-\dfrac{1642.5}{2843.3}=\mathbf{0.422}$.
+
+</Step>
+</Steps>
+
+<Answer>
+
+(a) **$\dot W_{net}=28.8$ MW**, (b) **$\eta=42.2\ \%$** ✔ (printed). $y=0.0717$, $z=0.1085$. The plain cycle with the same boiler and condenser has $\eta=39.1\ \%$: the two heaters add 3.2 points.
+
+</Answer>
+
+<RealWorld title="A coal unit has six to eight heaters">
+
+A large coal unit extracts steam at 6–8 pressures and heats the feedwater to about 250–300 °C before the boiler; the lowest-pressure open heater is the *deaerator*, which also strips dissolved oxygen out of the water. Two heaters, as here, are the textbook minimum to see the pattern: each one raises the average temperature at which heat is added.
+
+</RealWorld>
+
+<Traps>
+
+- The fractions are bookkeeping: $y$ leaves at 0.6 MPa, $z$ at 0.2 MPa, only $1-y-z$ reaches the condenser. The pump work of the last two pumps is for the flows $1-y$ and 1.
+- Solve the **0.6 MPa heater first**: its inlet state does not depend on $z$.
+- The textbook states two *open* heaters (your notebook too); the statement does not mention a closed heater.
+
+</Traps>
+
+<Source>Anthony's Assignment 2, pp. 3–8 (Assignment_2-231011-03…08; the pink notes are your later additions) ✔ · hand assembly with the lib steam tables in <code>hw.test.ts</code></Source>
+
+</Problem>
+
+<Problem id="10-55" title="Closed feedwater heater with the drain throttled back to the condenser" tags="closed feedwater heater, throttling, feedwater exit temperature">
+
+<Statement>
+
+A steam plant operates on the ideal regenerative cycle with a **closed** feedwater heater. Turbine inlet 3000 kPa, 350 °C; condenser 20 kPa. Steam is extracted at 1000 kPa to the closed heater, which **discharges into the condenser after being throttled** to condenser pressure. Find the turbine work, the pump work and the heat supplied in the boiler per kilogram of boiler flow. (Printed: 741, 3.0, 2353 kJ/kg.)
+
+</Statement>
+
+<Think>
+
+Same recipe, but now the heater is a heat exchanger and one sentence of the statement carries the physics: "heated to the condensation temperature of the extracted steam". The feedwater leaves at $T_{sat}(1000\ \text{kPa})=179.9$ °C **at the boiler pressure** of 3 MPa, so it is a compressed liquid and its enthalpy is $h_f(179.9\ °C)+v\Delta P$, not the 3 MPa saturated-liquid value. Pump work is for the *whole* flow (one pump before the heater).
+
+</Think>
+
+<Plan>
+
+Inlet and bleed/exit states $\to$ pump $\to$ drain and feedwater-exit enthalpies $\to$ $y$ from the heater balance $\to$ $w_T$, $w_P$, $q_{in}$.
+
+</Plan>
+
+<TsDiagram fluid="water" points={[{ s: 0.832, T: 60.1, P: 20, label: '1' }, { s: 0.832, T: 60.1, P: 3000, label: '2' }, { s: 2.1381, T: 179.9, P: 3000, label: '3' }, { s: 6.7449, T: 350, P: 3000, label: '4' }, { s: 6.7449, T: 209.9, P: 1000, label: '5' }, { s: 6.7449, T: 60.1, P: 20, label: '6' }, { s: 2.1381, T: 179.9, P: 1000, label: '7' }]} path={[0, 1, 2, 3, 4, 5, 0]} isobars={[20, 1000, 3000]} />
+
+<Steps>
+<Step title="1. Turbine states">
+
+<T>A-6, 3 MPa, 350 °C: h₄ = 3116.1 kJ/kg, s₄ = 6.745 kJ/kg·K</T> (your page ✔). Bleed at 1000 kPa, $s_5=s_4$: <T>superheated, h₅ = 2852 kJ/kg</T> (your page 2852.86; lib 2851.9). Exit at 20 kPa: <T>s_f = 0.8320, s_fg = 7.0752, h_f = 251.4, h_fg = 2357.5</T> gives $x_6=\dfrac{6.745-0.8320}{7.0752}=0.836$, $h_6=251.4+0.836(2357.5)=2221.6$ (your page: $x\approx0.834$, $h_6=2219$ ✔, 0.1 % from the table).
+
+</Step>
+<Step title="2. Pump (whole flow)">
+
+<T>A-5 at 20 kPa sat. liquid: h₁ = 251.4, v₁ = 0.001017</T>. $w_P=v_1(P_2-P_1)=0.001017(3000-20)=\mathbf{3.03}$ kJ/kg (your page 3.031 ✔), $h_2=254.43$ ✔.
+
+</Step>
+<Step title="3. Drain and feedwater leaving the heater">
+
+Drain: saturated liquid at 1000 kPa, <T>h = 762.5 kJ/kg, v = 0.001127, T = 179.9 °C</T>. Feedwater out: at 3000 kPa and **179.9 °C**: $h_3\approx h_f(179.9\,°C)+v\,(P_3-P_{sat})=762.5+0.001127(3000-1000)=\mathbf{764.8}$ kJ/kg (the Tutorial page writes exactly "$h_3=762.51+(3000-1000)(0.001127)$").
+
+</Step>
+<Step title="4. The fraction y">
+
+$y\,(h_5-h_{drain})=1\cdot(h_3-h_2)\Rightarrow y=\dfrac{764.8-254.4}{2851.9-762.5}=\mathbf{0.244}$. (A big fraction: the heater lifts the feedwater from 60 °C to 180 °C.)
+
+</Step>
+<Step title="5. Work and heat">
+
+$w_T=(h_4-h_5)+(1-y)(h_5-h_6)=(3116.1-2851.9)+0.756(2851.9-2221.6)=264.2+476.3=\mathbf{740.5}$ kJ/kg. $q_{in}=h_4-h_3=3116.1-764.8=\mathbf{2351.3}$ kJ/kg. $\eta=\dfrac{740.5-3.0}{2351.3}=0.314$ (plain cycle: 31.1 %).
+
+</Step>
+</Steps>
+
+<Callout kind="warn" title="⚠ h₃ = 1008 should be 764.8: the feedwater leaves at the drain's saturation temperature, not at the boiler's">
+
+On the Assignment page the feedwater-exit enthalpy is written $h_3=1008.x$. That is the saturated-liquid enthalpy at **3000 kPa** (233.9 °C: $h_f=1008.3$), i.e. the water would leave the heater hotter than the steam that heats it: impossible for a heat exchanger. With 1008 the heat input would be $3116.1-1008=2108$ kJ/kg instead of 2351. Your Tutorial page (13 Oct) writes the correct line, $h_3=762.51+(3000-1000)(0.001127)=764.8$, and your red notes on the Assignment page say that the water leaves at the temperature of the extracted steam ("$T_3=T_5$").
+
+</Callout>
+
+<Answer>
+
+**$w_T=740.5\approx741$ kJ/kg, $w_P=3.03\approx3.0$ kJ/kg, $q_{in}=2351\approx2353$ kJ/kg**, $y=0.244$ ✔ (printed 741 / 3.0 / 2353; the table's rounding explains the 2 kJ/kg).
+
+</Answer>
+
+<RealWorld title="Closed heaters are the workhorse">
+
+Most heaters in a power plant are closed (shell-and-tube): no extra pump per heater, and the feedwater can stay at boiler pressure. The ideal rule used here, outlet water at the bled steam's saturation temperature, is the limit of an infinite heat exchanger; real units leave a terminal temperature difference of a few degrees.
+
+</RealWorld>
+
+<Traps>
+
+- The feedwater leaves the closed heater at $T_{sat}(P_{bleed})$ but at **boiler pressure**: $h=h_f(T)+v\Delta P$ (a one-line approximation), not $h_f$ at boiler pressure.
+- The drain is throttled: $h$ is constant through the valve, and it never reaches the boiler.
+- Turbine work: full flow down to the bleed, then $1-y$.
+
+</Traps>
+
+<Source>Anthony's Assignment 2, pp. 9–11 (Assignment_2-231011-09…11; I zoomed p. 10) and Tutorial chapter 10 p. 9 · lib <code>rankine</code> with <code>cfwh</code> ✔ (<Ch slug="vapor-cycles" />)</Source>
+
+</Problem>
+
+<Problem id="10-61" title="Reheat-regenerative cycle with a closed heater whose drain is pumped forward (instructor's clarification)" tags="reheat, closed feedwater heater, drain pumped forward, mixing chamber">
+
+<Statement>
+
+Repeat 10-60 but replace the open feedwater heater by a closed one (10-60: net power 80 MW; steam enters the high-pressure turbine at 10 MPa and 550 °C and leaves at 0.8 MPa, where some steam is extracted for the heater; the rest is reheated to 500 °C and expanded in the low-pressure turbine to 10 kPa). The feedwater leaves the heater at the condensation temperature of the extracted steam; the drain leaves as saturated liquid and, **per the instructor**, is pumped forward and mixed with the feedwater (see the note below). Find the mass flow through the boiler and the thermal efficiency.
+
+</Statement>
+
+<Think>
+
+The textbook's T–s figure for this problem is **wrong** (marked "× wrong" in the instructor's one-page note emailed on 2 Nov 2023, MECH341_Q10_65): it does not show the pumped-forward drain. The correct layout is in the figure below: closed heater at 0.8 MPa, the drain pumped from 0.8 to 10 MPa, and a **mixing chamber** where it meets the heated feedwater. Two facts close the problem. (1) The feedwater leaves the closed heater at $T_9=T_3$ (the drain's temperature), so $h_9\approx h_3+v_3(P_{10}-P_3)$. (2) The drain pump raises the same saturated liquid by the same $\Delta P$, so $h_{10}=h_9$, and the mixing balance $(1-y)h_9+y\,h_{10}=h_4$ collapses to **$h_4=h_9=h_{10}$**.
+
+</Think>
+
+<CfwhForwardFigure />
+
+<Plan>
+
+States 1, 2 (condenser and pump), 3 (drain) $\to$ $h_9=h_{10}=h_4$ $\to$ turbine states 5, 6, 7, 8 $\to$ $y$ from the **closed heater** balance $y(h_6-h_3)=(1-y)(h_9-h_2)$ $\to$ $q_{in}$, $q_{out}$, $\dot m$, $\eta$.
+
+</Plan>
+
+<TsDiagram fluid="water" points={[{ s: 0.6492, T: 45.8, P: 10, label: '1' }, { s: 0.6492, T: 45.8, P: 10000, label: '2' }, { s: 2.0456, T: 170.4, P: 10000, label: '9' }, { s: 6.7584, T: 550, P: 10000, label: '5' }, { s: 6.7584, T: 188.1, P: 800, label: '6' }, { s: 7.8692, T: 500, P: 800, label: '7' }, { s: 7.8692, T: 45.8, P: 10, label: '8' }, { s: 2.0456, T: 170.4, P: 800, label: '3' }]} path={[0, 1, 2, 3, 4, 5, 6, 0]} isobars={[10, 800, 10000]} />
+
+<Steps>
+<Step title="1. Condenser, pump, drain">
+
+<T>A-5, 10 kPa sat. liquid: h₁ = 191.81 kJ/kg, v₁ = 0.001010</T> (your page ✔). Pump: $h_2=191.81+0.001010(10\,000-10)=\mathbf{201.9}$ ✔. <T>A-5, 800 kPa sat. liquid: h₃ = 720.87 kJ/kg, v₃ = 0.001115 m³/kg</T> ✔. $h_9=h_{10}=h_4=h_3+v_3(P_{10}-P_3)=720.87+0.001115(10\,000-800)=\mathbf{731.1}$ kJ/kg (your page 731.2 ✔).
+
+</Step>
+<Step title="2. Turbine states">
+
+<T>A-6, 10 MPa, 550 °C: h₅ = 3502.0 kJ/kg, s₅ = 6.7585 kJ/kg·K</T>. Isentropic to 0.8 MPa, $s_6=s_5$: the steam is superheated, $T_6=188$ °C, <T>h₆ = 2812.1 kJ/kg</T>. Reheat: <T>A-6, 0.8 MPa, 500 °C: h₇ = 3481.3, s₇ = 7.8692</T> ✔. Exit at 10 kPa: $x_8=\dfrac{7.8692-0.6492}{7.4996}=0.9627$, $h_8=191.81+0.9627(2392.1)=\mathbf{2494.7}$ ✔ (your page 2494.72).
+
+</Step>
+<Step title="3. The fraction y (closed heater)">
+
+$y\,(h_6-h_3)=(1-y)(h_9-h_2)\Rightarrow y=\dfrac{h_9-h_2}{h_6-h_3+h_9-h_2}=\dfrac{731.1-201.9}{2812.1-720.9+731.1-201.9}=\mathbf{0.2020}$.
+
+</Step>
+<Step title="4. Heat, work, flow, efficiency">
+
+$q_{in}=(h_5-h_4)+(1-y)(h_7-h_6)=(3502.0-731.1)+0.798(3481.3-2812.1)=2770.9+534.0=\mathbf{3304.9}$ kJ/kg. $q_{out}=(1-y)(h_8-h_1)=0.798(2494.7-191.81)=\mathbf{1837.8}$. $w_{net}=1467.1$ kJ/kg, so $\dot m=\dfrac{80\,000}{1467.1}=\mathbf{54.5}$ kg/s and $\eta=\dfrac{1467.1}{3304.9}=\mathbf{0.444}$. (Without the heater the same reheat cycle has $\eta=42.0\ \%$.)
+
+</Step>
+</Steps>
+
+<Callout kind="warn" title="⚠ s₅ = 6.785 should be 6.7585: one transposed digit gives h₆ = 2825.7 instead of 2812.1">
+
+On the Assignment page the turbine-inlet entropy is written $s_5=6.785$ (three times, and the interpolation $x=\dfrac{6.785-6.6616}{6.8177-6.6616}=0.7905$ uses it). The table value is $s_5=6.7585$ kJ/kg·K (digits transposed). The isentropic bleed state then comes out at $h_6=2825.7$ kJ/kg on your page, 13.6 kJ/kg too high, which would push $y$ up to 0.2009 and $\dot m$ to 55.0 kg/s (instead of 0.2020 and 54.5). Checking the entropy of a state against its neighbors is the cheap defense: $s_5$ must lie between 6.66 (saturated vapor at 0.8 MPa) and 6.82 (200 °C) for the bleed to be a *superheated* state, and 6.7585 does.
+
+</Callout>
+
+<Callout kind="note" title="Check your page: the page stops at the balances">
+
+Your page has all the states (1, 2, 3, 5–8, 9 = 731.2) and the formulas $q_{in}=(h_7-h_6)(1-y)+(h_5-h_4)$, $q_{out}=(1-y)(h_8-h_1)$, $\dot m=\dot W/w_{net}$, then stops ("$h_4=h_9=1110$" on the last page is not a number I can read reliably; the instructor's note gives $h_4=h_9=h_{10}$). The values for $y$, $\dot m$ and $\eta$ are my completion. For comparison, the open-heater version (10-60) has printed answers 54.5 kg/s and 44.4 %: for an ideal closed heater with a forward-pumped drain the result comes out essentially the same.
+
+</Callout>
+
+<Answer>
+
+**$\dot m=54.5$ kg/s, $\eta=44.4\ \%$**, $y=0.202$ (recomputed; the page stops before $y$). With $s_5=6.785$ the page's $h_6=2825.7$ would give 55.0 kg/s.
+
+</Answer>
+
+<RealWorld title="Reheat keeps the last blades dry">
+
+Without the reheater the steam would leave the turbine at $x=0.815$ (18 % liquid); with it, $x=0.963$. Steel blades at 3000–3600 rpm erode quickly when the steam is wetter than about 10 %, which is why every large steam turbine is built as HP, IP and LP sections with a reheater (hot reheat line) between them, and with 6–8 heaters.
+
+</RealWorld>
+
+<Traps>
+
+- **Do not trust the textbook figure for this problem.** The drain is pumped forward and mixed; $h_4=h_9=h_{10}$ is the line the instructor wrote.
+- The bleed state 6 is *superheated* at 0.8 MPa: do not use $h_f+xh_{fg}$.
+- Check the entropy you read from the table (see ⚠).
+
+</Traps>
+
+<Source>Anthony's Assignment 2, pp. 12–15 (Assignment_2-231011-12…15; I zoomed p. 13) · instructor's note <code>MECH341_Q10_65.pdf</code> (2 Nov 2023) · hand assembly in <code>hw.test.ts</code> · <Ch slug="vapor-cycles">chapter 10</Ch> has the same note in prose</Source>
+
+</Problem>
+
+## Extra practice from your notes: the chapter 10 tutorial
+
+<Problem id="10-98" title="Open heater with component efficiencies, 150 MW" tags="regeneration, open feedwater heater, ηT, ηP, fraction y">
+
+<Statement>
+
+A steam plant of net output 150 MW operates on a regenerative Rankine cycle: steam enters the turbine at 10 MPa and 500 °C, the condenser is at 10 kPa, $\eta_T=0.80$, $\eta_P=0.95$. Steam is extracted at 0.5 MPa for an open feedwater heater whose exit is saturated liquid. Find the mass flow rate through the boiler and the thermal efficiency (and, as a follow-up in your notes, the exergy destroyed in the heater).
+
+</Statement>
+
+<Think>
+
+The OFWH recipe plus *component efficiencies*: apply $\eta_T$ separately to each turbine section but always from the **same inlet state 5** ($h_{6a}=h_5-\eta_T(h_5-h_{6s})$ and $h_{7a}=h_5-\eta_T(h_5-h_{7s})$, each isentropic exit found at *its own* exit pressure), and divide each pump's work by $\eta_P$. A power requirement turns specific work into a flow: $\dot m=\dot W_{net}/w_{net}$.
+
+</Think>
+
+<TsDiagram fluid="water" points={[{ s: 0.6492, T: 45.8, P: 10, label: '1' }, { s: 0.6493, T: 45.8, P: 500, label: '2' }, { s: 1.8604, T: 151.8, P: 500, label: '3' }, { s: 1.8617, T: 152, P: 10000, label: '4' }, { s: 6.5996, T: 500, P: 10000, label: '5' }, { s: 6.936, T: 173.6, P: 500, label: '6' }, { s: 7.4056, T: 45.8, P: 10, label: '7' }]} path={[0, 1, 2, 3, 4, 5, 6, 0]} isobars={[10, 500, 10000]} />
+
+<Steps>
+<Step title="1. States (your page ✔)">
+
+<T>A-5, 10 kPa: h₁ = 191.81, v₁ = 0.001010</T>; pump I: $h_{2a}=191.81+\dfrac{0.001010(500-10)}{0.95}=\mathbf{192.33}$ ✔. <T>500 kPa sat. liquid: h₃ = 640.09 kJ/kg</T> ✔; pump II: $h_{4a}=640.09+\dfrac{0.001093(10\,000-500)}{0.95}=\mathbf{651.02}$ ✔. Turbine: <T>10 MPa, 500 °C: h₅ = 3375.1, s₅ = 6.5995</T>; isentropic to 500 kPa $h_{6s}=2654.08$ so $h_{6a}=3375.1-0.80(3375.1-2654.08)=\mathbf{2798.28}$ ✔; isentropic to 10 kPa $h_{7s}=2089.77$ so $h_{7a}=\mathbf{2346.80}$ ✔.
+
+</Step>
+<Step title="2. The fraction and the work">
+
+$y\,h_{6a}+(1-y)\,h_{2a}=h_3\Rightarrow y=\dfrac{640.09-192.33}{2798.28-192.33}=\mathbf{0.17182}$ ✔. $w_T=(h_5-h_{6a})+(1-y)(h_{6a}-h_{7a})=576.8+373.9=950.7$; $w_P=(1-y)(h_{2a}-h_1)+(h_{4a}-h_3)=0.43+10.93=11.4$; $w_{net}=939.4$ kJ/kg.
+
+</Step>
+<Step title="3. Flow, efficiency">
+
+$\dot m=\dfrac{150\,000}{939.4}=\mathbf{159.7}$ kg/s. $q_{in}=h_5-h_{4a}=3375.1-651.0=2724.1$; $q_{out}=(1-y)(h_{7a}-h_1)=0.8282(2154.99)=1784.7$; $\eta=1-\dfrac{1784.7}{2724.1}=\mathbf{0.345}$.
+
+</Step>
+<Step title="4. Follow-up: exergy destroyed in the heater (T₀ = 298 K)">
+
+$i=T_0\left[s_3-y\,s_{6a}-(1-y)s_{2a}\right]=298\left[1.8604-0.1718(6.9360)-0.8282(0.6493)\right]=298(0.1310)=\mathbf{39}$ kJ per kg leaving the heater: mixing steam at 174 °C with water at 46 °C is irreversible.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**$y=0.172$, $\dot m=159.7$ kg/s, $\eta=34.5\ \%$**; exergy destroyed in the heater ≈ 39 kJ/kg (≈ 6.2 MW over the heater flow) ✔ your page reaches $y=0.17182$.
+
+</Answer>
+
+<RealWorld title="What an 80 % turbine costs">
+
+With ideal components the same cycle would reach 43.0 %; an 80 % turbine and 95 % pumps cost 8.5 points. A real utility turbine has $\eta_T\approx88$–$92\ \%$ per section.
+
+</RealWorld>
+
+<Traps>
+
+- Apply $\eta_T$ from the **same inlet state** to each exit pressure (state 5 to 6a and 5 to 7a), not "from 6a to 7a".
+- The pump after the heater handles the saturated liquid at 0.5 MPa and the whole flow: $h_{4a}=h_3+v_3\Delta P/\eta_P$.
+- The condenser flow is $1-y$.
+
+</Traps>
+
+<Source>Anthony's Tutorial chapter 10, pp. 1–4 (Tutorial_chapter_10-231013-1…4) ✔ · lib <code>rankine</code> with <code>ofwh</code> (<code>lib.test.ts</code>) · also worked in <Ch slug="vapor-cycles" /></Source>
+
+</Problem>
+
+<Problem id="10-110" title="Reheat, a closed heater at 0.6 MPa and an open heater at 0.2 MPa, 42 kg/s" tags="reheat, closed and open heater, drain throttled into the open heater">
+
+<Statement>
+
+A steam plant operates on an ideal reheat–regenerative cycle with one reheater and two feedwater heaters, one open and one closed. Steam enters the HP turbine at 15 MPa and 600 °C and the LP turbine at 1 MPa and 500 °C; the condenser is at 5 kPa. Steam is extracted at 0.6 MPa for the **closed** heater and at 0.2 MPa for the **open** heater. In the closed heater the feedwater is heated to the condensation temperature of the extracted steam; the extracted steam leaves as saturated liquid and is throttled into the open heater. Find (a) the fraction extracted for the open heater, (b) the thermal efficiency, (c) the net power for 42 kg/s through the boiler.
+
+</Statement>
+
+<Think>
+
+Everything of this assignment in one problem. Order of attack: the closed heater first (its balance has one unknown, $y$), then the open heater (unknown $z$), then the sections of the turbine. The main flow is: condenser $\to$ pump I ($0.2$ MPa) $\to$ **open heater** $\to$ pump II (15 MPa) $\to$ **closed heater** $\to$ boiler.
+
+</Think>
+
+<TsDiagram fluid="water" points={[{ s: 0.4762, T: 32.9, P: 5, label: '1' }, { s: 0.4762, T: 32.9, P: 200, label: '2' }, { s: 1.5302, T: 120.2, P: 200, label: '3' }, { s: 1.5302, T: 120.2, P: 15000, label: '4' }, { s: 1.9308, T: 158.8, P: 15000, label: '5' }, { s: 6.6796, T: 600, P: 15000, label: '8' }, { s: 6.6796, T: 196.9, P: 1000, label: '9' }, { s: 7.7642, T: 500, P: 1000, label: '10' }, { s: 7.7642, T: 417.6, P: 600, label: '11' }, { s: 7.7642, T: 264.3, P: 200, label: '12' }, { s: 7.7642, T: 32.9, P: 5, label: '13' }, { s: 1.9308, T: 158.8, P: 600, label: '6' }]} path={[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 0]} isobars={[5, 200, 600, 1000, 15000]} />
+
+<Steps>
+<Step title="1. States (your numbering)">
+
+<T>A-5, 5 kPa sat. liquid: h₁ = 137.75, v₁ = 0.001005</T> ✔; pump I: $h_2=137.75+0.001005(200-5)=137.95$ ✔. <T>200 kPa sat. liquid: h₃ = 504.71, v₃ = 0.001061</T> ✔; pump II: $h_4=504.71+0.001061(15\,000-200)=\mathbf{520.41}$ ✔ (your page 520.4128). Closed heater: feedwater leaves at $T_5=T_{sat}(600\ \text{kPa})=158.8$ °C and 15 MPa, <T>h₅ ≈ 686.2 kJ/kg</T>; drain <T>h₆ = h₇ = 670.38 kJ/kg</T> (sat. liquid at 0.6 MPa, throttled). Turbine: <T>15 MPa, 600 °C: h₈ = 3583.1, s₈ = 6.6796</T> ✔; to 1 MPa isentropic $h_9=2820.4$ ✔; reheat <T>1 MPa, 500 °C: h₁₀ = 3479.1, s₁₀ = 7.7642</T> ✔; at 0.6 MPa $h_{11}=3307.9$ ($T_{11}=418$ °C; your page 3310.15 ✔), at 0.2 MPa $h_{12}=3000.0$ ✔, at 5 kPa $x_{13}=0.920$, $h_{13}=2368.0$ ✔ (your page 2368.07).
+
+</Step>
+<Step title="2. Closed heater: y">
+
+$y\,(h_{11}-h_6)=1\cdot(h_5-h_4)\Rightarrow y=\dfrac{686.2-520.4}{3307.9-670.4}=\mathbf{0.0629}$.
+
+</Step>
+<Step title="3. Open heater: z">
+
+$y\,h_7+z\,h_{12}+(1-y-z)\,h_2=h_3\Rightarrow z=\dfrac{h_3-y\,h_7-(1-y)h_2}{h_{12}-h_2}=\dfrac{504.71-0.0629(670.38)-0.9371(137.95)}{3000.0-137.95}=\mathbf{0.1165}$. Condenser flow $1-y-z=0.8206$.
+
+</Step>
+<Step title="4. Work, heat, efficiency, power">
+
+$w_T=(h_8-h_9)+(h_{10}-h_{11})+(1-y)(h_{11}-h_{12})+(1-y-z)(h_{12}-h_{13})=762.4+171.2+(0.9371)(307.9)+0.8206(631.9)=1740.8$ kJ/kg. $w_P=0.8206(0.20)+15.7=15.9$ kJ/kg. $q_{in}=(h_8-h_5)+(h_{10}-h_9)=2896.9+658.3=3555.3$ kJ/kg. $w_{net}=1724.9$; $\eta=\dfrac{1724.9}{3555.3}=\mathbf{0.485}$; $\dot W=42(1724.9)=\mathbf{72.4}$ MW.
+
+</Step>
+</Steps>
+
+<Callout kind="note" title="Check your page: the first attempt at h₅, and the red correction">
+
+Your first pass sets "$T_5=T_{11}$" (the **superheated bleed steam's** temperature, 418 °C), reads a steam-table enthalpy of about 2750–2976 kJ/kg for the "feedwater" $h_5$, and gets $y=0.9297$ (a fraction near 1 is the warning sign). The red notes then correct the rule: "$T_5=T_6$, the exit temperature equals the *saturation* temperature of the extracted steam; enthalpy is a function of pressure and temperature". With $T_5=T_6=158.8$ °C the feedwater enthalpy is 686.2 kJ/kg and $y=0.063$. The page ends before $z$ and the efficiency; those are my completion.
+
+</Callout>
+
+<Answer>
+
+(a) **$z=0.1165$** (and $y=0.0629$), (b) **$\eta=48.5\ \%$**, (c) **$\dot W_{net}=72.4$ MW**.
+
+</Answer>
+
+<RealWorld title="Ideal numbers for an ultra-supercritical plant">
+
+15 MPa and 600 °C with reheat is the territory of modern supercritical coal units; ideal cycles of this kind reach about 48–49 %. Real plants reach about 42–47 % lower-heating-value net because of turbine, boiler and auxiliary losses (typical values).
+
+</RealWorld>
+
+<Traps>
+
+- Closed heater: feedwater out at the **saturation** temperature of the bled steam, at boiler pressure (compressed liquid).
+- The drain is throttled into the open heater, so its flow $y$ adds to the open heater's inlets.
+- Reheat adds a second heat term, $h_{10}-h_9$, and the extraction states 11 and 12 start from the reheated state 10.
+
+</Traps>
+
+<Source>Anthony's Tutorial chapter 10, pp. 4–9 (Tutorial_chapter_10-231013-4…9; the red notes are later) · hand assembly in <code>hw.test.ts</code></Source>
+
+</Problem>
+
+<Examined>
+
+**How this assignment is examined.** The midterm asks for one full cycle with an efficiency and a mass flow: state table first, T–s sketch, one heater (open or closed) and the mass fractions. The instructor's 10-61 note is typical of what is *said in class but not printed*: write it on your cheat sheet (<Ch slug="errata" />, items on 10-55 and 10-61). Class examples are in <Ex id="midterm-review" /> and the chapter notes (<Ch slug="vapor-cycles" />).
+
+</Examined>

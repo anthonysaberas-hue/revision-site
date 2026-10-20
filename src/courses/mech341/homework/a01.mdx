@@ -1,0 +1,704 @@
+<p className="eyebrow">Assignment 1 and 2/3 · Thermo 1 review (ch 1–8) and gas turbines / jet engines (ch 9) · from your own notebooks</p>
+
+# Assignment 1: Thermo 1 review and Brayton / jet engines
+
+<div className="lede">
+
+Eleven textbook problems exactly as you worked them in your notebooks (<Ex id="midterm-review">midterm review class</Ex> and the <Ch slug="review">chapter 8</Ch> and <Ch slug="gas-cycles">chapter 9</Ch> notes). The first five (4-9, 4-11, 4-15, 6-22, 7-26) are the Thermo 1 review; the other six (9-95, 9-97, 9-109, 9-126, 9-136, 9-137) are the jet-engine part. Every problem shows your method and your numbers, my recomputation from the lib (so the third digit can differ from the table values you read), the printed textbook answer where the book gives one, and the lesson. A ⚠ box means your digits are clearly legible and disagree with the recomputation beyond rounding; a "Check your page" note means the handwriting is ambiguous or the point is only about the method.
+
+</div>
+
+<Callout kind="note" title="What this assignment teaches, in one paragraph">
+
+(1) Boundary work needs the **right volumes**: interpolate the *property that behaves linearly* ($Pv$ for a vapor, not $v$). (2) Gas turbines: write the ideal temperatures with $T_{2s}=T_1r_p^{(k-1)/k}$, then correct with $\eta_C$ and $\eta_T$ (**compressor: ideal over actual; turbine: actual over ideal**). (3) Jet engines: the **ram** state first, then the turbine takes exactly the compressor's work, and the leftover pressure expands in the nozzle. (4) When efficiencies are unknown, a given *net work and cycle efficiency* fix the actual states directly (9-109).
+
+</Callout>
+
+## Part 1: Thermo 1 review (problems 4-9 to 7-26)
+
+<Problem id="4-9" title="Constant-pressure heating of steam: the interpolation trap" tags="boundary work, superheated table, interpolation, P·v">
+
+<Statement>
+
+A piston–cylinder device holds 5 kg of saturated water vapor at 150 kPa. It is heated at constant pressure until the temperature reaches 200 °C. Find the work done by the steam. (Printed answer: 214 kJ.)
+
+</Statement>
+
+<Think>
+
+Constant pressure means $W_b=P(V_2-V_1)=mP(v_2-v_1)$. State 1 is saturated vapor at 150 kPa. State 2 is at 150 kPa and 200 °C; the superheated table (A-6) lists 100 kPa and 200 kPa but **not** 150 kPa, so you must interpolate in pressure. That is the whole problem, and it teaches the first rule of this course's property work: **interpolate the quantity that varies linearly**, here $Pv\approx$ constant, not $v\propto1/P$.
+
+</Think>
+
+<Plan>
+
+$v_1=v_g$ at 150 kPa $\to$ $v_2$ at (150 kPa, 200 °C) by interpolating $Pv$ between the 100 kPa and 200 kPa rows $\to$ $W_b=mP(v_2-v_1)$.
+
+</Plan>
+
+<Steps>
+<Step title="1. State 1">
+
+<T>A-5 at 150 kPa, saturated vapor: v₁ = v_g = 1.1594 m³/kg</T>. Your page: $v_1=1.15941$ ✔.
+
+</Step>
+<Step title="2. State 2, your way (linear in v)">
+
+<T>A-6 at 200 °C: v(100 kPa) = 2.17245, v(200 kPa) = 1.08049 m³/kg</T>. You averaged the two values: $v_2=\dfrac{2.17245+1.08049}{2}=1.6264$ m³/kg. Then $W=150\times5\times(1.6264-1.15941)=\mathbf{350.3\ kJ}$ (your page: $W=350.28$ kJ).
+
+</Step>
+<Step title="3. State 2, the right way (linear in P·v)">
+
+$P_1v_1=100(2.17245)=217.25$ and $P_2v_2=200(1.08049)=216.10$ kJ/kg; their average at 150 kPa is $216.67$, so $v_2=\dfrac{216.67}{150}=\mathbf{1.4445}$ m³/kg (direct evaluation: 1.4445). The two numbers differ by 12.6 %.
+
+</Step>
+<Step title="4. Work">
+
+$W=mP(v_2-v_1)=5(150)(1.4445-1.1594)=\mathbf{213.8\ kJ}$, which is the printed 214 kJ.
+
+</Step>
+</Steps>
+
+<InterpTrapFigure />
+
+<Callout kind="warn" title="⚠ 350.3 kJ should be 213.8 kJ: do not average v between 100 and 200 kPa">
+
+Your page averages $v$ halfway between the 100 and 200 kPa rows ($v=1.6264$) and gets $W=350.28$ kJ; the printed answer is 214 kJ. The vapor volume is nearly $\propto1/P$, so the true curve (figure above) sags below the straight line and $v(150)=1.4445$. A pressure gap of a factor 2 is far too wide for a linear interpolation of $v$. The same slip would cost you marks on any superheated-table lookup between two pressures: interpolate $Pv$ (or $1/v$), or take a closer row.
+
+</Callout>
+
+<Answer>
+
+**$W\approx214$ kJ** (recomputed 213.8). Your notebook value 350.28 kJ is wrong by 64 %.
+
+</Answer>
+
+<RealWorld title="A steam locomotive does this arithmetic every stroke">
+
+The work of a boiler-size charge heated at constant pressure is the area under the horizontal line on a $P$–$V$ diagram. For vapors the $Pv\approx RT$ shortcut is the reason the table values are tabulated at round pressures: steam at 1.5 bar is close to an ideal gas, so $Pv$ changes little.
+
+</RealWorld>
+
+<Traps>
+
+- Interpolating $v$ linearly across a pressure ratio of 2 (your page). Use $Pv$, $1/v$, or compute $v\approx RT/P\times Z$.
+- Mixing units: kPa × m³ = kJ directly, so no conversion factor is needed.
+- Forgetting the mass: $W=mP\Delta v$, not $P\Delta v$.
+
+</Traps>
+
+<Source>Anthony's Assignment 1, p. 1 (Ass1-230906-1; I zoomed the last three lines: v = 1.626, W = 350.28) · answer 213.8 kJ from the steam tables / lib (<code>water.PT(150, 200)</code>) · also worked in <Ch slug="review" /></Source>
+
+</Problem>
+
+<Problem id="4-11" title="Isothermal expansion of saturated liquid to quality 0.8" tags="saturation, mass from v_f, boundary work">
+
+<Statement>
+
+1 m³ of saturated liquid water at 200 °C is expanded isothermally in a closed system until its quality is 80 %. Find the total work produced, in kJ.
+
+</Statement>
+
+<Think>
+
+Inside the vapor dome temperature fixes pressure: isothermal means isobaric at $P_{sat}(200\ °C)$, so $W=P\,\Delta V$ with the pressure constant. What is new: the **mass** comes from the initial *liquid* volume, $m=V_1/v_f$, and the final volume from the mixture formula $v=v_f+xv_{fg}$.
+
+</Think>
+
+<Steps>
+<Step title="1. Properties and mass">
+
+<T>A-4 at 200 °C: P_sat = 1554.9 kPa, v_f = 0.001157 m³/kg, v_g = 0.12721 m³/kg</T>. $m=\dfrac{V_1}{v_f}=\dfrac{1}{0.001157}=864.3$ kg (your page ✔).
+
+</Step>
+<Step title="2. Final volume">
+
+$v_2=v_f+x(v_g-v_f)=0.001157+0.8(0.12721-0.001157)=0.10199$ m³/kg; $V_2=mv_2=864.3(0.10199)=\mathbf{88.15\ m^3}$ (your page: 88.15).
+
+</Step>
+<Step title="3. Work">
+
+$W=P(V_2-V_1)=1554.9\,(88.15-1)=\mathbf{135\,523\ kJ}$. Your page: $W=135\,522.77$ kJ.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**$W\approx1.355\times10^5$ kJ (135.5 MJ).** Recomputed with unrounded $v_f=0.0011565$: $m=864.7$ kg, $V_2=88.20$ m³, $W=135\,582$ kJ; the 0.04 % difference is only the rounding of $v_f$. ✔
+
+</Answer>
+
+<RealWorld title="Why 200 °C water is dangerous in a vessel">
+
+Water at 200 °C is a liquid only at 1.55 MPa. One cubic metre of it holds 865 kg; letting it flash to $x=0.8$ would need 88 m³. A pressure vessel rupture turns the stored liquid into that much vapor almost instantly, which is why saturated hot water behaves like a bomb (a BLEVE).
+
+</RealWorld>
+
+<Traps>
+
+- Using the saturated-vapor volume for the mass: the initial state is *liquid*, so $m=V_1/v_f$.
+- Writing $W=P\,V_2$ and forgetting to subtract $V_1$ (here 1 m³ is 1 % of $V_2$, so the slip is small but wrong).
+
+</Traps>
+
+<Source>Anthony's Assignment 1, p. 2 (Ass1-230906-2) ✔ matches to 0.04 % · lib test in <code>chapters.test.ts</code></Source>
+
+</Problem>
+
+<Problem id="4-15" title="Polytropic expansion, PVⁿ = constant with n = 1.5" tags="polytropic, boundary work">
+
+<Statement>
+
+A gas expands in a piston–cylinder device with $PV^n=C$ from 350 kPa and 0.03 m³ to 0.2 m³, with $n=1.5$. Find the work.
+
+</Statement>
+
+<Think>
+
+For $PV^n=C$ the work integral is $\int P\,dV=\dfrac{P_2V_2-P_1V_1}{1-n}$ (for $n\ne1$). First find $P_2$ from the constant.
+
+</Think>
+
+<Steps>
+<Step title="1. Final pressure">
+
+$P_2=P_1\left(\dfrac{V_1}{V_2}\right)^n=350\left(\dfrac{0.03}{0.2}\right)^{1.5}=\mathbf{20.33\ kPa}$ (your page: 20.33).
+
+</Step>
+<Step title="2. Work">
+
+$W=\dfrac{P_2V_2-P_1V_1}{1-n}=\dfrac{20.33(0.2)-350(0.03)}{1-1.5}=\dfrac{4.066-10.5}{-0.5}=\mathbf{12.87\ kJ}$ (your page: 12.9 kJ ✔).
+
+</Step>
+</Steps>
+
+<Answer>
+
+**$P_2=20.3$ kPa, $W=12.9$ kJ** (positive: the gas does work).
+
+</Answer>
+
+<RealWorld title="Real compressors and engines are polytropic">
+
+The exponent $n$ of a real compression or expansion lies between 1 (isothermal, perfect cooling) and $k$ (adiabatic): about 1.2–1.35 for a cooled compressor or an engine cylinder. The formula above is the area under that curve.
+
+</RealWorld>
+
+<Traps>
+
+- $n=1$ is the isothermal case with its own formula, $W=P_1V_1\ln(V_2/V_1)$; the formula above divides by zero there.
+- Mixing up the sign: expansion gives positive work out.
+
+</Traps>
+
+<Source>Anthony's Assignment 1, p. 3 (Ass1-230906-3) ✔</Source>
+
+</Problem>
+
+<Problem id="6-22" title="Overall efficiency of a coal-fired plant" tags="thermal efficiency, heating value">
+
+<Statement>
+
+A steam power plant of 150 MW output burns 60 tons/h of coal of heating value 30 000 kJ/kg. Find the overall efficiency. (Printed answer: 30.0 %.)
+
+</Statement>
+
+<Think>
+
+An efficiency is useful output over the energy paid for. The input is the **fuel energy rate** $\dot Q=\dot m_{fuel}\,HV$; the unit conversion (tons/h to kg/s) is the only work.
+
+</Think>
+
+<Steps>
+<Step title="1. Fuel energy rate">
+
+$\dot m=60\ \text{t/h}=60\,000\ \text{kg/h}=16.67$ kg/s; $\dot Q=16.67(30\,000)=500\,000$ kW $=\mathbf{500\ MW}$. Your page: $60\times30\,000\times10^3/3600=500$ MW ✔.
+
+</Step>
+<Step title="2. Efficiency">
+
+$\eta=\dfrac{\dot W}{\dot Q}=\dfrac{150}{500}=\mathbf{0.30}$.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**$\eta=30\ \%$** ✔ (printed 30.0 %).
+
+</Answer>
+
+<RealWorld title="Typical numbers">
+
+Subcritical coal plants run at about 33–38 %, supercritical units at 40–45 %. At 30 %, 350 MW of the 500 MW leaves as heat (the cooling tower and the stack): this is the number the vapor-power chapter works to improve.
+
+</RealWorld>
+
+<Traps>
+
+- 1 ton = 1000 kg (metric); do not forget the 3600 s per hour.
+
+</Traps>
+
+<Source>Anthony's Assignment 1, p. 4 (Ass1-230906-4) ✔</Source>
+
+</Problem>
+
+<Problem id="7-26" title="Paddle-wheel work on an ideal gas held at constant temperature" tags="entropy, ideal gas, rigid tank">
+
+<Statement>
+
+A rigid tank contains an ideal gas at 40 °C that is stirred by a paddle wheel doing 200 kJ of work on it. The gas temperature stays constant because heat flows to the surroundings at 30 °C. Find the entropy change of the ideal gas. (This statement is in the 9th-edition textbook as 7-26; your page header gives only "ideal gas, W = 200 kJ, surroundings 30 °C".)
+
+</Statement>
+
+<Think>
+
+An entropy-change question about an *ideal gas* is answered by the property formula, not by $Q/T$: $s_2-s_1=c_v\ln\dfrac{T_2}{T_1}+R\ln\dfrac{v_2}{v_1}$. Here the tank is rigid ($v$ constant) and the temperature is constant, so both terms vanish. The 200 kJ is a distraction for *this* question, and exactly what the *surroundings* and the generation need.
+
+</Think>
+
+<Steps>
+<Step title="1. Gas">
+
+$T_2=T_1$ and $v_2=v_1$: $\Delta S_{gas}=m\left[c_v\ln1+R\ln1\right]=\mathbf{0}$. Your page ✔ ("$\Delta S=0$: no change in entropy").
+
+</Step>
+<Step title="2. For completeness: surroundings and generation">
+
+First law for the gas: $\Delta U=0=W_{in}-Q_{out}$, so $Q_{out}=200$ kJ. The surroundings at $30\ °C=303.15$ K receive it: $\Delta S_{surr}=\dfrac{200}{303.15}=+0.660$ kJ/K, so $S_{gen}=0+0.660=\mathbf{0.660\ kJ/K}>0$: stirring is irreversible (work turned into heat).
+
+</Step>
+</Steps>
+
+<Answer>
+
+**$\Delta S_{gas}=0$** ✔ (and $S_{gen}=0.660$ kJ/K for the whole process).
+
+</Answer>
+
+<RealWorld title="Every brake, stirrer and resistor does this">
+
+Mechanical or electrical work turned into heat at constant temperature produces entropy $Q/T_{surr}$ in the surroundings and none in the gas: that is why a heater has $\eta_{II}\ll1$ even though its first-law efficiency is 100 %.
+
+</RealWorld>
+
+<Traps>
+
+- Writing $\Delta S=Q/T$ for the gas: that is the *reversible* formula and the process is not reversible.
+- Your header reads the gas temperature as 400 °C; the textbook says 40 °C. It cancels in the answer.
+
+</Traps>
+
+<Source>Anthony's Assignment 1, p. 5 (Ass1-230906-5) ✔ · statement checked in the 9th-edition text (Prob. 7-26)</Source>
+
+</Problem>
+
+## Part 2: Gas turbines and jet engines (problems 9-95 to 9-137)
+
+<Problem id="9-95" title="Simple Brayton cycle with component efficiencies and a given turbine exit temperature" tags="Brayton, constant cp, ηC, ηT, back-work ratio">
+
+<Statement>
+
+A gas-turbine plant runs a simple Brayton cycle between 100 and 1600 kPa. Air enters the compressor at 40 °C at 850 m³/min and leaves the turbine at 650 °C. $\eta_C=0.85$, $\eta_T=0.88$. Use $c_v=0.821$, $c_p=1.108$ kJ/kg·K, $k=1.35$. Find (a) the net power, (b) the back-work ratio, (c) the thermal efficiency. (Printed: 6488 kW, 0.511, 37.8 %.)
+
+</Statement>
+
+<Think>
+
+The twist is that the **turbine inlet temperature is not given**; the turbine *exit* temperature is. So the turbine efficiency is used backwards: $\eta_T=\dfrac{T_3-T_4}{T_3-T_{4s}}$ with $T_{4s}=T_3/r_p^{(k-1)/k}$ is one equation in $T_3$. Everything else is the standard chain: compressor, turbine, mass flow from the ideal-gas law.
+
+</Think>
+
+<Plan>
+
+$T_{2s}$ from the pressure ratio $\to$ $T_2$ with $\eta_C$ $\to$ solve $T_3$ from $\eta_T$ and the known $T_4$ $\to$ $\dot m=PV̇/RT_1$ $\to$ $\dot W_{net}$, $r_{bw}$, $\eta$.
+
+</Plan>
+
+<Steps>
+<Step title="1. Compressor">
+
+$T_{2s}=T_1r_p^{(k-1)/k}=313.15(16)^{0.35/1.35}=642.6$ K (your page: 642.28 with 313 K). $T_2=T_1+\dfrac{T_{2s}-T_1}{\eta_C}=313.15+\dfrac{642.6-313.15}{0.85}=\mathbf{700.7}$ K (your page: 700).
+
+</Step>
+<Step title="2. Turbine inlet temperature from the given exit">
+
+$T_{4s}=\dfrac{T_3}{16^{0.2593}}=0.4872\,T_3$, $T_4=923.15$ K. $0.88=\dfrac{T_3-923.15}{T_3(1-0.4872)}\Rightarrow T_3=\mathbf{1682}$ K (your page: 1682 K ✔).
+
+</Step>
+<Step title="3. Mass flow">
+
+$\dot m=\dfrac{P_1\dot V}{RT_1}=\dfrac{100(850/60)}{0.287(313.15)}=\mathbf{15.76}$ kg/s (your page: 15.77 with 313 K).
+
+</Step>
+<Step title="4. Net power, back-work ratio, efficiency">
+
+$\dot W_{net}=\dot m\,c_p\left[(T_3-T_4)-(T_2-T_1)\right]=15.76(1.108)\left[(1682-923.2)-(700.7-313.15)\right]=15.76(1.108)(371.3)=\mathbf{6484}$ kW. $r_{bw}=\dfrac{T_2-T_1}{T_3-T_4}=\dfrac{387.6}{758.8}=\mathbf{0.511}$. $q_{in}=c_p(T_3-T_2)=1.108(1681.98-700.72)=1087.2$ kJ/kg, so $\eta=\dfrac{411.4}{1087.2}=\mathbf{0.378}$ and $\dot Q_{in}=15.76(1087.2)=17\,140$ kW.
+
+</Step>
+</Steps>
+
+<GasCycleTs points={[{ T: 313.15, P: 100, label: '1' }, { T: 642.6, P: 1600, label: '2s' }, { T: 1681.98, P: 1600, label: '3' }, { T: 819.7, P: 100, label: '4s' }]} caption="Ideal cycle 1–2s–3–4s–1 for 9-95 (constant c_p). The real compressor ends at 700.7 K and the real turbine at 923.2 K (to the right of the isentropic points: entropy rises); the extra distance is the loss that cuts the net work." />
+
+<Callout kind="warn" title="⚠ Wrong constant in the formula lines: c_v (0.821) used where c_p (1.108) belongs; r_bw 0.505 should be 0.511">
+
+On the page the net-power and back-work lines are written with $0.821$ and the signs $(T_3-T_4+T_2-T_1)$. With $c_v=0.821$ and that sign the line would give 14 800 kW, not 6488: the number you wrote at the end is the book's printed answer, and your later $\dot Q=17\,147$ kW only works with $c_p=1.108$. The turbine and compressor works are **enthalpy** changes at constant pressure, so they use $c_p$, and the net work is $(T_3-T_4)-(T_2-T_1)$ (turbine minus compressor). Your back-work ratio $0.505$ is also 1.2 % off; with the unrounded temperatures it is $387.6/758.8=0.511$ (you wrote "0.505 ≃ 0.511", i.e. you matched it to the printed value).
+
+</Callout>
+
+<Answer>
+
+(a) **$\dot W_{net}=6484$ kW** (printed 6488; the 0.06 % difference is $T_1=313$ versus 313.15 K in $\dot m$), (b) **$r_{bw}=0.511$**, (c) **$\eta=37.8\ \%$**. $T_3=1682$ K.
+
+</Answer>
+
+<RealWorld title="Why the back-work ratio matters">
+
+Half of the turbine's work (0.511) just drives the compressor. That is the signature of a gas turbine: a steam plant's pump takes under 1 % of the turbine work. Any loss in either machine eats into a small difference of two big numbers, which is why efficiencies of 85–90 % cut the net output so much.
+
+</RealWorld>
+
+<Traps>
+
+- Using $\eta_T$ with the *wrong* temperature given: here $T_4$ (exit) is known and $T_3$ is the unknown.
+- $c_p$ for the works, $c_v$ only for internal energy: do not swap them.
+- $T$ in kelvin in the mass-flow formula ($313$ K, not $40$).
+
+</Traps>
+
+<Source>Anthony's Assignment 1 jet-engine part, pp. 1–4 (Ass_chap_9-230924-01…04; the formula lines and the 0.505 are on p. 3) · lib <code>brayton</code> test in <code>lib.test.ts</code> (6484 kW, 0.511, 0.378)</Source>
+
+</Problem>
+
+<Problem id="9-97" title="Modified Brayton cycle: the high-pressure turbine only drives the compressor" tags="Brayton, two turbines, work balance, constant cp">
+
+<Statement>
+
+A gas-turbine plant uses a modified Brayton cycle with overall pressure ratio 8. Air enters the compressor at 0 °C and 100 kPa; the maximum temperature is 1500 K. Compressor and turbines are isentropic, and the **high-pressure turbine develops just enough power to run the compressor**. Take $c_p=1.005$, $k=1.4$. (a) Sketch the T–s diagram. (b) Find the temperature and pressure at the exit of the high-pressure turbine. (c) For a net output of 200 MW, find the air mass flow. (Printed: 1279 K, 457 kPa, 442 kg/s.) *(The statement is confirmed in the 9th-edition text; the figure shows a compressor, combustor, HP turbine and LP turbine.)*
+
+</Statement>
+
+<Think>
+
+This is the **gas-generator + power-turbine** arrangement: turbine 1 drives only the compressor ($w_{HT}=w_C$); turbine 2 delivers all the useful power. The one equation that unlocks it is $c_p(T_3-T_4)=c_p(T_2-T_1)$: the temperature drop across the HP turbine equals the temperature rise in the compressor.
+
+</Think>
+
+<Plan>
+
+$T_2$ (isentropic compression) $\to$ $T_4=T_3-(T_2-T_1)$ $\to$ $P_4$ from the isentropic relation $\to$ $T_5$ from expansion to 100 kPa $\to$ net power $=\dot m c_p(T_4-T_5)$.
+
+</Plan>
+
+<Steps>
+<Step title="1. Compressor">
+
+$T_2=T_1r_p^{(k-1)/k}=273(8)^{0.2857}=\mathbf{494.5}$ K (your page 494.52), $P_2=P_3=800$ kPa.
+
+</Step>
+<Step title="2. HP turbine exit">
+
+$w_{HT}=w_C$: $T_4=T_3-(T_2-T_1)=1500-(494.5-273)=\mathbf{1278.5}$ K (your page 1278.48 ✔). $P_4=P_3\left(\dfrac{T_4}{T_3}\right)^{k/(k-1)}=800\left(\dfrac{1278.5}{1500}\right)^{3.5}=\mathbf{457.3}$ kPa (your page 457.29 ✔).
+
+</Step>
+<Step title="3. LP turbine to ambient pressure">
+
+$T_5=T_4\left(\dfrac{P_5}{P_4}\right)^{(k-1)/k}=1278.5\left(\dfrac{100}{457.3}\right)^{0.2857}=\mathbf{828.1}$ K (your page 828.06).
+
+</Step>
+<Step title="4. Mass flow for 200 MW">
+
+The net power equals the LP turbine's output (the HP turbine only pays the compressor): $\dot W=\dot m\,c_p(T_4-T_5)$, so $\dot m=\dfrac{200\,000}{1.005(1278.5-828.1)}=\mathbf{441.8}$ kg/s (your page 441.8 ✔).
+
+</Step>
+</Steps>
+
+<GasCycleTs points={[{ T: 273, P: 100, label: '1' }, { T: 494.5, P: 800, label: '2' }, { T: 1500, P: 800, label: '3' }, { T: 1278.5, P: 457.3, label: '4' }, { T: 828.1, P: 100, label: '5' }]} caption="9-97: compressor 1→2, combustor 2→3, HP turbine 3→4 (its drop 221.5 K equals the compressor rise), LP turbine 4→5 delivering the net work." />
+
+<Answer>
+
+(b) **$T_4=1278.5$ K, $P_4=457.3$ kPa**; (c) **$\dot m=441.8$ kg/s** ✔ (printed 1279 K, 457 kPa, 442 kg/s). $T_5=828.1$ K.
+
+</Answer>
+
+<RealWorld title="Two shafts, one machine">
+
+Aeroderivative power packages (a jet-engine core exhausting into a free power turbine) work exactly like this: the HP turbine and the compressor form the gas generator on one shaft, and the power turbine on a second shaft can run at the generator's speed. The flow of 442 kg/s for 200 MW is the order of a large industrial turbine.
+
+</RealWorld>
+
+<Traps>
+
+- Taking the net work as $w_T-w_C$ with the *whole* expansion: the correct net work is the LP turbine's alone, or equivalently total turbine minus compressor, which gives the same number.
+- $T_1=0$ °C is **273 K**, not 0.
+
+</Traps>
+
+<Source>Anthony's Assignment 1 jet-engine part, pp. 4–6 (Ass_chap_9-230924-04…06) ✔ · statement confirmed from the 9th-edition text</Source>
+
+</Problem>
+
+<Problem id="9-109" title="GE 7FA: back-solve the component efficiencies, then add a 65 % regenerator" tags="Brayton, air table, efficiency, regenerator">
+
+<Statement>
+
+The GE 7FA gas turbine is reported to have 35.9 % efficiency in simple-cycle mode and 159 MW net, with pressure ratio 14.7, turbine inlet 1288 °C and 1 536 000 kg/h through the turbine, ambient 30 °C and 100 kPa. Find the isentropic efficiencies of the turbine and the compressor, and the thermal efficiency if a regenerator of effectiveness 65 % is added.
+
+</Statement>
+
+<Think>
+
+Two unknown efficiencies, but the numbers given are **net work and cycle efficiency**. Your method is a clean linear trick: $q_{in}=w_{net}/\eta$ gives the actual compressor exit $h_{2a}=h_3-q_{in}$ directly; then $q_{out}=q_{in}-w_{net}$ gives the actual turbine exit $h_{4a}=h_1+q_{out}$. Only then are the efficiencies computed, no simultaneous equations. The air table (variable $c_p$) is needed because 1561 K is far from room temperature.
+
+</Think>
+
+<Plan>
+
+Ideal states from the table ($P_r$ method) $\to$ $w_{net}$ and $q_{in}$ $\to$ $h_{2a}$ and $h_{4a}$ $\to$ $\eta_C,\eta_T$ $\to$ regenerator.
+
+</Plan>
+
+<Steps>
+<Step title="1. Ideal states from the air table">
+
+<T>A-17 at 303 K: h₁ = 303.21 kJ/kg, P_r1 = 1.4356 (interpolated)</T>. $P_{r2}=14.7(1.4356)=21.10\to$ <T>h₂s = 652.4 kJ/kg</T>. <T>A-17 at 1561 K: h₃ = 1710 kJ/kg, P_r3 = 719.5</T>; $P_{r4}=\dfrac{719.5}{14.7}=48.94\to$ <T>h₄s = 825.2 kJ/kg</T>.
+
+</Step>
+<Step title="2. Specific work and heat">
+
+$\dot m=\dfrac{1\,536\,000}{3600}=426.7$ kg/s; $w_{net}=\dfrac{159\,000}{426.7}=\mathbf{372.66}$ kJ/kg. $q_{in}=\dfrac{w_{net}}{\eta}=\dfrac{372.66}{0.359}=\mathbf{1038}$ kJ/kg.
+
+</Step>
+<Step title="3. Actual compressor and turbine exits">
+
+$q_{in}=h_3-h_{2a}\Rightarrow h_{2a}=1710-1038=672.0$ kJ/kg. $q_{out}=q_{in}-w_{net}=665.34$ kJ/kg and $q_{out}=h_{4a}-h_1\Rightarrow h_{4a}=665.34+303.21=968.55$ kJ/kg.
+
+</Step>
+<Step title="4. Efficiencies">
+
+$\eta_T=\dfrac{h_3-h_{4a}}{h_3-h_{4s}}=\dfrac{1710-968.55}{1710-825.2}=\mathbf{0.838}$. $\eta_C=\dfrac{h_{2s}-h_1}{h_{2a}-h_1}=\dfrac{652.4-303.2}{672.0-303.2}=\mathbf{0.947}$ (your page prints 0.948: its numerator uses a slightly larger $h_{2s}$ than the 652.4 above).
+
+</Step>
+<Step title="5. Add a regenerator, ε = 0.65">
+
+$q_{regen}=\varepsilon(h_{4a}-h_{2a})=0.65(968.55-672.0)=192.8$ kJ/kg, so $q_{in,new}=1038-192.8=845.2$ and $\eta=\dfrac{372.66}{845.2}=\mathbf{0.441}$.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**$\eta_T=83.8\ \%$, $\eta_C=94.8\ \%$ (94.7–94.9 by table reading), regenerated $\eta=44.1\ \%$.** Recomputed with the lib's smooth air table and $T_1=303.15$ K: $\eta_C=95.2\ \%$, $\eta_T=83.7\ \%$, regenerated 44.1 %.
+
+</Answer>
+
+<RealWorld title="GE's 7FA, real and idealized">
+
+The 7FA is a frame-7 heavy-duty industrial turbine (about 60 Hz, 3600 rpm) whose published simple-cycle rating is about 36 % at roughly 160–200 MW, with a turbine inlet around 1300 °C (as the problem states). A combined-cycle plant that sends the 600 °C exhaust through a steam bottoming cycle reaches typically 55–60 %, which is why nobody adds a regenerator to a 7FA: the exhaust is more valuable making steam.
+
+</RealWorld>
+
+<Traps>
+
+- The "95 %" compressor efficiency is high because the two assumed losses (pressure drops, cooling air) are absorbed by the turbine efficiency (84 %); do not compare 84 % with a standalone 90 % turbine.
+- $q_{regen}=\varepsilon(h_{4a}-h_{2a})$: the *actual* exit enthalpies, not the isentropic ones.
+- Use air-table enthalpies $h$ (not $c_p\Delta T$) at 1561 K.
+
+</Traps>
+
+<Source>Anthony's Assignment 1 jet-engine part, pp. 7–9 (Ass_chap_9-230924-07…09) ✔ · lib <code>braytonVariable</code> check in <code>chapters.test.ts</code> · also in <Ch slug="gas-cycles" /></Source>
+
+</Problem>
+
+<Problem id="9-126" title="Two-stage compression with intercooling and two-stage expansion with reheat, with and without a regenerator" tags="Brayton, intercooling, reheat, regeneration, air table">
+
+<Statement>
+
+A gas-turbine cycle has two compression stages and two expansion stages; the pressure ratio per stage is 3. Air enters each compressor stage at 300 K and each turbine stage at 1200 K. With $\eta_C=0.86$ per compressor stage and $\eta_T=0.90$ per turbine stage, find the back-work ratio and the thermal efficiency (a) without a regenerator and (b) with a regenerator of effectiveness 75 %. Use variable specific heats. (This is 9-126; its ideal version is 9-125.)
+
+</Statement>
+
+<Think>
+
+Because the stages are identical, the work is just twice one stage: $w_C=2(h_{2a}-h_1)$ and $w_T=2(h_5-h_{6a})$. Heat is added **twice** (before turbine 1 and again at the reheater): $q_{in}=(h_5-h_4)+(h_7-h_{6a})$. The regenerator takes heat from the last turbine exit ($h_{6a}$ equals the final exhaust) and gives it to the air leaving the second compressor ($h_4=h_{2a}$).
+
+</Think>
+
+<Steps>
+<Step title="1. Compressor stage">
+
+<T>A-17 at 300 K: h₁ = 300.19, P_r1 = 1.386</T>. $P_{r2}=3(1.386)=4.158\to T_{2s}=410.1$ K, <T>h₂s = 411.26</T> (your page 411.26). $h_{2a}=h_1+\dfrac{h_{2s}-h_1}{0.86}=300.19+\dfrac{111.07}{0.86}=\mathbf{429.34}$ kJ/kg. $w_C=2(429.34-300.19)=\mathbf{258.3}$ kJ/kg.
+
+</Step>
+<Step title="2. Turbine stage">
+
+<T>A-17 at 1200 K: h₅ = 1277.79, P_r5 = 238.0</T>. $P_{r6}=\dfrac{238.0}{3}=79.33\to T_{6s}=911.95$ K, <T>h₆s = 946.35</T>. $h_{6a}=h_5-0.90(h_5-h_{6s})=1277.79-0.90(331.44)=\mathbf{979.49}$ kJ/kg. $w_T=2(1277.79-979.49)=\mathbf{596.6}$ kJ/kg.
+
+</Step>
+<Step title="3. (a) No regenerator">
+
+$r_{bw}=\dfrac{258.3}{596.6}=\mathbf{0.433}$ (your page 0.432). $q_{in}=(1277.79-429.34)+(1277.79-979.49)=\mathbf{1146.75}$; $\eta=\dfrac{596.6-258.3}{1146.75}=\mathbf{0.295}$.
+
+</Step>
+<Step title="4. (b) With ε = 0.75">
+
+$q_{regen}=0.75(h_{6a}-h_4)=0.75(979.49-429.34)=412.6$; $q_{in,new}=1146.75-412.6=734.1$; $\eta=\dfrac{338.3}{734.1}=\mathbf{0.461}$ (46.0 % with unrounded table values; the answer on your page is 46.1 %).
+
+</Step>
+</Steps>
+
+<GasCycleTs points={[{ T: 300, P: 100, label: '1' }, { T: 428, P: 300, label: '2' }, { T: 300, P: 300, label: '3' }, { T: 428, P: 900, label: '4' }, { T: 1200, P: 900, label: '5' }, { T: 941, P: 300, label: '6' }, { T: 1200, P: 300, label: '7' }, { T: 941, P: 100, label: '8' }]} caption="9-126 (real stages, constant-c_p sketch): compression 1→2, intercooling 2→3 back to 300 K, compression 3→4, heating 4→5, expansion 5→6, reheat 6→7 back to 1200 K, expansion 7→8, exhaust 8→1. The exhaust (941 K) is far hotter than the compressor exit (428 K), so a regenerator can supply most of the 4→5 heating." />
+
+<Answer>
+
+(a) **$r_{bw}=0.433$, $\eta=29.5\ \%$**; (b) **$\eta=46.1\ \%$** with the 75 % regenerator ✔. For the ideal version (9-125) the same method gives $r_{bw}=0.335$, $\eta=36.8\ \%$, and 55 % with the regenerator.
+
+</Answer>
+
+<RealWorld title="Intercooling and reheat in practice">
+
+Reheat ("sequential combustion") is used in the GT24/GT26 family: two combustors with a turbine between them. Intercooling appears in the aeroderivative GE LMS100. Both add **work** per kilogram of air (here +80 % compared with the simple cycle), but lower the *un-regenerated* efficiency, so they are used where fuel is cheap and size matters, or together with a regenerator or a steam bottoming cycle.
+
+</RealWorld>
+
+<Traps>
+
+- Intercooling returns the air to the **first** inlet temperature (300 K), reheat to the turbine inlet temperature (1200 K): these are the two statements that make the stages identical.
+- Two heat-addition terms in $q_{in}$ (heater and reheater).
+- Regenerator heat uses $h_{6a}$ and $h_4$: the *second* compressor's exit (it has already been intercooled and re-compressed), not $h_{2a}$.
+
+</Traps>
+
+<Source>Anthony's Assignment 1 jet-engine part, pp. 10–12 (Ass_chap_9-230924-10…12) ✔ matches 0.433 / 29.5 % / 46.1 % · numbers re-run with the lib's air table</Source>
+
+</Problem>
+
+<Problem id="9-136" title="Turbojet at 9150 m: velocity, propulsive power and fuel flow (ideal components)" tags="turbojet, ram, thrust, fuel flow">
+
+<Statement>
+
+A turbojet flies at 280 m/s at 9150 m where the ambient state is 32 kPa and −32 °C. $r_c=12$, turbine inlet 1100 K, 50 kg/s of air, fuel heating value 42 700 kJ/kg. Assuming ideal components and constant $c_p$ at room temperature ($c_p=1.005$, $k=1.4$), find (a) the exhaust velocity, (b) the propulsive power, (c) the fuel flow.
+
+</Statement>
+
+<Think>
+
+The complete jet-engine chain with flight speed. New compared with a test stand: the **ram compression** in the inlet (stagnation values), then $w_T=w_C$, and a nozzle that expands to ambient. Chain of states: 1 free stream → 2 after the diffuser → 3 compressor exit → 4 turbine inlet → 5 turbine exit → 6 nozzle exit.
+
+</Think>
+
+<Steps>
+<Step title="1. Inlet (ram)">
+
+$T_2=T_1+\dfrac{V_1^2}{2c_p}=241.15+\dfrac{280^2}{2(1005)}=\mathbf{280.2}$ K (your page: 280). $P_2=P_1\left(\dfrac{T_2}{T_1}\right)^{k/(k-1)}=32\left(\dfrac{280.2}{241.15}\right)^{3.5}=\mathbf{54.1}$ kPa (your page 54.1 ✔).
+
+</Step>
+<Step title="2. Compressor">
+
+$P_3=12(54.1)=649.2$ kPa (your page ✔), $T_3=T_2(12)^{0.2857}=\mathbf{569.8}$ K (your page 569.5).
+
+</Step>
+<Step title="3. Turbine and nozzle">
+
+$c_p(T_3-T_2)=c_p(T_4-T_5)\Rightarrow T_5=T_4-T_3+T_2=1100-569.8+280.2=\mathbf{810.4}$ K (your page 810.5). $T_6=T_4\left(\dfrac{P_6}{P_3}\right)^{(k-1)/k}=1100\left(\dfrac{32}{649.2}\right)^{0.2857}=\mathbf{465.5}$ K. Energy balance on the nozzle: $V_6=\sqrt{2000\,c_p(T_5-T_6)}=\sqrt{2000(1.005)(810.4-465.5)}=\mathbf{832.5}$ m/s (your page 832.7).
+
+</Step>
+<Step title="4. Propulsive power and fuel">
+
+$\dot W_P=\dot m(V_6-V_1)V_1=50(832.5-280)(280)\times10^{-3}=\mathbf{7735}$ kW (your page 7738). $\dot Q_{in}=\dot mc_p(T_4-T_3)=50(1.005)(1100-569.8)=26\,640$ kW and $\dot m_f=\dfrac{26\,640}{42\,700}=\mathbf{0.624}$ kg/s (your page: $\dot Q=26\,657$, $\dot m_f=0.6243$ ✔).
+
+</Step>
+</Steps>
+
+<Answer>
+
+(a) **$V_6=832.5$ m/s**, (b) **$\dot W_P=7735$ kW**, (c) **$\dot m_f=0.624$ kg/s** ✔ (your page 832.7 / 7738 / 0.6243; the 0.03 % differences are rounding of $T_1=241$ vs 241.15 K).
+
+</Answer>
+
+<RealWorld title="Ram effect at cruise">
+
+At 280 m/s and 32 kPa the ram ratio is only 1.69, yet it already provides the compressor with an inlet 39 K warmer and 22 kPa higher than ambient. At Mach 2+ the ram does most of the compression, which is why a ramjet has no compressor at all.
+
+</RealWorld>
+
+<Traps>
+
+- Use the **stagnation** $T_2$ as the compressor inlet, not the static $T_1$.
+- Thrust is $\dot m(V_6-V_1)$: the captured air already carries momentum $\dot mV_1$.
+- Fuel flow comes from the heat added in the combustor, $\dot m c_p(T_4-T_3)$, divided by the heating value.
+
+</Traps>
+
+<Source>Anthony's Assignment 1 jet-engine part, pp. 13–14 (Ass_chap_9-230924-13…14) ✔ · the book's text prints no answers for this problem · lib <code>turbojet</code> test in <code>lib.test.ts</code> · also in <Ch slug="gas-cycles" /></Source>
+
+</Problem>
+
+<Problem id="9-137" title="The same turbojet with η_C = 0.80 and η_T = 0.85" tags="turbojet, isentropic efficiencies, nozzle, fuel flow">
+
+<Statement>
+
+Repeat 9-136 with a compressor efficiency of 80 % and a turbine efficiency of 85 %.
+
+</Statement>
+
+<Think>
+
+Same chain; the efficiencies change **three** things: the real compressor exit $T_3$ is hotter, so the turbine (which must supply $w_C$) drops by more; the turbine exit pressure $P_5$ is lower because the turbine is irreversible; and less pressure is left for the nozzle.
+
+</Think>
+
+<Steps>
+<Step title="1. Compressor">
+
+$T_{3s}=569.8$ K (from 9-136); $T_3=T_2+\dfrac{T_{3s}-T_2}{\eta_C}=280.2+\dfrac{569.8-280.2}{0.80}=\mathbf{642.2}$ K (your page: $280+289.5/0.80=641.9$).
+
+</Step>
+<Step title="2. Turbine">
+
+$w_T=w_C$: $T_5=T_4-T_3+T_2=1100-642.2+280.2=\mathbf{738.0}$ K (your page 738.1). Isentropic exit: $T_{5s}=T_4-\dfrac{T_4-T_5}{\eta_T}=1100-\dfrac{362.0}{0.85}=674.1$ K, so $P_5=P_3\left(\dfrac{T_{5s}}{T_4}\right)^{k/(k-1)}=649.0\left(\dfrac{674.1}{1100}\right)^{3.5}=\mathbf{116.9}$ kPa (your page 117).
+
+</Step>
+<Step title="3. Nozzle, power and fuel">
+
+$T_6=T_5\left(\dfrac{P_6}{P_5}\right)^{(k-1)/k}=738.0\left(\dfrac{32}{116.9}\right)^{0.2857}=509.7$ K (your page 509.6). $V_6=\sqrt{2000(1.005)(738.0-509.7)}=\mathbf{677.4}$ m/s (your page 677.8). $\dot W_P=50(677.4-280)(280)\times10^{-3}=\mathbf{5563}$ kW (your page 5569). $\dot m_f=\dfrac{50(1.005)(1100-642.2)}{42\,700}=\mathbf{0.539}$ kg/s (your page 0.5391).
+
+</Step>
+</Steps>
+
+<Callout kind="note" title="Check your page: the T₃ line">
+
+The compressor line on your page works out to $280+\dfrac{569.5-280}{0.8}=641.9$ K, though the last digits can be read as "651.9" in the handwriting. The next lines (738.1, 117, 509.6, 677.8, 5569) all need $T_3\approx642$, so 641.9 K is what you used; the exact value is 642.2 K.
+
+</Callout>
+
+<Answer>
+
+**$V_6=677.4$ m/s, $\dot W_P=5563$ kW, $\dot m_f=0.539$ kg/s.** The losses cost 28 % of the propulsive power for only 14 % less fuel: the overall efficiency drops from 29.0 % to 24.2 %.
+
+</Answer>
+
+<RealWorld title="Efficiency of the real engine">
+
+Component efficiencies of 80–85 % are typical of the 1950s–60s; modern compressors reach 88–92 %, which is one reason modern engines reach overall efficiencies of 35–40 % instead of the 24 % found here (the others are a higher pressure ratio and turbine temperature).
+
+</RealWorld>
+
+<Traps>
+
+- $T_{5s}$ is found from $T_5$ and $\eta_T$ (not from the pressure ratio), and only then $P_5$.
+- Keep $w_T=w_C$ with the **actual** compressor work.
+
+</Traps>
+
+<Source>Anthony's Assignment 1 jet-engine part, pp. 14–15 (Ass_chap_9-230924-14…15) · lib <code>turbojet</code> with η_C and η_T in <code>lib.test.ts</code> (5563 kW)</Source>
+
+</Problem>
+
+<Examined>
+
+**How this assignment is examined.** The 2021 final (<Ex id="final-2021" />) opens with a 25-mark turbojet (ram, $\eta_C$, $w_T=w_C$ and a nozzle); the midterm review (<Ex id="midterm-review" />) walks the same chain. The Thermo 1 review problems here are the *language* (efficiency definitions, boundary work, entropy of an ideal gas) that every later chapter uses. See <Ch slug="errata" />, errata items on 4-9 and 9-95.
+
+</Examined>

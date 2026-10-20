@@ -1,0 +1,912 @@
+<p className="eyebrow">Assignment 5 · thermodynamic property relations and real gases (ch 12) · from your own notebooks</p>
+
+# Assignment 5: property relations
+
+<div className="lede">
+
+The ten assigned problems (12-11, 12-15, 12-17, 12-20, 12-26, 12-42, 12-58C, 12-62, 12-72, 12-75) and six more from your re-solves (12-28, 12-34, 12-35, 12-40, 12-73, 12-97), from the notebooks *Ass chpwter 12* (22 Oct), *Chapter 12 v2* (17 Dec) and *Review chapter 12* (30 Nov); <Ch slug="property-relations">chapter 12 notes</Ch>. Your steps and numbers come first, then my recomputation (steam and R-134a tables from the lib; the departure charts by the Lee–Kesler functions, so chart readings can differ by 2–5 %). ⚠ marks legible digits that disagree with the recomputation; "Check your page" marks ambiguous handwriting or a method point.
+
+</div>
+
+<Callout kind="note" title="The four tools of the chapter">
+
+(1) **Partial derivatives and Maxwell**: $dz=M\,dx+N\,dy$ is exact if $(\partial M/\partial y)_x=(\partial N/\partial x)_y$; the four Gibbs equations ($du=T\,ds-P\,dv$, $dh=T\,ds+v\,dP$, $da=-P\,dv-s\,dT$, $dg=v\,dP-s\,dT$) give the four Maxwell relations. (2) **Clapeyron**: $\left(\dfrac{dP}{dT}\right)_{sat}=\dfrac{h_{fg}}{Tv_{fg}}$ (Clausius–Clapeyron when $v_{fg}\approx v_g=RT/P$: $\ln\dfrac{P_2}{P_1}=\dfrac{h_{fg}}{R}\left(\dfrac1{T_1}-\dfrac1{T_2}\right)$). (3) **General relations**: $du=c_vdT+\left[T\left(\dfrac{\partial P}{\partial T}\right)_v-P\right]dv$, $dh=c_pdT+\left[v-T\left(\dfrac{\partial v}{\partial T}\right)_P\right]dP$, $ds=\dfrac{c_p}{T}dT-\left(\dfrac{\partial v}{\partial T}\right)_PdP$. (4) **Departure charts**: $\bar h_2-\bar h_1=(\bar h_2-\bar h_1)_{ideal}-R_uT_{cr}(Z_{h2}-Z_{h1})$ and $\bar s_2-\bar s_1=(\bar s_2-\bar s_1)_{ideal}-R_u(Z_{s2}-Z_{s1})$, with $R_u$ for molar quantities and $R$ for per-kg.
+
+</Callout>
+
+## Part 1: the ten assigned problems
+
+<Problem id="12-11" title="Change of the specific volume of an ideal gas: total differential versus exact" tags="partial derivatives, total differential, ideal gas">
+
+<Statement>
+
+An ideal gas (air) at 400 K and 100 kPa changes to 404 K and 96 kPa. Estimate the change in specific volume using (a) the total differential (Eq. 12-3) and (b) the ideal-gas relation at each state.
+
+</Statement>
+
+<Think>
+
+$v=v(T,P)$ so $dv=\left(\dfrac{\partial v}{\partial T}\right)_PdT+\left(\dfrac{\partial v}{\partial P}\right)_TdP=\dfrac{R}{P}dT-\dfrac{RT}{P^2}dP$. It is a *linear* estimate, so the result depends on **where** you evaluate the coefficients: initial values, or averages. Part (b) is the exact answer to compare with.
+
+</Think>
+
+<Steps>
+<Step title="1. (a) The total differential, with the average state">
+
+$\Delta v\approx\dfrac{R}{\bar P}\Delta T-\dfrac{R\bar T}{\bar P^2}\Delta P=\dfrac{0.287}{98}(4)-\dfrac{0.287(402)}{98^2}(-4)=0.01171+0.04805=\mathbf{0.0598}$ m³/kg. (Evaluated at the initial state instead: $\dfrac{0.287}{100}(4)+\dfrac{0.287(400)}{100^2}(4)=0.0574$.) Your page (Assignment, 22 Oct) uses the average values: $dv=0.0597$–$0.0598$ ✔.
+
+</Step>
+<Step title="2. (b) Exact">
+
+$v_1=\dfrac{RT_1}{P_1}=\dfrac{0.287(400)}{100}=1.1480$, $v_2=\dfrac{0.287(404)}{96}=1.2078$, so $\Delta v=\mathbf{0.0598}$ m³/kg ✔ (your page: $1.1480$, $1.2078$, $0.0598$).
+
+</Step>
+</Steps>
+
+<Callout kind="warn" title="⚠ December re-solve: V₂ = 1.2054 and ΔV = 0.0574 (should be 0.0598)">
+
+In the December copy the volume ratio is rounded before multiplying: "$V_2=4.2\,R=1.2054$", but $404/96=4.2083$, not 4.2, so $V_2=0.287(4.2083)=1.2078$ and $\Delta V=1.2078-1.148=0.0598$ m³/kg. A rounding of 0.2 % in $V_2$ becomes a 4 % error in a *difference* of two close numbers: keep four digits in $T/P$ before subtracting. (By coincidence 0.0574 is also what the total differential gives when evaluated at the initial state.)
+
+</Callout>
+
+<Answer>
+
+(a) **$\Delta v\approx0.0598$ m³/kg** (0.0574 with initial-state coefficients), (b) **$0.0598$ m³/kg** ✔ (Assignment page). The December ΔV = 0.0574 for part (b) is wrong.
+
+</Answer>
+
+<RealWorld title="Linearization in measurement">
+
+The total differential is the error-propagation formula: with $dv/v=dT/T-dP/P$, a sensor reading 1 % high in $T$ and 4 % low in $P$ gives a gas density off by 5 %. It is the same linearization behind every Maxwell-relation derivation.
+
+</RealWorld>
+
+<Traps>
+
+- The coefficients $R/P$ and $RT/P^2$ depend on the state: evaluate at the **average** (or tiny steps) for a good estimate.
+- $\Delta P$ is negative here: the two terms *add*.
+
+</Traps>
+
+<Source>Anthony's Assignment 5, p. 1 (Ass_chpwter_12-231022-1) and Chapter 12 v2 p. 1 (Chapter_12_v2-231217-01) · hand check in <code>hw.test.ts</code></Source>
+
+</Problem>
+
+<Problem id="12-15" title="Verify the last Maxwell relation for R-134a at 50 °C and 0.7 MPa" tags="Maxwell relation, finite differences, tables">
+
+<Statement>
+
+Verify the Maxwell relation $\left(\dfrac{\partial s}{\partial P}\right)_T=-\left(\dfrac{\partial v}{\partial T}\right)_P$ (Eq. 12-19) for refrigerant-134a at 50 °C and 0.7 MPa.
+
+</Statement>
+
+<Think>
+
+Replace each partial derivative by a **central difference** from the superheated table: bracket the point in pressure (for $s$) and in temperature (for $v$) and divide. The closer the rows, the better the agreement; a relation that holds to 1 % with a 200 kPa step is a good check of both the relation and the table.
+
+</Think>
+
+<Steps>
+<Step title="1. (∂s/∂P) at 50 °C (rows 0.6 and 0.8 MPa)">
+
+<T>A-13, 50 °C: s(0.6 MPa) = 1.0122, s(0.8 MPa) = 0.9803 kJ/kg·K</T>. $\left(\dfrac{\partial s}{\partial P}\right)_T\approx\dfrac{0.9803-1.0122}{800-600}=\mathbf{-1.595\times10^{-4}}$ kJ/kg·K·kPa.
+
+</Step>
+<Step title="2. (∂v/∂T) at 0.7 MPa (rows 40 and 60 °C)">
+
+<T>A-13, 0.7 MPa: v(40 °C) = 0.031696, v(60 °C) = 0.034875 m³/kg</T>. $\left(\dfrac{\partial v}{\partial T}\right)_P\approx\dfrac{0.034875-0.031696}{60-40}=\mathbf{1.5895\times10^{-4}}$ m³/kg·K, so $-\left(\dfrac{\partial v}{\partial T}\right)_P=-1.5895\times10^{-4}$.
+
+</Step>
+<Step title="3. Compare">
+
+$-1.595\times10^{-4}$ against $-1.590\times10^{-4}$: they agree to 0.3 %. The relation is verified (the units: kJ/kg·K·kPa = m³/kg·K).
+
+</Step>
+</Steps>
+
+<Callout kind="note" title="Check your page: the first sheet had a wider step and a larger mismatch">
+
+Your first sheet (22 Oct) takes the 500 and 900 kPa rows and the 30 and 70 °C rows and gets $-1.421\times10^{-4}$ against $-1.601\times10^{-4}$ (11 % apart), then moves on. With those wide steps the lib gives $-1.62\times10^{-4}$ and $-1.60\times10^{-4}$ (1 %); the entropy you read at 500 kPa looks about 0.01 too small (the table has 1.0309 at 500 kPa, 50 °C). The December re-solve with the 0.6/0.8 MPa and 40/60 °C rows above gives 0.3 %: a closer bracket is always better.
+
+</Callout>
+
+<Answer>
+
+**$\left(\dfrac{\partial s}{\partial P}\right)_T=-1.595\times10^{-4}$ and $-\left(\dfrac{\partial v}{\partial T}\right)_P=-1.590\times10^{-4}$: verified to 0.3 %** (December re-solve ✔).
+
+</Answer>
+
+<RealWorld title="Why Maxwell relations matter">
+
+Entropy cannot be measured, but $P$, $v$, $T$ can; $(\partial s/\partial P)_T=-(\partial v/\partial T)_P$ turns volume-expansion data into entropy. Every thermodynamic table was built this way.
+
+</RealWorld>
+
+<Traps>
+
+- The two sides come from **different** table lookups (rows in $P$ at fixed $T$; rows in $T$ at fixed $P$).
+- Keep the units straight: kPa in the denominator.
+
+</Traps>
+
+<Source>Anthony's Assignment 5, pp. 1–2 (Ass_chpwter_12-231022-1…2) and Chapter 12 v2 p. 2 (Chapter_12_v2-231217-02) ✔ · lib check in <code>chapters.test.ts</code> · also in <Ch slug="property-relations" /></Source>
+
+</Problem>
+
+<Problem id="12-17" title="Evaluate T, v, u, a and g from the function h = h(s, P)" tags="Gibbs equations, derivations">
+
+<Statement>
+
+Show how to evaluate $T$, $v$, $u$, $a$ and $g$ from the thermodynamic function $h=h(s,P)$.
+
+</Statement>
+
+<Think>
+
+Compare the **total differential** of $h(s,P)$, $dh=\left(\dfrac{\partial h}{\partial s}\right)_Pds+\left(\dfrac{\partial h}{\partial P}\right)_sdP$, with the Gibbs relation $dh=T\,ds+v\,dP$: matching coefficients identifies $T$ and $v$; the rest follow from the definitions.
+
+</Think>
+
+<Steps>
+<Step title="1. T and v">
+
+$T=\left(\dfrac{\partial h}{\partial s}\right)_P$ and $v=\left(\dfrac{\partial h}{\partial P}\right)_s$.
+
+</Step>
+<Step title="2. u, a, g from the definitions">
+
+$u=h-Pv=\mathbf{h-P\left(\dfrac{\partial h}{\partial P}\right)_s}$. $a=u-Ts=\mathbf{h-P\left(\dfrac{\partial h}{\partial P}\right)_s-s\left(\dfrac{\partial h}{\partial s}\right)_P}$. $g=h-Ts=\mathbf{h-s\left(\dfrac{\partial h}{\partial s}\right)_P}$.
+
+</Step>
+</Steps>
+
+<Answer>
+
+$T=(\partial h/\partial s)_P$, $v=(\partial h/\partial P)_s$, $u=h-P(\partial h/\partial P)_s$, $a=h-P(\partial h/\partial P)_s-s(\partial h/\partial s)_P$, $g=h-s(\partial h/\partial s)_P$ ✔ (your page, the December copy adds the colored corrections).
+
+</Answer>
+
+<RealWorld title="The Mollier diagram is this function">
+
+$h(s,P)$ is exactly what a Mollier $h$–$s$ chart plots: the slope of an isobar is $T$, so isobars steepen with temperature; and $v=(\partial h/\partial P)_s$ is the isentropic enthalpy change per unit pressure, which is the turbine and compressor work per kg.
+
+</RealWorld>
+
+<Traps>
+
+- $a$ is the Helmholtz function, $g$ the Gibbs function; the names are not interchangeable.
+- Written in terms of $h(s,P)$ only: do not leave $u$ or $T$ in the answer for $a$.
+
+</Traps>
+
+<Source>Anthony's Assignment 5, p. 2 (Ass_chpwter_12-231022-2) and Chapter 12 v2 p. 3 ✔</Source>
+
+</Problem>
+
+<Problem id="12-20" title="(∂s/∂v) at constant T for an ideal gas" tags="Maxwell relation, ideal gas">
+
+<Statement>
+
+Using the Maxwell relations and the ideal-gas equation of state, find $\left(\dfrac{\partial s}{\partial v}\right)_T$ for an ideal gas. (Printed: $R/v$.)
+
+</Statement>
+
+<Think>
+
+The third Maxwell relation, $\left(\dfrac{\partial s}{\partial v}\right)_T=\left(\dfrac{\partial P}{\partial T}\right)_v$, trades an entropy derivative for a measurable one.
+
+</Think>
+
+<Steps>
+<Step title="1. Maxwell">
+
+$\left(\dfrac{\partial s}{\partial v}\right)_T=\left(\dfrac{\partial P}{\partial T}\right)_v$.
+
+</Step>
+<Step title="2. Ideal-gas equation of state">
+
+$P=\dfrac{RT}{v}\Rightarrow\left(\dfrac{\partial P}{\partial T}\right)_v=\dfrac{R}{v}$, so $\left(\dfrac{\partial s}{\partial v}\right)_T=\mathbf{\dfrac{R}{v}}$.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**$\left(\dfrac{\partial s}{\partial v}\right)_T=\dfrac{R}{v}$** ✔ (printed and your page). Integrating at constant $T$ gives $\Delta s=R\ln(v_2/v_1)$, the isothermal-expansion entropy.
+
+</Answer>
+
+<RealWorld title="Free expansion">
+
+When a gas expands freely into a vacuum at constant temperature, doubling the volume raises the entropy by $R\ln2=0.199$ kJ/kg·K for air: this is the entropy that the whole of the second law is about.
+
+</RealWorld>
+
+<Traps>
+
+- The derivative is at constant $T$ and **constant $v$ appears in the other side**: do not use the $P$-form $(\partial s/\partial P)_T=-R/P$ here.
+
+</Traps>
+
+<Source>Anthony's Assignment 5, p. 3 (Ass_chpwter_12-231022-3) and Chapter 12 v2 p. 4 ✔</Source>
+
+</Problem>
+
+<Problem id="12-26" title="h_fg of water at 300 kPa from the Clapeyron equation" tags="Clapeyron, saturation table, finite difference">
+
+<Statement>
+
+Using the Clapeyron equation, estimate the enthalpy of vaporization of water at 300 kPa and compare with the tabulated value.
+
+</Statement>
+
+<Think>
+
+$h_{fg}=Tv_{fg}\left(\dfrac{dP}{dT}\right)_{sat}$, with the slope of the saturation curve taken from the **saturated-pressure table**: pick the pressures on both sides of 300 kPa (275 and 325 kPa) and divide by their saturation temperatures.
+
+</Think>
+
+<Steps>
+<Step title="1. The slope">
+
+<T>A-5: T_sat(325 kPa) = 136.27 °C, T_sat(275 kPa) = 130.58 °C</T> (your page ✔). $\left(\dfrac{dP}{dT}\right)_{sat}\approx\dfrac{325-275}{136.27-130.58}=8.79$ kPa/K.
+
+</Step>
+<Step title="2. v_fg and T at 300 kPa">
+
+<T>A-5 at 300 kPa: T_sat = 133.52 °C, v_f = 0.001073, v_g = 0.60582 m³/kg</T>, so $v_{fg}=0.60475$ and $T=406.67$ K.
+
+</Step>
+<Step title="3. h_fg">
+
+$h_{fg}=Tv_{fg}\dfrac{dP}{dT}=406.67(0.60475)(8.79)=\mathbf{2162}$ kJ/kg (your pages: 2159.9 on the Assignment page and 2162.3 in the December copy). The table gives **2163.5** kJ/kg: agreement within 0.1 %.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**$h_{fg}\approx2162$ kJ/kg versus the table 2163.5 kJ/kg** ✔ (0.1 % apart; the lib's central difference gives 2160.0).
+
+</Answer>
+
+<RealWorld title="Clapeyron is how tables are built">
+
+Latent heats of fluids that are hard to measure (refrigerants, geothermal brines, cryogens) are computed exactly this way from the much easier $P_{sat}(T)$ curve. If the slope came out as 8.79 kPa/K, you could even size how much a 1 K change in condensing temperature moves the pressure in a power-plant condenser.
+
+</RealWorld>
+
+<Traps>
+
+- $T$ in **kelvin**, and $v_{fg}=v_g-v_f$ (not $v_g$ alone).
+- A symmetric step about 300 kPa (275 and 325) is better than a one-sided one.
+
+</Traps>
+
+<Source>Anthony's Assignment 5, pp. 3–4 (Ass_chpwter_12-231022-3…4: 2159.9) and Chapter 12 v2 p. 5 (2162.29 ✔ vs 2163.5) · lib <code>satP</code> in <code>hw.test.ts</code></Source>
+
+</Problem>
+
+<Problem id="12-42" title="Δu, Δh and Δs for a gas with P(v − a) = RT in an isothermal process" tags="general relations, equation of state, isothermal">
+
+<Statement>
+
+Derive expressions for (a) $\Delta u$, (b) $\Delta h$ and (c) $\Delta s$ for a gas whose equation of state is $P(v-a)=RT$, for an **isothermal** process. (Printed: (a) 0, (b) $a(P_2-P_1)$, (c) $-R\ln(P_2/P_1)$.)
+
+</Statement>
+
+<Think>
+
+Use the general relations with the equation of state differentiated at the right variable. For $\Delta u$ the natural variables are $(T,v)$: $v=RT/P+a$, $P=RT/(v-a)$.
+
+</Think>
+
+<Steps>
+<Step title="1. Δu">
+
+$\left(\dfrac{\partial P}{\partial T}\right)_v=\dfrac{R}{v-a}$, so $T\left(\dfrac{\partial P}{\partial T}\right)_v-P=\dfrac{RT}{v-a}-P=0$. Then $du=c_vdT+0$, and for $dT=0$: $\Delta u=\mathbf0$ ✔.
+
+</Step>
+<Step title="2. Δh">
+
+$v=\dfrac{RT}{P}+a\Rightarrow\left(\dfrac{\partial v}{\partial T}\right)_P=\dfrac{R}{P}$, so $v-T\left(\dfrac{\partial v}{\partial T}\right)_P=a$. $dh=c_pdT+a\,dP\Rightarrow\Delta h=a(P_2-P_1)$ ✔.
+
+</Step>
+<Step title="3. Δs">
+
+$ds=\dfrac{c_p}{T}dT-\left(\dfrac{\partial v}{\partial T}\right)_PdP=\dfrac{c_p}{T}dT-\dfrac{R}{P}dP$; for $dT=0$: $\Delta s=-R\ln\dfrac{P_2}{P_1}$ ✔.
+
+</Step>
+</Steps>
+
+<Answer>
+
+(a) **$\Delta u=0$**, (b) **$\Delta h=a(P_2-P_1)$**, (c) **$\Delta s=-R\ln(P_2/P_1)$** ✔ (printed and your page).
+
+</Answer>
+
+<RealWorld title="What the constant a means">
+
+$P(v-a)=RT$ is the ideal gas with excluded volume (a covolume $a$): molecules take up room, so $h$ depends on pressure through $a\,P$. For air at 6 bar, 20 → 300 °C with $a=0.10$ m³/kg that is a 50 kJ/kg difference: see 12-35 (the value of $a$ is exaggerated; air's real covolume is about 0.001 m³/kg).
+
+</RealWorld>
+
+<Traps>
+
+- $\Delta u=0$ at constant $T$ is a *property* of this gas (its $u$ depends on $T$ only), but $\Delta h\ne0$: $h=u+Pv$ and $v$ contains $a$.
+- Isothermal: drop every $dT$ term.
+
+</Traps>
+
+<Source>Anthony's Assignment 5, p. 4 (Ass_chpwter_12-231022-4…5) and Chapter 12 v2 p. 10 ✔ matches the printed answers</Source>
+
+</Problem>
+
+<Problem id="12-58C" title="Throttling helium: does the temperature change?" tags="throttling, Joule-Thomson, ideal gas">
+
+<Statement>
+
+Will the temperature of helium change if it is throttled adiabatically from 300 K and 600 kPa to 150 kPa?
+
+</Statement>
+
+<Think>
+
+Throttling is an isenthalpic process ($h_1=h_2$). Helium at 300 K is an ideal gas, and for an ideal gas $h=h(T)$ only, so constant $h$ means constant $T$: the Joule–Thomson coefficient $\mu=\left(\dfrac{\partial T}{\partial P}\right)_h$ is zero.
+
+</Think>
+
+<Answer>
+
+**No: the temperature stays at 300 K** ✔ ($h=h(T)\Rightarrow\mu_{JT}=0$; your page: "No, helium is an ideal gas, $h=h(T)$, constant $h$ means constant $T$").
+
+</Answer>
+
+<RealWorld title="Real helium actually warms a little">
+
+Helium is a nearly ideal gas at room temperature, but its small real-gas effect has the **opposite sign** to that of steam or CO₂: $\mu_{JT}\approx-0.06$ K/bar at 300 K (typical), so the 450 kPa drop warms it by about 0.3 K. Helium (and hydrogen) must be precooled below their inversion temperatures to liquefy by throttling; this is why liquefiers use turbines first.
+
+</RealWorld>
+
+<Traps>
+
+- Do not say "pressure falls so temperature falls": that is the *real-gas* behavior below the inversion temperature, and an ideal gas has none of it.
+
+</Traps>
+
+<Source>Anthony's Assignment 5, p. 6 (Ass_chpwter_12-231022-6) and Chapter 12 v2 p. 11 ✔</Source>
+
+</Problem>
+
+<Problem id="12-62" title="Steam throttled slightly from 1 MPa and 300 °C" tags="throttling, Joule-Thomson coefficient, steam tables">
+
+<Statement>
+
+Steam is throttled slightly from 1 MPa and 300 °C. Will its temperature increase, decrease or stay the same?
+
+</Statement>
+
+<Think>
+
+Isenthalpic again ($h=$ constant), but now the substance is a real vapor: the answer must come from the **tables** at the lower pressure with the same $h$.
+
+</Think>
+
+<Steps>
+<Step title="1. Initial enthalpy">
+
+<T>A-6, 1 MPa, 300 °C: h = 3051.6 kJ/kg</T> ✔ (your page).
+
+</Step>
+<Step title="2. Final state at the lower pressure (0.8 MPa) with the same h">
+
+<T>A-6, 0.8 MPa: h = 3051.6 kJ/kg lies between 300 °C (3056.5) and 250 °C: T = 297.5 °C</T> (your page 297.5 °C ✔).
+
+</Step>
+<Step title="3. The coefficient">
+
+$\mu_{JT}=\dfrac{\Delta T}{\Delta P}=\dfrac{297.5-300}{800-1000}=+0.0124$ K/kPa $=12.4$ K/MPa $>0$: the temperature **decreases**.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**The temperature decreases** (from 300 to 297.5 °C), $\mu_{JT}=+12.4$ K/MPa ✔ (your page).
+
+</Answer>
+
+<RealWorld title="The throttling calorimeter">
+
+The same fact measures the quality of wet steam: throttle a sample into the superheat region (say to atmospheric pressure), read $P$ and $T$ there to find $h$, and since $h_1=h_2$ you obtain the quality $x_1$ of the original steam. It is a cheap way to test boiler steam, and works only because the steam is slightly *superheated* afterwards.
+
+</RealWorld>
+
+<Traps>
+
+- "$h$ constant" does **not** mean "$T$ constant" for a real vapor: use the table at the new pressure.
+- The sign of $\mu_{JT}$ depends on the state: positive for steam here, negative for helium at room temperature (12-58C).
+
+</Traps>
+
+<Source>Anthony's Assignment 5, p. 6 (Ass_chpwter_12-231022-6) and Chapter 12 v2 p. 12 ✔ · lib check in <code>chapters.test.ts</code></Source>
+
+</Problem>
+
+<Problem id="12-72" title="Steam heated at constant pressure from saturated vapor at 300 °C to 700 °C: departure charts versus the steam tables" tags="departure charts, Zh, Zs, steam tables">
+
+<Statement>
+
+Saturated water vapor at 300 °C is heated at constant pressure to 700 °C. Calculate the change in specific enthalpy and entropy using (a) the departure charts and (b) the steam tables. (Printed: (a) 973 kJ/kg, 1.295 kJ/kg·K; (b) 1129 kJ/kg, 1.541 kJ/kg·K.)
+
+</Statement>
+
+<Think>
+
+Steam at 8.6 MPa is far from ideal at 300 °C (close to saturation) but nearer to ideal at 700 °C. The departure method: ideal-gas change from the *ideal-gas* table, then correct both ends with $Z_h$ and $Z_s$ read at the reduced state $(T_R,P_R)$. The two charts must **disagree** with the tables by a few percent, because chart readings have limited accuracy.
+
+</Think>
+
+<Plan>
+
+$P=P_{sat}(300\ °C)=8587.9$ kPa $\to$ reduced states 1 and 2 $\to$ $Z_h$, $Z_s$ $\to$ ideal $\Delta\bar h$ and $\Delta\bar s$ $\to$ departure formulas $\to$ compare with the table values.
+
+</Plan>
+
+<Steps>
+<Step title="1. Reduced states">
+
+<T>A-1: T_cr = 647.1 K, P_cr = 22.06 MPa, M = 18.015</T>. $T_{R1}=\dfrac{573}{647.1}=0.885$, $P_R=\dfrac{8.588}{22.06}=0.389$ (your page ✔); $T_{R2}=\dfrac{973}{647.1}=1.504$ with the same $P_R$.
+
+</Step>
+<Step title="2. Chart readings">
+
+$Z_{h1}=0.601$, $Z_{s1}=0.481$ and $Z_{h2}=0.204$, $Z_{s2}=0.105$ (your page; the lib's Lee–Kesler functions give 0.601, 0.476, 0.189, 0.091).
+
+</Step>
+<Step title="3. Enthalpy">
+
+$(\bar h_2-\bar h_1)_{ideal}=15\,349$ kJ/kmol (your A-23 difference); $\bar h_2-\bar h_1=15\,349-8.314(647.1)(0.204-0.601)=15\,349+2136=17\,485$ kJ/kmol, so $h_2-h_1=\dfrac{17\,485}{18.015}\approx\mathbf{971}$ kJ/kg (your page: 972.9; printed 973 ✔).
+
+</Step>
+<Step title="4. Entropy">
+
+The pressure is the same at both ends, so the ideal part is only the temperature change of $\bar s^\circ$: $\Delta\bar s_{ideal}=20.210$ kJ/kmol·K (your A-23 difference). $\Delta\bar s=20.210-8.314(0.105-0.481)=20.210+3.126=23.336$ kJ/kmol·K, so $s_2-s_1=\dfrac{23.336}{18.015}=\mathbf{1.295}$ kJ/kg·K ✔ (your page 1.2954; printed 1.295).
+
+</Step>
+<Step title="5. (b) Steam tables">
+
+<T>A-4 and A-6: sat. vapor 300 °C h = 2749.6, s = 5.7059; 8.588 MPa, 700 °C: h = 3878.6, s = 7.2465</T>. $h_2-h_1=3878.6-2749.6=\mathbf{1129}$ kJ/kg and $s_2-s_1=7.2465-5.7059=\mathbf{1.54}$ kJ/kg·K ✔ (your page 1129 / 1.54).
+
+</Step>
+</Steps>
+
+<Answer>
+
+(a) **$\Delta h=973$ kJ/kg, $\Delta s=1.295$ kJ/kg·K** (departure charts; recomputed with Lee–Kesler functions 976 and 1.30), (b) **$\Delta h=1129$, $\Delta s=1.54$** (tables) ✔. The charts understate the change by 14 %: the ideal-gas path cannot capture the 300 °C start, which is a vapor close to its dome.
+
+</Answer>
+
+<RealWorld title="Why charts are only for substances without tables">
+
+Water has tables, so the generalized chart here is only a *test*. For a fluid with no tables (a new refrigerant, a rare gas) the same $Z_h$, $Z_s$ reading gives a 5–15 % estimate near the critical region, and 1–2 % well away from it.
+
+</RealWorld>
+
+<Traps>
+
+- $R_u$ (kJ/kmol·K) with $\bar h$ in kJ/kmol; divide by $M$ at the end.
+- Use the **saturation pressure** at 300 °C for $P$: the heating is isobaric at 8588 kPa.
+- The ideal-gas $\Delta\bar h$ comes from the ideal-gas table (A-23), not from steam-table values.
+
+</Traps>
+
+<Source>Anthony's Assignment 5, pp. 6–8 (Ass_chpwter_12-231022-6…8) ✔ matches the printed answers · lib test in <code>chapters.test.ts</code> · also in <Ch slug="property-relations" /></Source>
+
+</Problem>
+
+<Problem id="12-75" title="Adiabatic CO₂ nozzle with the generalized enthalpy departure chart" tags="departure chart, nozzle, energy balance">
+
+<Statement>
+
+Carbon dioxide enters an adiabatic nozzle at 8 MPa and 450 K with a low velocity and leaves at 2 MPa and 350 K. Using the generalized enthalpy departure chart, find the exit velocity. (Printed: 384 m/s.)
+
+</Statement>
+
+<Think>
+
+An adiabatic nozzle at negligible entry speed: $h_1=h_2+\dfrac{V_2^2}{2}$, so $V_2=\sqrt{2(h_1-h_2)}$ and everything is a **real-gas enthalpy change** between the two states. The ideal-gas part from the ideal-gas table, then the departure correction at both states.
+
+</Think>
+
+<Steps>
+<Step title="1. Reduced states and chart readings">
+
+<T>A-1: T_cr = 304.2 K, P_cr = 7.39 MPa, M = 44.01</T>. State 1: $T_{R1}=\dfrac{450}{304.2}=1.48$, $P_{R1}=\dfrac{8}{7.39}=1.08$, $Z_{h1}=0.55$. State 2: $T_{R2}=\dfrac{350}{304.2}=1.15$, $P_{R2}=\dfrac{2}{7.39}=0.27$, $Z_{h2}=0.21$ (your page ✔; Lee–Kesler: 0.566 and 0.220).
+
+</Step>
+<Step title="2. Ideal-gas part and departure">
+
+<T>A-20: h̄(350 K) = 11 351, h̄(450 K) = 15 483 kJ/kmol</T>: $(\bar h_2-\bar h_1)_{ideal}=-4132$ kJ/kmol $=-93.9$ kJ/kg. Departure term (per kg): $R\,T_{cr}(Z_{h1}-Z_{h2})=0.1889(304.2)(0.55-0.21)=19.5$ kJ/kg. $h_2-h_1=-93.9+19.5\approx-74$ kJ/kg (your first sheet: $-73.8$).
+
+</Step>
+<Step title="3. Exit velocity">
+
+$V_2=\sqrt{2(74)(1000)}=\mathbf{384}$ m/s ✔ (your page: $\sqrt{2(73.8)(1000)}=384$; printed 384; recomputed with the lib's departure functions $V_2=384.3$).
+
+</Step>
+</Steps>
+
+<Callout kind="warn" title="⚠ December re-solve: −3500 kJ/kmol (−79 kJ/kg), V₂ = 397.5 m/s should be −74 kJ/kg and 384 m/s">
+
+The re-solve (Chapter 12 v2, 17 Dec) writes the real enthalpy change as "$\approx-3500$ kJ/kmol $\to-79$ kJ/kg" and $V_2=\sqrt{2(79)(1000)}=397.5$ m/s. Your own readings ($Z_{h1}=0.55$, $Z_{h2}=0.21$) give $-4132+8.314(304.2)(0.34)=-3272$ kJ/kmol, i.e. $-74.4$ kJ/kg and 386 m/s. The first sheet (22 Oct, 384 m/s) is the correct one; the rounding to −3500 cost 3 % in $V$ (6 % in $\Delta h$).
+
+</Callout>
+
+<Answer>
+
+**$V_2=384$ m/s** ✔ (printed; Assignment page). The December 397.5 m/s is wrong.
+
+</Answer>
+
+<RealWorld title="CO₂ as a working fluid">
+
+Supercritical CO₂ (above 7.4 MPa and 31 °C) is used as a solvent (decaffeination) and is a candidate working fluid for compact power cycles; nozzles and turbines for it must be designed with *real-gas* enthalpy: here the ideal-gas relation ($\Delta h=-93.9$ kJ/kg) would overestimate the exit velocity by 13 % (433 against 384 m/s).
+
+</RealWorld>
+
+<Traps>
+
+- Use $R=R_u/M$ (kJ/kg·K) with per-kg enthalpy, or $R_u$ with kmol: **never mix** (your "boxed" reminder from the December sheet).
+- Departure charts correct each end of the process: the sign is $-R\,T_{cr}(Z_{h2}-Z_{h1})$.
+
+</Traps>
+
+<Source>Anthony's Assignment 5, p. 9 (Ass_chpwter_12-231022-9) and Chapter 12 v2 pp. 16–17 (Chapter_12_v2-231217-16…17) · hand check in <code>hw.test.ts</code> (V₂ 384.3 m/s)</Source>
+
+</Problem>
+
+## Part 2: extra practice from your re-solves (Chapter 12 v2, Review chapter 12)
+
+<Problem id="12-28" title="Sublimation pressure of water at −30 °C from the triple point (Clausius–Clapeyron)" tags="Clausius-Clapeyron, sublimation, triple point">
+
+<Statement>
+
+Using the Clapeyron–Clausius equation and the triple-point data of water ($T=273.16$ K, $P=0.6117$ kPa), estimate the sublimation pressure of water at −30 °C and compare with Table A-8.
+
+</Statement>
+
+<Think>
+
+Sublimation is solid → vapor, so the latent heat is **$h_{ig}$ (sublimation)**, about 2834 kJ/kg at the triple point, *not* $h_{fg}$ (2501): this is the point of your correction on the page ("$h_{ig}$ not $h_{fg}$ at the triple point"). With $v_{ig}\approx v_g=RT/P$ and $R=0.4615$ kJ/kg·K: $\ln\dfrac{P_2}{P_1}=\dfrac{h_{ig}}{R}\left(\dfrac1{T_1}-\dfrac1{T_2}\right)$.
+
+</Think>
+
+<Steps>
+<Step title="1. Substitute">
+
+$\ln\dfrac{P_2}{0.6117}=\dfrac{2834}{0.4615}\left(\dfrac{1}{273.16}-\dfrac{1}{243.15}\right)=6141(-4.518\times10^{-4})=-2.775$.
+
+</Step>
+<Step title="2. Solve">
+
+$P_2=0.6117\,e^{-2.775}=\mathbf{0.0381}$ kPa. (Your December page: 0.0378.) <T>A-8: P_sat,solid(−30 °C) = 0.0380 kPa</T> ✔.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**$P_{sub}\approx0.038$ kPa** versus the table 0.0380 kPa ✔. With the wrong latent heat ($h_{fg}=2500.9$, as in your first line) the result would be 0.053 kPa, 39 % too high.
+
+</Answer>
+
+<RealWorld title="Freeze drying">
+
+Freeze-dried coffee and pharmaceuticals are dried at about −30 °C where ice sublimes at 38 Pa: the chamber must be held below that (a rough vacuum), and the Clapeyron slope tells the plant operator how much a 1 K change moves the required pressure.
+
+</RealWorld>
+
+<Traps>
+
+- Use $h_{ig}$ for solid–vapor and $h_{fg}$ for liquid–vapor; they differ by the heat of fusion (333 kJ/kg).
+- Temperatures in kelvin; $R=R_u/M=8.314/18.015$.
+
+</Traps>
+
+<Source>Anthony's Chapter 12 v2 p. 6 (Chapter_12_v2-231217-06) and Review chapter 12 p. 1 (Review_chapter_12-231130-1) ✔ · hand check in <code>hw.test.ts</code></Source>
+
+</Problem>
+
+<Problem id="12-34" title="Δu of air with P(v − a) = RT, a = 0.10 m³/kg" tags="general relations, equation of state, internal energy">
+
+<Statement>
+
+Find the change in the internal energy of air, in kJ/kg, from 100 kPa and 20 °C to 600 kPa and 300 °C, using $P(v-a)=RT$ with $a=0.10$ m³/kg, and compare with the ideal-gas value.
+
+</Statement>
+
+<Think>
+
+Same equation of state as 12-42, so the same result: $T(\partial P/\partial T)_v-P=0$ and $du=c_vdT$. The pressure changes do not enter. (Your Review sheet of 30 Nov writes this derivation in red after crossing out a first attempt with the departure charts; this is the part that matters.)
+
+</Think>
+
+<Steps>
+<Step title="1. The correction term vanishes">
+
+$\left(\dfrac{\partial P}{\partial T}\right)_v=\dfrac{R}{v-a}$, $T\left(\dfrac{\partial P}{\partial T}\right)_v-P=\dfrac{RT}{v-a}-P=0\Rightarrow du=c_vdT$.
+
+</Step>
+<Step title="2. Integrate (c_v = 0.718 kJ/kg·K, average)">
+
+$\Delta u=c_v(T_2-T_1)=0.718(300-20)=\mathbf{201}$ kJ/kg: **identical to the ideal-gas result**.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**$\Delta u=201$ kJ/kg**, the same as for an ideal gas ✔ (your page: $du=c_vdT$; the number is my completion).
+
+</Answer>
+
+<RealWorld title="u(T) only">
+
+For a gas with excluded volume but no attraction, energy depends on temperature alone; adding the attraction term ($a/v^2$ in van der Waals) is what makes $u$ depend on $v$ too, and creates the Joule effect in free expansion.
+
+</RealWorld>
+
+<Traps>
+
+- Do not try to add a pressure term to $\Delta u$: it is zero for this equation of state (it appears in $\Delta h$ instead, 12-35).
+
+</Traps>
+
+<Source>Anthony's Chapter 12 v2 p. 7 and Review chapter 12 pp. 2–3 ✔</Source>
+
+</Problem>
+
+<Problem id="12-35" title="Δh of air with P(v − a) = RT, a = 0.10 m³/kg" tags="general relations, equation of state, enthalpy">
+
+<Statement>
+
+Find the change in the enthalpy of air, in kJ/kg, from 100 kPa and 20 °C to 600 kPa and 300 °C, using $P(v-a)=RT$ with $a=0.10$ m³/kg, and compare with the ideal-gas result. (Printed: 335 and 285 kJ/kg.)
+
+</Statement>
+
+<Think>
+
+Now the pressure term survives: $v=\dfrac{RT}{P}+a\Rightarrow v-T\left(\dfrac{\partial v}{\partial T}\right)_P=a$, so $dh=c_pdT+a\,dP$.
+
+</Think>
+
+<Steps>
+<Step title="1. The temperature part">
+
+$\int c_pdT=1.015(300-20)=284.2$ kJ/kg (average $c_p=1.015$, your page; the ideal-gas value with the same $c_p$).
+
+</Step>
+<Step title="2. The pressure part">
+
+$a\,(P_2-P_1)=0.10(600-100)=\mathbf{50}$ kJ/kg.
+
+</Step>
+<Step title="3. Total">
+
+$\Delta h=284.2+50=\mathbf{334.2}$ kJ/kg (your page 334.2); the ideal gas gives 284.2 (your 285.1).
+
+</Step>
+</Steps>
+
+<Answer>
+
+**$\Delta h=334$ kJ/kg** (real) versus **284–285 kJ/kg** (ideal) ✔ (printed 335 / 285). The 50 kJ/kg difference is all in the pressure term.
+
+</Answer>
+
+<RealWorld title="Why compressors are measured by h, not T alone">
+
+Here the excluded-volume term is 18 % of the enthalpy change. (The value $a=0.10$ m³/kg is exaggerated on purpose: the real covolume of air is about 0.001 m³/kg.) For dense gases (compressor discharge, high-pressure pipelines) the temperature alone does not give the enthalpy; the pressure term $\int[v-T(\partial v/\partial T)_P]dP$ is what the departure charts supply.
+
+</RealWorld>
+
+<Traps>
+
+- Using $\Delta h=c_p\Delta T$ for a real gas: the pressure term $a\Delta P$ is missing.
+- $a\,\Delta P$: m³/kg × kPa = kJ/kg.
+
+</Traps>
+
+<Source>Anthony's Chapter 12 v2 p. 8 (Chapter_12_v2-231217-08) and Review chapter 12 pp. 3–4 ✔ matches the printed 335 / 285</Source>
+
+</Problem>
+
+<Problem id="12-40" title="Volume expansivity and isothermal compressibility of R-134a at 200 kPa and 30 °C" tags="β, α, finite differences, R-134a table">
+
+<Statement>
+
+Estimate the volume expansivity $\beta=\dfrac1v\left(\dfrac{\partial v}{\partial T}\right)_P$ and the isothermal compressibility $\alpha=-\dfrac1v\left(\dfrac{\partial v}{\partial P}\right)_T$ of refrigerant-134a at 200 kPa and 30 °C.
+
+</Statement>
+
+<Think>
+
+Two central differences from the superheated table: $\beta$ at the *pressure* 200 kPa (rows in $T$), $\alpha$ at the *temperature* 30 °C (rows in $P$). The state's own volume divides both.
+
+</Think>
+
+<Steps>
+<Step title="1. β: 200 kPa, rows at 20 and 40 °C">
+
+<T>A-13, 200 kPa: v(30 °C) = 0.11874, v(20 °C) = 0.11418, v(40 °C) = 0.12322 m³/kg</T>. $\beta=\dfrac{1}{0.11874}\dfrac{0.12322-0.11418}{40-20}=\mathbf{3.81\times10^{-3}}$ K⁻¹ ✔ (your page 3.8066×10⁻³; the ideal gas would give $1/T=3.30\times10^{-3}$).
+
+</Step>
+<Step title="2. α: 30 °C, rows at 180 and 240 kPa">
+
+<T>A-13, 30 °C: v(180 kPa) = 0.13248, v(240 kPa) = 0.09812</T> (your page). $\alpha=-\dfrac{1}{0.11874}\dfrac{0.09812-0.13248}{240-180}=\mathbf{4.82\times10^{-3}}$ kPa⁻¹ ✔ (your page 4.82×10⁻³).
+
+</Step>
+</Steps>
+
+<Callout kind="note" title="Check your page: the rows for α are not symmetric about 200 kPa">
+
+The two rows you chose (180 and 240 kPa) are centered at 210 kPa, not at 200, and the curve $v\propto1/P$ is bent, so $\alpha$ comes out 7 % low. A symmetric pair (190 and 210 kPa, or 180 and 220 kPa) gives $5.2\times10^{-3}$ kPa⁻¹; the ideal gas gives $1/P=5.0\times10^{-3}$. For $\beta$ your rows (20 and 40 °C) are symmetric about 30 °C, so that one is good.
+
+</Callout>
+
+<Answer>
+
+**$\beta=3.81\times10^{-3}$ K⁻¹, $\alpha\approx5.2\times10^{-3}$ kPa⁻¹** (your table pair gives 4.82×10⁻³). In a sealed rigid vessel $dP/dT=\beta/\alpha\approx0.7$ kPa/K.
+
+</Answer>
+
+<RealWorld title="Heating a closed refrigerant line">
+
+For a *liquid* the same ratio $\beta/\alpha$ is enormous (of the order of 1 MPa per kelvin for liquid R-134a, a typical value), which is why a refrigerant line trapped full of liquid between two valves can burst when it warms by a few degrees.
+
+</RealWorld>
+
+<Traps>
+
+- Center the step on the state you want; unequal steps leave a first-order error.
+- $\alpha$ is positive: the minus sign in the definition compensates for $(\partial v/\partial P)_T<0$.
+
+</Traps>
+
+<Source>Anthony's Chapter 12 v2 pp. 8–9 (Chapter_12_v2-231217-08…09: β) and Review chapter 12 pp. 4–5 (Review_chapter_12-231130-4…5: α) · lib <code>r134a.PT</code> in <code>hw.test.ts</code></Source>
+
+</Problem>
+
+<Problem id="12-73" title="Oxygen from 220 K, 5 MPa to 300 K, 10 MPa: ideal gas versus departure charts" tags="departure charts, ideal-gas table, oxygen">
+
+<Statement>
+
+Find the enthalpy change and the entropy change of oxygen, per mole, from 220 K and 5 MPa to 300 K and 10 MPa (a) assuming ideal-gas behavior and (b) accounting for the deviation from ideal-gas behavior.
+
+</Statement>
+
+<Think>
+
+Same four lines as 12-72, but at *high* reduced pressure and moderate $T_R$ (1.4–1.9), where the departure is largest at the first state. The entropy has a pressure term $-R_u\ln(P_2/P_1)$ in the ideal part.
+
+</Think>
+
+<Steps>
+<Step title="1. (a) Ideal gas">
+
+<T>A-19: h̄(300 K) = 8736, h̄(220 K) = 6404 kJ/kmol; s̄°(300 K) = 205.213, s̄°(220 K) = 196.171 kJ/kmol·K</T>. $\Delta\bar h=8736-6404=\mathbf{2332}$ kJ/kmol ✔ (your page). $\Delta\bar s=205.213-196.171-8.314\ln\dfrac{10}{5}=9.042-5.763=\mathbf{3.279}$ kJ/kmol·K ✔ (your page 3.279).
+
+</Step>
+<Step title="2. Reduced states">
+
+<T>A-1: T_cr = 154.8 K, P_cr = 5.08 MPa</T>. State 1: $T_R=\dfrac{220}{154.8}=1.421$, $P_R=\dfrac{5}{5.08}=0.984$; state 2: $T_R=1.938$, $P_R=1.968$ (your page ✔). Charts: $Z_{h1}=0.55$, $Z_{s1}\approx0.3$; $Z_{h2}=0.57$, $Z_{s2}\approx0.2$ (Lee–Kesler: 0.559, 0.284, 0.571, 0.237).
+
+</Step>
+<Step title="3. (b) With departures">
+
+$\Delta\bar h=2332-8.314(154.8)(0.571-0.559)=2332-15=\mathbf{2317}$ kJ/kmol (Lee–Kesler: 2323 with the lib's $\bar h$). $\Delta\bar s=3.279-8.314(0.237-0.284)=3.279+0.391=\mathbf{3.67}$ kJ/kmol·K (lib 3.69; your page: 3.6957).
+
+</Step>
+</Steps>
+
+<Callout kind="note" title="Check your page: the Δh line">
+
+Your page's real-gas $\Delta\bar h$ line reads about $2.4$–$2.5\times10^3$ kJ/kmol (the digits are hard to read). With the departure readings written on the same page ($Z_{h1}=0.55$, $Z_{h2}=0.57$) the correction is only $-8.314(154.8)(0.02)=-26$ kJ/kmol, so $\Delta\bar h\approx2306$; the lib's more precise functions give 2323. Because $Z_{h1}\approx Z_{h2}$ (the two departures nearly cancel) the enthalpy change is almost the ideal-gas value: the interesting departure here is in the entropy (+0.4 kJ/kmol·K).
+
+</Callout>
+
+<Answer>
+
+(a) **$\Delta\bar h=2332$ kJ/kmol, $\Delta\bar s=3.28$ kJ/kmol·K**; (b) **$\Delta\bar h\approx2320$ kJ/kmol, $\Delta\bar s\approx3.69$ kJ/kmol·K** (recomputed).
+
+</Answer>
+
+<RealWorld title="Filling an oxygen cylinder">
+
+Medical and industrial oxygen cylinders are filled at 15–20 MPa, where oxygen is well above its critical pressure (5.08 MPa) and $Z$ is noticeably below 1: an ideal-gas estimate of the mass in a cylinder is several percent too high. The same departure functions give the heating of the gas during the fill.
+
+</RealWorld>
+
+<Traps>
+
+- Use $T_{cr}$ and $P_{cr}$ of **oxygen**, not nitrogen or air.
+- The ideal-gas entropy has the pressure term $R_u\ln(P_2/P_1)$ (here doubling).
+
+</Traps>
+
+<Source>Anthony's Chapter 12 v2 pp. 13–15 (Chapter_12_v2-231217-14…15) · hand check in <code>hw.test.ts</code></Source>
+
+</Problem>
+
+<Problem id="12-97" title="Propane compressed from 500 kPa, 100 °C to 4000 kPa, 500 °C: ideal gas with variable c_p, then departure charts" tags="cubic cp, departure charts, work, entropy">
+
+<Statement>
+
+Propane at 500 kPa and 100 °C is compressed in a steady-flow device to 4000 kPa and 500 °C. Find the change in specific entropy and the specific work required (a) treating propane as an ideal gas with temperature-variable specific heats and (b) using the departure charts. (Printed: (a) 1121 kJ/kg, 1.587 kJ/kg·K; (b) 1113 kJ/kg, 1.583 kJ/kg·K.)
+
+</Statement>
+
+<Think>
+
+Part (a) integrates the cubic $\bar c_p=a+bT+cT^2+dT^3$ (Table A-2c: $a=-4.04$, $b=30.48\times10^{-2}$, $c=-15.72\times10^{-5}$, $d=31.74\times10^{-9}$ in kJ/kmol·K), and works in kmol: $R_u$ and $M=44.097$. Part (b) corrects both end states by $Z_h$, $Z_s$ with $R=R_u/M$ and $T_{cr}=370$ K, $P_{cr}=4.26$ MPa.
+
+</Think>
+
+<Steps>
+<Step title="1. (a) Δh̄ by integrating the cubic">
+
+$\Delta\bar h=a(T_2-T_1)+\dfrac b2(T_2^2-T_1^2)+\dfrac c3(T_2^3-T_1^3)+\dfrac d4(T_2^4-T_1^4)=\mathbf{49\,440}$ kJ/kmol (your page 49 440; the lib: 49 449), so $w=\dfrac{49\,440}{44.097}=\mathbf{1121}$ kJ/kg ✔ (printed).
+
+</Step>
+<Step title="2. (a) Δs̄">
+
+$\Delta\bar s=a\ln\dfrac{T_2}{T_1}+b(T_2-T_1)+\dfrac c2(T_2^2-T_1^2)+\dfrac d3(T_2^3-T_1^3)-R_u\ln\dfrac{P_2}{P_1}=69.99$ kJ/kmol·K, so $\Delta s=\dfrac{69.99}{44.097}=\mathbf{1.587}$ kJ/kg·K ✔ (your page 69.995 and 1.587).
+
+</Step>
+<Step title="3. (b) Reduced states">
+
+$T_{R1}=\dfrac{373}{370}=1.008$, $P_{R1}=\dfrac{0.5}{4.26}=0.117$; $T_{R2}=\dfrac{773}{370}=2.089$, $P_{R2}=\dfrac{4}{4.26}=0.939$ (your page ✔). Chart readings (Lee–Kesler): $Z_{h1}=0.119$, $Z_{s1}=0.080$, $Z_{h2}=0.237$, $Z_{s2}=0.093$.
+
+</Step>
+<Step title="4. (b) Corrected work and entropy">
+
+$w=\dfrac{49\,440}{44.097}-R\,T_{cr}(Z_{h2}-Z_{h1})=1121-0.1885(370)(0.237-0.119)=1121-8.2=\mathbf{1113}$ kJ/kg. $\Delta s=1.587-0.1885(0.093-0.080)=1.587-0.003=\mathbf{1.584}$ kJ/kg·K.
+
+</Step>
+</Steps>
+
+<Callout kind="note" title="Check your page: part (b) is only set up">
+
+Your Review sheet carries (a) through to 1121 kJ/kg and 1.587 kJ/kg·K and, for (b), the reduced states and the formulas $w=(h_2-h_1)_{ideal}-RT_{cr}(Z_{h2}-Z_{h1})$, "$R\ne R_u$" (your boxed reminder), then stops before the chart readings. The corrected values are my completion (they match the printed 1113 and 1.583).
+
+</Callout>
+
+<Answer>
+
+(a) **$w=1121$ kJ/kg, $\Delta s=1.587$ kJ/kg·K**; (b) **$w=1113$ kJ/kg, $\Delta s=1.584$ kJ/kg·K** ✔ (printed 1113 / 1.583). The departure correction is only 0.7 % because propane at 500 kPa is almost ideal and at 4 MPa, 500 °C ($T_R=2.1$) is close to ideal.
+
+</Answer>
+
+<RealWorld title="LPG and refinery compressors">
+
+Propane compressors in refrigeration and LPG plants usually work closer to the dome than this problem (here the inlet is already at $T_R=1.0$, $P_R=0.12$ with $Z=0.96$), so the correction there can be several percent or more. The quick check "is $T_R>2$ and $P_R<1$?" tells you whether the ideal-gas answer is good enough.
+
+</RealWorld>
+
+<Traps>
+
+- Molar quantities with $R_u$, per-kg quantities with $R=R_u/M$.
+- Work required = $h_2-h_1$ for an adiabatic steady-flow compressor; for non-adiabatic you also need $q$.
+
+</Traps>
+
+<Source>Anthony's Chapter 12 v2 pp. 18–19 and Review chapter 12 pp. 6–9 (Review_chapter_12-231130-6…9) · hand check in <code>hw.test.ts</code></Source>
+
+</Problem>
+
+<Examined>
+
+**How this assignment is examined.** The final tests this chapter with a derivation or a Maxwell/Clapeyron/J–T item and a departure-chart or compressibility calculation. The three most examinable lines of this page: (1) $T=(\partial h/\partial s)_P$, $v=(\partial h/\partial P)_s$; (2) the sign of the Joule–Thomson coefficient and $h=$ constant through a valve; (3) $\bar h_2-\bar h_1=\text{ideal}-R_uT_{cr}(Z_{h2}-Z_{h1})$ with $R_u$ for molar quantities. See <Ch slug="errata" /> for the 12-11 and 12-75 re-solve slips, <Ex id="final-2021" /> and the notes in <Ch slug="property-relations" />.
+
+</Examined>

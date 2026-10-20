@@ -1,0 +1,68 @@
+<p className="eyebrow">Exam toolkit · errata</p>
+
+# Errata: mistakes and ambiguities in your notebooks, the printed answers and the exams
+
+<div className="lede">
+
+Every number on this site was recomputed independently (steam and R-134a tables from the lib, ideal-gas and Lee–Kesler functions for the rest). This page lists where the recomputation **disagrees** with your notebooks, with a printed textbook answer, or with a graded exam copy, so that you do not "correct" a right answer or copy a wrong one. A row appears only when your digits are clearly legible and the difference is more than rounding; handwriting that cannot be read with confidence is listed separately as an **uncertain reading** (the right value is given, but no error is asserted). Differences in the last digit are not listed unless they change a conclusion.
+
+</div>
+
+## Your notebooks
+
+Everything in your notebooks that I could read was recomputed; the large majority matches to 3–4 digits. These are the places where it does **not**.
+
+| # | Where | What the notebook says | Correct | Lesson |
+|---|---|---|---|---|
+| N1 | <Asg n="01">4-9</Asg> | $v_2=1.6264$ (average of the 100 and 200 kPa rows), $W=350.28$ kJ | $v_2=1.4445$ ($P\cdot v$ interpolation), $W=213.8$ kJ | Interpolate the quantity that is linear: $Pv$ for a vapor, never $v$ across a factor 2 in pressure. |
+| N2 | <Asg n="01">9-95</Asg> | formula lines with $0.821$ ($c_v$) and $(T_3-T_4+T_2-T_1)$; $r_{bw}=0.505$ | $c_p=1.108$ and $(T_3-T_4)-(T_2-T_1)$; $r_{bw}=0.511$ | Turbine and compressor works are enthalpy changes: $c_p$. Net = turbine minus compressor. |
+| N3 | <Asg n="02">10-55</Asg> | feedwater leaves the closed heater with $h_3=1008$ | $h_3=764.8$ kJ/kg ($h_f$ at 179.9 °C plus $v\Delta P$) | The water leaves at the **drain's saturation temperature**, at boiler pressure; 1008 is $h_f$ at 3000 kPa. |
+| N4 | <Asg n="02">10-61</Asg> | $s_5=6.785$, then $h_6=2825.7$ kJ/kg | $s_5=6.7585$, $h_6=2812.1$ kJ/kg | Check each entropy against its neighbors in the table; one transposed digit shifts the bleed state. |
+| N5 | <Asg n="04">11-62</Asg> | $h_2=276$, $\dot W=3.615$ kW, $COP=4.03$ (interpolated in the 0.5 MPa rows) | $h_2=286.3$, $\dot W=4.51$ kW, $COP=3.24$ (800 kPa) | The compressor discharges at the condenser pressure: read the superheated table of **that** pressure. |
+| N6 | <Asg n="05">12-11</Asg> (Dec re-solve) | $V_2=4.2\,R=1.2054$, $\Delta V=0.0574$ | $404/96=4.2083$, $V_2=1.2078$, $\Delta V=0.0598$ | Keep four digits in $T/P$ before subtracting two close volumes. |
+| N7 | <Asg n="05">12-75</Asg> (Dec re-solve) | $\Delta\bar h\approx-3500$ kJ/kmol, $-79$ kJ/kg, $V_2=397.5$ m/s | $-3272$ kJ/kmol, $-74$ kJ/kg, $V_2=384$ m/s | Rounding $-3272$ to $-3500$ is a 6 % error in $\Delta h$. The Oct sheet (384 m/s) is right. |
+| N8 | <Ch slug="refrigeration">Chapter 11 class example</Ch> | statement not written down; $h_3=105.3$, $h_7=58.3$ recorded | at −25 °C / 800 kPa the saturated-liquid value is $h_f=95.5$ | The recorded $h_1=235.3$, $h_2=277.2$ match −25 °C / 800 kPa, the liquid values do not: the class used other pressures or older tables. Recomputed on the chapter page. |
+| N9 | <Asg n="06">13-62</Asg> | $w=787.1$ kJ/kg | $0.9458(1300-473.4)=781.9$ kJ/kg | $T_2$ was right; the last multiplication is an arithmetic slip. |
+| N10 | <Asg n="06">13-56</Asg> (day-before-final re-solve) | heat $=190.5$ kJ (used 0.379 kmol N₂) | 187.1 kJ (0.3725 kmol N₂) | The assignment value 187 kJ was right; the re-solve changed the N₂ amount. |
+| N11 | <Asg n="09">16-6C</Asg> (v2, 18 Dec) | "O₂ will decrease" | O₂ **increases** | Adding an inert at constant $T$ and $P$ lowers $P/N_{total}$ and favors the side with more moles (CO + ½O₂). The 17 Dec version was right. |
+| N12 | <Asg n="09">16-33</Asg> | solution unfinished | $y_{CH_4}=0.360$, $y_{H_2}=0.187$, $y_{N_2}=0.453$ ($x=0.793$ kmol CH₄ remains) | Finish the equilibrium: the page stops at the algebra. |
+
+### Uncertain readings (handwriting; the correct value is given, no error asserted)
+
+| # | Where | What I read | Correct |
+|---|---|---|---|
+| U1 | <Asg n="08">15-59</Asg> (Dec-16 re-solve, last line) | looks like −2 297 160 (or −2 017 160) kJ/kmol | $-2.018\times10^{6}$ kJ/kmol ($-45\,770$ kJ/kg), $T_{dp}=46.0$ °C; the Dec-9 value $-2\,017\,510$ is right |
+| U2 | <Asg n="08">15-68</Asg> (v3) | 5951 or 5251 kJ | $Q_{out}=5251$ kJ ($P_2=805$ kPa ✔) |
+| U3 | <Asg n="07">14-102</Asg> (later version) | $T_3=27$ °C or 22–23 °C | $T_3=22.8$ °C, $\varphi_3=90$ % (the Hw page's 23 °C is right) |
+| U4 | <Asg n="02">10-52</Asg> | $y=0.0713$ or $0.0718$ | $y=0.0717$, $z=0.1085$ ✔ |
+| U5 | <Asg n="01">9-137</Asg> | the $T_3$ line looks like 651.9 K | 642.2 K ($280+289.5/0.8=641.9$; the following lines use ≈642) |
+| U6 | <Asg n="05">12-73</Asg> | real-gas $\Delta\bar h$ about 2.4–2.5×10³ kJ/kmol | $\Delta\bar h\approx2320$ kJ/kmol, $\Delta\bar s=3.69$ kJ/kmol·K |
+| U7 | <Asg n="05">12-40</Asg> | $\alpha=4.82\times10^{-3}$ kPa⁻¹ uses rows at 180 and 240 kPa (not symmetric about 200) | $5.2\times10^{-3}$ kPa⁻¹ with a symmetric pair |
+
+## Printed textbook answers
+
+| # | Where | Issue | Resolution |
+|---|---|---|---|
+| P1 | <Asg n="09">16-38</Asg> | printed 5066 kJ/min for the heat from 1.2 kg/min of liquid propane burned in 150 % excess air at 12 °C, products at 1200 K, 2 atm | $Q=190\,300$ kJ/kmol of propane, **5180 kJ/min** (2 % higher; the cause of the difference is not identified). Your note "liquid!!" (use $\bar h_f$ of the liquid fuel) is the right method. |
+| P2 | <Asg n="10">17-62</Asg> | printed $A^*/A_1=0.428$ (air, 0.5 MPa, 420 K, 110 m/s, accelerated to the sonic point) | $A^*/A_1=0.4434$ by the area-ratio formula **and** by continuity ($\rho_1V_1/\rho^*V^*$): 0.428 is a misprint. $T^*=355.0$ K and $P^*=277.6$ kPa are right. |
+
+Smaller items (rounding, not errors): 9-95 printed 6488 kW vs 6484 kW ($\dot m$ with $T_1=313$ vs 313.15 K); 10-55 printed 2353 kJ/kg vs 2351 kJ/kg (table rounding); 12-72 printed 973 / 1.295 are *chart readings*, the Lee–Kesler functions give 976 / 1.30 (the tables give 1129 / 1.541).
+
+## Graded copies (2021 final)
+
+*Filled in with the exams (phase P6).*
+
+## Self-corrections made while building this site
+
+First-pass transcriptions of your handwriting that the page images corrected (listed so that the same slips are not made twice):
+
+- **4-9:** your result is 350.28 kJ, not 359.28 (the page's own numbers, $750(1.626445-1.15941)$, give 350.28).
+- **12-75:** the October sheet reads $\sqrt{2(73.8)(1000)}=384$ m/s, not ≈394; the 397.5 m/s belongs to the December re-solve (N7).
+- **11-60:** your quality after the first valve is 0.2765 (= 0.277), not 0.2265.
+- **9-136:** your fuel flow is 26 657/42 700 = 0.6243 kg/s, not 0.6253.
+
+<Examined>
+
+How to use this page: when your answer differs from a printed one, first check N1–N5 (the slips most likely to repeat: interpolation, wrong pressure table, $c_p$ versus $c_v$), then P1–P2 (printed errors), then the uncertain readings (U1–U7: nothing is wrong, but the right value is stated).
+
+</Examined>
