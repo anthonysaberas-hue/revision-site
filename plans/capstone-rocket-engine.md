@@ -45,3 +45,12 @@ Maximize Isp; maximize thrust-to-weight (minimize engine mass); maximize mission
 ## Variable budget (≈ 30 continuous + 2 discrete)
 Pc, O/F (341) · ε, Rt, bell fraction (430) · channel count, width, depth at 3 stations, liner thickness (346/321) · fuel and oxidizer line diameters, injector ΔP fraction (331) · tank pressure (240) · jacket thickness (321) · pump speed, shaft diameter, bearing span (393) · motor power, battery capacity (ECSE 461) · POGO accumulator volume, mount stiffness (315) · Kp, Ki, Kd (412) · sampling rate, filter cutoff (383) · surface roughness / build limit (360) · propellant mass / burn time (220). Discrete: propellant pair (CH4/LOX, RP-1/LOX), pump architecture (turbopump, electric).
 Constraints (~15): liner T ≤ 800 K, coolant ΔP ≤ 20 % Pc, injector ΔP ≥ 15 % Pc, no sea-level separation, stress/fatigue life, critical speeds and modes ±15 % from forcing, POGO margin, settling < 0.5 s and overshoot < 5 %, minimum printable wall/channel.
+
+## Working model (Anthony, 2026-10-20) — hands-on, Anthony in control
+The capstone is NOT delegated to subagents. Anthony builds it; Claude coaches.
+1. Anthony decides what each module must answer; Claude lays out options and trade-offs.
+2. Anthony derives the governing equations; Claude checks them and links the revision-site chapter where each comes from.
+3. Anthony writes the solver; Claude reviews, proposes tests, helps debug, and only writes code pieces when asked.
+4. Validation together: Anthony predicts first, then compare with an independent reference; disagreements are investigated, never tuned away.
+5. Anthony writes the page text; Claude edits.
+Every module page opens with a "What MECH xxx gives this engine" card (equations supplied, outputs, consumers); one coupling map (mental model) maintained as modules are added; a decision log in the repo owned by Anthony; Claude keeps a done/open/blocked checklist, Anthony sets order and scope.
