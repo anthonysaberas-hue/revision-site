@@ -1,0 +1,390 @@
+<p className="eyebrow">Practice final B · mock, not an official paper · format of the April 2021 final</p>
+
+# Practice final B (mock)
+
+<div className="lede">
+
+**Mock: this is not an official paper and none of these problems has been set by Prof. Habashi.** Same format as <Ex id="final-mock-a" /> and the April 2021 final (P1 jet engine 25 marks, P2 combustion 15, P3 equilibrium 10, all mandatory; **choose two** of P4, P5, P6 at 25 marks each), with a different set of topics that the 2021 paper did not test: a **turbofan with a bypass stream**, combustion of a **liquid fuel (ethanol)** with a heat-transfer question and an adiabatic flame temperature, **NO equilibrium with a van 't Hoff check**, a **cascade refrigeration system**, an **ideal-gas mixing and compression** problem and a **converging-diverging nozzle with the back pressure varied** (choking, shock in the nozzle). Every problem is solved in full below with numbers from the lib (checked in <code>exams.test.ts</code>); try each on paper first.
+
+</div>
+
+<ExamFormatFigure caption="Format of practice final B: P1-P3 (50 marks) mandatory; choose two of P4, P5, P6 (50 marks). All three optional problems are solved here." />
+
+<Problem id="B-P1" title="Problem 1 (25, mandatory): turbofan with a bypass ratio of 3.5 at 9000 m" tags="turbofan, bypass ratio, fan, two nozzles, thrust, TSFC">
+
+<Statement>
+
+*(Mock.)* A turbofan (diffuser, fan, core compressor, burner, one turbine that drives the fan and the core compressor, a **core** nozzle and a **bypass** nozzle, both convergent-divergent and ideal, expanding to ambient) flies at 230 m/s at 9000 m, where $T_1=229.65$ K and $P_1=30.74$ kPa. The core air flow is 8 kg/s and the **bypass ratio** is 3.5 (the bypass flow is 28 kg/s). The fan, which takes **all** the air, has a stagnation pressure ratio of 1.6 and $\eta_F=0.88$; the core compressor raises the pressure by a further ratio of 9 with $\eta_C=0.86$ and only the core flow passes through it. The turbine inlet temperature is 1400 K, $\eta_T=0.90$, and the fuel/air ratio is 0.021 (per kg of **core** air). Diffuser 100 %. Air: $c_p=1.005$, $k=1.4$; gas: $c_p=1.147$, $k=1.333$. All calculations on stagnation conditions; the burner stagnation pressure is constant; neglect the fuel mass in the turbine, count it in the core jet. Find (a) the flight Mach number (2), (b) the ram pressure ratio (2), (c) the fan power and the compressor power (5), (d) $T_{05}$ and $P_{05}$ (6), (e) the core and bypass jet velocities (4), (f) the net thrust and the share of it produced by the bypass (3), (g) the TSFC and the propulsive efficiency (3).
+
+</Statement>
+
+<Think>
+
+A turbojet chain with two changes: the **fan** works on all the air (so its work is multiplied by the *total* flow) and the **turbine** must supply fan plus compressor work: $\dot m_c\,w_T=(\dot m_c+\dot m_b)w_F+\dot m_cw_C$. The bypass stream leaves at the fan exit state (cold, slow), the core stream at the turbine exit state (hot, fast). Net thrust adds both streams' momentum minus the **total** inlet momentum.
+
+</Think>
+
+<Plan>
+
+Ram → fan ($T_{013}$, $P_{013}$, $w_F$) → core compressor ($T_{03}$, $w_C$, $P_{03}$) → turbine work balance ($T_{05}$, $P_{05}$) → two nozzles → thrust, TSFC, $\eta_p$.
+
+</Plan>
+
+<Steps>
+<Step title="1. (a), (b) Ram">
+
+$c_1=\sqrt{1.4(287)(229.65)}=303.8$ m/s, $Ma=\dfrac{230}{303.8}=\mathbf{0.7572}$. $T_{01}=229.65+\dfrac{230^2}{2000(1.005)}=255.97$ K, $\dfrac{P_{01}}{P_1}=\left(\dfrac{255.97}{229.65}\right)^{3.5}=\mathbf{1.462}$, $P_{01}=44.94$ kPa.
+
+</Step>
+<Step title="2. (c) Fan and compressor">
+
+Fan: $T_{013s}=255.97(1.6)^{0.2857}=292.8$ K, $w_F=\dfrac{1.005(292.8-255.97)}{0.88}=42.0$ kJ/kg, $T_{013}=255.97+\dfrac{42.0}{1.005}=297.8$ K, $P_{013}=1.6(44.94)=71.91$ kPa; $\dot W_F=(8+28)(42.0)=\mathbf{1512}$ kW. Compressor: $T_{03s}=297.8(9)^{0.2857}=557.9$ K, $w_C=\dfrac{1.005(557.9-297.8)}{0.86}=303.9$ kJ/kg, $T_{03}=297.8+\dfrac{303.9}{1.005}=600.2$ K, $P_{03}=9(71.91)=647.2$ kPa; $\dot W_C=8(303.9)=\mathbf{2431}$ kW.
+
+</Step>
+<Step title="3. (d) Turbine">
+
+$\dot W_T=\dot W_F+\dot W_C=1512+2431=3944$ kW, i.e. $w_T=493.0$ kJ/kg of core air: $1.147(1400-T_{05})=493.0\Rightarrow T_{05}=\mathbf{970.2}$ K. $T_{05s}=1400-\dfrac{429.8}{0.90}=922.4$ K; $P_{05}=647.2\left(\dfrac{922.4}{1400}\right)^{4.003}=\mathbf{121.8}$ kPa.
+
+</Step>
+<Step title="4. (e) Jets">
+
+Core: $P_{05}/P_1=3.96>1.85$ (a convergent nozzle would choke; here the C-D nozzle expands to ambient): $T_6=970.2\left(\dfrac{30.74}{121.8}\right)^{0.2498}=687.8$ K, $V_c=\sqrt{2000(1.147)(970.2-687.8)}=\mathbf{804.8}$ m/s. Bypass: $P_{013}/P_1=2.34>1.89$ so it also needs a C-D nozzle: $T_b=297.8\left(\dfrac{30.74}{71.91}\right)^{0.2857}=233.6$ K, $V_b=\sqrt{2000(1.005)(297.8-233.6)}=\mathbf{359.2}$ m/s.
+
+</Step>
+<Step title="5. (f), (g) Thrust, TSFC, efficiency">
+
+$F_c=8(1.021)(804.8)-8(230)=4734$ N; $F_b=28(359.2-230)=3617$ N; $F=\mathbf{8351}$ N, of which the **bypass supplies 43 %** (with 78 % of the air). $\mathrm{TSFC}=\dfrac{8(0.021)}{8351}=\mathbf{20.1}$ mg/(N·s). Propulsive efficiency: $\eta_p=\dfrac{FV}{\tfrac12[\dot m_c(1+f)V_c^2+\dot m_bV_b^2-\dot mV^2]}=\dfrac{8351(230)}{3.50\times10^6}=\mathbf{0.549}$.
+
+</Step>
+</Steps>
+
+<Answer>
+
+| a | b | c fan / compressor (kW) | d | e core / bypass (m/s) | f thrust | g TSFC, $\eta_p$ |
+|---|---|---|---|---|---|---|
+| 0.7572 | 1.462 | 1512 / 2431 | 970.2 K, 121.8 kPa | 804.8 / 359.2 | 8351 N (43 % bypass) | 20.1 mg/(N·s), 0.549 |
+
+</Answer>
+
+<RealWorld title="Why airliners are turbofans">
+
+The same core as a turbojet gives its thrust with a much slower jet when most of the air bypasses it: the mean jet velocity is about 460 m/s (twice the flight speed) instead of the core's 805 m/s (3.5 times), the propulsive efficiency rises from about 0.44 (core alone) to 0.55, and the fuel consumption per newton falls. A TSFC near 20 mg/(N·s) is typical of the early turbofans of the 1970s; the latest high-bypass engines reach about 15 mg/(N·s) at cruise (typical).
+
+</RealWorld>
+
+<Traps>
+
+- The **fan work uses the total flow** (36 kg/s), the compressor work only the core flow (8 kg/s); the turbine work equation is per kg of **core** air or in kW: do not mix the two.
+- Net thrust subtracts the momentum of **all** the incoming air: $\dot m_{total}V=36(230)$, not $\dot m_{core}V$.
+- Check each nozzle's choke condition ($P_0/P_1$ against 1.85 for the gas, 1.89 for air); a convergent bypass nozzle here would choke at $P_{013}/P_1=2.34$ and add a pressure term.
+
+</Traps>
+
+<Source>Original mock problem · Habashi's slides (turbofan thrust, propulsive efficiency) · lib helpers in <code>exams.test.ts</code> (<code>turbofan</code>) · <Ch slug="gas-cycles" /></Source>
+
+</Problem>
+
+<Problem id="B-P2" title="Problem 2 (15, mandatory): liquid ethanol burned with 130 % theoretical air" tags="liquid fuel, hf liquid, heat transfer, AFT, dew point">
+
+<Statement>
+
+*(Mock.)* Liquid ethanol ($\mathrm{C_2H_5OH}$, $\bar h_f=-277\,690$ kJ/kmol, $M=46.07$ kg/kmol) at 25 °C is burned in a steady-flow combustor with **130 % theoretical air** at 25 °C and 1 atm; combustion is complete. (a) Write the balanced equation, the air/fuel mass ratio and the dew-point temperature of the products at 101.325 kPa (5). (b) The products leave at 800 K: find the heat transfer per kmol of fuel and for a fuel flow of 0.020 kg/s (5). (c) Find the adiabatic flame temperature, with at most two trials (5).
+
+</Statement>
+
+<Think>
+
+Liquid fuel: use its own formation enthalpy ($-277\,690$, already the liquid value), not the vapor's. (a) $a_{th}=2+6/4-1/2=3$, $a=1.3(3)=3.9$. (b) $Q_{out}=H_R-H_P$ with the products at 800 K. (c) $H_P=H_R$ with $Q=0$.
+
+</Think>
+
+<Steps>
+<Step title="1. (a) Balance, AF, dew point">
+
+$\mathrm{C_2H_5OH(l)}+3.9(\mathrm{O_2}+3.76\mathrm{N_2})\to2\mathrm{CO_2}+3\mathrm{H_2O}+0.9\mathrm{O_2}+14.66\mathrm{N_2}$ (O: $1+7.8=4+3+1.8$ ✓). $\mathrm{AF}=\dfrac{3.9(4.76)(28.97)}{46.07}=\mathbf{11.67}$ kg/kg. $N_{prod}=20.56$, $y_{H_2O}=\dfrac{3}{20.56}=0.1459$, $P_v=14.8$ kPa, $T_{dp}=\mathbf{53.7}$ °C.
+
+</Step>
+<Step title="2. (b) Heat transfer at 800 K">
+
+$H_R=-277\,690$ kJ/kmol (everything else at 25 °C). <T>A-18 to A-23 at 800 K (h̄ in kJ/kmol): CO₂ 32 179, H₂O 27 896, O₂ 24 523, N₂ 23 714</T>; $H_P=2(-393\,520+32\,179-9364)+3(-241\,820+27\,896-9904)+0.9(24\,523-8682)+14.66(23\,714-8669)\approx-1.178\times10^6$ kJ/kmol. $Q_{out}=H_R-H_P=\mathbf{9.00\times10^5}$ kJ/kmol of fuel $=\dfrac{900\,312}{46.07}=19\,540$ kJ/kg; for 0.020 kg/s: $\dot Q_{out}=\mathbf{390.9}$ kW.
+
+</Step>
+<Step title="3. (c) Adiabatic flame temperature">
+
+Target (table form): $\sum N_P\bar h_P(T)=H_R-\sum N_P\bar h_f+\sum N_P\bar h^\circ=-277\,690+1\,512\,500+183\,376=\mathbf{1.418\times10^6}$ kJ. At 1900 K: <T>h̄ = 94 680 (CO₂), 77 828 (H₂O), 64 077 (O₂), 61 169 (N₂)</T> gives $2(94\,680)+3(77\,828)+0.9(64\,077)+14.66(61\,169)=1.377\times10^6$ (below). At 2000 K: <T>100 709, 82 958, 67 850, 64 760</T> gives $1.461\times10^6$ (above). $T_{ad}=1900+100\dfrac{1.418-1.377}{1.461-1.377}=\mathbf{1949}$ K (exact 1948.8 K).
+
+</Step>
+</Steps>
+
+<Answer>
+
+(a) $\mathrm{AF}=11.67$ kg/kg; $T_{dp}=53.7$ °C. (b) $Q_{out}=9.00\times10^5$ kJ/kmol of ethanol (19.5 MJ/kg), 391 kW at 0.02 kg/s. (c) $T_{ad}\approx1949$ K (with the air preheated to 600 K: 2147 K).
+
+</Answer>
+
+<RealWorld title="Ethanol as a fuel">
+
+Ethanol's lower heating value (about 26.8 MJ/kg) is about 60 % of gasoline's, which is why an ethanol engine burns roughly 1.6 times the fuel mass for the same energy; with 130 % theoretical air and no preheat the flame of this problem is at 1950 K (typical).
+
+</RealWorld>
+
+<Traps>
+
+- The fuel is a **liquid**: its $\bar h_f$ is −277 690 (the vapor would be −235 310); the 42 380 kJ/kmol difference is $Mh_{fg}=46.07(919)=42\,340$ kJ/kmol (to rounding).
+- $a=1.3a_{th}$ with $a_{th}=3$ (the fuel's own oxygen reduces the requirement): not 3.5.
+- At 800 K the water is vapor, so use $\bar h_f(\mathrm{H_2O},g)=-241\,820$.
+
+</Traps>
+
+<Source>Original mock problem · lib <code>burn</code>, <code>dewPoint</code>, <code>steadyQ</code>, <code>aft</code> · <Ch slug="combustion" /></Source>
+
+</Problem>
+
+<Problem id="B-P3" title="Problem 3 (10, mandatory): nitric oxide in heated air, van 't Hoff and pressure" tags="NO, Kp, van't Hoff, delta nu = 0, pressure independence">
+
+<Statement>
+
+*(Mock.)* Air (3.76 kmol N₂ per kmol O₂) is heated to 3000 K at 1 atm. Assume the only reaction is $\mathrm{N_2+O_2\rightleftharpoons2NO}$ (<T>A-28: ln K_p = −2.10 at 3000 K and −2.83 at 2500 K for ½N₂ + ½O₂ ⇌ NO</T>). (a) Find the mole fraction of NO at equilibrium, and say whether it changes at 5 atm (5). (b) Estimate the enthalpy of reaction from the two $K_p$ values and compare with the formation enthalpy of NO (3). (c) State one effect of (i) raising the temperature to 3500 K and (ii) adding inert argon at constant $T$ and $P$ on the NO fraction (2).
+
+</Statement>
+
+<Think>
+
+The reaction **as asked** is $\mathrm{N_2+O_2\to2NO}$, so $K_p=(e^{\ln K_p})^2$. With $x$ kmol of NO formed: N₂ $3.76-x/2$, O₂ $1-x/2$, NO $x$; $\Delta\nu=0$, so $P$ drops out.
+
+</Think>
+
+<Steps>
+<Step title="1. (a) Composition">
+
+$K_p=e^{2(-2.1035)}=e^{-4.207}=0.01490=\dfrac{x^2}{(3.76-x/2)(1-x/2)}$. Trial $x=0.22$: $\dfrac{0.0484}{(3.65)(0.89)}=0.0149$ ✓. Composition: $3.650\,\mathrm{N_2}+0.890\,\mathrm{O_2}+0.220\,\mathrm{NO}$ ($N_{total}=4.76$): $y_{NO}=\dfrac{0.2199}{4.76}=\mathbf{0.0462}$ (4.6 %). At 5 atm the **same**: $\Delta\nu=2-1-1=0$, the pressure does not enter.
+
+</Step>
+<Step title="2. (b) van 't Hoff">
+
+$\ln\dfrac{K_2}{K_1}=\dfrac{\bar h_R}{R_u}\left(\dfrac1{T_1}-\dfrac1{T_2}\right)$ with $T_1=2500$, $T_2=3000$ (for the half-form, per kmol of NO): $\bar h_R=\dfrac{8.314(-2.1035+2.8262)}{1/2500-1/3000}=\dfrac{8.314(0.7227)}{6.667\times10^{-5}}=\mathbf{90\,100}$ kJ/kmol, against $\bar h_f(\mathrm{NO})=90\,290$ at 298 K: within 0.2 % (the enthalpy of reaction hardly varies with $T$ here). Positive: the reaction is **endothermic**, so $K_p$ rises with $T$.
+
+</Step>
+<Step title="3. (c) Effects">
+
+(i) At 3500 K $K_p$ is larger (endothermic): more NO. (ii) An inert at constant $T$ and $P$ changes $N_{total}$ but $\Delta\nu=0$, so $(P/N_{total})^0=1$: **no effect** on the NO amounts (the *mole fraction* falls only because the total moles rise).
+
+</Step>
+</Steps>
+
+<Answer>
+
+(a) $y_{NO}=0.046$, the same at 5 atm. (b) $\bar h_R\approx90\,100$ kJ/kmol (endothermic), matching $\bar h_f(\mathrm{NO})=90\,290$. (c) More NO at 3500 K; an inert has no effect on the amount of NO.
+
+</Answer>
+
+<RealWorld title="Thermal NO in engines">
+
+The 4.6 % equilibrium at 3000 K is far above the few hundred ppm found in exhaust, because the reaction is **slow** and the gas cools too fast to reach equilibrium (it is "frozen" at the peak value); the strong rise of $K_p$ with $T$ is why lowering the peak flame temperature (exhaust-gas recirculation, lean burn) is the main NO control (typical).
+
+</RealWorld>
+
+<Traps>
+
+- The table value is for **½N₂ + ½O₂ → NO**: square it for N₂ + O₂ → 2NO.
+- $\Delta\nu=0$: the pressure and any inert drop out of the relation for the *amounts*.
+- van 't Hoff with the right $T$ in kelvin and $R_u=8.314$ kJ/kmol·K; $\bar h_R$ is per kmol of the reaction **as written**.
+
+</Traps>
+
+<Source>Original mock problem · lib <code>equilibrium</code>, <code>lnKpAt</code>, <code>vantHoff</code> · tutorial <Ex id="tutorial-16" />, 16-8C · <Ch slug="equilibrium" /></Source>
+
+</Problem>
+
+<Problem id="B-P4" title="Problem 4 (25, choice): cascade refrigeration with R-134a in both loops, 40 kW at −30 °C" tags="cascade, R-134a, COP, heat exchanger, single-stage comparison">
+
+<Statement>
+
+*(Mock.)* A two-loop cascade refrigerator uses R-134a in both loops. The low-temperature loop has its evaporator at −30 °C (saturated vapor leaving) and rejects heat at **400 kPa** into the evaporator of the high-temperature loop (the heat exchanger is adiabatic to the surroundings and ideal: both streams at 400 kPa, saturated); the high-temperature loop condenses at 1200 kPa. Both compressors are isentropic and both condensers deliver saturated liquid. The cooling load is 40 kW. (a) Tabulate the states of both loops (6). (b) Find the two mass flow rates (5). (c) Find the compressor powers and the COP (7). (d) Compare with a single-stage cycle between −30 °C and 1200 kPa (7).
+
+</Statement>
+
+<Think>
+
+Two ideal cycles tied together by the heat exchanger: $\dot m_H(h_5-h_8)=\dot m_L(h_2-h_3)$ (the heat the lower loop rejects is the heat the upper loop absorbs). Unknowns in order: $\dot m_L$ from the load, then $\dot m_H$, then the powers.
+
+</Think>
+
+<Steps>
+<Step title="1. (a) States (R-134a)">
+
+Lower loop: <T>1: sat. vapor, −30 °C (84.4 kPa): h₁ = 232.2; 2: isentropic to 400 kPa: h₂ = 263.8 (17.8 °C); 3: sat. liquid at 400 kPa (8.9 °C): h₃ = 64.0; 4: h₄ = h₃ (throttle to 84.4 kPa)</T>. Upper loop: <T>5: sat. vapor at 400 kPa: h₅ = 255.6; 6: isentropic to 1200 kPa: h₆ = 278.4 (50.1 °C); 7: sat. liquid at 1200 kPa (46.3 °C): h₇ = 117.8; 8: h₈ = h₇</T>.
+
+</Step>
+<Step title="2. (b) Mass flows">
+
+$\dot m_L=\dfrac{40}{h_1-h_4}=\dfrac{40}{232.2-64.0}=\mathbf{0.2378}$ kg/s. Heat rejected by the lower loop: $\dot m_L(h_2-h_3)=0.2378(263.8-64.0)=47.53$ kW. $\dot m_H=\dfrac{47.53}{h_5-h_8}=\dfrac{47.53}{255.6-117.8}=\mathbf{0.3450}$ kg/s.
+
+</Step>
+<Step title="3. (c) Power and COP">
+
+$\dot W_L=0.2378(263.8-232.2)=7.53$ kW; $\dot W_H=0.3450(278.4-255.6)=7.86$ kW; $\dot W=\mathbf{15.39}$ kW. $COP=\dfrac{40}{15.39}=\mathbf{2.60}$. Check: heat rejected to the surroundings $=0.3450(278.4-117.8)=55.39$ kW $=40+15.39$ ✓.
+
+</Step>
+<Step title="4. (d) Single stage">
+
+One loop from 84.4 kPa to 1200 kPa: $h_2=287.8$ (isentropic compression to 1200 kPa; $T_2=58.4$ °C), $h_3=h_f(1200)=117.8$: $q_L=232.2-117.8=114.4$, $w=55.6$ kJ/kg, $\dot m=0.3497$ kg/s, $\dot W=\mathbf{19.46}$ kW, $COP=\mathbf{2.06}$.
+
+</Step>
+</Steps>
+
+<Answer>
+
+(b) $\dot m_L=0.238$ kg/s, $\dot m_H=0.345$ kg/s. (c) $\dot W=15.4$ kW, $COP=2.60$. (d) Single stage: 19.5 kW, $COP=2.06$: the cascade needs **21 % less power** for the same 40 kW, and its two compressors work at pressure ratios of 4.7 and 3.0 instead of 14.2.
+
+</Answer>
+
+<RealWorld title="Low-temperature freezers and supermarket racks">
+
+A −30 °C freezer case rejecting heat at 47 °C condensing has a lift of 76 K; one compressor would run at a pressure ratio of 14, with poor volumetric efficiency and a hot discharge (58 °C by isentropic compression, more in practice). Cascade (or two-stage) systems are the standard for −30 to −80 °C (typical), and the two loops can use different refrigerants, each suited to its range (typically NH₃ above and CO₂ below).
+
+</RealWorld>
+
+<Traps>
+
+- The lower loop's condenser exit (state 3) is saturated liquid at **400 kPa**, not at 1200 kPa.
+- $\dot m_H\ne\dot m_L$; the work of each compressor uses its own flow.
+- The COP uses the **load** (40 kW) over the *sum* of the compressor powers.
+
+</Traps>
+
+<Source>Original mock problem · lib <code>vcr</code> (each loop) and <code>flashTwoStage</code> cross-check · <Ch slug="refrigeration" /></Source>
+
+</Problem>
+
+<Problem id="B-P5" title="Problem 5 (25, choice): mixing two ideal-gas streams, then isentropic compression of the mixture" tags="ideal-gas mixtures, mixing, entropy generation, isentropic compression, mixture k">
+
+<Statement>
+
+*(Mock.)* Two streams enter an adiabatic mixing chamber at a total pressure of 200 kPa and leave as one: 0.6 kg/s of N₂ at 500 K and 0.4 kg/s of CO₂ at 300 K. Use constant specific heats ($c_p$, $c_v$ at 300 K: N₂ 1.039 and 0.743; CO₂ 0.846 and 0.657 kJ/kg·K; $M$ = 28.013 and 44.01 kg/kmol). (a) Find the mole fractions, $M$, $R$, $c_p$ and $k$ of the mixture (7). (b) Find the temperature of the mixture leaving the chamber (4). (c) Find the rate of entropy generation (8). (d) The mixture is then compressed isentropically to 1 MPa in a steady-flow compressor: find the exit temperature and the power per kg/s (6).
+
+</Statement>
+
+<Think>
+
+Gibbs-Dalton: per-kilogram properties of the mixture use **mass fractions**; mole fractions $y_i$ are needed for the partial pressures in the entropy. The mixing is adiabatic at constant total pressure, so the energy balance gives $T_m$; the entropy generation has two contributions, the temperature change of each stream and the **mixing** (each gas expands from $P$ to its partial pressure $y_iP$).
+
+</Think>
+
+<Steps>
+<Step title="1. (a) Mixture properties">
+
+Moles per second: $\dfrac{0.6}{28.013}=0.02142$ and $\dfrac{0.4}{44.01}=0.009089$ kmol/s, so $y_{N_2}=\mathbf{0.7021}$, $y_{CO_2}=0.2979$. $M=0.7021(28.013)+0.2979(44.01)=\mathbf{32.78}$ kg/kmol, $R=\dfrac{8.314}{32.78}=0.2536$ kJ/kg·K. Mass fractions 0.6 and 0.4: $c_p=0.6(1.039)+0.4(0.846)=\mathbf{0.9618}$, $c_v=0.6(0.743)+0.4(0.657)=0.7086$, $k=\dfrac{0.9618}{0.7086}=\mathbf{1.357}$.
+
+</Step>
+<Step title="2. (b) Mixing temperature">
+
+$\dot m_1c_{p1}(T_m-T_1)+\dot m_2c_{p2}(T_m-T_2)=0$: $T_m=\dfrac{0.6(1.039)(500)+0.4(0.846)(300)}{0.6(1.039)+0.4(0.846)}=\dfrac{413.2}{0.9618}=\mathbf{429.6}$ K.
+
+</Step>
+<Step title="3. (c) Entropy generation">
+
+$\dot S_{gen}=\sum\dot m_i\left[c_{p,i}\ln\dfrac{T_m}{T_i}-R_i\ln\dfrac{y_iP}{P}\right]$ with $R_{N_2}=0.2968$, $R_{CO_2}=0.1889$. Temperature part: $0.6(1.039)\ln\dfrac{429.6}{500}+0.4(0.846)\ln\dfrac{429.6}{300}=-0.0946+0.1215=0.0270$ kW/K. Mixing part: $-[0.6(0.2968)\ln0.7021+0.4(0.1889)\ln0.2979]=0.0629+0.0915=0.1545$ kW/K. $\dot S_{gen}=\mathbf{0.1815}$ kW/K $>0$ ✓: **85 % of it is the mixing itself**.
+
+</Step>
+<Step title="4. (d) Isentropic compression of the mixture">
+
+$T_2=T_m\left(\dfrac{1000}{200}\right)^{(k-1)/k}=429.6(5)^{0.2630}=\mathbf{656.3}$ K; $w=c_p(T_2-T_m)=0.9618(656.3-429.6)=\mathbf{218.0}$ kJ per kg of mixture, i.e. 218 kW for the 1 kg/s flow.
+
+</Step>
+</Steps>
+
+<Answer>
+
+(a) $y_{N_2}=0.702$, $y_{CO_2}=0.298$, $M=32.78$, $R=0.2536$, $c_p=0.9618$, $k=1.357$. (b) $T_m=429.6$ K. (c) $\dot S_{gen}=0.1815$ kW/K (0.0270 thermal + 0.1545 mixing). (d) $T_2=656.3$ K, 218 kW for 1 kg/s.
+
+</Answer>
+
+<RealWorld title="Flue gas in a compressor or a blower">
+
+Mixing a hot nitrogen-rich stream with a cooler CO₂-rich one is the situation of an exhaust-gas-recirculation loop or of a flue-gas / air mix before a fan; the mixture's $k$ (1.357, lower than air's 1.40) lowers the exit temperature of a given pressure ratio, and this is why $k$ must be recomputed for the mixture (typical).
+
+</RealWorld>
+
+<Traps>
+
+- **Mass fractions** for mixture $c_p$ and $c_v$ (per kg); **mole fractions** for $M$ and for partial pressures.
+- The entropy-generation formula uses the *partial* pressure $y_iP$ (the Gibbs-Dalton rule: $s_i$ at its own partial pressure); omitting the mixing term gives 0.027 instead of 0.1815.
+- Use $k_m=c_{p,m}/c_{v,m}$ of the mixture in the isentropic relation, not the value for either component.
+
+</Traps>
+
+<Source>Original mock problem · lib <code>mixtureFromMass</code>, <code>GASES</code> · <Ch slug="mixtures" />, <Asg n="06" /></Source>
+
+</Problem>
+
+<Problem id="B-P6" title="Problem 6 (25, choice): a converging-diverging nozzle with the back pressure varied" tags="C-D nozzle, choking, back pressure, normal shock, critical pressures">
+
+<Statement>
+
+*(Mock.)* Air ($k=1.4$, $R=0.287$) flows from a reservoir at 800 kPa and 400 K through a converging-diverging nozzle with a throat area of 5 cm² and an exit-to-throat area ratio of 2. (a) For the **design** (shock-free, supersonic) flow find the exit Mach number, pressure, temperature, velocity and the mass flow rate (7). (b) Find the three back pressures that mark the regimes: the **first critical** value (the throat just sonic, subsonic flow everywhere else), the **design** value, and the value for which a **normal shock sits at the exit plane** (9). (c) For a back pressure of 600 kPa state whether the nozzle is choked, the mass flow rate, and where the shock is (9).
+
+</Statement>
+
+<Think>
+
+For a given area ratio the isentropic relation $A/A^*$ has **two** solutions at the exit: a subsonic one (first critical back pressure) and a supersonic one (design). For back pressures between them the throat is sonic, so the mass flow is the same, and the pressure is recovered through a normal shock in the divergent part. Habashi's remark that students mix up static and stagnation properties applies: every pressure ratio below is **static over stagnation**.
+
+</Think>
+
+<Plan>
+
+$A/A^*=2$ → $Ma_e$ (two roots) → $P/P_0$ → critical pressures → shock at the exit ($P_2/P_1$) → shock inside: find the area ratio where the shock must sit.
+
+</Plan>
+
+<Steps>
+<Step title="1. (a) Design flow">
+
+$\dfrac{A}{A^*}=2$ on the supersonic branch: $Ma_e=\mathbf{2.197}$. $\dfrac{P_0}{P}=(1+0.2(2.197)^2)^{3.5}=10.65$, so $P_e=\dfrac{800}{10.65}=\mathbf{75.1}$ kPa; $T_e=\dfrac{400}{1+0.2(2.197)^2}=\mathbf{203.5}$ K; $V_e=2.197\sqrt{1.4(287)(203.5)}=\mathbf{628.3}$ m/s. Choked flow: $\dot m=A_tP_0\sqrt{\dfrac{k}{RT_0}}\left(\dfrac{2}{k+1}\right)^{3}=5\times10^{-4}(800\,000)\sqrt{\dfrac{1.4}{287(400)}}(0.5787)=\mathbf{0.808}$ kg/s. (Throat: $T^*=333.3$ K, $P^*=422.6$ kPa, $V^*=366$ m/s.)
+
+</Step>
+<Step title="2. (b) The three back pressures">
+
+*First critical:* subsonic branch, $Ma_e=0.3059$: $P_{b1}=\dfrac{800}{(1+0.2(0.3059)^2)^{3.5}}=\mathbf{749.7}$ kPa. *Design:* $\mathbf{75.1}$ kPa. *Shock at the exit plane:* the shock acts on $Ma_1=2.197$: $\dfrac{P_2}{P_1}=1+\dfrac{2k}{k+1}(Ma_1^2-1)=5.466$, so $P_{b2}=75.1(5.466)=\mathbf{410.7}$ kPa (downstream Mach $0.547$).
+
+</Step>
+<Step title="3. (c) Back pressure 600 kPa">
+
+$410.7<600<749.7$: the nozzle is **choked** (the throat is sonic), the mass flow is **0.808 kg/s** (the same as for any back pressure below 749.7 kPa), and a **normal shock stands inside the divergent section**. Locating it: a shock at area ratio $A_s/A^*$ (upstream Mach $Ma_1$) lowers the stagnation pressure by $r=P_{02}/P_{01}$ and raises the sonic area to $A^*_2=A^*/r$, so the subsonic flow that follows reaches the exit with $A_e/A^*_2=2r$; that gives the exit Mach number and $P_e=rP_0/(P_0/P)_{Ma_e}$. Solving $P_e=600$ kPa numerically gives $A_s/A^*=\mathbf{1.40}$ ($Ma_1=1.763$ before the shock, $P_{02}/P_{01}=0.829$, exit Mach 0.380).
+
+</Step>
+</Steps>
+
+<NozzleRegimesFigure />
+
+<Answer>
+
+(a) $Ma_e=2.197$, $P_e=75.1$ kPa, $T_e=203.5$ K, $V_e=628$ m/s, $\dot m=0.808$ kg/s. (b) 749.7 kPa (first critical), 75.1 kPa (design), 410.7 kPa (shock at the exit). (c) At 600 kPa: choked, 0.808 kg/s, normal shock at $A/A^*=1.40$ inside the divergent section (the flow leaves subsonically at 600 kPa).
+
+</Answer>
+
+<RealWorld title="Rocket nozzles and the altitude">
+
+A rocket nozzle is designed for one back pressure (the design value, here 75 kPa, about 0.74 atm: low-altitude flight); at sea level (101 kPa) it is slightly over-expanded and at higher altitude under-expanded, but the throat stays choked throughout, so the mass flow and the chamber conditions are unaffected. Over-expansion by a large margin (the back pressure above 410 kPa here) would put a shock *inside* the bell and can damage it (typical).
+
+</RealWorld>
+
+<Traps>
+
+- Two roots of $A/A^*=2$: take the **supersonic** one for the design pressure, the subsonic one for the first critical pressure.
+- All the pressure ratios are **static over stagnation**; do not read $P/P_0$ off the table as a stagnation ratio of the jet.
+- For every back pressure below the first critical value the mass flow is the same maximum: the throat does not "see" the back pressure.
+- A shock *inside* the nozzle lowers the stagnation pressure ($P_{02}/P_{01}<1$): the exit pressure can no longer be computed from $P_0$ alone.
+
+</Traps>
+
+<Source>Original mock problem · lib <code>machFromAreaRatio</code>, <code>P0_P</code>, <code>areaRatio</code> · helper functions for the normal shock in <code>exams.test.ts</code> · <Ch slug="compressible" />, <Ex id="tutorial-17" /></Source>
+
+</Problem>
+
+<Examined>
+
+**Debrief for practice final B.** The jet-engine problem is the one that needs care in *which flow multiplies which work* (fan on all the air, compressor on the core only). The ethanol problem tests $\bar h_f$ of a liquid and the two-trial AFT; the NO problem is $\Delta\nu=0$ and van 't Hoff in ten minutes. Of the three optional problems, the cascade is mostly table lookups, the mixing problem is Gibbs-Dalton and an entropy balance, and the nozzle is the one with the most concepts. Topic map: turbofan → chapter 9; ethanol → 15; NO → 16; cascade → 11; mixtures → 13; nozzle → 17. Compare with the real paper, <Ex id="final-2021" />, and with <Ex id="final-mock-a" />.
+
+</Examined>

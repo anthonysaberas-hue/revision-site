@@ -684,6 +684,17 @@ describe('mock B', () => {
     near(r.Fb, 3617.3, 1e-3);
     near(r.F, 8351, 1e-3);
     near(r.TSFC * 1e6, 20.12, 2e-3);
+    near(r.Fb / r.F, 0.433, 3e-3);
+    near(r.mb / r.mt, 0.778, 2e-3);
+    near((r.F * 230) / (0.5 * (8 * 1.021 * r.Vc ** 2 + r.mb * r.Vb ** 2 - r.mt * 230 ** 2)), 0.549, 2e-3);
+    near((2 * 230) / (230 + r.Vc), 0.444, 2e-2);
+    near((8 * 1.021 * r.Vc + r.mb * r.Vb) / (8 * 1.021 + r.mb), 459, 2e-2);
+    near(r.P013 / at9.P, 2.34, 2e-3);
+    expect(r.P013 / at9.P).toBeGreaterThan(1 / critical(1.4).P);
+    near(r.P01 / at9.P, 1.462, 1e-3);
+    near(r.Wneed - 36 * r.wf - 8 * r.wcc, 0, 1e-9);
+    near(36 * r.wf, 1512, 1e-3);
+    near(8 * r.wcc, 2431, 1e-3);
     // propulsive efficiency: thrust power / rate of kinetic-energy increase
     const dke = 0.5 * (8 * 1.021 * r.Vc ** 2 + r.mb * r.Vb ** 2 - r.mt * 230 ** 2);
     expect((r.F * 230) / dke).toBeGreaterThan(0.5);
@@ -701,6 +712,24 @@ describe('mock B', () => {
     near(steadyQ({ ...o, Tprod: 298.15 }), 1234810, 1e-3);
     near(aft(o), 1948.8, 1e-3);
     near(aft({ ...o, Tair: 600 }), 2146.9, 1e-3);
+    // heat at 800 K, per kg, per 0.02 kg/s
+    near(Hprod(b.products, 800), -1.178e6, 1e-3);
+    near(900312 / 46.069, 19543, 1e-3);
+    near((900312 / 46.069) * 0.02, 390.9, 1e-3);
+    near(46.069 * 919, 42340, 1e-3);
+    near(-235310 - -277690, 42380, 1e-9);
+    // two-trial table method
+    const HR = Hreact(o);
+    const target = HR + 2 * 393520 + 3 * 241820 + (2 * 9364 + 3 * 9904 + 0.9 * 8682 + 14.664 * 8669);
+    near(target, 1.418e6, 1e-3);
+    const sum = (h: number[]) => 2 * h[0] + 3 * h[1] + 0.9 * h[2] + 14.664 * h[3];
+    const s1 = sum([94680, 77828, 64077, 61169]);
+    const s2 = sum([100709, 82958, 67850, 64760]);
+    near(s1, 1.377e6, 1e-3);
+    near(s2, 1.461e6, 1e-3);
+    near(1900 + (100 * (target - s1)) / (s2 - s1), 1949, 1e-3);
+    near((3.9 * 4.76 * 28.97) / 46.069, 11.67, 1e-3);
+    near((3 / 20.564) * 101.325, 14.8, 5e-3);
   });
   it('P3 NO in air: independent of P; van t Hoff', () => {
     const lnK3000 = lnKpAt(LN_NO, 3000);
@@ -742,6 +771,13 @@ describe('mock B', () => {
     near(S.W, 19.46, 1e-3);
     near(S.COPR, 2.056, 1e-3);
     near(S.states[2].T, 58.35, 1e-3);
+    near(S.states[2].h, 287.8, 1e-3);
+    near(S.states[2].h - S.states[1].h, 55.6, 2e-3);
+    near(S.mdot, 0.3497, 1e-3);
+    near(1 - (L.W + H.W) / S.W, 0.209, 1e-2);
+    near(1200 / PL, 14.2, 2e-3);
+    near(400 / PL, 4.74, 2e-3);
+    near(r134a.Tsat(1200), 46.3, 3e-3);
     near(flashTwoStage({ PH: 1200, Pm: 400, PL, QL: 40 }).COP, 2.60, 2e-3);
   });
   it('P5 mixing 0.6 kg/s N2 at 500 K with 0.4 kg/s CO2 at 300 K, then isentropic compression', () => {
@@ -760,6 +796,13 @@ describe('mock B', () => {
     near(sT, 0.02698, 2e-3);
     near(sM, 0.15449, 2e-3);
     near(sT + sM, 0.1815, 2e-3);
+    near(0.6 * N2.cp * Math.log(Tm / 500), -0.0946, 5e-3);
+    near(0.4 * CO2.cp * Math.log(Tm / 300), 0.1215, 5e-3);
+    near(sM / (sT + sM), 0.85, 5e-3);
+    near(0.6 / 28.013, 0.02142, 2e-3);
+    near(0.4 / 44.01, 0.009089, 2e-3);
+    near(Ru / 28.013, 0.2968, 1e-3);
+    near(Ru / 44.01, 0.1889, 1e-3);
     const T2 = Tm * Math.pow(5, (mix.k - 1) / mix.k);
     near(T2, 656.3, 1e-3);
     near(1 * mix.cp * (T2 - Tm), 218.0, 2e-3);
@@ -786,6 +829,30 @@ describe('mock B', () => {
     // choked mass flow is the same for every back pressure below the first critical value
     near(areaRatio(Mex, k), 2, 1e-9);
     near(areaRatio(Msub, k), 2, 1e-9);
+    // normal shock inside the divergent part for a back pressure of 600 kPa
+    const r0 = (M1: number) => Math.pow(((k + 1) * M1 * M1 / 2) / (1 + ((k - 1) / 2) * M1 * M1), k / (k - 1)) * Math.pow(1 / (((2 * k) / (k + 1)) * M1 * M1 - (k - 1) / (k + 1)), 1 / (k - 1));
+    const Pexit = (a: number) => {
+      const M1 = machFromAreaRatio(a, k, 'sup');
+      const r = r0(M1);
+      const Me = machFromAreaRatio(2 * r, k, 'sub');
+      return { Pe: (800 * r) / P0_P(Me, k), M1, r, Me };
+    };
+    let lo = 1.0001;
+    let hi = 2;
+    for (let i = 0; i < 100; i++) {
+      const m = (lo + hi) / 2;
+      if (Pexit(m).Pe > 600) lo = m;
+      else hi = m;
+    }
+    near(lo, 1.40, 2e-3);
+    near(Pexit(lo).M1, 1.763, 2e-3);
+    near(Pexit(lo).r, 0.829, 2e-3);
+    near(Pexit(lo).Me, 0.380, 3e-3);
+    near(Pexit(2).Pe, Pdes * sh, 1e-3); // shock at the exit plane
+    near(r0(Mex), 0.6294, 1e-3);
+    near(Math.pow(1 + 0.2 * Mex * Mex, 3.5), 10.65, 1e-3);
+    near(Math.pow(1 + 0.2 * Msub * Msub, 3.5), 800 / 749.7, 1e-3);
+    near(soundSpeed(400 * critical(k).T, 0.287, k), 366.0, 1e-3);
     // throat: T* and P*
     near(400 * critical(k).T, 333.3, 1e-3);
     near(800 * critical(k).P, 422.6, 1e-3);
