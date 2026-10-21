@@ -1,0 +1,399 @@
+<p className="eyebrow">Practice final A · mock, not an official paper · format of the April 2021 final</p>
+
+# Practice final A (mock)
+
+<div className="lede">
+
+**Mock: this is not an official paper and none of these problems has been set by Prof. Habashi.** It is written in the format of the <Ex id="final-2021">April 2021 final</Ex> (P1 jet engine 25 marks, P2 combustion 15, P3 equilibrium and concepts 10, all mandatory; then **choose two** of P4, P5 and P6 at 25 marks each) and it deliberately covers what that paper did not: a **turboprop with the equivalent shaft power**, an adiabatic flame temperature of **propane with hot air**, **CO₂ dissociation in a flame**, a **reheat Rankine cycle with real turbine and pump**, a **cooling tower** and a **real-gas mixture by Kay's rule**. Every problem is solved in full below with numbers from the lib (checked in <code>exams.test.ts</code>), but try each on paper first, with a clock. A few original features are labelled where they are my choice (the definition of ESHP, the exit pressure of the power turbine). The companion is <Ex id="final-mock-b" />.
+
+</div>
+
+<ExamFormatFigure caption="Format of practice final A: P1-P3 (50 marks) mandatory; choose two of P4, P5, P6 (50 marks). The solutions to all three optional problems are given so you can pick your own best two." />
+
+<Callout kind="note" title="Rules of the mock">
+
+Tables: steam (A-4 to A-6), air (A-17), ideal-gas molar tables (A-18 to A-26), $K_p$ (A-28), standard atmosphere (A-16), generalized charts (A-29, A-30). Closed book except the formula sheet. Time: 25 + 15 + 10 marks are about 50 minutes at 1 mark per minute; then 25 minutes for each of the two chosen problems, and 20 minutes to read. **If you hand in all three of P4–P6, only the best two count.**
+
+</Callout>
+
+<Problem id="A-P1" title="Problem 1 (25, mandatory): turboprop engine at 6000 m, with the equivalent shaft power" tags="turboprop, ESHP, ESFC, free power turbine, stagnation">
+
+<Statement>
+
+*(Mock.)* A turboprop (diffuser, compressor, burner, a **gas-generator turbine** that drives only the compressor, a **free power turbine** that drives the propeller through a lossless gearbox, and a convergent nozzle) flies at 150 m/s at 6000 m, where $T_1=249.15$ K and $P_1=47.18$ kPa. The air flow is 3.0 kg/s; the compressor stagnation pressure ratio is 11; the turbine inlet stagnation temperature is 1250 K and the fuel/air ratio is 0.0175. Efficiencies: diffuser 100 %, compressor 85 %, gas-generator turbine 90 %, power turbine 90 %, nozzle 100 %, propeller 82 %. The gas leaves the power turbine at a stagnation pressure of 62 kPa. For air $c_p=1.005$, $k=1.4$; for the gas $c_p=1.147$, $k=1.333$ kJ/kg·K. All calculations on stagnation conditions; the stagnation pressure is constant in the burner; neglect the fuel mass in the turbine work, but count it in the jet momentum. Define the **equivalent shaft power** as the shaft power that would give the same *total* propulsive power: $\mathrm{ESHP}=\dot W_{pt}+\dfrac{F_jV}{\eta_{prop}}$, and $\mathrm{ESFC}=\dot m_f/\mathrm{ESHP}$. Fill a table: (a) flight Mach number (2), (b) ram pressure ratio $P_{01}/P_1$ (2), (c) compressor power in kW (3), (d) $T_{05}$ and $P_{05}$ (5), (e) shaft power of the power turbine in kW (4), (f) is the nozzle choked? and the jet velocity (4), (g) jet thrust in N (2), (h) ESHP in kW and ESFC in kg/(kW·h) (3).
+
+</Statement>
+
+<Think>
+
+The same stagnation chain as the 2021 turbojet with **one extra turbine**. The gas-generator turbine does exactly the compressor work (that fixes $T_{05}$ and, through $\eta_T$, $P_{05}$); the power turbine then takes the rest of the pressure drop, down to the given $P_{06}=62$ kPa, and its work is the **shaft power**; the nozzle expands what is left to ambient and gives a small jet thrust. The new concept is ESHP: a turboprop makes thrust two ways (propeller and jet), and ESHP puts them on one scale.
+
+</Think>
+
+<Plan>
+
+$c$, $Ma$ → $T_{01}$, $P_{01}$ → compressor ($T_{03}$, $\dot W_C$, $P_{04}$) → gas-generator turbine ($T_{05}$, $P_{05}$) → power turbine to 62 kPa ($T_{06}$, $\dot W_{pt}$) → choke check and nozzle → $F_j$ → ESHP, ESFC.
+
+</Plan>
+
+<Steps>
+<Step title="1. (a), (b) Ram">
+
+$c_1=\sqrt{1.4(287)(249.15)}=316.4$ m/s; $Ma=\dfrac{150}{316.4}=\mathbf{0.4741}$. $T_{01}=249.15+\dfrac{150^2}{2000(1.005)}=260.34$ K; $\dfrac{P_{01}}{P_1}=\left(\dfrac{260.34}{249.15}\right)^{3.5}=\mathbf{1.166}$, $P_{01}=55.03$ kPa.
+
+</Step>
+<Step title="2. (c) Compressor">
+
+$T_{03s}=260.34(11)^{0.2857}=516.5$ K, $w_C=\dfrac{1.005(516.5-260.34)}{0.85}=302.9$ kJ/kg, $T_{03}=260.34+\dfrac{302.9}{1.005}=561.7$ K. $\dot W_C=3(302.9)=\mathbf{908.7}$ kW. $P_{04}=11(55.03)=605.3$ kPa.
+
+</Step>
+<Step title="3. (d) Gas-generator turbine">
+
+$1.147(1250-T_{05})=302.9\Rightarrow T_{05}=1250-264.1=\mathbf{985.9}$ K. $T_{05s}=1250-\dfrac{264.1}{0.90}=956.6$ K; $P_{05}=605.3\left(\dfrac{956.6}{1250}\right)^{4.003}=\mathbf{207.4}$ kPa.
+
+</Step>
+<Step title="4. (e) Power turbine">
+
+Expand from $P_{05}=207.4$ to $P_{06}=62$ kPa: $T_{06s}=985.9\left(\dfrac{62}{207.4}\right)^{0.2498}=729.2$ K; $T_{06}=985.9-0.90(985.9-729.2)=754.8$ K; $w_{pt}=1.147(985.9-754.8)=265.1$ kJ/kg, $\dot W_{pt}=3(265.1)=\mathbf{795.2}$ kW (the shaft power to the propeller).
+
+</Step>
+<Step title="5. (f), (g) Nozzle and jet thrust">
+
+Choke check: $\dfrac{P_{06}}{P_1}=\dfrac{62}{47.18}=1.31<1.85$, so the convergent nozzle is **not choked** and expands fully to ambient. $T_6=754.8\left(\dfrac{47.18}{62}\right)^{0.2498}=705.0$ K, $V_6=\sqrt{2000(1.147)(754.8-705.0)}=\mathbf{338.0}$ m/s. $F_j=3(1.0175)(338.0)-3(150)=\mathbf{581.6}$ N (pressure thrust zero).
+
+</Step>
+<Step title="6. (h) ESHP and ESFC">
+
+Jet propulsive power $F_jV=581.6(150)/1000=87.2$ kW; $\mathrm{ESHP}=795.2+\dfrac{87.2}{0.82}=\mathbf{901.6}$ kW. $\dot m_f=3(0.0175)=0.0525$ kg/s, $\mathrm{ESFC}=\dfrac{0.0525(3600)}{901.6}=\mathbf{0.2096}$ kg/(kW·h).
+
+</Step>
+</Steps>
+
+<Answer>
+
+| a | b | c (kW) | d | e (kW) | f | g (N) | h |
+|---|---|---|---|---|---|---|---|
+| 0.4741 | 1.166 | 908.7 | 985.9 K, 207.4 kPa | 795.2 | not choked, 338.0 m/s | 581.6 | 901.6 kW, 0.2096 kg/(kW·h) |
+
+</Answer>
+
+<RealWorld title="Why a turboprop beats a turbojet at this speed">
+
+The propeller accelerates a very large mass of air by a small amount, which is efficient below about Mach 0.6; the jet adds only 10 % of the power here (87 kW of 901 kW of ESHP). An ESFC of 0.21 kg/(kW·h) is a little optimistic against real turboprops (typically 0.25–0.35, because real engines have pressure losses and variable specific heats), but it is why regional and cargo aircraft use them; Habashi's slide compares turbojet, turbofan and turboprop on the same ESHP and ESFC scale (SHP goes up, SFC goes down).
+
+</RealWorld>
+
+<Traps>
+
+- The gas-generator turbine's work equals the **compressor** work only; the power turbine's work is the shaft power, found separately (a common slip is to put $w_T=w_C$ for the whole expansion).
+- Check **choking** before using $P_6=P_1$ in the nozzle: here $P_{06}/P_1=1.31$ so the nozzle is not choked; with 90 kPa at the power-turbine exit it would be.
+- ESHP adds the jet's propulsive power **divided by the propeller efficiency**: the propeller converts only 82 % of shaft power into thrust power.
+- Fuel mass counts in the jet momentum ($\dot m_6=\dot m(1+f)$) but not in the turbine flow, as the exam says.
+
+</Traps>
+
+<Source>Original mock problem · jet-engine slides of Habashi's review session (ESHP, ESFC) · lib helpers in <code>exams.test.ts</code> (<code>turboprop</code>, stagnation chain as in <code>turbojet</code>) · <Ch slug="gas-cycles" /></Source>
+
+</Problem>
+
+<Problem id="A-P2" title="Problem 2 (15, mandatory): propane burned in a gas-turbine combustor, 300 % theoretical air at 600 K" tags="AFT, dew point, propane, preheated air, two-trial iteration">
+
+<Statement>
+
+*(Mock.)* Gaseous propane at 25 °C is burned in a combustor with **300 % theoretical air** that arrives from the compressor at 600 K, at 1 atm. (a) Write the balanced reaction and find the air/fuel mass ratio (4). (b) Find the dew-point temperature of the products at 101.325 kPa (3). (c) Determine the adiabatic flame temperature, with at most **two trials** (8).
+
+</Statement>
+
+<Think>
+
+(a) 300 % theoretical air means $a=3a_{th}=3(5)=15$ kmol O₂ per kmol of fuel ($a_{th}=3+8/4=5$). (b) the dew point is the saturation temperature at the partial pressure of the water in the products $P_v=y_{H_2O}P$. (c) $H_R=H_P$ with formation enthalpies; the air is hot (600 K), the fuel is at 25 °C.
+
+</Think>
+
+<Steps>
+<Step title="1. (a) Balance and air/fuel ratio">
+
+$\mathrm{C_3H_8}+15(\mathrm{O_2}+3.76\mathrm{N_2})\to3\mathrm{CO_2}+4\mathrm{H_2O}+10\mathrm{O_2}+56.4\mathrm{N_2}$ (O balance: $30=6+4+20$ ✓). $\mathrm{AF}=\dfrac{15(4.76)(28.97)}{44.097}=\mathbf{46.9}$ kg air/kg fuel.
+
+</Step>
+<Step title="2. (b) Dew point">
+
+$N_{prod}=3+4+10+56.4=73.4$ kmol; $y_{H_2O}=\dfrac{4}{73.4}=0.0545$; $P_v=0.0545(101.325)=5.52$ kPa; <T>A-5: T_sat(5.52 kPa) ≈ 34.7 °C</T>, so $T_{dp}=\mathbf{34.7}$ °C.
+
+</Step>
+<Step title="3. (c) Energy balance and target">
+
+<T>Table A-26: h̄f(C₃H₈) = −103 850; h̄°: CO₂ 9364, H₂O 9904, O₂ 8682, N₂ 8669; A-18/A-19 at 600 K: h̄(O₂) = 17 929, h̄(N₂) = 17 563</T>. $H_R=-103\,850+15(17\,929-8682)+56.4(17\,563-8669)=\mathbf{5.37\times10^5}$ kJ/kmol of fuel. $\sum N_P\bar h_f=3(-393\,520)+4(-241\,820)=-2.148\times10^6$ and $\sum N_P\bar h^\circ=6.43\times10^5$, so the products must have $\sum N_P\bar h_P(T_4)=0.537+2.148+0.643=\mathbf{3.328\times10^6}$ kJ (table form).
+
+</Step>
+<Step title="4. Two trials">
+
+At 1350 K: <T>h̄ = 62 318 (CO₂), 51 163 (H₂O), 43 807 (O₂), 41 861 (N₂)</T> gives $3(62\,318)+4(51\,163)+10(43\,807)+56.4(41\,861)=3.191\times10^6$ (**below** the target). At 1450 K: <T>68 077, 55 790, 47 428, 45 304</T> gives $3.457\times10^6$ (**above**). Interpolating: $T_4=1350+100\dfrac{3.328-3.191}{3.457-3.191}=\mathbf{1402}$ K (exact 1401.7 K).
+
+</Step>
+</Steps>
+
+<Answer>
+
+(a) $\mathrm{AF}=46.9$ kg/kg, products $3\mathrm{CO_2}+4\mathrm{H_2O}+10\mathrm{O_2}+56.4\mathrm{N_2}$. (b) $T_{dp}=34.7$ °C. (c) $T_{ad}\approx1402$ K. (With air at 25 °C instead of 600 K the flame temperature would be 1158 K: preheating the air by 300 K raises it by 244 K.)
+
+</Answer>
+
+<RealWorld title="A lean gas-turbine combustor">
+
+A stationary gas turbine burns natural gas or propane with about 250–350 % theoretical air so that the products reach the turbine at 1300–1500 K (typical); the stoichiometric flame would be near 2300 K. The combustor-air temperature of 600 K is the compressor delivery of a modest-pressure-ratio machine (rp about 10).
+
+</RealWorld>
+
+<Traps>
+
+- **Percent theoretical air** (300 %) is not percent *excess* air (200 %): $a=3a_{th}$.
+- The fuel enters at 25 °C and the air at 600 K: $H_R$ has two different temperature terms.
+- Count **kmol of products** in the trial sums (3, 4, 10, 56.4), not atoms.
+- Choose the second trial on the *other* side of the target before interpolating.
+
+</Traps>
+
+<Source>Original mock problem · lib <code>burn</code>, <code>dewPoint</code>, <code>aft</code> · <Ch slug="combustion" /></Source>
+
+</Problem>
+
+<Problem id="A-P3" title="Problem 3 (10, mandatory): CO₂ dissociation in a flame at 3000 K" tags="dissociation, Kp, pressure effect, inert gas, Le Chatelier">
+
+<Statement>
+
+*(Mock.)* One kmol of CO₂ is heated to 3000 K at a total pressure of 1 atm and comes to equilibrium with CO and O₂ ($\mathrm{CO_2\rightleftharpoons CO+\tfrac12O_2}$; <T>A-28: ln K_p = −1.104 at 3000 K</T>, $K_p=0.332$). (a) Find the equilibrium composition (4). (b) Find the CO₂ fraction dissociated at 10 atm (3). (c) Explain, without computing, what happens to the dissociated amount if 3.76 kmol of inert N₂ is added at constant temperature and pressure, then check by computing it (3).
+
+</Statement>
+
+<Think>
+
+One unknown $x$ (kmol of CO₂ that dissociates): CO₂ $1-x$, CO $x$, O₂ $x/2$, $N_{total}=1+x/2$, $\Delta\nu=+\tfrac12$. $K_p=\dfrac{x(x/2)^{1/2}}{1-x}\left(\dfrac{P}{1+x/2}\right)^{1/2}$.
+
+</Think>
+
+<Steps>
+<Step title="1. (a) 1 atm">
+
+$0.332=\dfrac{x\,(x/2)^{1/2}}{1-x}\left(\dfrac{1}{1+x/2}\right)^{1/2}$. Trying $x=0.4$: right side $=\dfrac{0.4(0.2)^{0.5}}{0.6}\left(\dfrac1{1.2}\right)^{0.5}=0.2981(0.9129)=0.272$; $x=0.45$: $\dfrac{0.45(0.225)^{0.5}}{0.55}(1.225)^{-0.5}=0.3881(0.9035)=0.351$; interpolation gives $x=\mathbf{0.439}$. Composition: $0.561\,\mathrm{CO_2}+0.439\,\mathrm{CO}+0.219\,\mathrm{O_2}$ ($N_{total}=1.219$: $y=0.460,\ 0.360,\ 0.180$): **44 % dissociated**.
+
+</Step>
+<Step title="2. (b) 10 atm">
+
+The same $K_p$ with $P=10$: $0.332=\dfrac{x(x/2)^{1/2}}{1-x}\left(\dfrac{10}{1+x/2}\right)^{1/2}$; the factor $\sqrt{10}$ makes the left-hand ratio smaller, so $x$ falls: $x=\mathbf{0.242}$ ($0.758\,\mathrm{CO_2}+0.242\,\mathrm{CO}+0.121\,\mathrm{O_2}$): **24 % dissociated**, just over half of the 1-atm value.
+
+</Step>
+<Step title="3. (c) Inert N₂ at constant T and P">
+
+$K_p$ and $P$ are fixed, but $N_{total}$ becomes $1+x/2+3.76$: $P/N_{total}$ falls, which acts like a **lower pressure** for the reacting gases, so the equilibrium shifts to the side with more moles (CO + ½O₂): dissociation **increases**. Computed: $x=\mathbf{0.580}$ (58 % dissociated; CO fraction of the whole gas $=0.580/(1+0.29+3.76)=0.115$).
+
+</Step>
+</Steps>
+
+<Answer>
+
+(a) $0.561\,\mathrm{CO_2}+0.439\,\mathrm{CO}+0.219\,\mathrm{O_2}$ (44 % dissociated). (b) 24 % at 10 atm. (c) More dissociation (58 %): the inert at constant $P$ lowers the partial pressures, like lowering the pressure.
+
+</Answer>
+
+<RealWorld title="Why a gas flame is cooler than the textbook adiabatic flame">
+
+At 3000 K more than 40 % of the CO₂ would be CO and O₂, an endothermic change ($\bar h_R=+273\,000$ kJ/kmol of CO₂ at 3000 K) that absorbs heat and holds the flame temperature down; at 10 atm (a gas-turbine or diesel pressure) it is only 24 %, and this is one reason the flame temperatures of high-pressure engines are closer to the no-dissociation values.
+
+</RealWorld>
+
+<Traps>
+
+- $N_{total}$ counts **all gas**: $1+x/2$ (and the inert in part (c)), not 1.
+- $P$ in the formula is in **atm**; $K_p$ does not depend on $P$, but the composition does.
+- A pressure *increase* favors the side with fewer moles (here the CO₂ side); an inert at constant $P$ acts like a pressure *decrease*.
+
+</Traps>
+
+<Source>Original mock problem · lib <code>equilibrium</code>, <code>lnKpAt</code> · tutorial problems <Ex id="tutorial-16" /> · <Ch slug="equilibrium" /></Source>
+
+</Problem>
+
+<Problem id="A-P4" title="Problem 4 (25, choice): reheat Rankine cycle with a real turbine and pump, 100 MW" tags="reheat, Rankine, isentropic efficiency, quality, Carnot reasoning">
+
+<Statement>
+
+*(Mock.)* Steam leaves the boiler at 10 MPa and 500 °C and expands in a high-pressure turbine to 2 MPa, is reheated to 500 °C and expands in a low-pressure turbine to the condenser pressure of 10 kPa. The condenser outlet is saturated liquid. The isentropic efficiency of each turbine section is 0.88 and that of the pump is 0.90. The net power is 100 MW. (a) Draw the T–s diagram and tabulate the states (5). (b) Find the steam flow rate (4), the heat added in the boiler and in the reheater (4), the thermal efficiency (4) and the exit quality of the low-pressure turbine (3). (c) Without reheat the same cycle has an efficiency of 35.3 % and an exit quality of 0.858: explain what the reheater does (5).
+
+</Statement>
+
+<Think>
+
+Per kilogram: pump (real) → boiler → HP turbine (real, $h_{2a}=h_1-\eta_T(h_1-h_{2s})$) → reheater → LP turbine (real) → condenser. Each turbine section is isentropic from **its own inlet**; the efficiency applies to each section separately. The quality at the exit comes from $h$ after the efficiency has been applied.
+
+</Think>
+
+<Steps>
+<Step title="1. States">
+
+<T>A-5 at 10 kPa: h_f = 191.81, v_f = 0.001010. A-6 at 10 MPa, 500 °C: h = 3375.1, s = 6.5996. A-6 at 2 MPa: h_s (s = 6.5996) = 2930.8; at 2 MPa, 500 °C: h = 3468.2, s = 7.4337. A-5 at 10 kPa: s_f = 0.6492, s_fg = 7.4996</T>. Pump: $w_P=\dfrac{0.001010(10\,000-10)}{0.90}=11.21$, $h_2=191.81+11.21=203.0$. HP exit: $h_3=3375.1-0.88(3375.1-2930.8)=\mathbf{2984.1}$ ($T=283$ °C, superheated). Reheat: $h_4=3468.2$. LP isentropic exit at 10 kPa: $x_s=\dfrac{7.4337-0.6492}{7.4996}=0.9047$, $h_{5s}=2355.8$; real $h_5=3468.2-0.88(3468.2-2355.8)=\mathbf{2489.3}$, $x_5=\dfrac{2489.3-191.81}{2392.1}=\mathbf{0.9605}$.
+
+</Step>
+<Step title="2. Work, heat, flow, efficiency">
+
+$w_T=(3375.1-2984.1)+(3468.2-2489.3)=391.0+978.9=1370.0$ kJ/kg; $w_{net}=1370.0-11.2=1358.8$; $q_{boiler}=3375.1-203.0=3172.1$, $q_{reheat}=3468.2-2984.1=484.1$, $q_{in}=\mathbf{3656.2}$ kJ/kg; $\eta=\dfrac{1358.8}{3656.2}=\mathbf{0.3716}$; $\dot m=\dfrac{100\,000}{1358.8}=\mathbf{73.6}$ kg/s. *Check:* $q_{out}=h_5-h_1=2297.5$, $q_{in}-q_{out}=1358.7$ ✓.
+
+</Step>
+<Step title="3. (c) What the reheater does">
+
+Without reheat the same 10 MPa boiler expands to 10 kPa with $\eta_T=0.88$: $x=0.858$ (14 % liquid at the last stage), $\eta=35.3$ %, $\dot m=89.3$ kg/s. With reheat: $x=0.960$, $\eta=37.2$ % (+1.9 points), $\dot m=73.6$ kg/s (−18 %). Carnot: the reheater adds its 484 kJ/kg at an average temperature of $\dfrac{484.1}{7.4337-6.6974}=657$ K, well above the 533 K average of the boiler's own heat addition ($3172.1/5.947$), so the mean temperature of the whole heat addition rises from 533 K to **547 K**, which is why the efficiency rises; and the reheat keeps the expansion in the dry region, which is what protects the last blades.
+
+</Step>
+</Steps>
+
+<Answer>
+
+(b) $\dot m=73.6$ kg/s; $q_{boiler}=3172.1$, $q_{reheat}=484.1$ kJ/kg; $\eta=37.2$ %; $x_5=0.960$. (c) Reheat raises the exit quality from 0.858 to 0.960 and the efficiency by 1.9 points, and cuts the steam flow by 18 % for the same power.
+
+</Answer>
+
+<RealWorld title="10 MPa reheated at 2 MPa is a mid-size steam plant">
+
+A 100 MW unit at 10 MPa and 500 °C with a reheat at about 20 % of the boiler pressure is the standard configuration of mid-size coal and biomass plants (typical); the machine's HP and LP casings are separate, with the cold- and hot-reheat piping between them.
+
+</RealWorld>
+
+<Traps>
+
+- The LP expansion starts at the **reheater exit** (state 4), and $\eta_T$ applies to each section's own isentropic drop.
+- The real pump work is $v\Delta P/\eta_P$; the pump is not negligible at 10 MPa (11 kJ/kg, 0.8 % of the turbine work).
+- The heat added has **two** terms: boiler plus reheater.
+
+</Traps>
+
+<Source>Original mock problem · lib <code>rankine</code> with <code>reheat</code>, <code>etaT</code>, <code>etaP</code> · <Ch slug="vapor-cycles" /></Source>
+
+</Problem>
+
+<Problem id="A-P5" title="Problem 5 (25, choice): wet cooling tower, 50 kg/s of water from 40 to 27 °C" tags="cooling tower, psychrometrics, makeup water, wet bulb">
+
+<Statement>
+
+*(Mock.)* A wet cooling tower cools 50 kg/s of water from 40 °C to 27 °C. Atmospheric air at 25 °C, 50 % relative humidity and 101.325 kPa enters the tower; the air leaves saturated at 32 °C. Makeup water at 27 °C replaces the water lost by evaporation, so the cooled water leaves at the same 50 kg/s. (a) Find the humidity ratios and enthalpies of the air at inlet and exit (6). (b) Find the dry-air flow rate (6), and the entering air volume flow in m³/s (3). (c) Find the makeup water flow rate and the fraction of the circulating water that evaporates (5). (d) Why can the water be cooled below the exit air temperature of 32 °C, and what is the lowest temperature it could reach? (5)
+
+</Statement>
+
+<Think>
+
+Dry air is conserved; the water leaving the air stream as vapor is exactly the makeup; and the energy balance couples the warm-water cooling to the air's enthalpy increase. Writing it per kg of dry air: $\dot m_a[(h_2-h_1)-(\omega_2-\omega_1)h_{w,make}]=\dot m_3(h_{w3}-h_{w4})$ (the cold-water stream and the hot one have the same flow because the makeup replaces the evaporation).
+
+</Think>
+
+<Steps>
+<Step title="1. (a) Air states">
+
+<T>P_g(25 °C) = 3.1698 kPa</T>: $P_{v1}=0.5(3.1698)=1.585$, $\omega_1=\dfrac{0.622(1.585)}{101.325-1.585}=\mathbf{0.00988}$, $h_1=1.005(25)+0.00988(2501.3+45.5)=\mathbf{50.30}$ kJ/kg dry air, $v_1=\dfrac{0.287(298.15)}{99.74}=0.8579$ m³/kg. Exit: <T>P_g(32 °C) = 4.7616 kPa</T>, $\omega_2=\dfrac{0.622(4.7616)}{101.325-4.7616}=\mathbf{0.03066}$, $h_2=1.005(32)+0.03066(2501.3+58.2)=\mathbf{110.63}$ kJ/kg.
+
+</Step>
+<Step title="2. (b) Dry-air flow">
+
+<T>A-4 liquid enthalpies: h_f(40 °C) = 167.53, h_f(27 °C) = 113.19 kJ/kg</T>. Heat given up by the water: $50(167.53-113.19)=2717$ kW. $\omega_2-\omega_1=0.02077$. $\dot m_a=\dfrac{2717}{(110.63-50.30)-0.02077(113.19)}=\dfrac{2717}{57.98}=\mathbf{46.9}$ kg/s; $\dot V_1=46.86(0.8579)=\mathbf{40.2}$ m³/s.
+
+</Step>
+<Step title="3. (c) Makeup">
+
+$\dot m_{make}=\dot m_a(\omega_2-\omega_1)=46.86(0.02077)=\mathbf{0.973}$ kg/s, i.e. $\dfrac{0.973}{50}=\mathbf{1.95}$ % of the circulating water (typical towers lose 1–2.5 % of the circulating water by evaporation).
+
+</Step>
+<Step title="4. (d) How low can the water go?">
+
+The water temperature is not limited by the air *exit* temperature but by the **wet-bulb temperature of the entering air** (here 17.9 °C): the water is cooled mostly by evaporation, and evaporation stops when the water is at the wet-bulb temperature. A real tower approaches it within 3–6 K; the exit-air temperature (32 °C) is an *outcome* of the process and can be below the hot-water temperature (40 °C) and above the cold-water temperature (27 °C).
+
+</Step>
+</Steps>
+
+<Answer>
+
+(a) $\omega_1=0.00988$, $h_1=50.30$ kJ/kg; $\omega_2=0.03066$, $h_2=110.63$ kJ/kg. (b) $\dot m_a=46.9$ kg/s, $\dot V_1=40.2$ m³/s. (c) makeup 0.973 kg/s (1.95 % of the flow). (d) The limit is the entering-air wet-bulb temperature, 17.9 °C.
+
+</Answer>
+
+<RealWorld title="The plume above a power station">
+
+The white plume from a natural-draft cooling tower is the saturated 32 °C air of this problem condensing as it mixes with cooler ambient air; a 1000 MW power plant evaporates on the order of 0.5 m³/s of water in its towers (typical), which is why plants near scarce water use dry or hybrid towers.
+
+</RealWorld>
+
+<Traps>
+
+- Include the **makeup enthalpy** term $(\omega_2-\omega_1)h_{make}$ (small, 4 % here, but it is in the balance).
+- The exit air is *saturated*: use $\varphi=1$ at 32 °C, not 50 %.
+- The coldest water temperature is set by the **wet-bulb** of the inlet air, not by its dry-bulb or dew-point temperature.
+
+</Traps>
+
+<Source>Original mock problem · lib <code>psyState</code>, <code>water</code> · <Ch slug="psychrometrics" /></Source>
+
+</Problem>
+
+<Problem id="A-P6" title="Problem 6 (25, choice): a methane-ethane mixture at 330 K and 8 MPa by Kay's rule" tags="Kay's rule, compressibility factor, real-gas mixture, Lee-Kesler">
+
+<Statement>
+
+*(Mock.)* A rigid 0.10 m³ tank contains a mixture of 40 % methane and 60 % ethane by mole at 330 K and 8 MPa. (a) Find the pseudo-critical temperature and pressure by Kay's rule and the reduced coordinates (6). (b) Find the compressibility factor from the generalized chart and the mass of gas in the tank (9). (c) What mass would an ideal-gas calculation give, and what pressure would the ideal-gas law predict for the real mass (6)? (d) What is $Z$ at 4 MPa and how large is the ideal-gas error there? (4) Critical constants: $T_{cr}=191.1$ K, $P_{cr}=4.64$ MPa (CH₄); 305.5 K, 4.48 MPa (C₂H₆).
+
+</Statement>
+
+<Think>
+
+**Kay's rule:** treat the mixture as a pure substance with mole-fraction-weighted critical constants, $T_{cr,m}=\sum y_iT_{cr,i}$, $P_{cr,m}=\sum y_iP_{cr,i}$; then $Z_m$ from the generalized chart at $(T/T_{cr,m},P/P_{cr,m})$ and $PV=Z_mNR_uT$ with $M_m=\sum y_iM_i$. (Habashi: "Kay's rule is accurate to within 10 % over a wide range"; a final seldom asks more than this.)
+
+</Think>
+
+<Steps>
+<Step title="1. (a) Pseudo-critical constants">
+
+$T_{cr}=0.4(191.1)+0.6(305.5)=\mathbf{259.7}$ K; $P_{cr}=0.4(4.64)+0.6(4.48)=\mathbf{4.544}$ MPa. $T_R=\dfrac{330}{259.7}=\mathbf{1.271}$, $P_R=\dfrac{8}{4.544}=\mathbf{1.761}$.
+
+</Step>
+<Step title="2. (b) Z and the mass">
+
+<T>A-29 (Lee–Kesler simple fluid) at T_R = 1.27, P_R = 1.76: Z ≈ 0.69</T> (the lib's Lee–Kesler fit: 0.693). $M=0.4(16.043)+0.6(30.07)=24.46$ kg/kmol. $N=\dfrac{PV}{ZR_uT}=\dfrac{8000(0.10)}{0.693(8.314)(330)}=0.4207$ kmol, $m=0.4207(24.46)=\mathbf{10.29}$ kg.
+
+</Step>
+<Step title="3. (c) Ideal-gas comparison">
+
+Ideal: $N=\dfrac{8000(0.10)}{8.314(330)}=0.2916$ kmol, $m=\mathbf{7.13}$ kg: **31 % too low**. For the true mass, the ideal-gas law would predict $P=\dfrac{NR_uT}{V}=\dfrac{8000}{Z}=\mathbf{11\,540}$ kPa: 44 % too high.
+
+</Step>
+<Step title="4. (d) At 4 MPa">
+
+$P_R=\dfrac{4}{4.544}=0.880$, $T_R=1.271$: $Z\approx0.851$ (lib). The ideal-gas mass would be low by only 15 % (against 31 % at 8 MPa), since $m_{ideal}=Z\,m_{real}$: the chart is the right tool at both pressures; the ideal-gas law is acceptable only for $Z$ within a few percent of 1.
+
+</Step>
+</Steps>
+
+<Answer>
+
+(a) $T_{cr}=259.7$ K, $P_{cr}=4.544$ MPa, $T_R=1.271$, $P_R=1.761$. (b) $Z=0.69$, $m=10.3$ kg. (c) ideal-gas mass 7.13 kg (31 % low); ideal-gas pressure 11.5 MPa (44 % high). (d) $Z=0.85$ at 4 MPa.
+
+</Answer>
+
+<RealWorld title="Natural gas in a high-pressure storage vessel">
+
+Compressed natural gas is stored at 20–25 MPa, where $Z\approx0.85$–0.95 for methane-rich mixtures; ignoring $Z$ would misstate the stored mass by 10–20 % (typical). Pipeline operators and tank-filling stations use exactly this chart-based correction with Kay's rule for the mixture.
+
+</RealWorld>
+
+<Traps>
+
+- Kay's rule uses **mole** fractions $y_i$ (not mass fractions) for $T_{cr,m}$ and $P_{cr,m}$.
+- $Z$ comes from the **reduced** $T_R$ and $P_R$ of the mixture; use $R_u$ with kmol and $M_m$ for the mass.
+- Do not use the chart in the dense-gas region of low $T_R$ without checking $P_R$: here $Z$ falls from 0.85 to 0.69 as $P_R$ goes from 0.88 to 1.76 at the same $T_R$.
+
+</Traps>
+
+<Source>Original mock problem · lib <code>kay</code>, <code>leeKesler</code>, <code>CRIT</code> · <Ch slug="mixtures" />, <Asg n="05" /></Source>
+
+</Problem>
+
+<Examined>
+
+**Debrief for practice final A.** Time check: P1 + P2 + P3 should take you about 50 minutes with a clock; the commonest losses are (P1) using $c_{p,a}$ in a turbine equation and forgetting to check the choke of the nozzle; (P2) 300 % theoretical air read as 300 % excess; (P3) forgetting the inert in $N_{total}$. Topic map of the mock: turboprop and ESHP → chapter 9; propane AFT → chapter 15; CO₂ dissociation → chapter 16; reheat Rankine → chapter 10; cooling tower → chapter 14; Kay's rule → chapters 12–13. Now try <Ex id="final-mock-b" /> and compare with the real thing, <Ex id="final-2021" />.
+
+</Examined>

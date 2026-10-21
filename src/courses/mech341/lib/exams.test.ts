@@ -547,6 +547,20 @@ describe('mock A', () => {
     near(aft(o), 1401.7, 1e-3);
     near(aft({ ...o, Tair: 298.15 }), 1157.6, 1e-3);
     near(Hprod(b.products, 1401.7), Hreact(o), 1e-3);
+    // two-trial table method
+    const HR = Hreact(o);
+    const target = HR + 3 * 393520 + 4 * 241820 + (3 * 9364 + 4 * 9904 + 10 * 8682 + 56.4 * 8669);
+    near(HR, 5.37e5, 5e-3);
+    near(target, 3.328e6, 1e-3);
+    const sum = (h: number[]) => 3 * h[0] + 4 * h[1] + 10 * h[2] + 56.4 * h[3];
+    const s1 = sum([62318, 51163, 43807, 41861]);
+    const s2 = sum([68077, 55790, 47428, 45304]);
+    near(s1, 3.191e6, 1e-3);
+    near(s2, 3.457e6, 1e-3);
+    near(1350 + (100 * (target - s1)) / (s2 - s1), 1402, 1e-3);
+    near(b.Nprod, 73.4, 1e-9);
+    near((4 / 73.4) * 101.325, 5.52, 2e-3);
+    near((15 * 4.76 * 28.97) / 44.097, 46.9, 1e-3);
   });
   it('P3 CO2 dissociation in a flame: 3000 K and 2500 K, 1 and 10 atm', () => {
     const at = (T: number, P: number) => equilibrium({ lnK: lnKpAt(LN_CO2, T), reac: [[1, 'CO2']], prod: [[1, 'CO'], [0.5, 'O2']], initial: { CO2: 1 }, P });
@@ -562,7 +576,17 @@ describe('mock A', () => {
     // N2 added at constant P and T: more dissociation
     const withN2 = equilibrium({ lnK: lnKpAt(LN_CO2, 3000), reac: [[1, 'CO2']], prod: [[1, 'CO'], [0.5, 'O2']], initial: { CO2: 1 }, inert: { N2: 3.76 }, P: 1 });
     expect(withN2.CO).toBeGreaterThan(r.CO);
-    near(withN2.CO, 0.5865, 2e-2);
+    near(withN2.CO, 0.5805, 1e-3);
+    near(withN2.CO / (1 + withN2.CO / 2 + 3.76), 0.115, 5e-3);
+    near(hR(A28.find((r) => r.label === LN_CO2)!, 3000), 272723, 1e-3);
+    near(Math.exp(lnKpAt(LN_CO2, 3000)), 0.332, 2e-3);
+    near(at(3000, 1).CO / 1, 0.4388, 1e-3);
+    // hand iteration of part (a)
+    const kp = (x: number, P: number) => ((x * Math.sqrt(x / 2)) / (1 - x)) * Math.sqrt(P / (1 + x / 2));
+    near(kp(0.4, 1), 0.272, 5e-3);
+    near(kp(0.45, 1), 0.351, 5e-3);
+    near(kp(0.4388, 1), Math.exp(lnKpAt(LN_CO2, 3000)), 1e-3);
+    near(kp(0.242, 10), Math.exp(lnKpAt(LN_CO2, 3000)), 1e-2);
   });
   it('P4 reheat Rankine: 10 MPa / 500 C, reheat to 2 MPa / 500 C, 10 kPa, eta 0.88 / 0.90, 100 MW', () => {
     const a = rankine({ Pb: 10000, Tb: 500, Pc: 10, reheat: { P: 2000, T: 500 }, etaT: 0.88, etaP: 0.9, Wnet: 100000 });
@@ -580,6 +604,19 @@ describe('mock A', () => {
     near(n.x_exit, 0.858, 1e-3);
     near(n.eta, 0.3531, 1e-3);
     near(n.mdot, 89.29, 1e-3);
+    // Carnot numbers: reheater average T, boiler average T, overall average T
+    const st1 = water.PT(10000, 500);
+    const st2 = water.Ph(10000, 203.0);
+    const st3 = water.Ph(2000, 2984.1);
+    const st4 = water.PT(2000, 500);
+    near((st4.h - st3.h) / (st4.s - st3.s), 657.5, 2e-3);
+    near((st1.h - st2.h) / (st1.s - st2.s), 533.4, 2e-3);
+    near((st1.h - st2.h + st4.h - st3.h) / (st1.s - st2.s + st4.s - st3.s), 547.1, 2e-3);
+    near(water.Ps(2000, st1.s).h, 2930.8, 1e-3);
+    near(water.Ps(10, st4.s).h, 2355.8, 2e-3);
+    near(water.Ps(10, st4.s).x as number, 0.9047, 1e-3);
+    near((0.00101 * (10000 - 10)) / 0.9, 11.21, 2e-3);
+    near(a.qout, 2297.5, 1e-3);
   });
   it('P5 cooling tower: 46.9 kg/s of air, 0.97 kg/s makeup', () => {
     const s1 = psyState({ T: 25, P: 101.325, phi: 0.5 });
