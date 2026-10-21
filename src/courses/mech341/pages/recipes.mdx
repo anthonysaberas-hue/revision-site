@@ -1,0 +1,196 @@
+<p className="eyebrow">Exam toolkit · recipes</p>
+
+# Exam recipes: the question templates
+
+<div className="lede">
+
+The midterm and the final reuse the same dozen templates with new numbers (the 2021 final, the October review class and the two mocks on this site all follow them). Each recipe below is a checklist that earns full marks: **sketch, list the states, one balance per device, numbers with units, a sanity check**. Under each one are the typical results from the worked examples, so you can recognise the question and check yourself quickly, and a link to the page where it is solved in full. Closed book: the information sheet gives the constants and some formulas (see the cheat sheets: [midterm](#/mech341/page/cheatsheet-midterm), [final](#/mech341/page/cheatsheet-final)).
+
+</div>
+
+## Midterm templates
+
+### R1 · Turbojet, station by station
+
+*A jet engine at altitude (or on a test stand): find compressor exit, turbine exit, nozzle exit speed, thrust, fuel flow, efficiency.*
+
+1. **Static state and speed.** $T_1$, $P_1$, $V_1$ (from $Ma$ and $c=\sqrt{kRT_1}$ if needed). Sketch stations 1 to 6 and the T–s diagram.
+2. **Intake.** $T_{01}=T_1+\dfrac{V_1^2}{2000c_{pa}}$; $P_{01}=P_1(T_{01}/T_1)^{k/(k-1)}$ (ram ratio; with a diffuser efficiency, use $T_{02s}$).
+3. **Compressor.** $T_{03s}=T_{02}r_c^{(k-1)/k}$; $T_{03}=T_{02}+\dfrac{T_{03s}-T_{02}}{\eta_C}$; $P_{03}=r_cP_{02}$; $w_C=c_{pa}(T_{03}-T_{02})$.
+4. **Combustor.** $P_{04}=P_{03}$; $q=c_{pg}(T_{04}-T_{03})$; $f=q/HV$ (fuel mass negligible in the flow).
+5. **Turbine.** $w_T=w_C$ gives $T_{05}$; with $\eta_T$: $T_{05s}=T_{04}-\dfrac{T_{04}-T_{05}}{\eta_T}$ and $P_{05}=P_{04}(T_{05s}/T_{04})^{k_g/(k_g-1)}$.
+6. **Nozzle.** Fully expanded (C–D): $T_6=T_{05}(P_a/P_{05})^{(k_g-1)/k_g}$, $V_6=\sqrt{2000c_{pg}(T_{05}-T_6)}$. Converging: check $P_{05}/P_a>1.85$; if choked, $T_6=2T_{05}/(k_g+1)$, $V_6=\sqrt{k_gRT_6}$, $P_6>P_a$ and add $A_6(P_6-P_a)$.
+7. **Thrust and efficiencies.** $F=\dot m(V_6-V_1)+A_6(P_6-P_a)$; $\dot W_P=FV_1$; $TSFC=\dot m_f/F$; $\eta_P=2/(1+V_6/V_1)$; $\eta_o=FV_1/(\dot m_fHV)$.
+
+*Numbers to recognise.* Test stand ($r_p=12$, 1400 K, 0.87, 0.90): $w_C=344$ kJ/kg, $T_{05}=1100$ K, $P_{05}=404$ kPa. Turbojet at 9150 m (<Asg n="01">9-136</Asg>): $V_6=832.5$ m/s, $\dot W_P=7735$ kW, $\dot m_f=0.624$ kg/s; with $\eta_C=0.80$, $\eta_T=0.85$ (<Asg n="01">9-137</Asg>): 677 m/s, 5563 kW, 0.539 kg/s. Worked in <Ch slug="gas-cycles">Chapter 9</Ch>, <Ex id="midterm-review">the review class</Ex> and <Ex id="final-2021">2021 final P1</Ex>.
+
+### R2 · Real Brayton cycle with the air table
+
+1. $P_r$ and $h$ at $T_1$ from A-17; $P_{r2}=r_pP_{r1}$; read $h_{2s}$.
+2. $h_2=h_1+(h_{2s}-h_1)/\eta_C$; $h_3$ at $T_3$ and $P_{r3}$; $P_{r4}=P_{r3}/r_p$, read $h_{4s}$; $h_4=h_3-\eta_T(h_3-h_{4s})$.
+3. $w_{net}=(h_3-h_4)-(h_2-h_1)$; $q_{in}=h_3-h_2$ (with a regenerator, $h_x=h_2+\varepsilon(h_4-h_2)$ and $q_{in}=h_3-h_x$); $\eta=w_{net}/q_{in}$; $r_{bw}=w_C/w_T$.
+4. If no $c_p$ or $k$ is given, never use $T_2/T_1=r_p^{(k-1)/k}$.
+
+*Numbers.* 9-95: $\dot W_{net}=6484$ kW, $r_{bw}=0.511$, $\eta=37.8$ %. 9-126: 29.5 %, with a 75 % regenerator 46.1 %. 9-109: turbine 83.8 %, compressor 94.8 %, with a 65 % regenerator 44.1 %.
+
+### R3 · Rankine with open and closed feedwater heaters
+
+1. **Sketch** boiler, turbine (with the bleed lines), condenser, pumps and heaters; number the states around the sketch and mark each pressure.
+2. **States.** State 1 saturated liquid at $P_{cond}$; pump work $v\Delta P$ for each pump (every pump after an open heater has its own); turbine states by $s$ (ideal) or $\eta_T$ (real); read the quality inside the dome.
+3. **Closed heater first** if its balance holds one unknown: $y(h_{bleed}-h_{drain})=h_{fw,out}-h_{fw,in}$ per kg of boiler flow (the whole flow passes the feedwater side; $h_{fw,out}\approx h_f$ at $T_{sat}$ of the bleed pressure, plus $v\Delta P$ for a compressed liquid); the drain is throttled back or pumped forward into a mixing chamber ($\dot m_3h_3=\dot m_ah_a+\dot m_bh_b$).
+4. **Open heater**: $y\,h_6+(1-y)h_2=h_3$ gives $y=\dfrac{h_3-h_2}{h_6-h_2}$; mixing is at the heater pressure.
+5. **Energy per kg of boiler steam:** $w_T$ per section with the fractions that remain ($(1-y)$, $(1-y-z)$), $w_P$ per pump, $q_{in}=h_3-h_2$ (plus reheat); $\eta=1-q_{out}/q_{in}$ with $q_{out}=(1-y-z)(h_{cond,in}-h_1)$.
+6. **Power to flow:** $\dot m=\dot W_{net}/w_{net}$.
+7. **Modification questions** (no numbers): use the Carnot argument and areas on the T–s diagram; the area under the curve is heat, the enclosed area is work.
+
+*Numbers.* 10-52 two open heaters: $y=0.0717$, $z=0.1085$, 42.2 % (39.1 % without). 10-55 closed heater with drain throttled: $y=0.244$, $w_T=741$, $q_{in}=2351$. 10-61: 54.5 kg/s, 44.4 %. 10-110: $y=0.0629$, $z=0.1165$, 48.5 %, 72.4 MW. The check: a fraction near 1 is a warning sign (a mis-set feedwater temperature, <Asg n="02">10-110</Asg> page). Worked in <Ch slug="vapor-cycles">Chapter 10</Ch>, <Asg n="02">Assignments 2/3</Asg> and the <Ex id="midterm-review">review class</Ex>.
+
+### R4 · Vapor-compression refrigeration (VCR) states
+
+1. **Pressures.** From the saturation temperatures given (or the pressures): $P_L$ from the evaporator temperature, $P_H$ from the condenser (**table A-12** by pressure, A-11 by temperature).
+2. **State 1** saturated vapor at $P_L$ (or superheated if the compressor inlet is superheated); **state 2s** at $P_H$ with $s_{2s}=s_1$ (superheated table of **$P_H$**); $h_2=h_1+(h_{2s}-h_1)/\eta_C$.
+3. **State 3** saturated liquid at $P_H$ (or subcooled: $h\approx h_f(T)$); **state 4** $h_4=h_3$ (throttle).
+4. $\dot m=\dot Q_L/(h_1-h_4)$; $\dot W=\dot m(h_2-h_1)$; $COP_R=\dfrac{h_1-h_4}{h_2-h_1}$; heat pump $COP=COP_R+1$; compare with the Carnot COP in kelvin.
+5. Tons: $\dot Q_L[\mathrm{kW}]=\text{tons}\times211/60$.
+
+*Numbers.* 11-21: 3.32 kW, 1.22 kW, $COP=2.72$ (ideal 2.89). 11-46: 3.55 kW electricity for 13.12 kW of heat, $COP_{HP}=4.69$. Worked in <Ch slug="refrigeration">Chapter 11</Ch>, <Asg n="04">Assignment 4</Asg>. Own trap: 11-62, interpolating in the 0.5 MPa rows instead of the 0.8 MPa table.
+
+### R5 · Two-stage, cascade, flash chamber, two evaporators
+
+1. Draw **each mixing point and each heat exchanger as a box** with its mass flows; label the flows $\dot m_L$, $\dot m_H$ and the fractions $x$.
+2. **Flash chamber or separator:** the throttled stream enters at quality $x_6$; saturated vapor ($x_6$ of the flow) goes to the second compressor, saturated liquid ($1-x_6$) goes through the second valve.
+3. **Mixing before the second compressor:** $\dot m_Hh_{mix}=\dot m_Lh_{2}+(\dot m_H-\dot m_L)h_{vap}$ (adiabatic, no work).
+4. **Cascade:** the heat rejected by the low loop ($\dot m_L(h_2-h_3)$) equals the heat absorbed by the high loop ($\dot m_H(h_5-h_8)$); two separate COPs, one overall $COP=\dot Q_L/(\dot W_L+\dot W_H)$.
+5. Power: sum over every compressor, each with its own mass flow.
+
+*Numbers.* 11-60: $\dot m_L=0.160$, $\dot m_H=0.230$ kg/s, 10.9 kW, $COP=2.74$ (a single stage: 2.28). Flash tutorial: $x_6=0.290$, $COP\approx2.92$. 11-62: 6.58 kW, 4.51 kW, 3.24. Worked in <Asg n="04">Assignment 4</Asg>, <Ex id="midterm-review">review class</Ex>, <Ex id="final-mock-b">practice B</Ex>.
+
+## Final templates
+
+### R6 · Psychrometrics: cooling coil, heater, humidifier
+
+1. **Fix the entering state:** $P_g$ at $T$ (A-4), $p_v=\varphi P_g$, $\omega_1=\dfrac{0.622p_v}{P-p_v}$, $h_1=1.005T+\omega(2501+1.82T)$. Use the **pressure given**.
+2. **Cooling and dehumidifying:** state 2 is saturated at the coil temperature (or the stated exit): $\omega_2$ from $P_{g2}$. Dry air $\dot m_a=\dot V_1/v_1$ with $v_1=R_aT_1/(P-p_v)$.
+3. **Condensate:** $\dot m_w=\dot m_a(\omega_1-\omega_2)$; **coil heat:** $\dot Q=\dot m_a(h_1-h_2)-\dot m_wh_w$ with $h_w=h_f$ at the condensate temperature. **Keep the condensate term.**
+4. **Heating after the coil:** constant $\omega$, $\dot Q=\dot m_a(h_3-h_2)$, then $\varphi_3$ from $\omega_2$ and $T_3$.
+5. **Humidifier:** $\dot m_w=\dot m_a(\omega_2-\omega_1)$; steam adds $h_g$ (heated), spray adds $h_f$ (cooled).
+6. **Mixing:** weights by dry air; the mixed state is on the straight line.
+7. Express the answer in the units the question uses (kW, tons, kg/min); 1 ton = 211 kJ/min.
+
+*Numbers.* 14-132: 3.65 kW (3.73 by formulas), 0.0723 kg/min condensate. 14-84: $T_{dp}=16$ °C, 5.36 kW. <Ex id="final-2021">2021 P5</Ex> (11 tons): $T_2=10.48$ °C, $\dot m_a=48.6$ kg/min, condensate 0.539 kg/min, 12.0 kW. Worked in <Ch slug="psychrometrics">Chapter 14</Ch> and <Asg n="07">Assignment 7</Asg>. Own traps: chart reading ($h_1=71$ off by 8 kJ/kg), 1 ton is 211 kJ/min.
+
+### R7 · Cooling tower
+
+1. States: 1 air in, 2 air out (saturated), 3 water in (hot), 4 water out (cooled), make-up.
+2. Dry air $\dot m_{a1}=\dot m_{a2}$; water: $\dot m_3+\dot m_a\omega_1=\dot m_4+\dot m_a\omega_2$ (make-up $=\dot m_a(\omega_2-\omega_1)$).
+3. Energy: $\dot m_a(h_2-h_1)=\dot m_3h_3-\dot m_4h_4$, with $\dot m_4=\dot m_3-\dot m_{make-up}$: gives $\dot m_a=\dfrac{\dot m_3(h_3-h_4)}{(h_2-h_1)-(\omega_2-\omega_1)h_4}$.
+4. Volume flow: $\dot V_1=\dot m_av_1$.
+
+*Numbers.* 100 kg/s tower: $\dot m_a=97$ kg/s, $\dot V_1=82$ m³/s, make-up 1.8 kg/s. 14-108: 83.3 m³/s, 1.94 kg/s. Worked in <Asg n="07">Assignment 7</Asg> and <Ex id="final-mock-a">practice A</Ex>.
+
+### R8 · Air–fuel ratio, dew point and heat from a combustion equation
+
+1. **Write the reaction with $a_{th}(\mathrm{O_2}+3.76\mathrm{N_2})$** and balance C, H, then O, then N₂. For incomplete combustion put CO in the products and keep O₂ for the excess air.
+2. **Percent theoretical air** $=a/a_{th}$; excess = that minus 100 %.
+3. **From a dry analysis:** balance C and N₂ first, then H and O find the water.
+4. **$AF=\dfrac{N_{air}M_{air}}{N_{fuel}M_{fuel}}$** in kg/kg; use $M_{air}=28.97$ (29 on the sheet); $FA=1/AF$.
+5. **Dew point:** $y_{H_2O}=N_{H_2O}/N_{products}$ (count N₂ and excess O₂), $p_v=y_{H_2O}P$, $T_{dp}=T_{sat}(p_v)$. Condensation starts here; below it the latent heat is released.
+6. **Heat:** $Q_{out}=\sum N_R\bar h_f-\sum N_P(\bar h_f+\bar h-\bar h^\circ)$ per kmol of fuel; $\dot Q=\dot n_{fuel}Q$ (kmol/s) or per kg of fuel; HHV/LHV from $-2441.7\,m_w$.
+7. **Fuel for a stated heat:** $\dot m_f=\dot Q/q$.
+
+*Numbers.* 15-33: $AF=34.5$, 200 % theoretical. 15-24 ethane in 20 % excess: $AF=19.3$, $T_{dp}=52.4$ °C. 15-59: $T_{dp}=46.0$ °C, 45 770 kJ/kg of fuel. 15-67: 1 247 000 kJ/kmol, 34.4 kg/h of air. 15-52: n-octane HHV 48 255, LHV 44 787 kJ/kg. Worked in <Ch slug="combustion">Chapter 15</Ch>, <Asg n="08">Assignment 8</Asg>.
+
+### R9 · Adiabatic flame temperature: the two-trial interpolation
+
+1. **Balance** the equation for the stated air (usually 100–400 % theoretical); products include the excess O₂ and all the N₂.
+2. **$H_R$** with the fuel at 25 °C and the air at its **own** temperature: $H_R=\sum N_R(\bar h_f+\bar h(T_R)-\bar h^\circ)$; a liquid fuel has $\bar h_f(liq)=\bar h_f(gas)-Mh_{fg}$.
+3. **Guess $T_P$** (N₂ dominates: about 2200 K for stoichiometric hydrocarbons, lower with excess air). Compute $H_P(T_{trial})$ from A-18 to A-24, with every product's $\bar h(T)-\bar h^\circ$.
+4. **Second trial** on the other side of $H_R$; **linear interpolation** for $T_P$: $T_P=T_1+\dfrac{H_R-H_{P1}}{H_{P2}-H_{P1}}(T_2-T_1)$.
+5. **Check** that $T_P$ lies between the two trials and that $H_P(T_P)\approx H_R$. Count **kmol of products** (e.g. 11 H₂O, not 22 hydrogen atoms).
+6. With a heat loss, $H_R-H_P=Q_{out}$.
+
+*Numbers.* 15-79 (acetylene, 30 % excess): 2300 K. <Ex id="final-2021">2021 P2</Ex> decane $f=0.0206$: 1365 K (two trials give 1367). Worked in <Ch slug="combustion">Chapter 15</Ch>, <Ex id="final-mock-a">practice A</Ex> (propane) and <Ex id="final-mock-b">practice B</Ex> (ethanol).
+
+### R10 · Closed-tank combustion with the $-R_uT$ terms
+
+1. **Constant volume, adiabatic or with heat loss:** $Q_{out}=U_R-U_P$ with $\bar u=\bar h-R_uT$ for **every gaseous** reactant and product; liquids and solids have $\bar u\approx\bar h$.
+2. $U_R=\sum N_R(\bar h_f+\bar h-\bar h^\circ-R_uT_R)$, $U_P=\sum N_P(\bar h_f+\bar h-\bar h^\circ-R_uT_P)$.
+3. **Pressure:** $\dfrac{P_2}{P_1}=\dfrac{N_PT_2}{N_RT_1}$ (ideal gas, same rigid volume, count the gas moles).
+4. Check: the heat is smaller than the steady-flow value because the $R_uT$ terms differ.
+
+*Numbers.* 15-68 (methane and oxygen in a rigid tank): $P_2=805$ kPa, $Q_{out}=5251$ kJ. Worked in <Asg n="08">Assignment 8</Asg>.
+
+### R11 · Single-reaction equilibrium
+
+1. **Write the reaction as in table A-28** (flip it and $K_p\to1/K_p$; double it and $K_p\to K_p^2$).
+2. **Unknown $x$** (extent): moles of each species before and after; $N_{total}=\sum N_i$ (**gas only**, a solid carbon or liquid is in neither $N_{total}$ nor $\Delta\nu$).
+3. **$K_p=e^{\ln K_p}$** from A-28 at $T$; **$K_p=\dfrac{N_C^{\nu_C}N_D^{\nu_D}}{N_A^{\nu_A}N_B^{\nu_B}}\left(\dfrac{P}{N_{total}}\right)^{\Delta\nu}$**, $P$ in atm.
+4. **Solve** for $x$ (trial and error or a quadratic; check $0<x<$ the limit).
+5. **Composition**, mole fractions; if requested, the **enthalpy** (energy balance as in chapter 15 with the equilibrium amounts) or the effect of pressure, inert gas, or $T$.
+6. **Conceptual:** Le Chatelier (pressure toward fewer moles; inert at fixed $T,P$ acts like lower pressure; exothermic reaction $K_p$ falls with $T$; $\Delta\nu=0$ no pressure effect).
+
+*Numbers.* 16-31: NO in air at 2000 K, 2 atm: 0.0376 kmol NO per kmol O₂ (0.79 %). 16-33: $y_{CH_4}=0.360$, $y_{H_2}=0.187$, $y_{N_2}=0.453$ (solid C excluded). 16-40: O₂ to 3000 K: 1986 kJ/min with dissociation, 1533 without. Worked in <Ch slug="equilibrium">Chapter 16</Ch>, <Asg n="09">Assignment 9</Asg>, <Ex id="tutorial-16">tutorial 16</Ex>, <Ex id="final-mock-b">practice B</Ex>.
+
+### R12 · Van 't Hoff and the heat of reaction
+
+1. $\ln\dfrac{K_{p2}}{K_{p1}}=\dfrac{\bar h_R}{R_u}\left(\dfrac1{T_1}-\dfrac1{T_2}\right)$, **kelvin**, $\bar h_R$ constant.
+2. Solve for $\bar h_R$ from two $\ln K_p$ values in A-28, or for $K_{p2}$ from a known $\bar h_R$.
+3. Cross-check with $\bar h_R=\sum\nu\bar h_P-\sum\nu\bar h_R$ from the enthalpy tables.
+4. Sign: $\bar h_R>0$ (endothermic) means $K_p$ **rises** with $T$.
+
+*Numbers.* 16-56: $\bar h_R\approx276\,860$ kJ/kmol (CO₂ → CO + ½O₂ at 2200 K); the two routes agree to 0.01 %. Worked in <Asg n="09">Assignment 9</Asg>, <Ex id="final-2021">2021 P3</Ex>.
+
+### R13 · Nozzle choking and the area ratio
+
+1. **Stagnation state** from the given static state and speed: $T_0=T+V^2/2000c_p$, $P_0=P(T_0/T)^{k/(k-1)}$.
+2. **Is it choked?** Converging nozzle: $P_b/P_0$ against $P^*/P_0=0.5283$ ($k=1.4$): below it, the exit is sonic at $P^*$, $T^*=T_0\cdot2/(k+1)$.
+3. **Throat:** $A^*$ from $\dot m_{max}=A^*P_0\sqrt{k/RT_0}\,(2/(k+1))^{(k+1)/(2(k-1))}$, or by continuity $\rho_1V_1A_1=\rho^*V^*A^*$.
+4. **C–D nozzle:** $A/A^*$ at a given $Ma$ (two solutions, subsonic and supersonic branch); fully expanded exit at $P_a$; over- or under-expanded otherwise.
+5. **Stagnation temperature is constant** in the adiabatic flow; $P_0$ constant if isentropic.
+6. **Conceptual:** below the critical pressure ratio the exit velocity, exit pressure and mass flow are **unchanged** (17-48C); reducing the exit area of a choked nozzle reduces the mass flow only.
+
+*Numbers.* 17-39: $P^*=634$ kPa. 17-62: $T^*=355.0$ K, $P^*=277.6$ kPa, $A^*/A_1=0.443$. 17-40: $T_0=293.3$ K at Ma 1.1, 12 km. 17-26: Ma = 0.897. Worked in <Ch slug="compressible">Chapter 17</Ch>, <Asg n="10">Assignment 10</Asg>, <Ex id="tutorial-17">tutorial 17</Ex>, <Ex id="final-mock-b">practice B</Ex>.
+
+### R14 · Mixtures and property relations in one line each
+
+- **Mixtures:** convert to moles ($N_i=m_i/M_i$), $y_i$, $M_m$, $R_m$; $p_i=y_iP$; $c_{p,m}$ **mass-weighted** with per-kg values; $\Delta s_i$ with partial pressures; Kay's rule for a real mixture: $T'_{cr}$, $P'_{cr}$ → $Z$ (<Asg n="06">Assignment 6</Asg>, <Ex id="final-mock-a">practice A</Ex>).
+- **Property relations:** a derivative of a state function: use a Gibbs equation or a Maxwell relation from the sheet; a real-gas change: $\Delta\bar h=\Delta\bar h_{ideal}-R_uT_{cr}(Z_{h2}-Z_{h1})$ with $T_R$, $P_R$ at both states; $\mu_{JT}$: from $v$, $T(\partial v/\partial T)_P$; throttling is $h=$ constant (<Asg n="05">Assignment 5</Asg>).
+- **ESHP and ESFC:** jet thrust divided by 8.5 plus propeller shaft power; $ESFC=\dot m_f/ESHP$. The comparison: same fuel flow, the turboprop gives the most ESHP and the lowest ESFC (Habashi's slide: 273.7, 145.1 and 99.1 for turboprop, turbofan and turbojet; ESFC ≈ 0.29, 0.55, 0.80 with $\dot m_f=0.022$ kg/s). See <Ex id="final-mock-a">practice A</Ex>.
+
+## Habashi's "students get trapped by…" list (paraphrased)
+
+From his marathon review slides; each one costs marks on every final:
+
+1. **The meaning of AFT.** Last year many students asked what "AFT" meant. It is the temperature the products reach when the **enthalpy of the products equals the enthalpy of the reactants** (no heat, no work): enthalpy does not change, temperature does.
+2. **Balancing the equation.** Some students still cannot balance a combustion reaction. Atoms in = atoms out, and **every** product's kmol counts.
+3. **Mol, kmol and kg.** Volume (kmol, ideal gas) and mass (kg) are not the same thing: kg with $R$, kmol with $R_u$.
+4. **What "% excess air" means.** 50 % excess air is 150 % of the theoretical air, not 50 %.
+5. **HHV against LHV.** HHV counts the water in the products as liquid; LHV as vapor; the difference is $m_wh_{fg}$ (use the LHV when the water leaves as vapor).
+6. **Remarks about $K_p$.** The six remarks (depends on $T$ only; reverse is $1/K_p$; larger means more complete; $P$ and inerts change composition, not $K_p$; doubling coefficients squares it) are easy to state and easy to forget under pressure.
+7. **Static and stagnation.** Introduced in chapter 9, used again in chapter 17; many students still cannot tell them apart at the end of the term. A probe at rest sees stagnation; the flow itself has static.
+8. **Rankine modifications.** Two ideas: the area under the T–s curve is heat (and net work is the enclosed area), and the **Carnot principle** tells you without calculation whether a modification helps. Raise $T_{H,avg}$ or lower $T_{L,avg}$ and efficiency rises.
+9. **The industrial gas turbine with an exhaust diffuser.** The turbine efficiency uses the **static** exit pressure below atmospheric; "many students, to the end of the semester, have trouble understanding this concept".
+10. **Cooling with dehumidification.** Two processes exist; only one example is in the book.
+11. **ESHP and ESFC comparison.** Turboprop, turbofan and turbojet at the same fuel flow (see R14).
+
+## Your own traps (from your end-of-term "mistakes" sheet)
+
+- **Chapter 12:** $\partial v/\partial T=R/P$ for an ideal gas; **throttling is $h$ constant**; Clapeyron needs **kelvin**; departure formulas with $R_u$ and $T_{cr}$.
+- **Chapter 13:** "5 % by volume" is 0.05 per mole of air, not per 4.76 (13-34); entropy with **partial pressure** $y_iP$; use $R=R_u/M$ of the **mixture**; for different initial pressures the closed system has $Q=\sum m_ic_{v,i}\Delta T$.
+- **Chapter 14:** saturated means $\varphi=100$ %; $h=c_pT+\omega h_g$; **dry-air weights** in a mix; the cooling-tower $\dot m_a$ formula.
+- **Chapter 15:** AF uses $3(4.76)(29)/m_{fuel}$ style counts; stoichiometric means no fuel and no O₂ left; **fuel at 25 °C but air at its own temperature**; fixed volume adds $-R_uT$; liquid fuel $\bar h_f$ is gas minus $Mh_{fg}$.
+- **Chapter 16:** $K_p$ depends on $T$ only; exothermic means lower $K_p$ at higher $T$; with CO₂, CO and O₂ all in the products, write the $K_p$ relation and solve for the coefficients, then do the enthalpy balance as in chapter 15.
+- **Chapter 17:** $T_0=T+V^2/2000c_p$; $P_0/P=(T_0/T)^{k/(k-1)}$; $c=\sqrt{kRT}$.
+- **From the errata page:** interpolate $P\cdot v$ (4-9); $c_p$ not $c_v$ for turbine and compressor work (9-95); feedwater leaves at the drain's saturation temperature (10-55); the right pressure table for $h_2$ (11-62); the pressure the problem gives (final P5). See the [errata](#/mech341/page/errata).
+
+<Callout kind="note" title="Habits that earn marks on every question">
+
+Sketch the diagram and number the states; write the equation before the numbers; state the assumption you rely on ($c_p$ constant, adiabatic, steady, ideal gas) and the check (the quality is between 0 and 1, $T_P$ is between the two trials, the efficiency is below the Carnot value); give units; add a one-line physical comment. The recipes for the tables are on the [tables page](#/mech341/page/tables).
+
+</Callout>
+
+<Examined>
+
+These templates cover the midterm (R1 to R5) and the final (R1, R6 to R14, with the jet engine mandatory). Practise one of each on the <Ex id="final-2021">2021 final</Ex>, <Ex id="final-mock-a">practice A</Ex> and <Ex id="final-mock-b">practice B</Ex> under time, then check against the errata page.
+
+</Examined>
