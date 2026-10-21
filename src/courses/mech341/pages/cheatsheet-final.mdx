@@ -1,0 +1,138 @@
+<p className="eyebrow">Exam toolkit · cheat sheet · final</p>
+
+# Cheat sheet: final (chapters 12–17, plus the jet engine again)
+
+<div className="lede">
+
+The final covers everything, but the **new** material is chapters 12–17, and the jet-engine problem (always mandatory, 25 marks in 2021) comes back with the stagnation and nozzle relations of chapters 9 and 17. This page rebuilds the second half of the official information sheet in our own layout and marks each formula **given** (printed on the sheet: only the form has to be recognised) or **memorise** (not on the sheet). The sheet is generous for chapters 12, 13, 14, 15 and 16 (the Maxwell relations, the mixture rules, the humidity formulas, the heating-value lines, the three first-law forms for reacting systems, the $K_p$ definition) and gives you **nothing** for the area–Mach relation, the speed of sound, the balancing of equations, $A F$, the dew point, the van 't Hoff equation or the work of a compressor: those are the ones to rehearse. For the jet engine and the constants, use the <a href="#/mech341/page/cheatsheet-midterm">midterm sheet</a>.
+
+</div>
+
+## 1 · Chapter 12: property relations
+
+| What | Formula | Sheet? |
+|---|---|---|
+| Gibbs equations | $du=T\,ds-P\,dv$, $dh=T\,ds+v\,dP$, $da=-s\,dT-P\,dv$, $dg=-s\,dT+v\,dP$ | memorise |
+| Maxwell relations | $\left(\dfrac{\partial T}{\partial v}\right)_s=-\left(\dfrac{\partial P}{\partial s}\right)_v$, $\left(\dfrac{\partial s}{\partial v}\right)_T=\left(\dfrac{\partial P}{\partial T}\right)_v$, $\left(\dfrac{\partial T}{\partial P}\right)_s=\left(\dfrac{\partial v}{\partial s}\right)_P$, $\left(\dfrac{\partial s}{\partial P}\right)_T=-\left(\dfrac{\partial v}{\partial T}\right)_P$ | **given** |
+| $\Delta h$ | $h_2-h_1=\displaystyle\int c_p\,dT+\int\left[v-T\left(\dfrac{\partial v}{\partial T}\right)_P\right]dP$ | **given** |
+| $\Delta s$ | $s_2-s_1=\displaystyle\int\dfrac{c_p}{T}dT-\int\left(\dfrac{\partial v}{\partial T}\right)_PdP$ and the $c_v$, $dv$ form | **given** |
+| $\Delta u$ | $u_2-u_1=\displaystyle\int c_v\,dT+\int\left[T\left(\dfrac{\partial P}{\partial T}\right)_v-P\right]dv$ | derive (from $dh=du+d(Pv)$, which is given) |
+| $h_2-h_1$ vs $u$ | $h_2-h_1=u_2-u_1+(P_2v_2-P_1v_1)$ | **given** |
+| $c_p-c_v$ | $-T\left(\dfrac{\partial v}{\partial T}\right)^2_P\left(\dfrac{\partial P}{\partial v}\right)_T=\dfrac{vT\beta^2}{\alpha}$ | **given** |
+| $c_p$, $c_v$ dependence | $(c_v-c_{v0})_T=T\displaystyle\int_0^v\left(\dfrac{\partial^2P}{\partial T^2}\right)_vdv$, and the $c_p$ analogue | **given** |
+| Expansivity and compressibility | $\beta=\dfrac1v\left(\dfrac{\partial v}{\partial T}\right)_P$, $\alpha=-\dfrac1v\left(\dfrac{\partial v}{\partial P}\right)_T$ | memorise (names!) |
+| Clapeyron | $\left(\dfrac{dP}{dT}\right)_{sat}=\dfrac{h_{fg}}{Tv_{fg}}$ ($T$ in K) | **given** |
+| Clapeyron–Clausius | $\ln\dfrac{P_2}{P_1}\approx\dfrac{h_{fg}}{R}\left(\dfrac1{T_1}-\dfrac1{T_2}\right)_{sat}$ | **given** |
+| Joule–Thomson | $\mu_{JT}=\left(\dfrac{\partial T}{\partial P}\right)_h=-\dfrac1{c_p}\left[v-T\left(\dfrac{\partial v}{\partial T}\right)_P\right]$; throttling: $h=$ constant | **given** (and "$h$ constant" memorise) |
+| Departures | $\bar h_2-\bar h_1=(\bar h_2-\bar h_1)_{ideal}-R_uT_{cr}(Z_{h2}-Z_{h1})$; $u_2-u_1=(h_2-h_1)-R_u(Z_2T_2-Z_1T_1)$; $\bar s_2-\bar s_1=(\bar s_2-\bar s_1)_{ideal}-R_u(Z_{s2}-Z_{s1})$ | **given** |
+| Reduced coordinates | $T_R=T/T_{cr}$, $P_R=P/P_{cr}$, $Pv=ZRT$ | memorise |
+| Ideal-gas $\mu_{JT}$ | 0; $\partial v/\partial T=R/P$ | memorise |
+
+**Remember:** departure charts use $R_u$ with **kmol** and $R$ with kg; if the substance has tables (water, R-134a), use the tables, not the charts. Do not interpolate $v$ across a wide pressure gap: use $P\cdot v$ (<Asg n="01">4-9</Asg>).
+
+## 2 · Chapter 13: gas mixtures
+
+| What | Formula | Sheet? |
+|---|---|---|
+| Mass and mole fractions | $mf_i=\dfrac{m_i}{m_m}$, $y_i=\dfrac{N_i}{N_m}$, $\sum mf_i=\sum y_i=1$ | **given** |
+| Molar mass | $M_m=\dfrac{m_m}{N_m}=\sum y_iM_i=\dfrac{1}{\sum mf_i/M_i}$ | **given** |
+| Dalton | $P_m=\sum p_i(T_m,V_m)$; $p_i/P_m=y_i$ | **given** |
+| Amagat | $V_m=\sum V_i(T_m,P_m)$; $V_i/V_m=y_i$ | **given** |
+| Properties | $u_m=\sum mf_iu_i$, $h_m=\sum mf_ih_i$, $s_m=\sum mf_is_i$, $c_{v,m}=\sum mf_ic_{v,i}$, $c_{p,m}=\sum mf_ic_{p,i}$ | **given** |
+| $R$, $k$ of the mixture | $R_m=R_u/M_m$, $k=c_{p,m}/c_{v,m}$ | derive |
+| Entropy change of a component | $\Delta s_i=c_{p,i}\ln\dfrac{T_2}{T_1}-R_i\ln\dfrac{y_iP_2}{y_iP_1}$ (partial pressures; mixing adds $-R_i\ln y_i$) | memorise |
+| Kay's rule | $T'_{cr}=\sum y_iT_{cr,i}$, $P'_{cr}=\sum y_iP_{cr,i}$ | memorise |
+| Amagat real-gas form | $Z_m=\sum y_iZ_i$ | memorise |
+| Rigid tank | $Q=\Delta U=\sum m_ic_{v,i}\Delta T$ (closed) | memorise |
+
+**Traps.** "5 % more O₂" is per mole of air (0.05), not per 4.76 (0.238). Mass-weighted $c_p$ with per-kg values; mole-weighted with per-kmol values. Partial pressure (not $P_m$) in each component's entropy term.
+
+## 3 · Chapter 14: psychrometrics
+
+| What | Formula | Sheet? |
+|---|---|---|
+| Humidity ratio | $\omega=\dfrac{0.622\,p_v}{P-p_v}=\dfrac{0.622\,\varphi p_g}{P-\varphi p_g}$ | **given** |
+| Wet bulb (adiabatic saturation) | $\omega_1=\dfrac{c_p(T_{WB}-T_1)+\omega_2h_{fg2}}{h_{g1}-h_{f2}}$, $\omega_2=\dfrac{0.622p_{g2}}{P_2-p_{g2}}$ | **given** |
+| Relative humidity | $\varphi=\dfrac{\omega P}{(0.622+\omega)p_g}$ | derive |
+| Dew point | $T_{dp}=T_{sat}$ at $p_v=\varphi p_g$ | memorise |
+| Enthalpy per kg dry air | $h=1.005T+\omega(2501+1.82T)$ ($T$ in °C) | memorise |
+| Dry-air mass and volume | $m_a=\dfrac{P_aV}{R_aT}$, $P_a=P-p_v$; $v=\dfrac{R_aT}{P-p_v}$ | memorise |
+| Golden rules | $\dot m_{a1}=\dot m_{a2}$; $\dot m_w=\dot m_a(\omega_1-\omega_2)$; $\dot Q_{out}=\dot m_a(h_1-h_2)-\dot m_wh_w$ | memorise |
+| Mixing | $\dfrac{\dot m_{a1}}{\dot m_{a2}}=\dfrac{\omega_2-\omega_3}{\omega_3-\omega_1}=\dfrac{h_2-h_3}{h_3-h_1}$ (weights by **dry air**) | memorise |
+| Cooling tower | $\dot m_a=\dfrac{\dot m_3(h_3-h_4)}{(h_2-h_1)-(\omega_2-\omega_1)h_4}$; make-up $=\dot m_a(\omega_2-\omega_1)$ | memorise |
+| Tons | 1 ton $=211$ kJ/min | **given** |
+| $h_f$ at the water temperature | $h_f(T)\approx h_f(T_{sat})$, $c_{p,water}=4.184$ | **given** |
+
+**Traps.** Use the pressure the problem gives (100 kPa on the sheet, 95 kPa in 14-32, 150 kPa in 14-65), not 101.3. Habashi's slide warns that there are **two** ways to draw cooling with dehumidification and the book shows only one: read the statement for the exit state (saturated or a stated $T$ and $\varphi$) and let the dry-air, water and energy balances do the rest. Keep the **condensate term** $\dot m_wh_w$ in the energy balance (<Ex id="final-2021">2021 P5</Ex>).
+
+## 4 · Chapter 15: combustion
+
+| What | Formula | Sheet? |
+|---|---|---|
+| Air | 1 O₂ + 3.76 N₂ per kmol of O₂ (4.76 kmol of air); $M=29$ | **given** ($M$), memorise (3.76) |
+| Balancing | C → CO₂, H → H₂O, O₂ from products, N₂ from the 3.76; theoretical = no O₂ in products | memorise |
+| Excess air | 50 % excess = 150 % theoretical; $\lambda=\%\text{theor}/100$ | memorise |
+| Air–fuel ratio | $AF=\dfrac{N_{air}M_{air}}{N_{fuel}M_{fuel}}$ kg/kg | memorise |
+| Dew point of products | $p_v=y_{H_2O}P$, $T_{dp}=T_{sat}(p_v)$ | memorise |
+| Heating values (open) | $\lvert LHV\rvert=\lvert HHV\rvert-m_wh_{fg}=\lvert HHV\rvert-2441.7\,m_w=\lvert HHV\rvert-44\,000\,N$ (N kmol of water, per kmol of fuel) | **given** |
+| Heating values (closed) | $\lvert LHV\rvert=\lvert HHV\rvert-m_wu_{fg}=\lvert HHV\rvert-2304.3\,m_w=\lvert HHV\rvert-41\,523\,N$ | **given** |
+| Steady flow | $Q-W=\sum_PN_i\left[\Delta\bar h^\circ_{fi}+(\bar h_i(T_P)-\bar h^\circ_i)\right]-\sum_RN_i\left[\Delta\bar h^\circ_{fi}+(\bar h_i(T_R)-\bar h^\circ_i)\right]$ | **given** |
+| Enthalpy of combustion form | the same $=\Delta\bar h^\circ_c+\sum_PN_i(\bar h_i(T_P)-\bar h_i^\circ)-\sum_RN_i(\bar h_i(T_R)-\bar h_i^\circ)$ | **given** |
+| Closed system | same with $-R_uT_P$ and $-R_uT_R$ inside each bracket | **given** |
+| Adiabatic flame temperature | $H_P=H_R$ ($Q=W=0$), iterate on $T_P$ and interpolate between two trials | **given** |
+| Liquid fuel | $\bar h_f(liq)=\bar h_f(gas)-M\,h_{fg}$ | memorise |
+| Fuel at 25 °C, air at its own temperature | $H_R$ has $(\bar h-\bar h^\circ)$ for the air only | memorise |
+| Fuel flow from $\dot Q$ | $\dot m_f=\dot Q/q$ per kg of fuel | derive |
+
+**Habashi's traps (paraphrased).** Students ask what "AFT" means: it is the product temperature when the products' enthalpy equals the reactants' (enthalpy does not change, the temperature does). Balance the equation first. Do not confuse mol, kmol and kg (volume and mass). "Percent excess air" is *extra* air: 50 % excess is 150 % theoretical. Know HHV against LHV: HHV counts the water as liquid.
+
+## 5 · Chapter 16: chemical equilibrium
+
+| What | Formula | Sheet? |
+|---|---|---|
+| Standard Gibbs change | $\Delta G^*(T)=\left[\nu_C\bar g^*_C+\nu_D\bar g^*_D\right]-\left[\nu_A\bar g^*_A+\nu_B\bar g^*_B\right]$ | **given** |
+| Link to $K_p$ | $\Delta G^*(T)=-R_uT\ln K_p$, $K_p=e^{-\Delta G^*/R_uT}$ | **given** |
+| $K_p$ in moles | $K_p=\dfrac{N_C^{\nu_C}N_D^{\nu_D}}{N_A^{\nu_A}N_B^{\nu_B}}\left(\dfrac{P}{N_{total}}\right)^{\Delta\nu}$, $P$ in atm | **given** |
+| $\Delta\nu$ | $(\nu_C+\nu_D)-(\nu_A+\nu_B)$, **gas phase only** | **given** (the "gas only" is yours) |
+| Table | $\ln K_p$ from A-28 for the reaction **as written** | table |
+| Van 't Hoff | $\ln\dfrac{K_{p2}}{K_{p1}}=\dfrac{\bar h_R}{R_u}\left(\dfrac1{T_1}-\dfrac1{T_2}\right)$ | memorise |
+| Reverse, doubled | reverse: $1/K_p$; coefficients doubled: $K_p$ squared | memorise |
+| Six remarks on $K_p$ | depends on $T$ only; reverse is $1/K_p$; larger = more complete; $P$ and inerts move the composition not $K_p$; doubling squares it; exothermic $\Rightarrow$ $K_p$ falls with $T$ | memorise |
+| Energy afterwards | the chapter-15 balance with the equilibrium amounts | **given** (as above) |
+
+**Remarks to say aloud.** Higher pressure shifts toward fewer moles; an inert at constant $T$ and $P$ acts like lower pressure (16-6C); an exothermic reaction is less complete at higher $T$ (16-4C); $\Delta\nu=0$ means pressure has no effect (16-8C); dissociation is endothermic, so the real flame is cooler than the ideal one (16-52C).
+
+## 6 · Chapter 17: compressible flow
+
+| What | Formula | Sheet? |
+|---|---|---|
+| Static to stagnation | $\dfrac{T_0}{T}=1+\dfrac{k-1}{2}Ma^2$, $\dfrac{P_0}{P}=\left[1+\dfrac{k-1}{2}Ma^2\right]^{k/(k-1)}$, $\dfrac{\rho_0}{\rho}=\left[\cdots\right]^{1/(k-1)}$ | **given** |
+| Critical (sonic) | $\dfrac{T^*}{T_0}=\dfrac{2}{k+1}$, $\dfrac{P^*}{P_0}=\left(\dfrac{2}{k+1}\right)^{k/(k-1)}$, $\dfrac{\rho^*}{\rho_0}=\left(\dfrac{2}{k+1}\right)^{1/(k-1)}$ | **given** |
+| From a velocity | $T_0=T+\dfrac{V^2}{2000\,c_p}$ | memorise |
+| Speed of sound, Mach | $c=\sqrt{kRT}$ ($R$ in J/kg·K), $Ma=V/c$ | memorise |
+| Area ratio | $\dfrac{A}{A^*}=\dfrac1{Ma}\left[\dfrac{2}{k+1}\left(1+\dfrac{k-1}{2}Ma^2\right)\right]^{\frac{k+1}{2(k-1)}}$ | memorise |
+| Choked mass flow | $\dot m_{max}=A^*P_0\sqrt{\dfrac{k}{RT_0}}\left(\dfrac{2}{k+1}\right)^{\frac{k+1}{2(k-1)}}$ | memorise |
+| Choking condition | converging nozzle chokes when $P_b/P_0\le P^*/P_0$ (0.5283 for air) | memorise (from the given critical ratio) |
+| Mass flow by continuity | $\dot m=\rho AV$ with $\rho=P/RT$ | memorise |
+| Energy equation | $h_0=h+V^2/2$ | memorise |
+
+**Numbers.** Air: $T^*/T_0=0.8333$, $P^*/P_0=0.5283$, $\rho^*/\rho_0=0.6339$; hot gas $k=1.333$: 0.8573 and 0.540. Converging nozzle: exit velocity, exit pressure and mass flow are **unchanged** once choked as the back pressure falls (17-48C). 17-62: $T^*=355.0$ K, $P^*=277.6$ kPa, $A^*/A_1=0.443$ (the printed 0.428 is a misprint, see the <a href="#/mech341/page/errata">errata</a>). Static versus stagnation: Habashi notes students are still unable to say the difference at the end of the term (stagnation is what a probe at rest in the stream would read; static is what moves with the gas).
+
+## 7 · The jet-engine problem on the final (recap)
+
+Static state $\to$ ram ($T_{01}$, $P_{01}$) $\to$ diffuser $\to$ compressor ($r_c$, $\eta_C$) $\to$ combustor ($q=c_{pg}(T_{04}-T_{03})$, $f=q/HV$) $\to$ turbine ($w_T=w_C$, $\eta_T$) $\to$ nozzle (choked or fully expanded) $\to$ $F$, $\dot W_P$, TSFC, efficiencies. Formulas as in the <a href="#/mech341/page/cheatsheet-midterm">midterm sheet</a>; practice on <Ex id="final-2021">2021 P1</Ex> and <Ex id="final-mock-b">practice B</Ex>.
+
+## 8 · Not on the sheet: the list to rehearse
+
+1. Speed of sound and Mach number; $A/A^*$; choked mass flow.
+2. Balancing a combustion equation, $AF$, percent excess air, dew point.
+3. Moist-air enthalpy $h=1.005T+\omega(2501+1.82T)$, mixing weights, the golden balances.
+4. Van 't Hoff and the six remarks.
+5. Entropy of a mixture component with **partial** pressures; Kay's rule.
+6. Everything about steam cycles, refrigeration and exergy (the midterm list).
+
+<Examined>
+
+Final-exam shape (2021 paper): the turbojet, an adiabatic flame temperature and an equilibrium/heating-value problem are mandatory (25 + 15 + 10 marks); you choose two of steam cogeneration, air conditioning and a humidifier. Practise on <Ex id="final-2021">the 2021 final</Ex>, <Ex id="final-mock-a">practice A</Ex>, <Ex id="final-mock-b">practice B</Ex>, <Ex id="tutorial-16">tutorial 16</Ex>, <Ex id="tutorial-17">tutorial 17</Ex>, and the matching assignments (<Asg n="05">5</Asg> to <Asg n="10">10</Asg>); the <a href="#/mech341/page/recipes">recipes</a> list the steps.
+
+</Examined>

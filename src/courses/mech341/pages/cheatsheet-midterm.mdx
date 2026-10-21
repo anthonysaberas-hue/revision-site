@@ -1,0 +1,128 @@
+<p className="eyebrow">Exam toolkit · cheat sheet · midterm</p>
+
+# Cheat sheet: midterm (chapters 8–11)
+
+<div className="lede">
+
+The exam is closed-book with the **official information sheet** stapled to it (the 2023 two-page sheet is the model). This page rebuilds that sheet in our own layout and, more usefully, **marks every formula as "given" or "memorise"**: a formula on the sheet needs only to be *recognised*; the others you must be able to write from nothing. For the midterm the sheet gives you the constants, the jet-engine and Brayton efficiency lines, the stagnation ratios and two steam-table shortcuts; it gives you **nothing** for Rankine, refrigeration, isentropic efficiencies, exergy or the first law of a device.
+
+</div>
+
+<Callout kind="note" title="How to read the third column">
+
+**given** = printed on the official sheet (check the form: it is written the way the sheet writes it, which is not always the way you will use it). **memorise** = not on the sheet. **derive** = not on the sheet but one line from something that is.
+
+</Callout>
+
+## 1 · Constants and conversions (all given)
+
+| Quantity | Value on the sheet |
+|---|---|
+| Air | $c_{pa}=1.005$ kJ/kg·K, $k_a=1.400$, $k_a/(k_a-1)=3.5$ |
+| Combustion gases | $c_{pg}=1.147$ kJ/kg·K, $k_g=1.333$, $k_g/(k_g-1)=4.0$ |
+| Air and combustion gases | $R=0.287$ kJ/kg·K; $R_u=8.314$ kJ/kmol·K |
+| Heat capacities | R-134a 1.23, liquid water 4.184, steam 1.8723 kJ/kg·K |
+| Densities, pressure | water 1000 kg/m³, air 1.3 kg/m³, $P_{atm}=1$ bar $=100$ kPa |
+| Molar masses | C 12, He 4, H₂ 2, N₂ 28, O₂ 32, air 29, water 18 |
+| Conversions | 1 kJ = 10³ kg·m²/s², 1 kW = 1 kJ/s, **1 ton of refrigeration = 211 kJ/min**, 1 bar = 100 kPa |
+
+Note that the sheet uses **air $M=29$** and a round **$P_{atm}=100$ kPa**; the course's own examples sometimes use 28.97 and 101.325. If the question gives a value, use the question's.
+
+## 2 · Chapter 8: Thermo 1 refresher and exergy
+
+| What | Formula | Sheet? |
+|---|---|---|
+| Closed system | $Q-W=\Delta U=m(u_2-u_1)$ | memorise |
+| Steady flow | $\dot Q-\dot W=\sum\dot m\left(h+\dfrac{V^2}{2}+gz\right)_{out}-\sum\dot m\left(h+\dfrac{V^2}{2}+gz\right)_{in}$ | memorise |
+| Turbine efficiency | $\eta_T=\dfrac{h_1-h_{2a}}{h_1-h_{2s}}$ | memorise |
+| Compressor and pump efficiency | $\eta_C=\dfrac{h_{2s}-h_1}{h_{2a}-h_1}$; pump $w_s=v\Delta P$ | memorise |
+| Entropy balance | $S_{gen}=\sum\dot m s_{out}-\sum\dot m s_{in}-\sum\dfrac{\dot Q}{T_b}\ge0$ | memorise |
+| Reversible work and destroyed exergy | $w_{rev}-w_a=T_0 s_{gen}=x_{dest}$ | memorise |
+| Heat exergy | $X_Q=Q(1-T_0/T)$ | memorise |
+| Flow exergy | $\psi=(h-h_0)-T_0(s-s_0)+V^2/2+gz$ | memorise |
+| Second-law efficiency | $\eta_{II}=w_a/w_{rev}$ (work producer), $w_{rev}/w_a$ (work consumer) | memorise |
+| Subcooled liquid | $h(T)\approx h_f(T_{sat})$ | **given** |
+| Superheated vapor at low $P$ | $h(T)_P\approx h_g(T_{sat,P})+c_p(T-T_{sat,P})$, $c_p=1.8723$ | **given** |
+| Ideal gas, constant $c_p$ | $s_2-s_1=c_p\ln\dfrac{T_2}{T_1}-R\ln\dfrac{P_2}{P_1}$ | memorise |
+| Polytropic | $PV^n=C$, $W=\dfrac{P_2V_2-P_1V_1}{1-n}$ | memorise |
+| Vapor volume interpolation | interpolate $P\cdot v$, not $v$ (<Asg n="01">4-9</Asg>) | skill |
+
+## 3 · Chapter 9: gas cycles and jet engines
+
+| What | Formula | Sheet? |
+|---|---|---|
+| Ideal Brayton | $\eta_{th}=1-\dfrac{1}{r_p^{(k-1)/k}}$ | **given** |
+| Isentropic temperature ratio | $\dfrac{T_2}{T_1}=r_p^{(k-1)/k}$ (and with the air table $P_{r2}/P_{r1}=P_2/P_1$) | derive / memorise |
+| Work of each machine | $w_C=c_p(T_2-T_1)$, $w_T=c_p(T_3-T_4)$, $w_{net}=w_T-w_C$ | memorise |
+| Back-work ratio | $r_{bw}=w_C/w_T$ | memorise |
+| Max net work | $r_p=\left(\dfrac{T_3}{T_1}\right)^{k/[2(k-1)]}$ | memorise |
+| Regenerator | $\varepsilon=\dfrac{h_x-h_2}{h_4-h_2}$ | memorise |
+| Brayton modifications | regeneration: efficiency up, work unchanged; intercooling and reheat: work up, efficiency down (unless regeneration is added) | memorise |
+| Stagnation temperature | $T_0=T+\dfrac{V^2}{2000\,c_p}$ ($V$ in m/s, $c_p$ in kJ/kg·K) | memorise |
+| Stagnation ratios | $\dfrac{T_0}{T}=1+\dfrac{k-1}{2}Ma^2$, $\dfrac{P_0}{P}=\left[1+\dfrac{k-1}{2}Ma^2\right]^{k/(k-1)}$, $\dfrac{\rho_0}{\rho}=\left[\cdots\right]^{1/(k-1)}$ | **given** |
+| Critical ratios | $\dfrac{T^*}{T_0}=\dfrac{2}{k+1}$, $\dfrac{P^*}{P_0}=\left(\dfrac{2}{k+1}\right)^{k/(k-1)}$, $\dfrac{\rho^*}{\rho_0}=\left(\dfrac{2}{k+1}\right)^{1/(k-1)}$ | **given** |
+| Isentropic via $T_0$ | $\dfrac{P_{0}}{P}=\left(\dfrac{T_{0}}{T}\right)^{k/(k-1)}$ | derive |
+| Turbojet turbine | $w_T=w_C$: $c_{pg}(T_{04}-T_{05})=c_{pa}(T_{03}-T_{02})$ | memorise |
+| Net thrust | $F=\dot m(C_j-C_a)+A_j(P_j-P_a)$ | **given** |
+| Gross thrust | $\dot mC_j+A_j(P_j-P_a)$ | memorise |
+| Propulsive efficiency | $\eta_P=\dfrac{2}{1+C_j/C_a}$ | **given** |
+| Specific fuel consumption | $sfc=\dfrac{3600\,f}{W_N}$; $\eta=\dfrac{3600}{sfc\cdot Q_{NET}}$ | **given** |
+| TSFC | $TSFC=\dot m_f/F$ (the sheet writes $\dot m\cdot r_{f/a}/F$) | **given** |
+| ESHP, ESFC | $ESHP=SHP_{prop}+F_n/8.5$; $ESFC=\dot m_f/ESHP$ (multiply by 3600 for per hour) | **given** |
+| Propulsive power | $\dot W_P=F\,V_1$ | memorise |
+| Choking of a converging nozzle | choked if $P_{05}/P_a>\left(\dfrac{k_g+1}{2}\right)^{k_g/(k_g-1)}\approx1.85$ | derive from the critical ratio |
+| Choked exit | $T_6=\dfrac{2T_{05}}{k_g+1}$, $V_6=\sqrt{k_gRT_6}$ | memorise |
+| Exhaust diffuser (industrial turbine) | $\eta_T$ uses the **static** $P_4$ below $P_{atm}$ | concept |
+
+**Numbers to recognise.** Ram ratio at Ma 0.9, 11 km: 1.69. Class turbojet ($r_p=12$, $T_{04}=1400$ K, $\eta_C=0.87$, $\eta_T=0.90$): $w_C=344$ kJ/kg, $T_{05}=1100$ K, $P_{05}=404$ kPa. Habashi's example of what each Brayton modification does to the *ideal* cycle: regeneration +50 % in efficiency, 0 % in work; intercooling −6.5 % and +10.2 %; reheat −10.4 % and +24.5 %; intercooling, reheat and regeneration together +80 % and +34.7 %.
+
+## 4 · Chapter 10: vapor power cycles (nothing given: memorise it all)
+
+| What | Formula |
+|---|---|
+| State 1 | **saturated liquid** at the condenser pressure |
+| Pump | $w_P=v_1(P_2-P_1)$, $h_2=h_1+w_P$ (divide by $\eta_P$ for a real pump) |
+| Boiler | $q_{in}=h_3-h_2$ (with reheat, add $h_5-h_4$) |
+| Turbine | $w_T=h_3-h_4$; $x_4=\dfrac{s_3-s_f}{s_{fg}}$ at the condenser pressure; real: $h_{4a}=h_3-\eta_T(h_3-h_{4s})$ |
+| Condenser | $q_{out}=h_4-h_1$ |
+| Efficiency | $\eta=\dfrac{w_T-w_P}{q_{in}}=1-\dfrac{q_{out}}{q_{in}}$; back-work ratio $\approx$ 1 % |
+| Carnot reasoning | $\eta\approx1-T_{L,avg}/T_{H,avg}$; a change that raises $T_{H,avg}$ or lowers $T_{L,avg}$ raises $\eta$ |
+| Open feedwater heater (mixing chamber) | $y\,h_{bleed}+(1-y)h_{in}=h_{out}$, so $y=\dfrac{h_{out}-h_{in}}{h_{bleed}-h_{in}}$; pressure of the heater = pressure of the bleed; a pump after it |
+| Closed feedwater heater | feedwater leaves at $T_{sat}$ of the bleed pressure; drain throttled back (or pumped forward); only one unknown fraction per balance |
+| Mixing chamber after a pumped drain | $\dot m_3h_3=\dot m_ah_a+\dot m_bh_b$ |
+| Cogeneration | $\varepsilon_u=\dfrac{\dot W_{net}+\dot Q_p}{\dot Q_{in}}$ |
+| Mass flow from power | $\dot m=\dot W_{net}/w_{net}$ per kg of **boiler** flow |
+
+**Order of the heater equations:** solve the closed heater first when its balance holds only $y$; the open heater's balance holds both. **Numbers to recognise.** 4 MPa, 400 °C, 10 kPa: $\eta=35.3$ %, exit quality 0.816, $w_P\approx4$ kJ/kg; two open heaters (10-52): $y=0.0717$, $z=0.1085$, 42.2 %; closed heater with drain to the condenser (10-55): $y=0.244$.
+
+## 5 · Chapter 11: refrigeration and heat pumps (nothing given)
+
+| What | Formula |
+|---|---|
+| Refrigerator | $COP_R=\dfrac{q_L}{w}=\dfrac{h_1-h_4}{h_2-h_1}$ |
+| Heat pump | $COP_{HP}=\dfrac{h_2-h_3}{h_2-h_1}=COP_R+1$ |
+| Carnot limits (kelvin) | $COP_{R,rev}=\dfrac{1}{T_H/T_L-1}$, $COP_{HP,rev}=\dfrac{1}{1-T_L/T_H}$ |
+| Ideal VCR states | 1 saturated vapor at $P_L$; 2 at $P_H$ with $s_2=s_1$; 3 saturated liquid at $P_H$; 4 throttle $h_4=h_3$ |
+| Real compressor | $h_{2a}=h_1+\dfrac{h_{2s}-h_1}{\eta_C}$ (read the superheated table of the **condenser** pressure) |
+| Mass flow, power | $\dot m=\dfrac{\dot Q_L}{h_1-h_4}$, $\dot W=\dot m(h_2-h_1)$ |
+| Mixing point (two-stage, flash) | $\sum\dot m_{in}h=\sum\dot m_{out}h$, no work |
+| Flash chamber | quality $x_6$ of the throttled stream gives the vapor fraction bypassed to the second compressor |
+| Gas refrigeration | $COP=\dfrac{q_L}{w_C-w_T}$; $\varepsilon=\dfrac{T_3-T_4}{T_3-T_6}$ |
+| Tons | $\dot Q_L[\mathrm{kW}]=\text{tons}\times3.517=\dfrac{211}{60}\times\text{tons}$ (**1 ton = 211 kJ/min**, given) |
+
+**Numbers to recognise.** Fridge 11-21: $COP=2.72$ (real), 2.89 (ideal); heat pump 11-46: 4.69; two-stage 11-60: 2.74 against 2.28 for one stage; two evaporators 11-62: 3.24; gas refrigeration 11-79: 0.478 with the regenerator, 0.599 without.
+
+## 6 · Traps for the midterm
+
+1. **Static versus stagnation:** after the intake every jet-engine station is a stagnation value.
+2. **Friction keeps $T_0$ and lowers $P_0$.**
+3. **Area under a T–s curve is heat; the enclosed area is net work** (Rankine modifications: use areas and the Carnot argument, not formulas).
+4. **Use $c_p$ for compressor and turbine work**, never $c_v$; net work is turbine minus compressor.
+5. **Table of the right pressure** for the compressor exit (11-62), the heater exit temperature (10-55) and the vapor volume (4-9).
+6. **Check the sign and size** of every answer against the table of typical numbers on <a href="#/mech341/page/real-world">the machines page</a>.
+
+<Examined>
+
+Midterm topics always on the paper: a cycle with an efficiency and a mass flow (steam with one or two heaters, or a gas turbine and jet engine), a T–s sketch, one refrigeration problem, and one conceptual Carnot-reasoning question. Practise on the <Ex id="midterm-review">midterm review class</Ex>, <Asg n="01">Assignment 1</Asg>, <Asg n="02">Assignments 2/3</Asg> and <Asg n="04">Assignment 4</Asg>; see the <a href="#/mech341/page/recipes">recipes</a> for the step lists.
+
+</Examined>
