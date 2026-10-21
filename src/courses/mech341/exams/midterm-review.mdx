@@ -1,0 +1,416 @@
+<p className="eyebrow">Midterm review class · October 15, 2023 · chapters 9–11 · jet engine, vapor cycles, refrigeration</p>
+
+# Midterm review class: the examples, framed as exam questions
+
+<div className="lede">
+
+The October-15 review class (your notebooks *Exam_review* and *Revision_general*, 87 and 64 pages) walks seven examples in the order the midterm asks them: **turbojet → Rankine (ideal, actual) → reheat → regeneration (open heater, then closed + open) → cogeneration → single versus two-stage refrigeration.** Most of them are already solved step by step in the chapter pages (<Ch slug="gas-cycles">9</Ch>, <Ch slug="vapor-cycles">10</Ch>, <Ch slug="refrigeration">11</Ch>); this page does not repeat the long derivations. For each example it gives the question **as the midterm would pose it** (statement, what is asked, the table of states to produce), the **exam-length solution** with every number recomputed from the lib (the same numbers as the chapters; the test file <code>exams.test.ts</code> checks all of them), the **trap**, and a link to the full solution. Where the class statement was not written down (turbojet's turbine efficiency, the refrigeration example) I supplied the missing inputs and say so.
+
+</div>
+
+<Callout kind="note" title="How the midterm is structured, from the class and the 2023 pattern">
+
+One full cycle problem with an efficiency and a mass flow rate (a steam plant with one or two heaters, or a gas-turbine/jet engine), a **T–s sketch** with numbered states, one **refrigeration** problem (COP, power, mass flow, one variation), and a short **conceptual** question (Carnot reasoning: "does this modification raise the average temperature of heat addition, or lower that of heat rejection?"; "why is the stagnation temperature used in the compressor?"). The routine for every cycle question: **draw the T–s diagram, number the states, one energy balance per component, check with $\eta=1-q_{out}/q_{in}$.** Companion pages: <Asg n="01" /> (jet-engine assignments), <Asg n="02" /> (vapor cycles), <Asg n="04" /> (refrigeration).
+
+</Callout>
+
+<Problem id="M1" title="Turbojet on a test stand: rp = 12, T04 = 1400 K, converging versus converging-diverging nozzle" tags="turbojet, stagnation, nozzle choking, thrust, TSFC">
+
+<Statement>
+
+A turbojet is tested on a stand (no flight speed). Ambient air is at 15 °C and 100 kPa; the compressor has a stagnation pressure ratio of 12 and $\eta_C=0.87$; the turbine inlet is 1400 K and $\eta_T=0.90$; $c_{p,a}=1.005$ kJ/kg·K; $c_{p,g}=1.147$ kJ/kg·K, $k_g=1.333$; $HV=42\,700$ kJ/kg; the nozzle is ideal. For 1 kg/s of air find the compressor exit state, the turbine exit state, and, for (a) a converging nozzle and (b) a converging-diverging nozzle expanded to ambient, the exit velocity, the thrust and the TSFC. (The class page leaves $\eta_T$, $P_a$ and $HV$ symbolic; these are my values.)
+
+</Statement>
+
+<Think>
+
+**How it is asked:** a table of $T_{03},T_{05},P_{05}$, then "Is the converging nozzle choked?" (compare $P_{05}/P_a$ with 1.85), then thrust. Marks go to the **order**: compressor → combustor ($f$) → turbine from $w_T=w_C$ → nozzle. With no flight speed there is no ram: $T_{02}=288$ K, $P_{02}=100$ kPa.
+
+</Think>
+
+<Steps>
+<Step title="1. Compressor and combustor">
+
+$T_{03s}=288(12)^{0.2857}=585.8$ K, $w_C=\dfrac{1.005(585.8-288)}{0.87}=344.0$ kJ/kg, $T_{03}=288+\dfrac{344.0}{1.005}=\mathbf{630.3}$ K, $P_{03}=1200$ kPa. Fuel: $q_A=1.147(1400-630.3)=882.9$ kJ/kg, $f=\dfrac{882.9}{42\,700}=0.02068$.
+
+</Step>
+<Step title="2. Turbine">
+
+$w_T=w_C$: $1.147(1400-T_{05})=344.0\Rightarrow T_{05}=\mathbf{1100.1}$ K; $T_{05s}=1400-\dfrac{299.9}{0.90}=1066.8$ K; $P_{05}=1200\left(\dfrac{1066.8}{1400}\right)^{4}=\mathbf{404.2}$ kPa.
+
+</Step>
+<Step title="3. Nozzle (a) converging">
+
+$P_{05}/P_a=4.04>1.85$: **choked**. $P_6=0.5399(404.2)=218.2$ kPa, $T_6=\dfrac{2(1100.1)}{2.333}=943.1$ K, $V_6=\sqrt{2000(1.147)(1100.1-943.1)}=\mathbf{600.2}$ m/s. $\rho_6=\dfrac{218.2}{0.287(943.1)}=0.806$, $A_6=\dfrac1{0.806(600.2)}=0.002067$ m² per kg/s; pressure thrust $(218.2-100)(1000)(0.002067)=244$ N. $F=600.2+244.3=\mathbf{844.5}$ N·s/kg, TSFC $=\dfrac{0.02068}{844.5}=24.5$ mg/(N·s).
+
+</Step>
+<Step title="4. Nozzle (b) converging-diverging">
+
+$T_6=1100.1\left(\dfrac{100}{404.2}\right)^{0.25}=776.1$ K, $V_6=\sqrt{2000(1.147)(1100.1-776.1)}=\mathbf{862.2}$ m/s; $P_6=P_a$ so $F=862.2$ N·s/kg and TSFC $=24.0$ mg/(N·s). Ideal components ($\eta_C=\eta_T=1$) with the same C-D nozzle: $V_6=941.7$, $F=965.0$ N·s/kg: the real engine keeps 89 % of the ideal thrust.
+
+</Step>
+</Steps>
+
+<Answer>
+
+$T_{03}=630.3$ K, $T_{05}=1100.1$ K, $P_{05}=404.2$ kPa. (a) converging: choked, $V_6=600.2$ m/s, $F=844.5$ N·s/kg. (b) C-D: $V_6=862.2$ m/s, $F=862.2$ N·s/kg. TSFC about 24 mg/(N·s). (The lib's <code>turbojet</code> counts the fuel mass in the jet, so it gives 880 N·s/kg for (b); the class convention neglects it.)
+
+</Answer>
+
+<RealWorld title="Bench testing a jet engine">
+
+An engine on a test stand is run exactly as this problem says: no ram, the thrust read from a load cell. A 24 mg/(N·s) TSFC is typical of 1960s turbojets; a modern high-bypass turbofan at cruise is about 17 mg/(N·s).
+
+</RealWorld>
+
+<Traps>
+
+- Use $c_{p,a}$ for the compressor and $c_{p,g}$ for the turbine and the nozzle; the turbine equation is $w_T=w_C$, not $T_{05}=T_{03}$.
+- A choked converging nozzle has $P_6>P_a$ and a **pressure-thrust** term; the C-D nozzle expanded to ambient has none.
+- Follow the problem's convention for the fuel (this is $f=q_A/HV$; an exact combustor balance gives 0.0237).
+
+</Traps>
+
+<Source>Anthony's Exam_review pp. 72–79 (turbojet class example) · lib <code>turbojet</code> in <code>exams.test.ts</code> · full solution in <Ch slug="gas-cycles" /></Source>
+
+</Problem>
+
+<Problem id="M2" title="Ideal and actual Rankine cycle, 4 MPa / 400 °C / 10 kPa" tags="Rankine, steam tables, isentropic efficiency">
+
+<Statement>
+
+Steam leaves the boiler at 4 MPa and 400 °C; the condenser is at 10 kPa. For the ideal cycle find $w_P$, $w_T$, $q_{in}$, $q_{out}$, the exit quality and $\eta$. Repeat with $\eta_T=\eta_P=0.85$ (the class leaves them symbolic; my values).
+
+</Statement>
+
+<Think>
+
+**How it is asked:** a **T–s sketch** (3 marks), a table $h_1\ldots h_4$ read from A-5/A-6, then work, heat and $\eta$ with a check $q_{in}-q_{out}=w_{net}$. The "actual" part is the same cycle with $h_{2a}=h_1+w_P/\eta_P$ and $h_{4a}=h_3-\eta_T(h_3-h_{4s})$; the exit **quality** is found from $h_{4a}$ afterwards.
+
+</Think>
+
+<Steps>
+<Step title="1. States (ideal)">
+
+<T>A-5, 10 kPa, sat. liquid: h₁ = 191.81, v₁ = 0.001010, s₁ = 0.6492; A-6, 4 MPa, 400 °C: h₃ = 3214.5, s₃ = 6.7715; A-5 at 10 kPa: s_fg = 7.4996, h_fg = 2392.1</T>. $w_P=0.001010(4000-10)=4.03$, $h_2=195.84$; $x_4=\dfrac{6.7715-0.6492}{7.4996}=0.8163$, $h_4=191.81+0.8163(2392.1)=2144.5$.
+
+</Step>
+<Step title="2. Ideal cycle">
+
+$w_T=3214.5-2144.5=1070.0$, $q_{in}=3214.5-195.84=3018.6$, $q_{out}=2144.5-191.81=1952.7$, $w_{net}=1066.0=q_{in}-q_{out}$ ✓, $\eta=\dfrac{1066.0}{3018.6}=\mathbf{0.353}$.
+
+</Step>
+<Step title="3. Actual cycle">
+
+$h_{2a}=191.81+\dfrac{4.03}{0.85}=196.55$; $h_{4a}=3214.5-0.85(1070.0)=2305.0$, $x_{4a}=\dfrac{2305.0-191.81}{2392.1}=\mathbf{0.883}$; $w_T=909.5$, $w_P=4.74$, $w_{net}=904.7$, $q_{in}=3018.0$, $\eta=\mathbf{0.300}$.
+
+</Step>
+</Steps>
+
+<Answer>
+
+Ideal: $w_P=4.03$, $w_T=1070.0$, $q_{in}=3018.6$, $q_{out}=1952.7$ kJ/kg, $x_4=0.816$, $\eta=35.3$ %. Actual: $x_{4a}=0.883$, $\eta=30.0$ %.
+
+</Answer>
+
+<RealWorld title="The wet exit of an ideal turbine">
+
+$x_4=0.816$ means 18 % liquid at the last stage; turbine blades erode with more than about 10–12 % moisture, which is why real plants superheat higher and reheat (next example).
+
+</RealWorld>
+
+<Traps>
+
+- State 1 is **saturated liquid** at the condenser pressure; $v_1=v_f$.
+- Apply $\eta_T$ to **enthalpy**, then find the quality from $h_{4a}$.
+
+</Traps>
+
+<Source>Anthony's Exam_review pp. 21–25 · lib <code>rankine</code> in <code>exams.test.ts</code> · full solution in <Ch slug="vapor-cycles" /></Source>
+
+</Problem>
+
+<Problem id="M3" title="Reheat: expand the 4 MPa cycle to 400 kPa, reheat to 400 °C" tags="reheat, quality, T-s, Carnot reasoning">
+
+<Statement>
+
+Add a reheater at 400 kPa to the ideal cycle of M2 (return the steam to 400 °C, then expand to 10 kPa). Find the exit quality, the net work and the efficiency, and say, using the T–s diagram and Carnot's principle, why the efficiency changes by so little while the quality changes by so much.
+
+</Statement>
+
+<Think>
+
+**How it is asked:** the sketch must show the reheat line (a horizontal 400 kPa isobar from 4 to 5) and the second expansion starting at **state 5**, not state 3. The conceptual follow-up is Habashi's "average temperature of heat addition".
+
+</Think>
+
+<Steps>
+<Step title="1. Two expansions">
+
+HP turbine: $s_4=s_3=6.7715$ at 400 kPa: $x_4=\dfrac{6.7715-1.7765}{5.1191}=0.9758$, $h_4=604.66+0.9758(2133.4)=2686.3$. Reheat: <T>A-6, 400 kPa, 400 °C: h₅ = 3273.9, s₅ = 7.9002</T>. LP turbine: $x_6=\dfrac{7.9002-0.6492}{7.4996}=\mathbf{0.967}$, $h_6=191.81+0.9669(2392.1)=2504.6$.
+
+</Step>
+<Step title="2. Work, heat, efficiency">
+
+$w_T=(3214.5-2686.3)+(3273.9-2504.6)=1297.5$, $w_P=4.03$, $q_{in}=(3214.5-195.84)+(3273.9-2686.3)=3606.2$, $\eta=\dfrac{1293.5}{3606.2}=\mathbf{0.359}$ (35.3 % without reheat).
+
+</Step>
+<Step title="3. Carnot reasoning">
+
+The reheater adds 587.6 kJ/kg over an entropy increase of $7.9002-6.7715=1.129$ kJ/kg·K, an average temperature of **521 K**, only 28 K above the 493 K of the original boiler heat addition ($3018.6/6.122$), so the average over the whole heat addition rises just from 493 K to **497 K** ($3606.2/7.251$): the efficiency gains 0.6 point. What reheat buys is the **dry exit**: the second expansion starts at 400 °C and ends at $x=0.967$ instead of 0.816, and net work per kg rises 21 %.
+
+</Step>
+</Steps>
+
+<TsDiagram fluid="water" points={[{ s: 0.6492, T: 45.81, P: 10, label: '1' }, { s: 0.6492, T: 45.9, P: 4000, label: '2' }, { s: 6.7714, T: 400, P: 4000, label: '3' }, { s: 6.7714, T: 143.6, P: 400, label: '4' }, { s: 7.9002, T: 400, P: 400, label: '5' }, { s: 7.9002, T: 45.81, P: 10, label: '6' }]} path={[0, 1, 2, 3, 4, 5, 0]} isobars={[10, 400, 4000]} />
+
+<Answer>
+
+$x_6=0.967$ (against 0.816), $w_{net}=1293.5$ kJ/kg (+21 %), $q_{in}=3606.2$ kJ/kg, $\eta=35.9$ % (+0.6 point).
+
+</Answer>
+
+<RealWorld title="HP, IP and LP sections">
+
+Every large steam turbine is built as separate high-, intermediate- and low-pressure casings with the piping to the boiler's reheater in between ("cold reheat" and "hot reheat" lines); the reheat pressure is typically 20–25 % of the boiler pressure (typical).
+
+</RealWorld>
+
+<Traps>
+
+- Heat added is **two terms**: boiler plus reheater.
+- The reheat pressure lies *between* boiler and condenser pressures.
+
+</Traps>
+
+<Source>Anthony's Exam_review pp. 24–26 · lib <code>rankine</code> with <code>reheat</code> · full solution in <Ch slug="vapor-cycles" /></Source>
+
+</Problem>
+
+<Problem id="M4" title="One open feedwater heater on the 4 MPa cycle, bleed at 400 kPa" tags="regeneration, open feedwater heater, bled fraction y">
+
+<Statement>
+
+Add one open feedwater heater to the ideal 4 MPa, 400 °C, 10 kPa cycle; the steam is bled at 400 kPa. Find the bled fraction $y$, the net work and $\eta$, and compare with M2.
+
+</Statement>
+
+<Think>
+
+**How it is asked:** this is the bridge to the two-heater problem. The bleed state is the same as the HP exit of M3; three liquid states matter: pump I exit (2), the heater exit (3, saturated liquid at 400 kPa), pump II exit (4). $y$ comes from the heater's energy balance $y\,h_6+(1-y)h_2=h_3$.
+
+</Think>
+
+<Steps>
+<Step title="1. States and the bled fraction">
+
+$h_1=191.81$, $w_{PI}=0.39$, $h_2=192.20$; <T>A-5, 400 kPa, sat. liquid: h₃ = 604.66, v₃ = 0.001084</T>; $w_{PII}=0.001084(3600)=3.90$, $h_4=608.56$; $h_5=3214.5$; bleed $h_6=2686.3$; exit $h_7=2144.5$. $y=\dfrac{h_3-h_2}{h_6-h_2}=\dfrac{604.66-192.20}{2686.3-192.20}=\mathbf{0.1654}$.
+
+</Step>
+<Step title="2. Work, heat, efficiency">
+
+$w_T=528.2+(1-0.1654)(2686.3-2144.5)=980.4$, $w_P=(1-y)0.39+3.90=4.23$, $w_{net}=976.1$, $q_{in}=3214.5-608.56=2605.9$, $\eta=\dfrac{976.1}{2605.9}=\mathbf{0.3746}$; check $q_{out}=(1-y)(h_7-h_1)=1629.8$, $\eta=1-\dfrac{1629.8}{2605.9}=0.3746$ ✓. The net work per kg of boiler steam *falls* (1066 → 976 kJ/kg) while $\eta$ *rises* (35.3 → 37.5 %): the bled steam does less turbine work but the boiler heat falls more. Carnot: the average temperature of heat addition rises from 493 K to 522 K.
+
+</Step>
+</Steps>
+
+<Answer>
+
+$y=0.165$, $w_{net}=976$ kJ/kg, $q_{in}=2606$ kJ/kg, $\eta=37.5$ % (35.3 % without the heater).
+
+</Answer>
+
+<RealWorld title="The deaerator">
+
+The one open heater of a real plant is the **deaerator**: a spray-tray tank at 0.5–1 MPa (typical) that heats the feedwater by direct contact and strips dissolved oxygen, which would corrode the boiler tubes.
+
+</RealWorld>
+
+<Traps>
+
+- Pump II raises the **saturated liquid** from 400 kPa to 4 MPa; forgetting it, or using the wrong $v$, is a classic slip.
+- After the bleed the flow is $1-y$, in the turbine *and* the condenser.
+
+</Traps>
+
+<Source>Anthony's Exam_review pp. 27–36 · lib <code>rankine</code> with <code>ofwh</code> · full solution in <Ch slug="vapor-cycles" /></Source>
+
+</Problem>
+
+<Problem id="M5" title="Closed heater at 0.8 MPa and open heater at 0.3 MPa: 12.5 MPa, 550 °C, 10 kPa, 250 MW" tags="regeneration, two heaters, mass-flow fractions, mass flow rate">
+
+<Statement>
+
+Steam enters the turbine at 12.5 MPa and 550 °C; the condenser is at 10 kPa. Steam is extracted at 0.8 MPa for a **closed** feedwater heater and at 0.3 MPa for an **open** heater. The closed heater heats the feedwater (the whole flow, after pump II) to the saturation temperature of the extracted steam, which leaves it as saturated liquid and is throttled into the open heater. Find the extracted fractions, the mass flow rate for a net power of 250 MW and the thermal efficiency.
+
+</Statement>
+
+<Think>
+
+**How it is asked:** this is the "big" midterm problem. Per kg of boiler steam the flows are $y$ (closed heater), $z$ (open heater), $1-y-z$ (condenser). Heater balances **in the order the unknowns appear**: the closed heater first (its balance contains only $y$), then the open heater (contains $y$ and $z$). The last line is $\dot m=\dot W_{net}/w_{net}$ and the check $\eta=1-q_{out}/q_{in}$.
+
+</Think>
+
+<Plan>
+
+States 8–11 (turbine) → 1–4 (liquid side) → closed heater: feedwater out at $T_{sat}(0.8\ \mathrm{MPa})$, drain throttled → $y$ → open heater → $z$ → work → $\dot m$, $\eta$.
+
+</Plan>
+
+<Steps>
+<Step title="1. States">
+
+Turbine: $h_8=3476.5$ ($s_8=6.6315$); isentropic to 0.8 MPa $h_9=2754.9$; to 0.3 MPa $h_{10}=2578.4$; to 10 kPa $h_{11}=2099.9$ ($x=0.798$). Liquid side: $h_1=191.81$; pump I to 0.3 MPa $h_2=192.10$; open-heater exit (saturated liquid, 0.3 MPa) $h_3=561.43$; pump II to 12.5 MPa $h_4=574.52$; closed heater: drain $h_6=720.86=h_7$ (sat. liquid at 0.8 MPa, then throttled), feedwater out at $T_5=170.4$ °C, 12.5 MPa: $h_5=733.91$.
+
+</Step>
+<Step title="2. Fractions">
+
+Closed heater: $y(h_9-h_6)=h_5-h_4\Rightarrow y=\dfrac{733.91-574.52}{2754.9-720.86}=\mathbf{0.0784}$. Open heater: $z\,h_{10}+y\,h_7+(1-y-z)h_2=h_3\Rightarrow z=\dfrac{(h_3-h_2)-y(h_7-h_2)}{h_{10}-h_2}=\dfrac{369.33-0.0784(528.76)}{2386.3}=\mathbf{0.1374}$.
+
+</Step>
+<Step title="3. Work, heat, flow, efficiency">
+
+$w_T=(h_8-h_9)+(1-y)(h_9-h_{10})+(1-y-z)(h_{10}-h_{11})=721.5+162.7+375.3=1259.5$ kJ/kg; $w_P=(1-y-z)(0.29)+13.09=13.3$; $w_{net}=1246.2$; $q_{in}=h_8-h_5=2742.5$. $\dot m=\dfrac{250\,000}{1246.2}=\mathbf{200.6}$ kg/s; $\eta=\dfrac{1246.2}{2742.5}=\mathbf{0.4544}$. Check: $q_{out}=(1-y-z)(h_{11}-h_1)=0.7842(1908.1)=1496.4$, $1-\dfrac{1496.4}{2742.5}=0.4544$ ✓. (Without heaters at the same conditions: 41.7 %.)
+
+</Step>
+</Steps>
+
+<Answer>
+
+$y=0.078$, $z=0.137$, $\dot m=200.6$ kg/s, $\eta=45.4$ %. (Your notebook: $w_{net}\approx1249$, $\dot m\approx202$ kg/s, $\eta=45.5$ %: hand-table differences of about 1 %.)
+
+</Answer>
+
+<RealWorld title="A 250 MW supercritical-class unit">
+
+12.5 MPa and 550 °C is a high-pressure **subcritical** unit (the critical pressure of water is 22.06 MPa); an efficiency of 45 % with two heaters is representative, and 200 kg/s of steam is the right order for a 250 MW machine (typical).
+
+</RealWorld>
+
+<Traps>
+
+- ⚠ **Order of the heater equations**: closed first (only $y$), open second ($y$ and $z$).
+- The condenser flow is $1-y-z$; the pump on the condensate (pump I) works on $1-y-z$ only, and pump II on the **whole** flow.
+- The drain of the closed heater is throttled *into the open heater*, so $h_7=h_6$ enters the open-heater balance with weight $y$.
+
+</Traps>
+
+<Source>Anthony's Exam_review pp. 34–42 · states from the lib's water properties, solved in <code>exams.test.ts</code> · full solution in <Ch slug="vapor-cycles" /></Source>
+
+</Problem>
+
+<Problem id="M6" title="Cogeneration: 7 MPa / 500 °C, 15 kg/s, process heater at 500 kPa, three operating modes" tags="cogeneration, utilization factor, process heater">
+
+<Statement>
+
+Steam leaves the boiler at 7 MPa and 500 °C at 15 kg/s. The condenser pressure is 5 kPa; process steam is at 500 kPa and returns from the process heater as **saturated liquid at 500 kPa**; the two streams are mixed after their pumps before the boiler. Find (a) the maximum process heat if all steam bypasses the turbine through a throttling valve; (b) the power if there is no process heat; (c) the process heat, the power and the utilization factor $\varepsilon_u=\dfrac{\dot W_{net}+\dot Q_p}{\dot Q_{in}}$ if 10 % of the steam goes through the valve, 70 % is extracted at 500 kPa and 20 % goes to the condenser.
+
+</Statement>
+
+<Think>
+
+**How it is asked:** three modes of one plant. The only new idea is the **utilization factor**, which is not the thermal efficiency (process heat is low-grade: counting it as work flatters the plant). Per mode: boiler heat $=\dot m(h_{boiler}-h_{feed\ after\ mixing})$.
+
+</Think>
+
+<Steps>
+<Step title="1. States">
+
+<T>A-6, 7 MPa, 500 °C: h = 3411.4, s = 6.7998</T>; extraction at 500 kPa (isentropic) $h=2739.2$ ($x=0.996$); condenser inlet at 5 kPa $h=2072.9$ ($x=0.799$); saturated liquids $h_f(5\ \mathrm{kPa})=137.75$, $h_f(500\ \mathrm{kPa})=640.09$; pumped to 7 MPa: 144.78 and 647.19.
+
+</Step>
+<Step title="2. (a), (b)">
+
+(a) $\dot Q_p=15(3411.4-640.1)=\mathbf{41\,570}$ kW (no power). (b) $\dot W_T=15(3411.4-2072.9)=20\,077$, pump 105: $\dot W_{net}=\mathbf{19\,971}$ kW, $\dot Q_{in}=15(3411.4-144.78)=48\,999$, $\varepsilon_u=\eta=\mathbf{0.408}$.
+
+</Step>
+<Step title="3. (c) Mixed mode">
+
+Valve 1.5 kg/s, extracted 10.5, condenser 3. $\dot Q_p=10.5(2739.2)+1.5(3411.4)-12(640.09)=\mathbf{26\,198}$ kW. $\dot W_T=13.5(3411.4-2739.2)+3(2739.2-2072.9)=11\,073$, pumps 106, $\dot W_{net}=\mathbf{10\,966}$ kW. Feed after mixing $h=\dfrac{3(144.78)+12(647.19)}{15}=546.7$, $\dot Q_{in}=15(3411.4-546.7)=42\,970$ kW. $\varepsilon_u=\dfrac{10\,966+26\,198}{42\,970}=\mathbf{0.865}$.
+
+</Step>
+</Steps>
+
+<Answer>
+
+(a) 41.6 MW process heat, no power. (b) 19.97 MW, $\varepsilon_u=40.8$ %. (c) 26.2 MW process heat, 10.97 MW power, $\varepsilon_u=86.5$ %.
+
+</Answer>
+
+<RealWorld title="Heat or power, as demand requires">
+
+A district-heating or industrial combined-heat-and-power plant moves between modes (b) and (a) through the day: the same boiler, with power falling as the process draws more steam. The high $\varepsilon_u$ is real fuel saving; the *work* made falls by 45 % in mode (c).
+
+</RealWorld>
+
+<Traps>
+
+- $\varepsilon_u\ne\eta$: say which one you computed.
+- The boiler feed enthalpy is the **mixed** one, not $h_2$ of either pump; a first-law check $\dot Q_{in}=\dot W_{net}+\dot Q_p+\dot Q_{cond}$ catches an error in the mixing.
+
+</Traps>
+
+<Source>Anthony's Exam_review pp. 43–48 (Çengel Example 10-8 structure) · his values 41 155 / 20 076 / 26 185 kW · lib <code>water</code> · full solution in <Ch slug="vapor-cycles" /></Source>
+
+</Problem>
+
+<Problem id="M7" title="Single-stage versus two-stage R-134a refrigeration: −25 °C, 800 kPa, 0.6 kg/s through the evaporator" tags="cascade, R-134a, COP, intermediate pressure">
+
+<Statement>
+
+An R-134a plant has an evaporator at −25 °C (saturated vapor leaving), a condenser at 800 kPa, and 0.6 kg/s of refrigerant through the evaporator. Compare (a) a single-stage cycle and (b) a two-stage cascade with the same refrigerant in both loops, the intermediate pressure being the geometric mean of the two, ideal compressors. (The class statement was not written down; these inputs reproduce your recorded $h_1=235.3$, $h_2=277.2$, $h_2'=255.6$ kJ/kg.)
+
+</Statement>
+
+<Think>
+
+**How it is asked:** "compute the COP of each and say which is better and why". The cascade needs the heat-exchanger balance to find the upper-loop flow: $\dot m_H(h_5-h_8)=\dot m_L(h_2-h_3)$.
+
+</Think>
+
+<Steps>
+<Step title="1. (a) Single stage">
+
+$P_L=106.4$ kPa (−25 °C); $h_1=235.3$, $h_2=277.2$ (isentropic to 800 kPa), $h_3=h_4=95.5$. $\dot Q_L=0.6(235.3-95.5)=\mathbf{83.9}$ kW, $\dot W=0.6(277.2-235.3)=25.1$ kW, $COP=\mathbf{3.34}$.
+
+</Step>
+<Step title="2. (b) Two stage: pressures and lower loop">
+
+$P_i=\sqrt{106.4(800)}=291.8$ kPa. Lower loop: $h_1=235.3$, $h_2=255.6$, $h_3=51.7$ (sat. liquid at $P_i$): $\dot Q_L=0.6(235.3-51.7)=\mathbf{110.2}$ kW.
+
+</Step>
+<Step title="3. (b) Upper loop and COP">
+
+Upper loop: $h_5=250.4$ (sat. vapor at $P_i$), $h_6=271.3$ (800 kPa), $h_7=h_8=95.5$; $\dot m_H=0.6\dfrac{255.6-51.7}{250.4-95.5}=0.790$ kg/s. $\dot W=0.6(20.3)+0.790(20.9)=28.7$ kW, $COP=\dfrac{110.2}{28.7}=\mathbf{3.83}$.
+
+</Step>
+</Steps>
+
+<Answer>
+
+Single stage: 83.9 kW of cooling, 25.1 kW, COP 3.34. Two stage: 110.2 kW, 28.7 kW, COP 3.83: 31 % more cooling for the same refrigerant through the evaporator, 14 % more power, 15 % better COP.
+
+</Answer>
+
+<RealWorld title="Why the lift matters">
+
+A −25 °C evaporator rejecting at 800 kPa (about 31 °C) has a lift of about 56 K; splitting it into two lifts of about 28 K puts each compressor at a pressure ratio near 2.7 instead of 7.5, which is why low-temperature supermarket and industrial plants are two-stage (typical).
+
+</RealWorld>
+
+<Traps>
+
+- Each loop ends at **its own** saturated liquid ($h_f$ at $P_i$ for the lower loop, at 800 kPa for the upper).
+- $\dot m_H\ne\dot m_L$; the work is flow-weighted: $\dot W=\dot m_L w_L+\dot m_H w_H$.
+
+</Traps>
+
+<Source>Anthony's Exam_review pp. 53–55 and 59–66 · recomputed with the lib's R-134a properties (see errata N8) · full solution in <Ch slug="refrigeration" /></Source>
+
+</Problem>
+
+<Examined>
+
+**What to carry from this page.** (1) Every cycle question is a table of states plus one balance per component: if the table is right the numbers follow. (2) The midterm's conceptual marks are Carnot reasoning on T–s areas (reheat: raises the exit quality, almost no gain in $\eta$; regeneration: raises the average heat-addition temperature) and "what changes if...". (3) For each worked example the same numbers appear in the chapter pages and the lib calculators; if your numbers differ in the third digit it is the table (A-5/A-6/A-12) interpolation, not an error. Next: the final (<Ex id="final-2021" />, <Ex id="tutorial-16" />, <Ex id="tutorial-17" />) and the two practice finals (<Ex id="final-mock-a" />, <Ex id="final-mock-b" />).
+
+</Examined>

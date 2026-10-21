@@ -304,6 +304,16 @@ describe('midterm review (Oct 2023)', () => {
     near(d.wnet, 976.1, 1e-3);
     near(d.qin, 2605.9, 1e-3);
     near(d.eta, 0.3746, 1e-3);
+    // reheat: the reheater adds heat at 521 K on average, the whole heat addition averages 497 K (493 K without reheat)
+    const s3r = water.PT(4000, 400);
+    const s5r = water.PT(400, 400);
+    const s4r = water.Ps(400, s3r.s);
+    const s2r = water.Ph(4000, 195.84);
+    near((s5r.h - s4r.h) / (s5r.s - s4r.s), 520.6, 2e-3);
+    near(c.qin / (s3r.s - s2r.s + s5r.s - s4r.s), 497.3, 2e-3);
+    near(a.qin / (s3r.s - s2r.s), 493.1, 2e-3);
+    // OFWH: boiler inlet is compressed liquid with h = 608.56
+    near(d.qin / (s3r.s - water.Ph(4000, 608.56).s), 521.7, 3e-3);
     // Carnot reasoning: average heat-addition temperature rises with each modification
     near(a.qin / (water.PT(4000, 400).s - water.Px(10, 0).s), 3018.6 / (6.7714 - 0.6492), 3e-3);
   });
