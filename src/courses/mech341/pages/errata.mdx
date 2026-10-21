@@ -8,6 +8,18 @@ Every number on this site was recomputed independently (steam and R-134a tables 
 
 </div>
 
+<Callout kind="note" title="How the markers work on this site">
+
+Three kinds of flag appear in the notes, the solutions and the exam pages, and each one points to a row on this page.
+
+- **⚠ (warning box).** A slip: the digits are legible and the value differs from the recomputation by more than rounding. The row gives what was written, the correct value and the lesson. These are the **N** rows (your notebooks), the **P** rows (printed textbook answers) and the **G** rows (graded copies of the 2021 final).
+- **"Check your page" (note box).** The page is incomplete, ends before the answer, has a digit that cannot be read with confidence, or differs from the printed answer for a reason that is not an error on your side. **No mistake is asserted.** The right value is stated so you can compare with the page yourself. These are the **U** rows (uncertain readings, where a single number is in doubt) and the **C** rows (pages that stop early or have a harmless difference).
+- **"Uncertain reading".** The same idea as "Check your page" for one value: two digits of the handwriting are indistinguishable, so both readings are listed and the correct value is given.
+
+If an ⚠ and a "Check your page" appear on the same problem, fix the ⚠ first: it is the one that changes an answer.
+
+</Callout>
+
 ## Your notebooks
 
 Everything in your notebooks that I could read was recomputed; the large majority matches to 3–4 digits. These are the places where it does **not**.
@@ -42,6 +54,26 @@ Everything in your notebooks that I could read was recomputed; the large majorit
 | U10 | <Asg n="09">16-56</Asg> (a) | 276 875 kJ/kmol from table digits I read as 72 688, 75 484, 112 939 | $276\,860$ kJ/kmol (lib 276 862, Cantera 276 830). With the digits as I read them the sum is 276 835; the table digits are ambiguous. (b) 276 856 is exact. |
 | U11 | <Asg n="10">17-39</Asg> | $P^*=6?7.6$ kPa | $P^*=0.5283(1200)=634$ kPa. The middle digit (3 or 7) is ambiguous. |
 | U12 | <Asg n="10">17-18</Asg> (variable $c_p$) and <Asg n="10">17-40</Asg> | $c_1=424.6$ or 421.6 m/s, $Ma_1\approx0.118$; $T_0=293.?$ K | $c_1=424.6$ m/s, $Ma_1=0.118$; $T_0=293.3$ K. Last digits ambiguous; $T_0=293.0$ if $V$ is rounded to 338 m/s. |
+
+### Other "Check your page" notes (nothing wrong to correct)
+
+Pages that stop at the setup, a first pass that was later corrected on the page itself, and differences from a printed answer that are definitions rather than errors. Listed so that the notes on each problem page are all reachable from here.
+
+| # | Where | What the page shows | What to know |
+|---|---|---|---|
+| C1 | <Asg n="08">15-37</Asg> | $a_{th}$ appears as 8.38 (per 100 kg) and 0.8379 (per kmol of fuel mixture) | Exact 8.39 and 0.834; both give $FA=0.0576$. The printed 0.0576 counts only the combustible part of the coal (91.38 kg per 100 kg) as fuel; including the ash it is 0.0631. |
+| C2 | <Asg n="08">15-67</Asg> (v3) | $Q=1\,229\,357$ kJ/kmol, partly hidden by the highlighter | The v2 value 1 247 320 reproduces exactly from the data; with 1.23×10⁶ the air flow would be 34.9 kg/h instead of 34.4. |
+| C3 | <Asg n="08">15-24</Asg> | $T_{sat}=52.97$ (or 53.97) with a tick | 53.97 °C is exactly the table value at 15 kPa (no interpolation); the vapor pressure is 13.96 kPa and the printed answer is 52.4 °C. |
+| C4 | <Asg n="06">13-52</Asg> | last line reads 198.x kJ/kg | $q=1.105(200-20)=199.0$ kJ/kg; with $c_p$ at the mean temperature about 203. |
+| C5 | <Asg n="07">14-16</Asg> | setup written ($P_a=105-4.25$, $m=PV/RT$, $h=c_pT+\omega h_v$); final numbers not written | $m_a=9.26$ kg, $\omega=0.0262$, $h=97.1$ kJ/kg dry air. |
+| C6 | <Asg n="07">14-65</Asg> | setup written; final digits not legible | $q=6.8$ kJ/kg dry air (printed ✔, recomputed 6.82). |
+| C7 | <Asg n="10">17-26</Asg> (first pass) | the speed reads 261.5 or 262.5 m/s and the result "0.89?" | $945/3.6=262.5$ m/s gives $Ma=0.897$ (0.894 if the page says 261.5). The later page has 0.897. |
+| C8 | <Asg n="10">17-48C</Asg> | the statement is copied; no answer is written | The reasoning of 17-33C applies: exit velocity, exit pressure and mass flow are all unchanged once choked. |
+| C9 | <Asg n="05">12-15</Asg> (first sheet) | rows 500 and 900 kPa and 30 and 70 °C: $-1.421\times10^{-4}$ against $-1.601\times10^{-4}$ (11 % apart) | A closer bracket (0.6/0.8 MPa and 40/60 °C) agrees to 0.3 %; the entropy read at 500 kPa looks about 0.01 too small. |
+| C10 | <Asg n="04">11-79</Asg> | the page ends at $T_4=281.3$ K, $T_6=246.3$ K and the COP formula | $\varepsilon=0.434$, 21.4 kW and $COP=0.478$ are the completion; the regenerator buys temperature (−80 °C), not COP (0.60 without it). |
+| C11 | <Asg n="02">10-28</Asg> | page has (a) and $\dot Q_{in}$, then a first attempt at the pump | The red margin notes (pump $w_P=v\Delta P/\eta$ and the heat-exchanger balance) are the two corrections used; 343.2 kg/s, 22.65 MW and 13.7 % are the completion. |
+| C12 | <Asg n="02">10-61</Asg> | page stops at the balances; "$h_4=h_9=1110$" not readable | $y=0.202$, 54.5 kg/s, 44.4 % are the completion; the instructor's note gives $h_4=h_9=h_{10}$. |
+| C13 | <Asg n="02">10-110</Asg> | first pass sets $T_5=T_{11}$ (the bleed's superheated temperature) and gets $y=0.9297$ | The red note corrects it: $T_5=T_6=158.8$ °C, feedwater $h_5=686.2$, $y=0.063$. A fraction near 1 is the warning sign. |
 
 ## Printed textbook answers
 
@@ -80,6 +112,6 @@ First-pass transcriptions of your handwriting that the page images corrected (li
 
 <Examined>
 
-How to use this page: when your answer differs from a printed one, first check N1–N5 (the slips most likely to repeat: interpolation, wrong pressure table, $c_p$ versus $c_v$), then P1–P2 (printed errors), then the uncertain readings (U1–U7: nothing is wrong, but the right value is stated).
+How to use this page: when your answer differs from a printed one, first check N1–N5 (the slips most likely to repeat: interpolation, wrong pressure table, $c_p$ versus $c_v$), then P1–P2 (printed errors), then the G rows (graded-paper slips), then the uncertain readings and the C rows (nothing is wrong, but the right value is stated). The [recipes](#/mech341/page/recipes) and [tables](#/mech341/page/tables) pages repeat the lessons as checklists.
 
 </Examined>
