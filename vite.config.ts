@@ -9,6 +9,7 @@ import rehypeSlug from 'rehype-slug';
 
 export default defineConfig({
   base: './',
+  build: { reportCompressedSize: false, sourcemap: false },
   plugins: [
     { enforce: 'pre', ...mdx({ remarkPlugins: [remarkMath, remarkGfm], rehypePlugins: [rehypeSlug, rehypeMathToJsx], providerImportSource: '@mdx-js/react' }) },
     react({ include: /\.(mdx|tsx|ts)$/ }),

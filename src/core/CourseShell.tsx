@@ -43,11 +43,13 @@ export interface CourseConfig {
 
 /** Only capitalised functions are MDX components; sims/figs get an error boundary, ui components don't. */
 export function buildComponents(extra: Record<string, unknown>): Record<string, ComponentType<any>> { // eslint-disable-line @typescript-eslint/no-explicit-any
-  return Object.fromEntries(
+  const named = Object.fromEntries(
     Object.entries({ ...ui, ...extra })
       .filter(([k, v]) => /^[A-Z]/.test(k) && typeof v === 'function')
       .map(([k, v]) => [k, k in ui ? v : withBoundary(k, v as ComponentType<object>)]),
-  ) as Record<string, ComponentType<any>>; // eslint-disable-line @typescript-eslint/no-explicit-any
+  );
+  // html-element overrides: math is rendered in the browser (see MdxCode in core/ui)
+  return { ...named, code: ui.MdxCode, pre: ui.MdxPre } as Record<string, ComponentType<any>>; // eslint-disable-line @typescript-eslint/no-explicit-any
 }
 
 export function NotYet({ entry }: { entry?: ShellEntry }) {

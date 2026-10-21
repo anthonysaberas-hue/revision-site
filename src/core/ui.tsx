@@ -55,6 +55,28 @@ export function MathTex({ tex, display }: { tex: string; display?: boolean }) {
   );
 }
 
+/* ---------------- MDX math (rendered in the browser) ----------------
+ * remark-math emits <code class="math-inline"> and <pre><code class="math-display">. Rendering KaTeX here
+ * instead of at build time (rehype-katex) keeps each compiled page small; build-time KaTeX made pages 2–4 MB
+ * of JS each and the production build ran out of memory. */
+const textOf = (n: ReactNode): string =>
+  typeof n === 'string' || typeof n === 'number' ? String(n) : Array.isArray(n) ? n.map(textOf).join('') : isValidElement(n) ? textOf((n.props as { children?: ReactNode }).children) : '';
+const isMath = (cls: unknown, kind: 'inline' | 'display') => typeof cls === 'string' && cls.split(/\s+/).includes(`math-${kind}`);
+export function MdxCode(props: { className?: string; children?: ReactNode }) {
+  const { className, children, ...rest } = props;
+  const display = isMath(className, 'display');
+  if (display || isMath(className, 'inline')) {
+    const html = katex.renderToString(textOf(children), { displayMode: display, throwOnError: false });
+    return display ? <div className="math math-display" dangerouslySetInnerHTML={{ __html: html }} /> : <span className="math math-inline" dangerouslySetInnerHTML={{ __html: html }} />;
+  }
+  return <code className={className} {...rest}>{children}</code>;
+}
+export function MdxPre(props: { children?: ReactNode }) {
+  const only = Children.toArray(props.children);
+  if (only.length === 1 && isValidElement(only[0]) && isMath((only[0].props as { className?: string }).className, 'display')) return <>{only[0]}</>;
+  return <pre {...props} />;
+}
+
 /* ---------------- Callouts ---------------- */
 type Kind = 'idea' | 'warn' | 'good' | 'exam' | 'note';
 const TITLES: Record<Kind, string> = {
