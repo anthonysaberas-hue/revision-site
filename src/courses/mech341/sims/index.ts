@@ -5,3 +5,4 @@ export * from './toolsA';
 export * from './toolsB';
 export { TurbofanLab, PowerPlantLab, HeatPumpLab } from './labsA';
 
+export { HvacLab, BurnerLab, NozzleLab } from './labsB';
