@@ -1,0 +1,111 @@
+<p className="eyebrow">Exam toolkit · the whole course on one page</p>
+
+# MECH 341 on one page
+
+<div className="lede">
+
+Two blocks. **Midterm (chapters 8–11):** Thermo 1 and exergy, gas cycles and jet engines, vapor cycles, refrigeration: every question is *states in a table, an energy balance per device, an efficiency or a COP*. **Final (chapters 12–17 plus the jet engine again):** property relations, mixtures, psychrometrics, combustion, chemical equilibrium, compressible flow: every question is *a conservation law written for a new kind of stuff* (a mixture, moist air, a reacting mixture, a moving gas). The rest of this page is the map: which model, which table, which formula, where to practise.
+
+</div>
+
+## 1 · Which model and which table?
+
+The first decision in every problem is **where the numbers come from**. Work down the list and stop at the first yes.
+
+1. **Is the fluid water or R-134a and near its saturation dome (condenser, boiler, evaporator, a throttle into a mixture)?** Use the **property tables** (A-4 to A-7 for water, A-11 to A-13 for R-134a), choosing the region first: compressed liquid, saturated mixture ($v_f<v<v_g$ gives a quality $x$), superheated vapor. Interpolate $P\cdot v$ for a vapor volume, never $v$ itself (<Asg n="01">4-9</Asg>). For a compressed liquid use $h\approx h_f(T)$ plus $v\,\Delta P$ if the pressure matters (pumps).
+2. **Is it a gas far from its dome (air, N₂, combustion products) at modest pressure?** It is an ideal gas. Then:
+   - **Temperature range small, or no table given, or the problem says "cold-air standard":** constant $c_p$, $c_v$, $k$ (air 1.005, 0.718, 1.4; hot gas 1.147, 1.333) and $T_2/T_1=(P_2/P_1)^{(k-1)/k}$.
+   - **Temperature range large (compressors with $r_p>10$, turbines at 1300 K), or "use the air table":** **air table A-17**: $h(T)$, $P_r$ and $v_r$; isentropic by $P_{r2}/P_{r1}=P_2/P_1$.
+   - **Combustion products, or any gas species other than air:** the molar tables A-18 to A-26 ($\bar h$, $\bar s^\circ$ per kmol).
+3. **Is the gas dense, cold or near its critical point ($T_R<2$ and $P_R>0.5$, or the question says "real gas")?** Use the **generalized charts** (the $Z$ chart A-15, departure charts A-29 for $h$ and A-30 for $s$): $\Delta\bar h=\Delta\bar h_{ideal}-R_uT_{cr}(Z_{h2}-Z_{h1})$ and the same for $s$ with $Z_s$. If the substance has tables (steam, R-134a) use the tables instead, the charts are for the rest (<Asg n="05">12-72</Asg>).
+4. **Is it a mixture?** Ideal gases: Dalton for pressure, mass-weight the $c_p$ and $c_v$, mole-weight the $M$ and the molar properties. Real mixture: Kay's rule or Amagat (<Ch slug="mixtures">Chapter 13</Ch>).
+5. **Moist air?** $\omega$, $\varphi$, $h=1.005T+\omega(2501+1.82T)$ and the chart (<Ch slug="psychrometrics">Chapter 14</Ch>).
+6. **Reacting?** Formation enthalpies A-26 plus sensible enthalpies A-18 to A-23; $\ln K_p$ from A-28 (<Ch slug="combustion">Chapter 15</Ch>, <Ch slug="equilibrium">Chapter 16</Ch>).
+
+**Open or closed?** Steady flow through a device (turbine, compressor, nozzle, heat exchanger, combustor with a flow): write $\dot Q-\dot W=\sum\dot m\,h_{out}-\sum\dot m\,h_{in}$ with **enthalpy** (flow work included). A fixed mass in a rigid or piston container (a tank explosion, an engine cylinder): write $Q-W=\Delta U$ with **internal energy**; in combustion that means $\bar u=\bar h-R_uT$ and the $-R_uT$ terms.
+
+**Stagnation or static?** Use stagnation properties (subscript 0) whenever the gas **moves fast enough that the kinetic energy matters**: jet engine stations, nozzles, pitot probes, anything above about Ma 0.3 or 100 m/s. After the intake of a jet engine every station is a stagnation value; inside a nozzle you convert back to static with the Mach number. A static $T$ with a stagnation $P$ in the same equation is a bug.
+
+**What is the question asking?**
+
+| Wording | Move |
+|---|---|
+| "efficiency", "net power", "mass flow for a given power" | cycle with states 1…n, then $w$ and $q$ per kg, then $\eta$; $\dot m=\dot W/w_{net}$ |
+| "COP", "tons", "power to the compressor" | refrigeration states, $\dot m=\dot Q_L/(h_1-h_4)$ |
+| "dew point", "wet bulb", "coil", "make-up water" | psychrometric balances: dry air, water, energy |
+| "air–fuel ratio", "percent excess air", "dew point of the products" | balance the equation, then fractions |
+| "flame temperature", "heat released" | enthalpy balance of products and reactants |
+| "composition at equilibrium", "extent of dissociation" | $K_p$ with $N_{total}$ and $\Delta\nu$ |
+| "Mach number", "choked", "throat", "back pressure" | stagnation ratios, $A/A^*$, critical pressure ratio |
+
+## 2 · The cycles on one page
+
+<GasCycleTs points={[{ T: 300, P: 100, label: '1' }, { T: 543.4, P: 800, label: '2' }, { T: 1300, P: 800, label: '3' }, { T: 717.7, P: 100, label: '4' }]} caption="Ideal Brayton cycle, r_p = 8, T_1 = 300 K, T_3 = 1300 K (cold air): η = 1 − r_p^−0.2857 = 44.8 %. Work is the enclosed area; a regenerator would use the hot exhaust (4) to preheat the compressor exit (2)." />
+
+<TsDiagram fluid="water" points={[{ s: 0.6492, T: 45.81, P: 10, label: '1' }, { s: 0.6492, T: 45.9, P: 4000, label: '2' }, { s: 6.7714, T: 400, P: 4000, label: '3' }, { s: 6.7714, T: 45.81, P: 10, label: '4' }]} path={[0, 1, 2, 3, 0]} isobars={[400, 4000]} />
+
+*Ideal Rankine cycle, 4 MPa, 400 °C, 10 kPa: pump 1→2 (liquid, $w_P=v_1\Delta P$), boiler 2→3, turbine 3→4, condenser 4→1. Reheat, open and closed feedwater heaters are modifications of this one picture, and the Carnot rule decides whether they help: the average temperature of heat addition goes up or the average of heat rejection goes down.*
+
+<VcrPhFigure />
+
+*Vapor-compression refrigeration on the $P$–$h$ plane (R-134a): 1 compressor inlet (saturated or slightly superheated vapor), 1→2 compression to the condenser pressure, 2→3 condensation, 3→4 throttle at constant $h$, 4→1 evaporation. $COP_R=(h_1-h_4)/(h_2-h_1)$, $COP_{HP}=COP_R+1$.*
+
+<PsychroChart points={[{ T: 35, w: 0.0159, label: 'outside' }, { T: 12, w: 0.0087, label: 'coil off' }, { T: 16, w: 0.0087, label: 'reheat' }]} />
+
+*Psychrometric chart: a cooling coil moves the air left until it meets saturation (the dew point), then follows the saturation line down, removing water; a heater moves the air right at constant $\omega$. Mixing is a straight line between the two states, weighted by **dry-air** flow.*
+
+<AreaMachFigure caption="Area against Mach number for air: A/A* is 1 at the sonic throat and larger on both sides. A converging duct can only reach Ma = 1 at its smallest section; a diverging section after a sonic throat gives supersonic flow." />
+
+## 3 · Key formulas by chapter
+
+| Ch | Topic | Formulas to know cold |
+|---|---|---|
+| 8 | Thermo 1, exergy | $\dot Q-\dot W=\sum\dot m h_{out}-\sum\dot m h_{in}$; $\eta_T=\dfrac{h_1-h_{2a}}{h_1-h_{2s}}$, $\eta_C=\dfrac{h_{2s}-h_1}{h_{2a}-h_1}$; $S_{gen}\ge0$; exergy destroyed $=T_0S_{gen}$ |
+| 9 | Brayton and jets | $\eta=1-r_p^{-(k-1)/k}$; $r_{bw}=w_C/w_T$; $T_0=T+\dfrac{V^2}{2c_p}$; turbojet $w_T=w_C$; $F=\dot m(V_6-V_1)+A_6(P_6-P_a)$; TSFC $=\dot m_f/F$ |
+| 10 | Rankine | $w_P=v_1\Delta P$; $\eta=\dfrac{w_T-w_P}{q_{in}}$; open heater $y=\dfrac{h_3-h_2}{h_6-h_2}$; closed heater: feedwater leaves at the bleed's $T_{sat}$ |
+| 11 | Refrigeration | $COP_R=\dfrac{h_1-h_4}{h_2-h_1}$; $COP_{HP}=COP_R+1$; Carnot $COP_R=\dfrac{1}{T_H/T_L-1}$; 1 ton $=211$ kJ/min |
+| 12 | Property relations | $dh=T\,ds+v\,dP$; Maxwell four; Clapeyron $\dfrac{dP}{dT}=\dfrac{h_{fg}}{Tv_{fg}}$; $\mu_{JT}=-\dfrac1{c_p}\left[v-T\left(\dfrac{\partial v}{\partial T}\right)_P\right]$; $\Delta\bar h=\Delta\bar h_{id}-R_uT_{cr}\Delta Z_h$ |
+| 13 | Mixtures | $M_m=\sum y_iM_i$; $p_i=y_iP$; $c_{p,m}=\sum mf_ic_{p,i}$; $\Delta s_i=c_{p,i}\ln\dfrac{T_2}{T_1}-R_i\ln\dfrac{p_{i,2}}{p_{i,1}}$ |
+| 14 | Psychrometrics | $\omega=\dfrac{0.622P_v}{P-P_v}$; $P_v=\varphi P_g$; $h=1.005T+\omega h_g$; $\dot m_{a1}=\dot m_{a2}$, $\dot m_w=\dot m_a\Delta\omega$ |
+| 15 | Combustion | 3.76 N₂ per O₂; $AF=\dfrac{N_{air}M_{air}}{N_{fuel}M_{fuel}}$; $H_P=H_R$ for AFT; $\lvert LHV\rvert=\lvert HHV\rvert-2441.7\,m_w$ |
+| 16 | Equilibrium | $K_p=\dfrac{N_C^{\nu_C}N_D^{\nu_D}}{N_A^{\nu_A}N_B^{\nu_B}}\left(\dfrac{P}{N_{tot}}\right)^{\Delta\nu}$; $\ln K_p=-\Delta G^*/R_uT$; van 't Hoff $\ln\dfrac{K_{p2}}{K_{p1}}=\dfrac{\bar h_R}{R_u}\left(\dfrac1{T_1}-\dfrac1{T_2}\right)$ |
+| 17 | Compressible flow | $\dfrac{T_0}{T}=1+\dfrac{k-1}{2}Ma^2$; $c=\sqrt{kRT}$; $\dfrac{P^*}{P_0}=0.5283$ ($k=1.4$); $\dfrac{A}{A^*}$ formula; choked $\dot m_{max}$ |
+
+For the same formulas split into "on the official sheet" and "you must remember", see the cheat sheets ([midterm](#/mech341/page/cheatsheet-midterm) and [final](#/mech341/page/cheatsheet-final)).
+
+## 4 · Numbers worth remembering
+
+| Quantity | Value |
+|---|---|
+| Air: $c_p$, $k$, $R$, $M$ | 1.005 kJ/kg·K, 1.4, 0.287 kJ/kg·K, 29 (28.97) |
+| Combustion gas: $c_p$, $k$ | 1.147 kJ/kg·K, 1.333 |
+| Air composition for balancing | 1 O₂ + 3.76 N₂ |
+| $\omega$ constant | 0.622 |
+| $h_{fg}$ of water at 25 °C | 2441.7 kJ/kg (open systems), 2304.3 (closed) |
+| 1 ton of refrigeration | 211 kJ/min = 3.517 kW |
+| Critical pressure ratio, air | 0.5283 ($k=1.4$), 0.540 ($k=1.333$) |
+| Converging nozzle chokes above | $P_0/P_b\approx1.89$ (air) |
+| Rankine back-work ratio / Brayton | ≈ 1 % / ≈ 40–60 % |
+| Ideal Rankine example (4 MPa, 400 °C, 10 kPa) | $\eta=35.3$ %, exit quality 0.816 |
+| Methane: HHV, LHV | 55 497, 50 010 kJ/kg |
+| NO at 2000 K in air at 1 atm | ≈ 0.8 % |
+
+## 5 · Five reflexes
+
+1. **Kelvin** for every ratio of temperatures, $\ln K_p$ and Clapeyron; **kmol with $R_u$, kg with $R$.**
+2. **Region before table:** compressed, mixture, superheated; static or stagnation; open or closed.
+3. **Sketch the T–s or $P$–$h$ diagram** with numbered states before any number.
+4. **One balance per device**; at a mixing point or heat exchanger the unknown fraction comes from that balance alone (the closed heater first, then the open one).
+5. **Sanity check:** an efficiency below the Carnot value, a COP in the low single digits, a quality between 0 and 1, $0<\omega$, $K_p>0$, $Ma$ consistent with the area ratio (the page of <Ch slug="gas-cycles">Chapter 9</Ch> and the "how big are the numbers" table in [the machines page](#/mech341/page/real-world) list the typical sizes).
+
+## 6 · Where to practise
+
+- **Midterm:** <Ex id="midterm-review">midterm review class</Ex>, <Asg n="01">Assignment 1</Asg> (Thermo 1, Brayton, jets), <Asg n="02">Assignments 2/3</Asg> (Rankine), <Asg n="04">Assignment 4</Asg> (refrigeration).
+- **Final:** <Ex id="final-2021">2021 final</Ex>, <Ex id="final-mock-a">practice A</Ex>, <Ex id="final-mock-b">practice B</Ex>, <Ex id="tutorial-16">tutorial 16</Ex>, <Ex id="tutorial-17">tutorial 17</Ex>, and the matching assignments 5–10.
+- **Toolkit:** [question templates](#/mech341/page/recipes), [which table when](#/mech341/page/tables), [errata](#/mech341/page/errata), [the machines](#/mech341/page/real-world).
+
+<Examined>
+
+The cheat sheets are what you carry into the exam, and the official information sheet is given to you: the table on the cheat-sheet pages marks which formulas are on it. Everything on this page is examined in some form in the midterm (chapters 8–11) or the final (all of it, with a 25-mark turbojet and an adiabatic-flame-temperature problem both mandatory in the 2021 paper).
+
+</Examined>
