@@ -1,0 +1,20 @@
+<p className="eyebrow">3D lab</p>
+
+# Rooftop HVAC and cooling tower lab
+
+<div className="lede">
+
+A rooftop unit cut open: the mixing box takes outdoor and return air, the cooling coil drops the air below its dew point (so water condenses and drips off), the reheat coil brings it back up to the supply temperature, and the fan pushes it into the room. Beside it, a cooling tower rejects heat by evaporating about 1 to 3 % of the circulating water. Comfort is 22 to 24 °C and 40 to 60 %, and 1 ton of cooling is 3.517 kW. The chart shows the process path live.
+
+</div>
+
+<HvacLab />
+
+## Things to try
+
+- Raise the **outdoor humidity**: the coil must remove more water, so the condensate drips faster and the coil load (mostly latent) rises, while the temperatures barely change.
+- Lower the **coil leaving T** below the dew point of the mixed air: condensate appears, the path bends towards saturation, and the reheat load grows to reach the supply temperature.
+- Raise the **outdoor-air fraction**: the mixed state slides along the straight line from the return air to the outdoor air (mixing is a straight line on the chart) and the coil load climbs on a hot day.
+- Raise the **supply air flow**: every load and the condensate rate scale with the dry-air mass flow, so the tower rejects more heat and its plume and make-up water grow with the evaporation.
+
+Background: <Ch slug="psychrometrics">Chapter 14</Ch>; practice with <Asg n="07">14-108</Asg> (cooling tower) and <Asg n="07">14-132</Asg> (coil).

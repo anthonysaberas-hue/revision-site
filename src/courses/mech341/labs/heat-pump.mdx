@@ -1,0 +1,19 @@
+<p className="eyebrow">3D lab</p>
+
+# Heat-pump lab
+
+<div className="lede">
+
+An outdoor unit and a house. The evaporator runs 8 K colder than the outdoor air and the condenser sits at 45 °C, so the compressor only lifts the heat across that gap. A home heat pump delivers a seasonal COP of about 2.5 to 4 (about 3 on a mild day, about 2 at −15 °C): 1 kW of electricity brings about 3 kW of heat.
+
+</div>
+
+<HeatPumpLab />
+
+## Things to try
+
+- Drag the **outdoor temperature** down: the temperature lift grows, the COP falls and the electricity needed for the same heat rises, which is why a heat pump struggles on the coldest days.
+- Compare with **resistance heating** (COP = 1): even at the coldest setting the heat pump still wins, because it moves heat instead of making it.
+- Raise the **house heat-loss UA** (a leakier house): the required heat rate and the compressor power grow, but the COP does not change, because it depends only on the temperature levels.
+
+Background: <Ch slug="refrigeration">Chapter 11</Ch>; practice with <Asg n="04">11-46</Asg> and <Asg n="04">11-62</Asg>.

@@ -1,0 +1,20 @@
+<p className="eyebrow">3D lab</p>
+
+# Turbofan cutaway lab
+
+<div className="lede">
+
+A CFM56-class turbofan cut in half: the fan, the eight-row compressor, the glowing annular combustor, the turbine and the two nozzles. Most of the thrust comes from the cold air that bypasses the core (CFM56-7B: bypass ratio about 5, overall pressure ratio about 32, take-off thrust about 120 kN, fan about 1.55 m across), which is why airliners carry such a big fan.
+
+</div>
+
+<TurbofanLab />
+
+## Things to try
+
+- Raise the **bypass ratio** at fixed core settings: thrust per unit of core flow rises and TSFC falls, because a large mass of air given a small velocity increase is a better trade for propulsive efficiency than a small mass given a large one.
+- Raise the **turbine inlet T₀₄**: the combustor glows brighter and specific thrust grows, but more fuel is burned; compare the TSFC before and after.
+- Raise the **flight Mach number**: ram compression adds to the pressure ratio, while the jet velocity barely changes, so propulsive efficiency climbs and net thrust drops (the intake momentum term grows).
+- Increase the **altitude**: the colder ambient air lowers the compressor-inlet temperature, so the cycle runs at a higher temperature ratio, while thrust falls with the density.
+
+Background: <Ch slug="gas-cycles">Chapter 9</Ch> (jet-engine section); practice with <Asg n="01">9-136</Asg> and <Asg n="01">9-137</Asg>.

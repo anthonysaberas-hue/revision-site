@@ -1,0 +1,20 @@
+<p className="eyebrow">3D lab</p>
+
+# Burner and flame-temperature lab
+
+<div className="lede">
+
+A premixed burner firing into a quartz tube. The flame goes from a faint lean blue, through a short bright blue near stoichiometric, to a long yellow sooting tip when it is rich. Thermal NO is made by the Zeldovich chain and depends steeply on temperature: equilibrium air gives about 0.13 % NO at 1500 K, 0.8 % at 2000 K and 2.3 % at 2500 K, but real engines make far less because the reaction is slower than the cooling.
+
+</div>
+
+<BurnerLab />
+
+## Things to try
+
+- Sweep the **equivalence ratio φ** from 0.5 to 1.5: the adiabatic flame temperature rises towards stoichiometric, peaks near or just rich of it, then falls, because excess air (lean) or excess fuel (rich) must be heated without releasing more energy.
+- Compare the NO curve: the equilibrium NO peaks slightly lean of the temperature peak, because NO needs free O₂ as well as a high temperature. It is an upper bound; real NO is limited by kinetics and residence time.
+- Change the **fuel** between methane, propane and hydrogen: hydrogen has no CO₂ and no soot and a pale flame, and each fuel has its own flame temperature and product dew point.
+- Raise the **air preheat**: the flame temperature rises and the equilibrium NO rises steeply with it, which is why recuperated burners make more NOx.
+
+Background: <Ch slug="combustion">Chapter 15</Ch> and <Ch slug="equilibrium">Chapter 16</Ch>; practice with <Asg n="09">16-31</Asg> and <Asg n="09">16-38</Asg>.

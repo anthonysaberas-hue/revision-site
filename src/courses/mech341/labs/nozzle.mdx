@@ -1,0 +1,20 @@
+<p className="eyebrow">3D lab</p>
+
+# Rocket nozzle lab
+
+<div className="lede">
+
+A converging-diverging rocket nozzle: a chamber at 10 to 20 MPa and about 3500 K feeds a sonic throat, and the bell expands the gas to Mach 3 to 5 (for k = 1.2, A<sub>e</sub>/A* = 15 gives Ma<sub>e</sub> = 3.56). The throat sets the mass flow, the area ratio sets the exit Mach number, and the ambient pressure decides whether the plume is over- or under-expanded. A shock inside the nozzle belongs to MECH 430: this lab labels that regime and links to it.
+
+</div>
+
+<NozzleLab />
+
+## Things to try
+
+- Slide the **altitude** upwards: the same nozzle goes from over-expanded (plume pinched by the ambient pressure) through its design point to under-expanded (plume flaring), and thrust rises because the (P<sub>e</sub> − P<sub>a</sub>) term grows.
+- Increase the **area ratio**: the exit Mach number and exit velocity rise and the exit pressure drops; the thrust gain levels off while the bell gets longer and heavier.
+- Raise the **chamber pressure** at fixed area ratio: mass flow and thrust scale with P₀ but the exit Mach number stays the same, because it depends only on the area ratio and k.
+- Choose a high ambient pressure with a large area ratio: the regime label reports a shock inside the nozzle and links to the <a href="#/mech430/lab/engine">MECH 430 engine lab</a> instead of modelling it.
+
+Background: <Ch slug="compressible">Chapter 17</Ch>; practice with <Asg n="10">17-39</Asg> and <Asg n="10">17-62</Asg>.

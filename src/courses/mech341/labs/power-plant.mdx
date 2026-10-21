@@ -1,0 +1,21 @@
+<p className="eyebrow">3D lab</p>
+
+# Power-plant lab
+
+<div className="lede">
+
+A steam power plant in section: boiler, turbine, condenser, pumps and feedwater heaters. Pipes are coloured by temperature and particles show the mass flow. An ultra-supercritical coal plant (steam at 25 to 30 MPa and about 600 °C) reaches 42 to 47 % net efficiency, while a pressurized-water reactor on 7 MPa saturated steam reaches only about 33 %.
+
+</div>
+
+<PowerPlantLab />
+
+## Things to try
+
+- Switch on **reheat**: the turbine exit quality rises (less liquid in the last stages) and the efficiency edges up, because heat is added at a higher mean temperature.
+- Add the **open feedwater heater**, then the **closed** one: each takes bleed steam, so the feedwater enters the boiler hotter and the efficiency rises, while the work per kg of boiler steam falls.
+- Lower the **condenser pressure**: the cold reservoir temperature falls and the efficiency improves, but the turbine exit becomes wetter, which is the practical limit.
+- Raise the **boiler pressure** with reheat off: efficiency rises, then the exit becomes wetter; this is why high pressures come with reheat.
+- Lower the **turbine η_T** and watch the efficiency drop by several points: real components cost more than any cycle tweak.
+
+Background: <Ch slug="vapor-cycles">Chapter 10</Ch>; practice with <Asg n="02">10-61</Asg> and <Asg n="02">10-98</Asg>.
