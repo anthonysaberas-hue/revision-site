@@ -1,0 +1,497 @@
+<p className="eyebrow">Assignment 10 · compressible flow (ch 17) · from your own notebooks</p>
+
+# Assignment 10: compressible flow
+
+<div className="lede">
+
+The four assigned problems (17-18, 17-26, 17-33C, 17-40) from the notebook *Ass12* (26 Nov), three more from *Chapter 17* (17 Dec): 17-39, 17-48C and 17-62, and the two diffuser examples that open the same notebook (Example 17-1, the aircraft compressor inlet, and Example 17-2, the Mach number into a diffuser); <Ch slug="compressible">chapter 17 notes</Ch>. Your steps and numbers come first, then my recomputation (ideal-gas relations, with $k=1.4$ and $c_p=1.005$ for air, $R=0.287$) and the printed answer when the book gives one. ⚠ marks a printed answer or a legible value that disagrees with the recomputation; "Check your page" marks ambiguous handwriting or a method point. Two of the seven problems are purely conceptual (17-33C, 17-48C) and one is a one-line formula (17-39): do not skip them, because the final asks exactly this kind of question.
+
+</div>
+
+<Callout kind="note" title="What this assignment teaches, in one paragraph">
+
+(1) **Static versus stagnation**: $h_0=h+V^2/2$, so $T_0=T+\dfrac{V^2}{2c_p}$ (with $c_p$ in kJ/kg·K, $V$ in m/s, divide by 1000), and for an isentropic flow $\dfrac{P_0}{P}=\left(\dfrac{T_0}{T}\right)^{k/(k-1)}$. (2) **Mach number** $Ma=V/c$ with the speed of sound $c=\sqrt{kRT}$ at the **static** temperature; $\dfrac{T_0}{T}=1+\dfrac{k-1}{2}Ma^2$. (3) **Sonic ("critical") state**: $\dfrac{T^*}{T_0}=\dfrac{2}{k+1}=0.8333$ and $\dfrac{P^*}{P_0}=\left(\dfrac{2}{k+1}\right)^{k/(k-1)}=0.5283$ for $k=1.4$. (4) **Area ratio** $\dfrac{A}{A^*}=\dfrac1{Ma}\left[\dfrac{2}{k+1}\left(1+\dfrac{k-1}2Ma^2\right)\right]^{\frac{k+1}{2(k-1)}}$. (5) **Choking**: a converging nozzle cannot go beyond $Ma=1$ at its exit; once the exit is sonic, lowering the back pressure changes neither the exit velocity nor the flow rate. (6) With variable specific heats, use the enthalpy table, not $c_p$ at one end.
+
+</Callout>
+
+## Part 1: the four assigned problems
+
+<Problem id="17-18" title="Carbon dioxide in an adiabatic nozzle from 800 K to 400 K: Mach numbers and the cost of constant specific heats" tags="Mach number, speed of sound, energy equation, constant versus variable cp">
+
+<Statement>
+
+Carbon dioxide enters an adiabatic nozzle at 800 K with a velocity of 50 m/s and leaves at 400 K. Assuming constant specific heats at room temperature, find the Mach number (a) at the inlet and (b) at the exit. Assess the accuracy of the constant-specific-heat approximation. (Printed: (a) 0.113, (b) 2.64.)
+
+</Statement>
+
+<Think>
+
+Two applications of the same two formulas: $c=\sqrt{kRT}$ with the **local static** temperature, and the steady adiabatic energy equation $h_1+V_1^2/2=h_2+V_2^2/2$ with $\Delta h=c_p\Delta T$ to find the exit velocity. New: the problem asks you to **judge the approximation**. CO₂'s $c_p$ changes by 20 % between 400 and 800 K (and $k$ by 5 %), so the constant-$c_p$ answer cannot be trusted at the exit.
+
+</Think>
+
+<Plan>
+
+(a) $c_1=\sqrt{kRT_1}$, $Ma_1=V_1/c_1$. (b) $V_2=\sqrt{2000c_p(T_1-T_2)+V_1^2}$, $c_2=\sqrt{kRT_2}$, $Ma_2=V_2/c_2$. (c) Repeat with the variable-$c_p$ data and compare.
+
+</Plan>
+
+<Steps>
+<Step title="1. Constants (room temperature)">
+
+<T>A-2: R = 0.1889 kJ/kg·K, k = 1.289, c_p = 0.846 kJ/kg·K</T> (your page: $R=0.1889$, $k=1.288$ and a $c_p$ that reads 0.8439: the digits of $c_p$ are not fully legible; with $c_p=kR/(k-1)=0.845$ from your own $k$ the result below changes by 0.1 %).
+
+</Step>
+<Step title="2. (a) Inlet">
+
+$c_1=\sqrt{1.288(0.1889)(800)(1000)}=\mathbf{441.2}$ m/s and $Ma_1=\dfrac{50}{441.2}=\mathbf{0.113}$ (your page ✔: $c_1=441.2$, $Ma_1=0.113$).
+
+</Step>
+<Step title="3. (b) Exit">
+
+$c_2=\sqrt{1.288(0.1889)(400)(1000)}=\mathbf{312}$ m/s (your page ✔). Energy equation: $0=c_p(T_2-T_1)+\dfrac{V_2^2-V_1^2}{2000}$, so $V_2=\sqrt{2000(0.8439)(400)+50^2}=\mathbf{823.2}$ m/s (your page: $V_2=823.2$ ✔) and $Ma_2=\dfrac{823.2}{312}=\mathbf{2.64}$ ✔. With the table's $c_p=0.846$: 824.2 m/s and 2.64.
+
+</Step>
+<Step title="4. Variable specific heats: your check">
+
+<T>A-2b: CO₂ at 800 K c_p = 1.169, k = 1.193; at 400 K c_p = 0.939, k = 1.252</T>. $c_1=\sqrt{1.193(0.1889)(800)(1000)}=424.6$ m/s and $Ma_1\approx0.118$; $c_2=\sqrt{1.252(0.1889)(400)(1000)}=307.6$ m/s; with $c_p=0.939$ at the exit you find $V_2=868$ m/s and $Ma_2=2.82$ (your page: $c_1$ reads 424.6 or 421.6, $Ma_1$ about 0.118, $V_2=868$, $Ma_2=2.82$), and you note "we have a significant difference in Mach number" ✔.
+
+</Step>
+<Step title="5. Method point: which cp for the energy equation?">
+
+Your 2.82 uses $c_p$ at the **exit** temperature for the whole drop from 800 K to 400 K. The energy equation needs the **mean** value over the range: from the enthalpy table, $\Delta\bar h=\bar h(800)-\bar h(400)=18\,810$ kJ/kmol $=427$ kJ/kg (mean $c_p=1.07$ kJ/kg·K), so $V_2=\sqrt{2(427\,400)+50^2}=\mathbf{926}$ m/s and $Ma_2=926/307.6=\mathbf{3.01}$. The constant-$c_p$ answer 2.64 is 12 % low in $Ma$, and the half-corrected 2.82 is 6 % low.
+
+</Step>
+</Steps>
+
+<Answer>
+
+(a) **$Ma_1=0.113$**, (b) **$Ma_2=2.64$** (constant $c_p$) ✔ your page and the printed answer; the approximation is **poor** at the exit: $c_p$ changes by 20 % and $k$ by 5 % over 400–800 K and the table-based enthalpy change gives $Ma_2\approx3.0$ (your partial correction with $c_p$ at 400 K: 2.82).
+
+</Answer>
+
+<RealWorld title="Rocket nozzles and hot gas properties">
+
+A rocket nozzle expands combustion gas (CO₂ and H₂O are the main products) from 3000 K to under 1500 K and designers use $k$ of 1.15–1.25 and **temperature-dependent** $c_p$; a Mach number computed with room-temperature $k=1.3$–1.4 would be several percent off, just as here (a typical exit Mach number of a first-stage nozzle is 3–4).
+
+</RealWorld>
+
+<Traps>
+
+- $c=\sqrt{kRT}$ needs $R$ of the **gas** (0.1889 for CO₂, not 0.287) and $T$ in kelvin, with the factor 1000 for kJ → J.
+- The energy equation: divide $V^2$ by **2000** when $c_p$ is in kJ/kg·K.
+- With variable specific heats use the mean (the enthalpy change from the table), not $c_p$ at one end.
+
+</Traps>
+
+<Source>Anthony's Ass12 pp. 1–2 (Ass12-231126-1…2) and Chapter 17 pp. 2–4 (Chapter_17-231217-2…4) ✔ · lib check in <code>chapters.test.ts</code> and <code>hw2.test.ts</code> · worked in <Ch slug="compressible" /></Source>
+
+</Problem>
+
+<Problem id="17-26" title="Airbus A-340 at 945 km/h and −60 °C: Mach number" tags="speed of sound, Mach number, unit conversion">
+
+<Statement>
+
+The Airbus A-340 has a maximum cruising speed of 945 km/h; the air temperature at its cruising altitude (14 000 m) is about −60 °C. Find the Mach number of the plane at these limiting conditions.
+
+</Statement>
+
+<Think>
+
+Pure unit discipline: km/h to m/s, °C to K, and the speed of sound with the **ambient static** temperature. It teaches the habit of checking whether the flow is subsonic ($Ma<1$) before choosing between incompressible, compressible-subsonic and supersonic relations.
+
+</Think>
+
+<Steps>
+<Step title="1. Speed of sound">
+
+$T=-60+273.15=213.15$ K; $c=\sqrt{kRT}=\sqrt{1.4(287)(213.15)}=\mathbf{292.6}$ m/s (your page: 292.55 and 293 ✔).
+
+</Step>
+<Step title="2. Mach number">
+
+$V=\dfrac{945}{3.6}=262.5$ m/s, so $Ma=\dfrac{262.5}{292.6}=\mathbf{0.897}$, subsonic (your Ass12 page: $Ma=0.897<1$ ✔).
+
+</Step>
+</Steps>
+
+<Callout kind="note" title="Check your page: the first pass (17 Dec)">
+
+On your Chapter 17 page the speed in m/s is written "261.5" or "262.5" (the 1 and the 2 are written alike) and the result "0.89?". The conversion is $945/3.6=262.5$, giving 0.897; if the page really says 261.5, the result is 0.894. Your later page (Ass12) has 0.897.
+
+</Callout>
+
+<Answer>
+
+**$Ma=0.897$** (subsonic), $c=292.6$ m/s ✔ your Ass12 page.
+
+</Answer>
+
+<RealWorld title="Why an airliner cruises near Mach 0.85">
+
+Wing sections reach $Ma=1$ locally before the aircraft does; drag rises sharply above the "critical Mach number", so airliners cruise at $Ma\approx0.78$–$0.85$. The A-340's *maximum* limit of 0.897 is close to the point where shock waves start to form on the wing, which is why it is a limit and not a cruise value. (Cruise Mach numbers: typical.)
+
+</RealWorld>
+
+<Traps>
+
+- Using the **sea-level** speed of sound (340 m/s) instead of the one at the cruise temperature: it would give 0.77.
+- Mixing km/h and m/s, or °C and K.
+
+</Traps>
+
+<Source>Anthony's Ass12 p. 2 (Ass12-231126-2) and Chapter 17 p. 4 (Chapter_17-231217-4) ✔ · lib check in <code>chapters.test.ts</code> · also in <Ch slug="compressible" /></Source>
+
+</Problem>
+
+<Problem id="17-33C" title="Converging nozzle with a sonic exit: what happens when the exit area is reduced?" tags="choking, converging nozzle, mass flow, conceptual">
+
+<Statement>
+
+A converging nozzle has sonic speed at its exit plane. The exit area is now reduced while the inlet conditions are held constant. What happens to (a) the exit velocity and (b) the mass flow rate through the nozzle?
+
+</Statement>
+
+<Think>
+
+Two separate facts: a converging nozzle can accelerate the flow only up to $Ma=1$ (the sonic speed at the **throat**, which for a converging nozzle is the exit); and the mass flow rate is $\dot m=\rho VA$, which at the sonic state equals $A^*P_0\sqrt{k/(RT_0)}\left(\dfrac{2}{k+1}\right)^{\frac{k+1}{2(k-1)}}$, proportional to the exit area for fixed $P_0$ and $T_0$.
+
+</Think>
+
+<Steps>
+<Step title="1. (a) Exit velocity">
+
+The velocity at a sonic exit is $V=c^*=\sqrt{kRT^*}$ with $T^*=0.8333T_0$: it depends only on $T_0$. With $T_0$ held constant, the exit velocity **does not change** and stays at the sonic value (your Ass12 page: "for a converging nozzle the maximum velocity is the sonic velocity, so the exit speed remains constant at it" ✔; your first pass: "converging nozzle can't go supersonic").
+
+</Step>
+<Step title="2. (b) Mass flow rate">
+
+$\dot m_{max}\propto A^*$ at fixed $P_0$ and $T_0$, so a **smaller** exit area gives a **smaller** mass flow rate (your page: "we will get a reduced mass flow rate since the decrease in flow area will cause a decrease in mass flow rate" ✔).
+
+</Step>
+</Steps>
+
+<Answer>
+
+(a) The exit velocity stays at the sonic value (**unchanged**); (b) the mass flow rate **decreases** in proportion to the exit area. Your Ass12 page ✔.
+
+</Answer>
+
+<RealWorld title="Choked flow sizes every relief valve">
+
+A safety or relief valve discharging to the atmosphere is sized from exactly this relation: once the upstream pressure is more than about twice the downstream, the flow is choked and the capacity is simply proportional to the valve's smallest area times the inlet pressure; the same formula governs a gas-pipeline rupture.
+
+</RealWorld>
+
+<Traps>
+
+- A smaller exit area does not make the jet faster: it makes it **smaller**; speed is capped by $c^*$.
+- "Sonic exit" means $P_{exit}=P^*$ is **above** the back pressure; the jet continues to expand outside the nozzle.
+
+</Traps>
+
+<Source>Anthony's Ass12 p. 3 (Ass12-231126-3) and Chapter 17 p. 5 (Chapter_17-231217-5) ✔ · also in <Ch slug="compressible" /></Source>
+
+</Problem>
+
+<Problem id="17-40" title="Aircraft at Mach 1.1 at 12 000 m (236.15 K): stagnation temperature on the wing leading edge" tags="stagnation temperature, Mach number, speed of sound">
+
+<Statement>
+
+An aircraft is designed to cruise at $Ma=1.1$ at 12 000 m where the atmospheric temperature is 236.15 K. Find the stagnation temperature on the leading edge of the wing.
+
+</Statement>
+
+<Think>
+
+Two equivalent routes to the stagnation temperature: with the Mach number, $\dfrac{T_0}{T}=1+\dfrac{k-1}{2}Ma^2$, or with the speed, $T_0=T+\dfrac{V^2}{2c_p}$. Your two pages use both; they agree and that is a good check to include in the exam.
+
+</Think>
+
+<Steps>
+<Step title="1. Route 1: Mach number">
+
+$T_0=T\left(1+\dfrac{k-1}{2}Ma^2\right)=236.15(1+0.2(1.1)^2)=236.15(1.242)=\mathbf{293.3}$ K (your Chapter 17 page: $T_0=293.29$ ✔).
+
+</Step>
+<Step title="2. Route 2: speed">
+
+$c=\sqrt{1.4(287)(236.15)}=308.0$ m/s (your page: 308 ✔), $V=1.1(308)=338.8$ m/s (your page: 338), $T_0=236.15+\dfrac{338.8^2}{2(1.005)(1000)}=\mathbf{293.3}$ K.
+
+</Step>
+</Steps>
+
+<Callout kind="note" title="Check your page: the last digit of the Ass12 line">
+
+Your Ass12 line ends in "293.?" (the last digit is unreadable). With $V=338$ (rounded down) and $c_p=1.005$ the formula gives 293.0; with $V=338.8$ it gives 293.3. Keep one more digit in $V$: the answer is 293.3 K, as your Chapter 17 page says.
+
+</Callout>
+
+<Answer>
+
+**$T_0=293.3$ K** (20 °C; 57 K above the ambient 236.15 K), $c=308$ m/s, $V=338.8$ m/s ✔ your pages. The page has no printed answer.
+
+</Answer>
+
+<RealWorld title="Skin temperature of a supersonic aircraft">
+
+At $Ma=1.1$ the leading edge is only about 20 °C. The stagnation temperature goes with $Ma^2$: at $Ma=2$ (the Concorde) $T_0/T=1.8$ and the nose reached roughly 120 °C in cruise (typical), which is why the airframe was built of a heat-resistant aluminium alloy and grew several centimeters in flight.
+
+</RealWorld>
+
+<Traps>
+
+- Using the stagnation temperature in $c=\sqrt{kRT}$: $c$ takes the **static** value.
+- Forgetting °C to K (236.15 K is already in kelvin here).
+
+</Traps>
+
+<Source>Anthony's Ass12 p. 3 (Ass12-231126-3) and Chapter 17 p. 6 (Chapter_17-231217-6) ✔ · lib check in <code>chapters.test.ts</code> and <code>hw2.test.ts</code> · also in <Ch slug="compressible" /></Source>
+
+</Problem>
+
+## Part 2: extra practice from your notebooks
+
+<Problem id="17-39" title="Lowest pressure at the throat of a converging-diverging nozzle fed from 1200 kPa" tags="critical pressure ratio, throat, stagnation pressure">
+
+<Statement>
+
+Air enters a converging-diverging nozzle at 1200 kPa with negligible velocity. What is the lowest pressure that can be obtained at the throat of the nozzle?
+
+</Statement>
+
+<Think>
+
+The pressure falls as the flow accelerates and the **lowest throat pressure** corresponds to the fastest throat flow, $Ma=1$. Negligible velocity means the inlet state is the stagnation state, $P_0=1200$ kPa.
+
+</Think>
+
+<Steps>
+<Step title="1. Critical pressure ratio">
+
+$\dfrac{P^*}{P_0}=\left(\dfrac{2}{k+1}\right)^{k/(k-1)}=\left(\dfrac{2}{2.4}\right)^{3.5}=\mathbf{0.5283}$ (your page ✔: the formula and 0.528).
+
+</Step>
+<Step title="2. Throat pressure">
+
+$P^*=0.5283(1200)=\mathbf{634}$ kPa. Your page writes "$P^*=0.528\,P=6?7.6$": the middle digit is ambiguous (the 3 and the 7 are written alike): **Check your page**; 0.528 × 1200 = 633.6.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**$P^*=634$ kPa** ✔ printed answer (633.6 unrounded).
+
+</Answer>
+
+<RealWorld title="Supersonic wind tunnels">
+
+A supersonic wind tunnel with a settling chamber at 1200 kPa has a throat pressure of at most 634 kPa; the back pressure of the test section must be below about $0.5\,P_0$ for the throat to choke at all, which is why large tunnels need compressors or vacuum spheres.
+
+</RealWorld>
+
+<Traps>
+
+- 0.5283 is for $k=1.4$ (air); for $k=1.33$ it is 0.540 and for $k=1.2$ it is 0.564.
+- The throat can be *higher* than $P^*$ (subsonic venturi flow) but never lower for isentropic flow.
+
+</Traps>
+
+<Source>Anthony's Chapter 17 p. 5 (Chapter_17-231217-5) · lib check in <code>hw2.test.ts</code> · also in <Ch slug="compressible" /></Source>
+
+</Problem>
+
+<Problem id="17-48C" title="Converging nozzle with critical pressure at the exit: back pressure dropped well below it" tags="choking, back pressure, conceptual">
+
+<Statement>
+
+Consider subsonic flow in a converging nozzle with given inlet conditions and the critical pressure at the nozzle exit. What is the effect of dropping the back pressure well below the critical pressure on (a) the exit velocity, (b) the exit pressure, and (c) the mass flow rate?
+
+</Statement>
+
+<Think>
+
+The same idea as 17-33C, now in terms of the **back pressure**. Once the exit is sonic the nozzle is choked: pressure disturbances travel at the speed of sound and cannot propagate upstream against a sonic flow, so the flow inside the nozzle no longer "knows" about the back pressure.
+
+</Think>
+
+<Steps>
+<Step title="1. The three answers">
+
+(a) The exit velocity **does not change** (it stays sonic, $c^*$). (b) The exit pressure **does not change**: it stays at $P^*=0.5283P_0$, and the remaining expansion from $P^*$ down to the back pressure happens **outside** the nozzle (an underexpanded jet with expansion waves). (c) The mass flow rate **does not change**: it is already at its maximum for the given $P_0$, $T_0$ and exit area.
+
+</Step>
+</Steps>
+
+<Callout kind="note" title="Check your page: no answer is written">
+
+Your Chapter 17 page reproduces the statement of 17-48C and then goes on to 17-62; no answer is written beside it. Your Ass12 reasoning for 17-33C (maximum velocity is sonic, flow rate set by the area) is the answer to this problem too.
+
+</Callout>
+
+<Answer>
+
+(a) exit velocity: **unchanged** (sonic); (b) exit pressure: **unchanged** ($P^*$); (c) mass flow rate: **unchanged** (maximum, choked).
+
+</Answer>
+
+<RealWorld title="Why a rocket's thrust hardly depends on the atmosphere at the throat">
+
+A rocket throat is choked for the whole flight: the mass flow rate is fixed by chamber pressure and throat area, independent of altitude. What does change with altitude is the exit-plane pressure relative to ambient (over- and underexpansion), which is what the bell shape of the nozzle is designed around.
+
+</RealWorld>
+
+<Traps>
+
+- Lowering the back pressure below $P^*$ does **not** speed up the flow inside the nozzle; it only changes the jet after the exit.
+- A **converging-diverging** nozzle has more regimes (shock in the diverging section): see the sim in <Ch slug="compressible" />.
+
+</Traps>
+
+<Source>Anthony's Chapter 17 p. 7 (Chapter_17-231217-7, statement only) · concept worked in <Ch slug="compressible" /></Source>
+
+</Problem>
+
+<Problem id="17-62" title="Air accelerated isentropically from 0.5 MPa, 420 K and 110 m/s to the sonic point" tags="stagnation properties, critical properties, area ratio, continuity">
+
+<Statement>
+
+Air enters a nozzle at 0.5 MPa and 420 K with a velocity of 110 m/s. Approximating the flow as isentropic, find the pressure and temperature at a location where the air velocity equals the speed of sound, and the ratio of the area at that location to the entrance area. (Printed: 355 K, 278 kPa, 0.428.)
+
+</Statement>
+
+<Think>
+
+Three layers: the inlet is *not* a stagnation state (110 m/s), so compute $T_0$ and $P_0$ first; the sonic state is then given by the **critical ratios** $T^*=0.8333T_0$, $P^*=0.5283P_0$; the area ratio is $A^*/A_1=1/(A/A^*)_{Ma_1}$ with $Ma_1=110/c_1$. Computing the area ratio **two ways** (formula and continuity) is the exam habit that exposes a bad printed answer.
+
+</Think>
+
+<Plan>
+
+$c_1$ and $Ma_1$ → $T_0=T_1+V_1^2/2c_p$ → $P_0=P_1(T_0/T_1)^{3.5}$ → $T^*$, $P^*$ → $A^*/A_1$ by the formula and by $\rho_1V_1A_1=\rho^*V^*A^*$.
+
+</Plan>
+
+<Steps>
+<Step title="1. Stagnation temperature">
+
+$c_1=\sqrt{1.4(0.287)(420)(1000)}=410.8$ m/s (your page: 410.799 ✔), $Ma_1=\dfrac{110}{410.8}=0.2678$; $T_0=420+\dfrac{110^2}{2000(1.005)}=\mathbf{426.0}$ K (your page: 426.01 ✔).
+
+</Step>
+<Step title="2. Stagnation pressure">
+
+$P_0=500\left(\dfrac{426.01}{420}\right)^{1.4/0.4}=\mathbf{525.5}$ kPa (your page: 0.5254 MPa, digits partly legible ✔).
+
+</Step>
+<Step title="3. Sonic state">
+
+$T^*=\dfrac{T_0}{1.2}=\mathbf{355.0}$ K (your page: 355 ✔); $P^*=\dfrac{P_0}{(1.2)^{3.5}}=\dfrac{525.5}{1.893}=\mathbf{277.6}$ kPa (your page: $P=0.277$ MPa ✔, printed 278 ✔).
+
+</Step>
+<Step title="4. Area ratio, method 1 (formula)">
+
+$\dfrac{A}{A^*}=\dfrac{1}{Ma_1}\left[\dfrac{1}{1.2}\left(1+0.2Ma_1^2\right)\right]^{3}=\dfrac{1}{0.2678}\left[\dfrac{1.01434}{1.2}\right]^3=2.2553$, so $\dfrac{A^*}{A_1}=\mathbf{0.4434}$.
+
+</Step>
+<Step title="5. Area ratio, method 2 (continuity)">
+
+$\rho_1=\dfrac{500}{0.287(420)}=4.148$, $\rho^*=\dfrac{277.6}{0.287(355.0)}=2.725$ kg/m³, $V^*=\sqrt{1.4(287)(355.0)}=377.7$ m/s. $\dfrac{A^*}{A_1}=\dfrac{\rho_1V_1}{\rho^*V^*}=\dfrac{4.148(110)}{2.725(377.7)}=\mathbf{0.4434}$ ✓.
+
+</Step>
+</Steps>
+
+<AreaMachFigure Ma1={0.2678} caption="17-62: A/A* against Mach number for air. The inlet at Ma = 0.268 needs 2.26 times the sonic-throat area, so the duct must narrow to 0.443 of its entrance area to reach Ma = 1 (the supersonic branch is not used in a converging duct)." />
+
+<Callout kind="warn" title="⚠ The printed area ratio 0.428 does not check">
+
+The book prints $A^*/A_1=0.428$. The area-Mach formula and a continuity balance with the critical properties **both** give 0.4434, so the printed 0.428 is a misprint (the printed 355 K and 278 kPa are right, and so are yours). Your page stops at $P^*=0.277$ MPa, so you did not compute the ratio. (Errata P2.)
+
+</Callout>
+
+<Answer>
+
+$T_0=426.0$ K, $P_0=525.5$ kPa, **$T^*=355.0$ K, $P^*=277.6$ kPa, $A^*/A_1=0.443$** (printed 355 K, 278 kPa, **0.428**; not on your page). Your temperature and pressure ✔.
+
+</Answer>
+
+<RealWorld title="How much does the duct have to narrow?">
+
+To take a 110 m/s stream to Mach 1 the duct narrows to 44 % of its entrance area and the pressure falls to 55 % of the 0.5 MPa. Those are the proportions of the converging section of a steam or compressed-air jet nozzle, and of the inlet to a gas-turbine's choked first-stage nozzle guide vanes.
+
+</RealWorld>
+
+<Traps>
+
+- $A/A^*\ge1$ in the table: take the reciprocal for $A^*/A_1$.
+- $c^*$ uses the **critical** temperature, not $T_1$.
+- $P_0\ne P_1(1+0.2Ma^2)^{3.5}$ unless you use $Ma_1$ at the *inlet* static state (it does work: 0.2678 gives the same 525.5).
+
+</Traps>
+
+<Source>Anthony's Chapter 17 pp. 7–8 (Chapter_17-231217-7…8) · lib check in <code>chapters.test.ts</code> and <code>hw2.test.ts</code> · worked in <Ch slug="compressible" /></Source>
+
+</Problem>
+
+## Part 3: the two diffuser examples from your notebook
+
+<Problem id="Ex 17-1 and 17-2" title="Compressor inlet at 250 m/s: stagnation T and P; Mach number into a diffuser at 200 m/s" tags="Example 17-1, Example 17-2, stagnation state, diffuser">
+
+<Statement>
+
+(17-1) An aircraft cruises at 250 m/s at 5000 m, where the ambient pressure is 54.05 kPa and the temperature 255.7 K. The air is brought to rest in the inlet diffuser ahead of the compressor: find the stagnation temperature and pressure at the compressor inlet. (17-2) Air enters a diffuser at 200 m/s at 30 °C: find the speed of sound and the Mach number.
+
+</Statement>
+
+<Think>
+
+Both are warm-ups for the stagnation relations. In a **diffuser** the flow decelerates, $h_{01}=h_{02}$, so the stagnation *temperature* is the same all the way through an adiabatic diffuser (the "stagnation enthalpy" note at the top of your page); the stagnation *pressure* falls only through losses.
+
+</Think>
+
+<Steps>
+<Step title="1. Example 17-1: stagnation temperature">
+
+$T_{01}=T_1+\dfrac{V_1^2}{2c_p}=255.7+\dfrac{250^2}{2(1.005)(1000)}=\mathbf{286.8}$ K (your page ✔: 286.8).
+
+</Step>
+<Step title="2. Example 17-1: stagnation pressure (isentropic diffusion)">
+
+$P_{01}=P_1\left(\dfrac{T_{01}}{T_1}\right)^{k/(k-1)}=54.05\left(\dfrac{286.8}{255.7}\right)^{3.5}=\mathbf{80.77}$ kPa (your page ✔: $P_{01}=80.77$; textbook 80.77).
+
+</Step>
+<Step title="3. Example 17-2: speed of sound and Mach number">
+
+$c=\sqrt{kRT}=\sqrt{1.4(287)(303)}=\mathbf{349}$ m/s (your page ✔) and $Ma=\dfrac{200}{349}=\mathbf{0.573}$ (your page: 0.57 ✔). The inlet is subsonic, so a diverging duct *decelerates* it, which is why a subsonic diffuser diverges.
+
+</Step>
+</Steps>
+
+<Answer>
+
+17-1: **$T_{01}=286.8$ K, $P_{01}=80.77$ kPa**; 17-2: **$c=349$ m/s, $Ma=0.573$** ✔ your page and the textbook.
+
+</Answer>
+
+<RealWorld title="Ram rise at 250 m/s">
+
+Ram compression at 250 m/s raises the air temperature by 31 K and the pressure by 49 % before the compressor even turns: that free pressure ratio (1.49) is why a turbojet's overall pressure ratio is larger in flight than on the test stand.
+
+</RealWorld>
+
+<Traps>
+
+- 17-1 uses $T_1=255.7$ K (the **static** ambient value); the 250 m/s is the aircraft speed relative to the air.
+- $P_{01}$ needs the exponent $k/(k-1)=3.5$, not $k$.
+
+</Traps>
+
+<Source>Anthony's Chapter 17 pp. 1–2 (Chapter_17-231217-1…2) ✔ · lib check in <code>chapters.test.ts</code> · also in <Ch slug="compressible" /></Source>
+
+</Problem>
+
+<Callout kind="note" title="How to use this page in the exam">
+
+Expect one nozzle problem on the final (stagnation properties, Mach number, area ratio or the choked exit state) and one or two conceptual questions on static versus stagnation, on converging versus diverging ducts for subsonic and supersonic flow, and on choking and back pressure. The routine: (1) $T_0=T+V^2/2c_p$ and $P_0=P(T_0/T)^{k/(k-1)}$; (2) $c=\sqrt{kRT}$ at the **static** state; (3) critical ratios 0.8333 and 0.5283 for air; (4) area ratio by formula **and** by continuity; (5) a choked nozzle: exit velocity, exit pressure and mass flow do not depend on $P_b$. Your own checklist: "static versus stagnation" and "$c_p$ unit: the 1000". See <Ch slug="compressible">chapter 17</Ch>, the tutorial problems on <Ex id="tutorial-17" /> and the <Ex id="final-2021">2021 final</Ex> (the turbojet problem).
+
+</Callout>

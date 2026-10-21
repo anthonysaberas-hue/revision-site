@@ -1,0 +1,627 @@
+<p className="eyebrow">Assignment 9 · chemical and phase equilibrium (ch 16) · from your own notebooks</p>
+
+# Assignment 9: chemical equilibrium
+
+<div className="lede">
+
+The nine assigned problems (16-4C, 16-6C, 16-8C, 16-31, 16-33, 16-38, 16-40, 16-52C, 16-56) from your notebooks *Chapter 16* (17 Dec, first pass) and *Chapter 16 v2* (18 Dec, the re-solve the day before the final); <Ch slug="equilibrium">chapter 16 notes</Ch>. Your steps and numbers come first, then my recomputation (the $K_p$ values of Table A-28 and the sensible-enthalpy data of the lib, which differ from the textbook tables in the last digits) and the printed answer when the book gives one. ⚠ marks legible digits or a method that disagree with the recomputation; "Check your page" marks ambiguous handwriting. This is the shortest set of the course, but it contains the most "conceptual" marks: four of the nine problems are one-paragraph answers.
+
+</div>
+
+<Callout kind="note" title="What this assignment teaches, in one paragraph">
+
+(1) For a reaction $\nu_A A+\nu_B B\rightleftharpoons\nu_C C+\nu_D D$ the equilibrium constant is $K_p=\dfrac{N_C^{\nu_C}N_D^{\nu_D}}{N_A^{\nu_A}N_B^{\nu_B}}\left(\dfrac{P}{N_{total}}\right)^{\Delta\nu}$ with $P$ in **atm**, $\Delta\nu=\nu_C+\nu_D-\nu_A-\nu_B$ and $N_{total}$ the moles of **gas** at equilibrium (a pure solid appears in neither). (2) $K_p$ depends on **temperature only** (Table A-28 gives $\ln K_p$); the *composition* responds to $P$, to inerts and to $T$ through the factor $(P/N_{total})^{\Delta\nu}$ and through $K_p(T)$. (3) The recipe: unknown extent $x$ → amounts → $N_{total}$ → $K_p$ relation → solve. (4) The heat transfer of a dissociating stream is $Q=\sum N_{out}\bar h-\sum N_{in}\bar h$ with the **equilibrium** amounts, and a liquid fuel enters with $\bar h_f(liq)$ (your note "liquid!!"). (5) Van 't Hoff: $\ln\dfrac{K_{p2}}{K_{p1}}=\dfrac{\bar h_R}{R_u}\left(\dfrac1{T_1}-\dfrac1{T_2}\right)$ links $K_p$ and the reaction enthalpy.
+
+</Callout>
+
+## Part 1: the nine assigned problems
+
+<Problem id="16-4C" title="CO2, CO and O2 in equilibrium: the effect of temperature and of pressure on CO2" tags="Le Chatelier, Kp, delta nu, exothermic">
+
+<Statement>
+
+A reaction chamber holds CO₂, CO and O₂ in equilibrium at a given temperature and pressure. How do (a) a temperature increase at constant pressure and (b) a pressure increase at constant temperature change the number of moles of CO₂?
+
+</Statement>
+
+<Think>
+
+A conceptual problem with two separate arguments, one for each variable. Temperature acts through $K_p(T)$, so you need the **sign of the reaction enthalpy** (combustion releases heat, so the formation of CO₂ is exothermic). Pressure leaves $K_p$ unchanged and acts through the factor $(P/N_{total})^{\Delta\nu}$, so you need the sign of $\Delta\nu$. This is the first place in the course where a $K_p$ expression is used as a *rule*, not a formula to compute with.
+
+</Think>
+
+<Plan>
+
+Write the reaction in the direction that produces CO₂ → write $K_p$ with $\Delta\nu$ → (a) how $K_p$ moves with $T$ → (b) hold $K_p$ fixed and let $P$ change.
+
+</Plan>
+
+<Steps>
+<Step title="1. The reaction and its Kp">
+
+$\mathrm{CO}+\tfrac12\mathrm{O_2}\rightleftharpoons\mathrm{CO_2}$, so $K_p=\dfrac{N_{CO_2}}{N_{CO}\,N_{O_2}^{1/2}}\left(\dfrac{P}{N_{total}}\right)^{\Delta\nu}$ with $\Delta\nu=1-1-\tfrac12=\mathbf{-\tfrac12}$ (your page: $\Delta\nu=1-1-0.5=-0.5$ ✔).
+
+</Step>
+<Step title="2. (a) Temperature up at constant P">
+
+$K_p$ depends on $T$ only, and for this exothermic reaction ($\bar h_R<0$) the van 't Hoff equation says it **decreases** as $T$ rises. A smaller $K_p$ means less CO₂ in the numerator: the number of moles of CO₂ **decreases** and CO and O₂ increase. Your page: "$\ln K_p$ decreases with the increase of $T$ … the number of moles of CO₂ decreases and rises of CO and O₂" ✔.
+
+</Step>
+<Step title="3. (b) Pressure up at constant T">
+
+$K_p$ is fixed. With $\Delta\nu=-\tfrac12$ the factor $(P/N_{total})^{-1/2}$ **falls** when $P$ rises, so the mole ratio $N_{CO_2}/(N_{CO}N_{O_2}^{1/2})$ must **rise** to keep $K_p$ constant: CO₂ **increases**. (The system moves toward the side with fewer moles.) Your v1 page: "negative $\Delta\nu$ … with $P\uparrow$ the number of moles of CO₂ will rise" ✔.
+
+</Step>
+</Steps>
+
+<Answer>
+
+(a) CO₂ **decreases** (higher $T$ lowers $K_p$ of an exothermic reaction); (b) CO₂ **increases** (higher $P$ favors the side with fewer moles, $\Delta\nu=-\tfrac12$). Your pages ✔ (both copies).
+
+</Answer>
+
+<RealWorld title="Why combustion is more complete at moderate temperature and high pressure">
+
+At ordinary flame temperatures the CO₂ ⇌ CO + ½O₂ equilibrium lies far to the CO₂ side; it moves toward CO above about 2000 K. This is why a gas turbine or a diesel burning at high pressure produces *less* CO from dissociation than the same flame at 1 atm, and why a very hot flame can be less "complete" than a cooler one.
+
+</RealWorld>
+
+<Traps>
+
+- $K_p$ does **not** change with pressure; only the composition does.
+- The sign of $\Delta\nu$ depends on how the reaction is written (CO₂ → CO + ½O₂ has $\Delta\nu=+\tfrac12$). The conclusion must be the same for both ways of writing it.
+- Temperature: decide with the **sign of $\bar h_R$** (exothermic or endothermic), not with $\Delta\nu$.
+
+</Traps>
+
+<Source>Anthony's Chapter 16 p. 1 (Chapter_16-231217-1) and Chapter 16 v2 p. 1 (Chapter_16_v2-231218-01) ✔ · also in <Ch slug="equilibrium" /></Source>
+
+</Problem>
+
+<Problem id="16-6C" title="Adding inert nitrogen at constant T and P to a CO2 / CO / O2 equilibrium" tags="inert gas, Le Chatelier, N_total, delta nu">
+
+<Statement>
+
+A reaction chamber holds CO₂, CO and O₂ in equilibrium at a given temperature and pressure. Nitrogen is added while the temperature **and the total pressure** are kept constant. Does this change the number of moles of O₂, and how?
+
+</Statement>
+
+<Think>
+
+The new idea: an inert gas takes part in the equilibrium only through $N_{total}$. At **constant total pressure**, adding N₂ raises $N_{total}$ and so **lowers** $P/N_{total}$: it acts exactly like a pressure decrease. The reaction then shifts toward the side with *more* moles.
+
+</Think>
+
+<Plan>
+
+$K_p$ for CO₂ ⇌ CO + ½O₂ with $\Delta\nu=+\tfrac12$ → $K_p$ fixed, $(P/N_{total})^{1/2}$ smaller → the mole ratio must grow.
+
+</Plan>
+
+<Steps>
+<Step title="1. Kp for the dissociation">
+
+$K_p=\dfrac{N_{CO}\,N_{O_2}^{1/2}}{N_{CO_2}}\left(\dfrac{P}{N_{total}}\right)^{1/2}$, with $\Delta\nu=1+\tfrac12-1=+\tfrac12$.
+
+</Step>
+<Step title="2. Effect of the inert">
+
+$K_p$ depends only on $T$ and $T$ is constant. Adding N₂ makes $N_{total}$ larger at constant $P$, so $(P/N_{total})^{1/2}$ is smaller; therefore $N_{CO}N_{O_2}^{1/2}/N_{CO_2}$ must be **larger**: the equilibrium shifts to the right, CO₂ decreases, **CO and O₂ increase**.
+
+</Step>
+</Steps>
+
+<Callout kind="warn" title="⚠ Your v2 re-solve (18 Dec) says 'O₂ will decrease': it increases">
+
+Your Chapter 16 v2 page begins "the total number of moles will change, it will go higher, so the ratio is higher …" and ends, legibly, "O₂ will decrease". The reasoning "$N_{total}$ goes up" is right but the conclusion is the wrong way round. Your 17 Dec first pass wrote $N_T\uparrow$, CO₂ ↓, and "(CO and O₂) ↑" in red, which is correct. The mistake to avoid is to think "more moles in the box, so it must favor the side with fewer moles": that is the effect of raising the **pressure**. An inert at constant $P$ is the opposite, a pressure *decrease* for the reacting gases. (Errata N10.)
+
+</Callout>
+
+<Answer>
+
+**O₂ increases** (and CO increases, CO₂ decreases): the inert at constant $T$ and $P$ lowers $P/N_{total}$ and favors the side with more moles. Your 17 Dec page ✔; your 18 Dec page ✗.
+
+</Answer>
+
+<RealWorld title="Diluting a furnace atmosphere">
+
+The same argument says that a dilute, very hot atmosphere of CO₂ with inert N₂ (flue gas at 1 atm) dissociates more than pure CO₂ at the same $T$ and $P$, which is why dissociation corrections matter for flames in air but are negligible in oxy-fuel flames at high pressure.
+
+</RealWorld>
+
+<Traps>
+
+- Inert **at constant volume** raises neither the partial pressures nor the equilibrium shift; inert **at constant total pressure** is the effect asked here.
+- The inert enters $K_p$ only through $N_{total}$.
+- Check with the limiting case: infinite dilution is the low-pressure limit, where dissociation is complete.
+
+</Traps>
+
+<Source>Anthony's Chapter 16 p. 2 (Chapter_16-231217-2) and Chapter 16 v2 p. 2 (Chapter_16_v2-231218-02) · also in <Ch slug="equilibrium" /></Source>
+
+</Problem>
+
+<Problem id="16-8C" title="NO, O2 and N2 in equilibrium: the pressure is tripled" tags="Kp, delta nu = 0, pressure independence">
+
+<Statement>
+
+A mixture of NO, O₂ and N₂ is in equilibrium at a given temperature and pressure. The pressure is now tripled. (a) Does $K_p$ change? (b) Do the numbers of moles of NO, O₂ and N₂ change, and how?
+
+</Statement>
+
+<Think>
+
+Same toolbox, now in the special case $\Delta\nu=0$. The factor $(P/N_{total})^{\Delta\nu}=1$ disappears, so pressure has **no effect on the composition at all**. A good check on the *form* of $K_p$: if you can read the exponent zero, you have answered the question.
+
+</Think>
+
+<Plan>
+
+Write $\tfrac12\mathrm{N_2}+\tfrac12\mathrm{O_2}\rightleftharpoons\mathrm{NO}$ → $\Delta\nu=1-\tfrac12-\tfrac12=0$ → the pressure factor is 1.
+
+</Plan>
+
+<Steps>
+<Step title="1. Kp for the reaction">
+
+$K_p=\dfrac{N_{NO}}{N_{N_2}^{1/2}N_{O_2}^{1/2}}\left(\dfrac{3P}{N_T}\right)^{0}=\dfrac{N_{NO}}{N_{N_2}^{1/2}N_{O_2}^{1/2}}$. Your page: "$K_p$ is only dependent on the $T$" and the exponent written as $0$, followed by a tick ✔.
+
+</Step>
+<Step title="2. The two answers">
+
+(a) $K_p$ depends on temperature only: **unchanged**. (b) Because $\Delta\nu=0$ the composition does not depend on $P$ either: the number of moles of NO, O₂ and N₂ **do not change**. Your v2 page: "they will remain the same" ✔.
+
+</Step>
+</Steps>
+
+<Answer>
+
+(a) No; (b) no, the amounts of NO, O₂ and N₂ stay the same (because $\Delta\nu=0$). Your pages ✔ (both copies).
+
+</Answer>
+
+<RealWorld title="NOx is a temperature problem, not a pressure problem">
+
+Because $\Delta\nu=0$, raising the pressure of an engine does not by itself change the equilibrium NO fraction; what matters is the flame temperature (see 16-31: 0.8 % NO at 2000 K against 0.016 % at 1200 K, 16-38). That is why exhaust-gas recirculation, which lowers the flame temperature, is the main NOx control.
+
+</RealWorld>
+
+<Traps>
+
+- "Pressure changes everything" is true only when $\Delta\nu\ne0$; always compute $\Delta\nu$ first.
+- A larger total pressure raises all partial pressures proportionally, which here leaves the **ratio** unchanged.
+
+</Traps>
+
+<Source>Anthony's Chapter 16 p. 2 (Chapter_16-231217-2) and Chapter 16 v2 p. 2 (Chapter_16_v2-231218-02) ✔ · also in <Ch slug="equilibrium" /></Source>
+
+</Problem>
+
+<Problem id="16-31" title="NO in air heated to 2000 K at 2 atm" tags="Kp, extent of reaction, inert N2, Table A-28">
+
+<Statement>
+
+Air (79 % N₂, 21 % O₂ by mole) is heated to 2000 K at a constant pressure of 2 atm. Assuming that the equilibrium mixture contains only N₂, O₂ and NO, find the equilibrium composition. Is it realistic to neglect monatomic oxygen and nitrogen? Does the equilibrium composition change if the pressure is doubled at constant temperature?
+
+</Statement>
+
+<Think>
+
+The standard single-reaction problem: one reaction, one unknown extent $x$. New in this exercise: the reaction has $\Delta\nu=0$ (see 16-8C), so the pressure of 2 atm and the total number of moles **drop out of the equation**; and the "is it realistic" question is answered by looking at $K_p$ of the **atom-forming reactions** (O₂ ⇌ 2O, N₂ ⇌ 2N) and seeing that they are tiny at 2000 K.
+
+</Think>
+
+<Plan>
+
+$\tfrac12\mathrm{N_2}+\tfrac12\mathrm{O_2}\rightleftharpoons\mathrm{NO}$, $\ln K_p$ from A-28 → atom balance with $x$ → $K_p$ equation → solve → remarks on O and N and on $P$.
+
+</Plan>
+
+<Steps>
+<Step title="1. Kp from Table A-28">
+
+<T>A-28 at 2000 K: ln Kp (½N₂ + ½O₂ ⇌ NO) = −3.931</T>, so $K_p=e^{-3.931}=\mathbf{0.01962}$ (your page ✔: $\ln K_p=-3.931$, $K_p=0.01962$; the lib's own table gives $-3.914$).
+
+</Step>
+<Step title="2. Atom balance">
+
+$\mathrm{O_2}+3.76\,\mathrm{N_2}\rightleftharpoons x\,\mathrm{NO}+y\,\mathrm{N_2}+z\,\mathrm{O_2}$: N: $7.52=x+2y$ so $y=3.76-\tfrac x2$; O: $2=x+2z$ so $z=1-\tfrac x2$ (your page ✔). $N_{total}=4.76$ for every $x$.
+
+</Step>
+<Step title="3. Kp equation and its solution">
+
+$K_p=\dfrac{x}{y^{1/2}z^{1/2}}\left(\dfrac{2}{4.76}\right)^{0}=\dfrac{x}{(3.76-0.5x)^{1/2}(1-0.5x)^{1/2}}=0.01962$. Squaring: $x^2=0.01962^2(3.76-2.38x+0.25x^2)$, so $x=\mathbf{0.0376}$ kmol NO. Then $y=3.76-0.5x=\mathbf{3.7412}$ and $z=1-0.5x=\mathbf{0.9812}$ (your page ✔ all three: 0.0376, 3.7412, 0.9812).
+
+</Step>
+<Step title="4. Monatomic O and N, and pressure">
+
+<T>A-28 at 2000 K: ln Kp (O₂ ⇌ 2O) = −14.6 and ln Kp (N₂ ⇌ 2N) = −41.7</T>: $K_p\approx4\times10^{-7}$ and $10^{-18}$, so the atoms are **negligible** at 2000 K (your v2 page checks this and concludes "so low it will not happen"; the exponents you quote, about $-11.8$ and a larger negative one, are not fully legible: **Check your page**; the conclusion is right whatever the exact table row). Doubling the pressure: the factor $(P/N_T)^0=1$, so **no change**, as you wrote.
+
+</Step>
+</Steps>
+
+<NOExtentFigure />
+
+<Answer>
+
+**0.0376 kmol NO, 3.741 kmol N₂, 0.981 kmol O₂** (per kmol O₂ in the air; 0.79 % NO of 4.76 kmol), ✔ your pages and the recomputation. Atoms negligible; no change with pressure.
+
+</Answer>
+
+<RealWorld title="Thermal NO in engines and furnaces">
+
+Equilibrium at 2000 K already gives 0.8 % NO (about 8000 ppm); at 1200 K it is only 0.016 % (16-38). A real engine cylinder spends under a millisecond above 2000 K, so measured NO is lower than equilibrium, but the exponential dependence of $K_p$ on $T$ is why 100 K of flame temperature matters so much to emission limits.
+
+</RealWorld>
+
+<Traps>
+
+- Using $P$ in kPa: the equation needs atm (here it would not matter, $\Delta\nu=0$, but it matters in 16-33 and 16-38).
+- Writing the reaction for 2 NO and not squaring $K_p$.
+- Forgetting that the N₂ that does not react still counts in $N_{total}$ (not needed here, but needed whenever $\Delta\nu\ne0$).
+
+</Traps>
+
+<Source>Anthony's Chapter 16 pp. 3–4 (Chapter_16-231217-3…4) and Chapter 16 v2 pp. 3–4 (Chapter_16_v2-231218-03…04) ✔ · lib check in <code>lib.test.ts</code> and <code>hw2.test.ts</code> · also worked in <Ch slug="equilibrium" /></Source>
+
+</Problem>
+
+<Problem id="16-33" title="Methane and nitrogen at 1000 K and 1 atm: decomposition to solid carbon" tags="Kp, solid carbon, inert N2, N_total">
+
+<Statement>
+
+A gas mixture of 50 % methane and 50 % nitrogen (by mole) is heated to 1000 K while the pressure is held at 1 atm. Find the equilibrium composition (mole fractions) of the resulting mixture. For $\mathrm{C}+2\mathrm{H_2}\rightleftharpoons\mathrm{CH_4}$ at 1000 K, $\ln K_p=2.328$.
+
+</Statement>
+
+<Think>
+
+Three new things in one problem: (1) the reaction in the table is the **synthesis**, but the CH₄ in the box decomposes, so you must invert it ($K_p=e^{-2.328}$) or write the synthesis form with the amounts reversed; (2) **solid carbon** is a pure solid: it appears neither in $K_p$ nor in $N_{total}$ (it has no partial pressure); (3) the N₂ is an inert that only raises $N_{total}$.
+
+</Think>
+
+<Plan>
+
+1 kmol CH₄ and 1 kmol N₂ → $z$ kmol CH₄ decompose → amounts of the **gas** species → $K_p$ of the synthesis ($e^{2.328}$) with $N_{total}$ gas only → solve → mole fractions.
+
+</Plan>
+
+<Steps>
+<Step title="1. Your setup (17 Dec)">
+
+You write $\mathrm{CH_4}+\mathrm{N_2}\to y\,\mathrm{C}+2y\,\mathrm{H_2}+\mathrm{N_2}+x\,\mathrm{CH_4}$ with $x+y=1$ and $K_p=\dfrac{N_C\,N_{H_2}^2}{N_{CH_4}}\left(\dfrac{P}{N_T}\right)^{3-1}$ for the decomposition, with $K_p=1/e^{2.328}$, $N_T=4-2x$ (counting the carbon), and then solve to $x=0.5194$.
+
+</Step>
+<Step title="2. The method fault in that setup">
+
+Check that $x=0.5194$ **does** satisfy your own equation: with $y=0.4806$, $\dfrac{4y^3}{x(4-2x)^2}=\dfrac{4(0.1110)}{0.5194(2.961)^2}=0.0975=e^{-2.328}$ ✔. The arithmetic is right; the **equation** is wrong in two places: the carbon is a solid, so it does not belong in $N_T$ (gas only: $N_T=1+x+2y$, i.e. $2+y$) and it does not count in $\Delta\nu$ (which is $2-1=+1$, not $3-1=2$).
+
+</Step>
+<Step title="3. Correct amounts">
+
+Let $z$ kmol of CH₄ decompose: CH₄ $=1-z$, C(s) $=z$ (not counted), H₂ $=2z$, N₂ $=1$, so $N_{total}=(1-z)+2z+1=2+z$ (gas).
+
+</Step>
+<Step title="4. Kp of the synthesis">
+
+$K_p=e^{2.328}=10.26=\dfrac{N_{CH_4}}{N_{H_2}^2}\cdot\dfrac{N_{total}}{P}=\dfrac{(1-z)(2+z)}{(2z)^2}$ with $P=1$ atm. Trial: $z=0.2$: $\dfrac{0.8(2.2)}{0.16}=11.0$ (too high); $z=0.2066$: $\dfrac{0.7934(2.2066)}{0.1707}=10.26$ ✓, so $z=\mathbf{0.2066}$ kmol.
+
+</Step>
+<Step title="5. Composition">
+
+CH₄ $=0.7934$, H₂ $=0.4132$, N₂ $=1$, $N_{total}=2.2066$ kmol of gas: $y_{CH_4}=\mathbf{0.360}$, $y_{H_2}=\mathbf{0.187}$, $y_{N_2}=\mathbf{0.453}$; check $y_{CH_4}/y_{H_2}^2=0.3596/0.03504=10.26$ ✓. Solid carbon formed: 0.207 kmol.
+
+</Step>
+</Steps>
+
+<MethaneExtentFigure />
+
+<Callout kind="warn" title="⚠ Your answer x = 0.5194 comes from an equation that counts solid carbon as a gas">
+
+Your v1 page ends at "$x=0.5194$" and your v2 copy restarts on a 1 kmol basis (0.5 CH₄, 0.5 N₂) and stops at the setup, so there is no final composition on either page. The root 0.5194 (kmol of CH₄ *left* in your notation) solves $\dfrac{N_CN_{H_2}^2}{N_{CH_4}}\left(\dfrac{P}{N_T}\right)^{2}=e^{-2.328}$ with $N_T=4-2x$, which treats C(s) as a gas. Leaving the solid out gives 0.793 kmol CH₄ left (not 0.519) and the mole fractions 0.360, 0.187, 0.453. The 0.5194 would put 0.481 kmol of carbon in the soot, more than twice the right 0.207. (Errata N11.)
+
+</Callout>
+
+<Answer>
+
+**$y_{CH_4}=0.360$, $y_{H_2}=0.187$, $y_{N_2}=0.453$** (0.793 kmol CH₄ remains of the 1 kmol, 0.207 kmol C(s) formed). Not on your pages (unfinished, with the carbon counted as gas); recomputation by the lib's `equilibrium` with `condensed: ['C']`.
+
+</Answer>
+
+<RealWorld title="Methane pyrolysis and soot">
+
+At 1000 K and 1 atm only about a fifth of the methane decomposes; commercial "methane pyrolysis" to make hydrogen and solid carbon runs at 1200–1500 K with a catalyst or a molten-metal bath to push this equilibrium further to the right, and the carbon is sold as a by-product (carbon black).
+
+</RealWorld>
+
+<Traps>
+
+- **Solid carbon** has no partial pressure: leave it out of $K_p$, of $N_{total}$ and of $\Delta\nu$.
+- Use $\ln K_p=2.328$ for the synthesis as written; the decomposition has $\ln K_p=-2.328$ (inverting the reaction inverts $K_p$).
+- The inert N₂ lowers the CH₄ and H₂ mole fractions through $N_{total}$ only.
+
+</Traps>
+
+<Source>Anthony's Chapter 16 pp. 5–6 (Chapter_16-231217-5…6) and Chapter 16 v2 p. 5 (Chapter_16_v2-231218-05) · lib <code>equilibrium</code> check in <code>hw2.test.ts</code> and <code>chapters.test.ts</code> · also worked in <Ch slug="equilibrium" /></Source>
+
+</Problem>
+
+<Problem id="16-38" title="Liquid propane burned in 150 % excess air: equilibrium products and heat transfer" tags="Kp, CO2 dissociation, liquid fuel, first law, NO">
+
+<Statement>
+
+Liquid propane enters a combustion chamber at 25 °C at 1.2 kg/min and burns with 150 % excess air that enters at 12 °C. The combustion gases (CO₂, H₂O, CO, O₂, N₂) leave at 1200 K and 2 atm. Find (a) the equilibrium composition of the products and (b) the heat transfer rate from the chamber. Is it realistic to neglect NO? (Printed: 3CO₂, 7.5O₂, 4H₂O, 47N₂ and 5066 kJ/min.)
+
+</Statement>
+
+<Think>
+
+Two parts. (a) is the dissociation CO₂ ⇌ CO + ½O₂ at 1200 K: with 150 % excess air the answer is almost "no CO", and you must **show** that with $K_p$. (b) is chapter 15 again with the actual products and one trap: **the fuel is a liquid**, so its enthalpy of formation is the liquid value ($\bar h_f^\circ=-118\,910$ kJ/kmol), your note "liquid!!".
+
+</Think>
+
+<Plan>
+
+250 % theoretical air → $\mathrm{C_3H_8}+12.5(\mathrm{O_2}+3.76\mathrm{N_2})\to x\mathrm{CO_2}+y\mathrm{CO}+4\mathrm{H_2O}+z\mathrm{O_2}+47\mathrm{N_2}$ → $K_p$ of CO₂ ⇌ CO + ½O₂ at 1200 K → $Q_{out}=H_R-H_P$ per kmol of propane → multiply by $\dot N=1.2/44.1$.
+
+</Plan>
+
+<Steps>
+<Step title="1. Balances">
+
+C: $3=x+y$; O: $25=2x+y+4+2z$, so $z=\dfrac{18-x}{2}$ (your page ✔: $y=3-x$, $z=\dfrac{18-x}{2}$). $N_{total}=x+y+4+z+47=63-0.5x$.
+
+</Step>
+<Step title="2. Equilibrium of CO2 at 1200 K, 2 atm">
+
+<T>A-28 at 1200 K: ln Kp (CO₂ ⇌ CO + ½O₂) = −17.871</T> (your page ✔; the lib gives −17.866). $e^{-17.871}=\dfrac{y\,z^{1/2}}{x}\left(\dfrac{2}{N_{total}}\right)^{1/2}=\dfrac{(3-x)(9-0.5x)^{1/2}}{x}\left(\dfrac{2}{63-0.5x}\right)^{1/2}$. The left side is $1.7\times10^{-8}$, so $3-x\approx0$: **$x=3$, $y\approx0$, $z=7.5$**. Your page: $x=3$, $y=0$, $z=7.5$ ✔ (the lib gives $y=1\times10^{-7}$).
+
+</Step>
+<Step title="3. Products and reactants for the first law">
+
+$\mathrm{C_3H_8(l)}+12.5(\mathrm{O_2}+3.76\mathrm{N_2})\to3\mathrm{CO_2}+4\mathrm{H_2O}+7.5\mathrm{O_2}+47\mathrm{N_2}$ (entries at 298 K for the propane, 285 K for the air, 1200 K for the products, as on your page; **propane: liquid!!**).
+
+</Step>
+<Step title="4. Enthalpy of the products at 1200 K">
+
+<T>A-18 to A-23 at 1200 K: h̄ of CO₂ 53 848, H₂O 44 380, O₂ 38 447, N₂ 36 777 kJ/kmol; h̄° at 298 K: 9364, 9904, 8682, 8669</T>. $H_P=3(-393\,520+53\,848-9364)+4(-241\,820+44\,380-9904)+7.5(38\,447-8682)+47(36\,777-8669)=\mathbf{-331\,170}$ kJ/kmol (the same terms as on your page).
+
+</Step>
+<Step title="5. Enthalpy of the reactants">
+
+$H_R=(-118\,910)+12.5(\bar h_{285}-8682)+47(\bar h_{285}-8669)$; at 285 K the air is 13 K colder than the reference, so its sensible enthalpy is small and negative (about $-370$ kJ/kmol of each gas): $H_R\approx-118\,910-22\,000=\mathbf{-140\,900}$ kJ/kmol.
+
+</Step>
+<Step title="6. Heat transfer">
+
+$Q_{out}=H_R-H_P=-140\,900+331\,170=\mathbf{190\,300}$ kJ/kmol of propane. $\dot N=\dfrac{1.2}{44.1}=0.0272$ kmol/min (your page: $1.2/44=0.0273$), so $\dot Q_{out}=0.0272(190\,300)=\mathbf{5180}$ kJ/min.
+
+</Step>
+<Step title="7. Is NO negligible?">
+
+<T>A-28 at 1200 K: ln Kp (½N₂ + ½O₂ ⇌ NO) = −7.54</T>, so $K_p\approx5\times10^{-4}$; with $\Delta\nu=0$ the equilibrium gives about **0.01 kmol NO per kmol of propane** (0.016 % of the 61.5 kmol of products): negligible.
+
+</Step>
+</Steps>
+
+<Callout kind="note" title="Check your page: the heat transfer is not written on the scan, and the printed 5066 is 2 % low">
+
+Your v2 page stops after the enthalpy setup (the reactant and product lines with the 1200 K values and the liquid propane term) and the molar flow 0.0273 kmol/min; the final Q is not on it, and the digits of the air lines at 285 K are not legible. The recomputation gives 190 300 kJ/kmol and **5180 kJ/min**, about 2 % above the printed 5066. Enthalpy tables differ slightly: with the lib's formation value for liquid propane the same method gives 191 400 kJ/kmol (5207 kJ/min), so the spread among table sets is 0.5 %, smaller than the 2 % gap to the printed answer, whose cause is not identified (it is not the gaseous propane: that would raise Q to 206 000 kJ/kmol). Your note "liquid!!" is the right method. (Errata P1.)
+
+</Callout>
+
+<Answer>
+
+(a) **3 CO₂, 7.5 O₂, 4 H₂O, 47 N₂** (CO $\approx10^{-7}$) ✔ printed and your page; (b) **$Q_{out}=190\,300$ kJ/kmol of propane = 5180 kJ/min** (printed 5066; not written on your page); NO is negligible (about 0.01 kmol).
+
+</Answer>
+
+<RealWorld title="Burner at 1200 K: why CO is not a concern">
+
+Gas-turbine combustors and industrial burners work with 100–150 % excess air precisely so that dissociation and CO stay negligible below 1500 K; the equilibrium CO fraction at 1200 K here is $10^{-8}$, so any CO in a real exhaust is *kinetically* unburnt fuel (a mixing or quenching problem), not an equilibrium effect.
+
+</RealWorld>
+
+<Traps>
+
+- **Liquid fuel**: $\bar h_f(liq)=\bar h_f(gas)-M\,h_{fg}$; using the gas value overestimates the heat output by about 15 000 kJ/kmol of propane here (8 %).
+- $K_p$ with $P=2$ atm and $N_{total}$ **including all** gas species (H₂O and N₂ too).
+- Air at 285 K, products at 1200 K: each enthalpy uses its own temperature.
+
+</Traps>
+
+<Source>Anthony's Chapter 16 v2 pp. 7–10 (Chapter_16_v2-231218-07…10) · lib check in <code>hw2.test.ts</code> · also in <Ch slug="equilibrium" /></Source>
+
+</Problem>
+
+<Problem id="16-40" title="Oxygen heated from 298 K to 3000 K at 1 atm: heat with and without dissociation" tags="O2 dissociation, Kp, steady flow, first law">
+
+<Statement>
+
+Oxygen is heated at 1 atm from 298 K to 3000 K in a steady-flow process at 0.5 kg/min. Find the heat supply rate needed if (a) some O₂ dissociates into O and (b) no dissociation occurs.
+
+</Statement>
+
+<Think>
+
+The cleanest example of "dissociation absorbs heat": the same stream needs **more** heat when part of it becomes atoms, because breaking the bond (the enthalpy of formation of O, 249 190 kJ/kmol) is paid for by the heater. New: you compute the composition first, then the first law with the **equilibrium mixture** at the outlet.
+
+</Think>
+
+<Plan>
+
+$\mathrm{O_2}\rightleftharpoons2\mathrm{O}$ at 3000 K → amount of O from $K_p$ → $Q=\sum N\bar h(3000)-\bar h_{O_2}(298)$ per kmol of O₂ fed → $\dot Q=\dot N\,Q$ → compare with no dissociation.
+
+</Plan>
+
+<Steps>
+<Step title="1. Amounts">
+
+Per kmol of O₂ fed, let $x$ kmol of O atoms form: O₂ $=1-\tfrac x2$, O $=x$, $N_{total}=1+\tfrac x2$ (your page: "$2-x=2y$" for the balance written on the 2-atom basis).
+
+</Step>
+<Step title="2. Kp relation">
+
+<T>A-28 at 3000 K: ln Kp (O₂ ⇌ 2O) = −4.357</T> (your page ✔). $e^{-4.357}=\dfrac{x^2}{1-0.5x}\left(\dfrac{1}{1+0.5x}\right)^{1}$, so **$x=0.113$** kmol O (your page ✔: $x=0.113$; the lib gives 0.1130), O₂ $=0.9435$.
+
+</Step>
+<Step title="3. Heat per kmol of O₂ (a)">
+
+<T>A-19 and A-26 (lib values; the printed table differs by 0.05 %): h̄ of O₂ at 3000 K = 98 142 kJ/kmol; h̄ of O at 3000 K = 249 190 + 56 577 = 305 767 kJ/kmol; h̄ of O₂ at 298 K = 0 (formation datum)</T>. $Q=0.9435(98\,142)+0.113(305\,767)-0=\mathbf{127\,107}$ kJ/kmol of O₂ (your page: 127 106.686 ✔).
+
+</Step>
+<Step title="4. Rate (a)">
+
+$\dot N=\dfrac{0.5}{32}=0.015625$ kmol/min; $\dot Q=0.015625(127\,107)=\mathbf{1986}$ kJ/min (33.1 kW).
+
+</Step>
+<Step title="5. No dissociation (b)">
+
+$Q=\bar h_{O_2}(3000)-\bar h_{O_2}(298)=98\,142$ kJ/kmol and $\dot Q=\dot N(h_2-h_1)=0.015625(98\,142)=\mathbf{1533}$ kJ/min (your page: 1532.7 ✔).
+
+</Step>
+</Steps>
+
+<Callout kind="note" title="Check your page: 1966 or 1986?">
+
+Your v2 page writes the rate in kJ/min right after the Q per kmol, and the digits read "1966" (and a kW value that looks like 33.1 or 32.8). With your own $Q=127\,106.7$ kJ/kmol and $\dot N=0.5/32$, the product is **1986** kJ/min, so if the page says 1966 it is a slip of 20 kJ/min (1 %); the third digit of that number is ambiguous in the scan, so no error is asserted.
+
+</Callout>
+
+<Answer>
+
+(a) **$\dot Q\approx1986$ kJ/min** (33.1 kW), with 0.113 kmol of O atoms per kmol of O₂ fed; (b) **1533 kJ/min** (25.6 kW) ✔ (your 1532.7). Dissociation raises the heat requirement by about 30 %.
+
+</Answer>
+
+<RealWorld title="Arc heaters and re-entry">
+
+Heating air or oxygen to 3000 K in an arc-jet or behind a re-entry shock dissociates a few percent of the molecules and the dissociation absorbs about a quarter of the energy supplied; the energy is released again when the atoms recombine on the vehicle's surface, a major part of the heat load on a re-entry capsule.
+
+</RealWorld>
+
+<Traps>
+
+- $\bar h$ of the **atom** includes its formation enthalpy (249 190 kJ/kmol), which is what makes dissociation costly.
+- The outlet has fewer O₂ molecules than the inlet: weight each species by its **equilibrium** amount.
+- Convert kg/min to kmol/min with $M=32$.
+
+</Traps>
+
+<Source>Anthony's Chapter 16 v2 pp. 12–13 (Chapter_16_v2-231218-12…13) · lib check in <code>lib.test.ts</code> and <code>hw2.test.ts</code> · also in <Ch slug="equilibrium" /></Source>
+
+</Problem>
+
+<Problem id="16-52C" title="Does a fuel burn more completely at 2000 K or at 2500 K?" tags="dissociation, Kp, Le Chatelier, conceptual">
+
+<Statement>
+
+Will a fuel burn more completely at 2000 K or at 2500 K?
+
+</Statement>
+
+<Think>
+
+A one-line application of the temperature rule from 16-4C: combustion products (CO₂, H₂O) are **stable** at lower $T$ and **dissociate** at higher $T$ (dissociation is endothermic, $K_p$ of CO₂ ⇌ CO + ½O₂ increases with $T$). At 2500 K more CO and O₂ (and OH, H₂, H, O) appear, so the burn is *less* complete there.
+
+</Think>
+
+<Steps>
+<Step title="The argument">
+
+For CO₂ ⇌ CO + ½O₂ at $P=1$ atm: <T>A-28: ln Kp = −6.635 at 2000 K, −3.860 at 2400 K, and about −3.30 at 2500 K (lib)</T>, so the dissociation constant grows by a factor of about 28 between 2000 and 2500 K and a much larger fraction of the CO₂ is dissociated. The page of your v2 copy writes only "2000" as the answer ✔.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**2000 K**: the lower temperature, because the dissociation reactions are endothermic and their $K_p$ rises with $T$; at 2500 K the products contain appreciable CO, O₂, H₂, OH. Your page ✔ ("2000").
+
+</Answer>
+
+<RealWorld title="Why the hottest flame is not the most efficient">
+
+Burner designs deliberately keep peak flame temperature below about 2000 K with excess air or recirculated exhaust: higher temperatures dissociate the products (energy locked in CO and H₂), and they also make NO exponentially (16-31).
+
+</RealWorld>
+
+<Traps>
+
+- "Complete combustion" in chapter 15 assumes CO₂ and H₂O; chapter 16 shows how far that fails above 2000 K.
+- Don't answer with the *adiabatic flame temperature*: a higher flame temperature is the result of burning more completely at a given $T$-independent heat release, not the other way round.
+
+</Traps>
+
+<Source>Anthony's Chapter 16 v2 p. 15 (Chapter_16_v2-231218-15) ✔ · also in <Ch slug="equilibrium" /></Source>
+
+</Problem>
+
+<Problem id="16-56" title="Enthalpy of reaction of CO2 → CO + ½O2 at 2200 K, from enthalpy data and from Kp" tags="van 't Hoff, enthalpy of reaction, Kp, consistency check">
+
+<Statement>
+
+Estimate the enthalpy of reaction $\bar h_R$ for the dissociation $\mathrm{CO_2}\rightleftharpoons\mathrm{CO}+\tfrac12\mathrm{O_2}$ at 2200 K using (a) enthalpy data and (b) $K_p$ data.
+
+</Statement>
+
+<Think>
+
+The reaction enthalpy is a property of the reaction, so the two routes must agree: the first uses the **first law** (enthalpy tables), the second uses the **second law** through $K_p$ and van 't Hoff, $\dfrac{d\ln K_p}{dT}=\dfrac{\bar h_R}{R_uT^2}$, integrated with $\bar h_R$ constant between 2000 and 2400 K. The agreement is a check on the property data.
+
+</Think>
+
+<Plan>
+
+(a) $\bar h_R=\sum N_P\bar h_P-\sum N_R\bar h_R$ at 2200 K, $\bar h=\bar h_f^\circ+\bar h-\bar h^\circ$. (b) $\bar h_R=R_u\ln(K_{p2}/K_{p1})\big/(1/T_1-1/T_2)$.
+
+</Plan>
+
+<Steps>
+<Step title="1. (a) From the enthalpy tables">
+
+<T>A-19, A-20, A-23 at 2200 K: h̄(CO) 72 688, h̄(O₂) 75 484, h̄(CO₂) 112 939 kJ/kmol as you read them; h̄° at 298 K: 8669, 8682, 9364; h̄f° of CO −110 530 and CO₂ −393 520</T>. Your page: $\bar h_R=(-110\,530+72\,688-8669)+\tfrac12(75\,484-8682)-(-393\,520+112\,939-9364)$ and the result 276 875 kJ/kmol. The recomputation with the lib's enthalpies gives **276 862** kJ/kmol; Cantera/JANAF gives 276 830.
+
+</Step>
+<Step title="2. (b) From Kp">
+
+<T>A-28: ln Kp(2000 K) = −6.635, ln Kp(2400 K) = −3.860</T>. $\ln\dfrac{K_{p2}}{K_{p1}}=-3.860+6.635=2.775=\dfrac{\bar h_R}{8.314}\left(\dfrac1{2000}-\dfrac1{2400}\right)$, so $\bar h_R=\dfrac{8.314(2.775)}{8.333\times10^{-5}}=\mathbf{276\,856}$ kJ/kmol (your page: $\bar h_R=276\,856.2$ ✔).
+
+</Step>
+</Steps>
+
+<Callout kind="note" title="Check your page: the individual table numbers in (a)">
+
+I read the three enthalpy terms of your first line (72 688, 75 484 and 112 939) with some uncertainty in the digits; with those numbers the sum is 276 835, not the 276 875 you write. The difference is 0.015 % and the digit shapes (3/7, 4/1) are ambiguous, so no error is asserted; the answer is the same to four digits whichever reading is right. Part (b) is exactly reproduced.
+
+</Callout>
+
+<Answer>
+
+(a) **$\bar h_R\approx276\,860$ kJ/kmol** (your 276 875; recomputed 276 862; Cantera 276 830), (b) **276 856 kJ/kmol** ✔ (your page and printed); the two routes agree to 0.01 %. The positive sign confirms that dissociation is endothermic, so $K_p$ rises with $T$ (16-52C).
+
+</Answer>
+
+<RealWorld title="Two tables, one reaction">
+
+$K_p$ columns and enthalpy columns come from different measurements; their agreement is the consistency check chemists use to build the JANAF tables, and in practice an engineer who has $K_p$ at one temperature and $\bar h_R$ can compute $K_p$ at any other.
+
+</RealWorld>
+
+<Traps>
+
+- Use $\bar h=\bar h_f^\circ+(\bar h-\bar h^\circ)$ at 2200 K, not $\bar h_f^\circ$ alone (that is the 25 °C value, about 283 000 kJ/kmol).
+- $T$ in **kelvin** in the $1/T$ difference.
+- $\bar h_R$ is per kmol of the reaction **as written**; for $\mathrm{CO_2}\to\mathrm{CO}+\tfrac12\mathrm{O_2}$ the $\tfrac12$ multiplies the O₂ term.
+
+</Traps>
+
+<Source>Anthony's Chapter 16 v2 pp. 16–17 (Chapter_16_v2-231218-16…17) and Chapter 16 p. 6 · lib check in <code>chapters.test.ts</code> · worked in <Ch slug="equilibrium" /></Source>
+
+</Problem>
+
+<Callout kind="note" title="How to use this page in the exam">
+
+On the final the equilibrium problem is one dissociation or one $K_p$ computation, one van 't Hoff or $\ln K_p$ comparison, and conceptual remarks on $P$, inerts and $T$ (the <Ex id="final-2021">2021 final</Ex>, problem 3). The routine: (1) write the reaction **as in Table A-28** (or invert it and change the sign of $\ln K_p$); (2) amounts in terms of one unknown, $N_{total}$ of **gas** only; (3) $K_p=\prod N^\nu(P/N_{total})^{\Delta\nu}$ with $P$ in atm; (4) for heat transfer, the first law with the equilibrium amounts and $\bar h_f(liq)$ for a liquid fuel. Your own checklist: "liquid!!", "$K_p$ depends on $T$ only", and "solid carbon is not in $K_p$". See <Ch slug="equilibrium">chapter 16</Ch> and the tutorial problems on <Ex id="tutorial-16" />.
+
+</Callout>

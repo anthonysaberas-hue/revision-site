@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { water, r134a } from './props';
-import { Ru, hbar, heatingValues, SPECIES, A28, lnKp, hR } from './gas';
+import { Ru, hbar, dh, heatingValues, SPECIES, A28, lnKp, hR } from './gas';
 import { Pg, Pv, omega, omegaFromWetBulb, phiOf, hAir, vAir, Tdp, psyState, mixStreams } from './psychro';
 import { mixtureFromMoles, mixtureFromMass, GASES } from './mixtures';
 import { burn, dewPoint, steadyQ, closedQMoles, Hprod } from './combustion';
@@ -288,6 +288,21 @@ describe('assignment 10 (compressible flow)', () => {
     const V2 = Math.sqrt(2 * 1000 * 0.939 * 400 + 50 * 50);
     near(V2, 868, 3e-3);
     near(V2 / c2, 2.82, 5e-3);
+  });
+  it('17-18 with the enthalpy table: mean cp 1.07, V2 926 m/s and Ma2 3.0 (the constant-cp 2.64 is 12 % low)', () => {
+    const dhKg = (dh('CO2', 800) - dh('CO2', 400)) / 44.01;
+    near(dhKg, 427.4, 2e-3);
+    const V2 = Math.sqrt(2000 * dhKg + 50 * 50);
+    near(V2, 926, 2e-3);
+    near(V2 / soundSpeed(400, 0.1889, 1.252), 3.01, 5e-3);
+    expect(2.64 / 3.01).toBeLessThan(0.9);
+  });
+  it('Examples 17-1 and 17-2: T01 286.8, P01 80.77, c 349, Ma 0.573; 17-26 c 292.6', () => {
+    near(stagnationT(255.7, 250, 1.005), 286.8, 1e-3);
+    near(54.05 * Math.pow(286.8 / 255.7, 3.5), 80.77, 1e-3);
+    near(soundSpeed(303.15, 0.287, 1.4), 349, 2e-3);
+    near(200 / soundSpeed(303.15, 0.287, 1.4), 0.573, 2e-3);
+    near(soundSpeed(213.15, 0.287, 1.4), 292.6, 1e-3);
   });
   it('17-40: Ma 1.1 at 236.15 K: c 308, V 338.8, T0 293.3 K', () => {
     const c = soundSpeed(236.15, 0.287, 1.4);
