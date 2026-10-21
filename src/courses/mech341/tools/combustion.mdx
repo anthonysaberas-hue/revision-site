@@ -1,0 +1,17 @@
+<p className="eyebrow">Calculator</p>
+
+# Combustion and flame temperature
+
+<div className="lede">
+
+Use this for chapter 15 when you need the balanced equation, the air-fuel ratio, the product composition, the dew point, the heat released in an open system or the adiabatic flame temperature. Pick a fuel (gas or liquid: propane, butane, octane, methanol and ethanol can be burned as liquids, with $\bar h_f$ lowered by $M h_{fg}$) or build a mixture by adding rows of mole fractions; set the percent of theoretical air, the share of carbon that goes to CO, the reactant and product temperatures and an optional heat loss. It replaces the formation enthalpies of A-26, the sensible enthalpies of A-18 to A-23 and the trial-and-error for $T_{ad}$. Dissociation is not included, so flame temperatures are the textbook values. Temperatures outside the 200 to 6000 K gas tables are flagged as "outside table range".
+
+</div>
+
+<CombustionCalc />
+
+## Check against
+
+- <Asg n="08">Assignment 8, problem 15-59</Asg>: propane with 159.9 % theoretical air ($AF=25$), products cooled to the dew point; the first preset gives $T_{dp}=46.0$ °C and $Q=2.018\times10^6$ kJ/kmol fuel out.
+- <Asg n="08">Assignment 8, problem 15-79</Asg>: acetylene with 130 % theoretical air at 25 °C, air at 27 °C and 75 000 kJ/kmol lost; the second preset gives $T_{ad}=2303$ K (book 2302 K).
+- Fuel mixture (third preset): 40 % propane and 60 % methane, stoichiometric, products at 125 °C: $AF=16.18$, $T_{dp}=56.7$ °C, $Q=1.247\times10^6$ kJ/kmol.

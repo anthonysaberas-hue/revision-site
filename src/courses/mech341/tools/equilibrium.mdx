@@ -1,0 +1,16 @@
+<p className="eyebrow">Calculator</p>
+
+# Chemical equilibrium
+
+<div className="lede">
+
+Use this for chapter 16 in place of the $\ln K_p$ table A-28: choose one of its seven reactions, see $\ln K_p(T)$ from 298 to 6000 K, and solve the equilibrium composition at a given temperature, pressure in atm, initial moles and inert gas (the solver uses $K_p=\prod (y_iP)^{\nu_i}$ and flags a case where nothing can react). A second panel applies the van 't Hoff relation to two $K_p$ values to get $\bar h_R$ and compares it with the enthalpy of reaction from the tables. You can type $\ln K_p$ yourself to reproduce a textbook value to the digit. Temperatures outside 200 to 6000 K are flagged as "outside table range".
+
+</div>
+
+<EquilibriumCalc />
+
+## Check against
+
+- <Asg n="09">Assignment 9, problem 16-31</Asg> (air heated to 2000 K at 2 atm, $\tfrac12$N₂ + $\tfrac12$O₂ ⇌ NO, 3.76 N₂ per O₂): the first preset (with the table value $\ln K_p=-3.931$ typed in) gives 0.0376 kmol NO, and the answer does not change if you raise $P$ ($\Delta\nu=0$). Switching "ln K_p from" to the Gibbs data gives $\ln K_p=-3.914$ and 0.0382 kmol (1.7 % higher, the table rounding).
+- <Asg n="09">Assignment 9, problem 16-56</Asg> (CO₂ ⇌ CO + $\tfrac12$O₂): with $\ln K_p=-6.635$ at 2000 K and $-3.86$ at 2400 K the van 't Hoff panel gives $\bar h_R=276\,856$ kJ/kmol, against about 276 860 from the enthalpy data at 2200 K (second preset).

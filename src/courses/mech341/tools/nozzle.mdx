@@ -1,0 +1,16 @@
+<p className="eyebrow">Calculator</p>
+
+# Isentropic nozzle flow
+
+<div className="lede">
+
+Use this for chapter 17 in place of the isentropic-flow table A-32: set $k$ and $R$ (or click a gas), enter any one of Mach number, velocity, $T/T_0$, $P/P_0$ or $A/A^*$ (subsonic or supersonic branch), and read all the ratios, both Mach numbers for the same area ratio and, from a stagnation or a static reference state, the actual $T$, $P$, $\rho$, $V$, the critical state $T^*$, $P^*$, $V^*$ and the mass flow, including the choked flow. An optional second section turns a known static temperature into $Ma_2$ and $V_2$, and the C-D panel lists the first-critical, shock-at-exit and design back pressures for a given $A_e/A^*$.
+
+</div>
+
+<NozzleCalc />
+
+## Check against
+
+- <Asg n="10">Assignment 10, problem 17-62</Asg> (air at 420 K, 500 kPa, 110 m/s accelerated to the sonic point): the first preset gives $T_0=426.0$ K, $T^*=355.0$ K, $P^*=277.6$ kPa and $A^*/A_1=0.443$ (the printed 0.428 matches no Mach number).
+- <Asg n="10">Assignment 10, problem 17-18</Asg> (CO₂, $k=1.289$, $R=0.1889$, 800 K and 50 m/s to 400 K): the second preset gives $Ma_1=0.113$ and $Ma_2=2.64$ with $V_2\approx 823$ m/s (824 m/s with the tabulated $c_p$).

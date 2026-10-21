@@ -1,0 +1,17 @@
+<p className="eyebrow">Calculator</p>
+
+# Psychrometric chart and processes
+
+<div className="lede">
+
+Use this for chapter 14 in place of the psychrometric chart and the saturation table A-4: type $T$ and one of $\varphi$, $\omega$, wet-bulb or dew-point temperature, or click on the chart, and read $\omega$, $\varphi$, $h$, $v$, $T_{dp}$ and $T_{wb}$ at the pressure you give (**always the pressure of the problem**: 100 kPa on the 2021 final, 95 kPa for the steam humidifier, not 101.3). Then apply a process: sensible heating, cooling with dehumidification to a coil exit state (the condensate carries its enthalpy), humidification by steam or liquid water, adiabatic mixing of two streams, or evaporative cooling, for a given dry-air flow, inlet volume flow or coil load. The heat and water rates are reported.
+
+</div>
+
+<PsychroCalc />
+
+## Check against
+
+- <Asg n="07">Assignment 7, problem 14-102</Asg> (36 °C with 30 °C wet bulb mixed with saturated air at 12 °C, 8 and 10 kg/s dry air): the first preset gives $T_3=22.8$ °C and $\varphi_3=0.90$.
+- <Ex id="final-2021">2021 final, problem 5</Ex> (air conditioner, 11 tons, 100 kPa): the second preset gives $T_2=10.5$ °C, $\dot m_a=48.6$ kg/min, $\dot V_1=43.6$ m³/min, condensate 0.539 kg/min and a 12.0 kW reheater.
+- <Ex id="final-2021">2021 final, problem 6</Ex> (steam humidifier at 95 kPa): the third preset gives $\dot m_a=81.1$ kg/min, steam 0.296 kg/min, $T=19.5$ °C after the heating coil and a 13.0 kW coil.
