@@ -1,0 +1,695 @@
+<p className="eyebrow">Assignment 8 · combustion (ch 15) · from your own notebooks</p>
+
+# Assignment 8: combustion
+
+<div className="lede">
+
+The five assigned problems (15-33, 15-37, 15-46, 15-67, 15-79) from the notebook *Notes* (17 Nov) and six more from *Chapter 15 slides* (9 Dec), *Chap 15 v2* (16 Dec) and *Chap 15 v3* (18 Dec): 15-24, 15-26, 15-35 (listed as 15-36 in the course outline; the octane problem in your notebook and in the book is numbered **15-35**), 15-52, 15-59, 15-68; <Ch slug="combustion">chapter 15 notes</Ch>. Your steps and numbers come first, then my recomputation (the lib's formation and sensible-enthalpy data, which differ from the textbook tables in the last digit or two) and the printed answer when the book gives one. ⚠ marks legible digits that disagree with the recomputation beyond rounding; "Check your page" marks ambiguous handwriting or a method point. Two reading tips from this chapter: in your hand 1, 7 and 3 are easy to confuse, and the digit shapes of 2 and 9 are almost identical, so a long number (such as the 15-59 re-solve or the 15-68 heat) is only called an error when the arithmetic shows it.
+
+</div>
+
+<Callout kind="note" title="What this assignment teaches, in one paragraph">
+
+(1) **Balance** with $\mathrm{O_2+3.76N_2}$ in the air; with a given product analysis, balance **N₂ first** (it fixes the air), then C, H, O. (2) Air-fuel ratio $AF=\dfrac{N_{air}(4.76)\,(29)}{M_{fuel}}$; percent theoretical air is the ratio of actual to theoretical **moles** of air. (3) The **dew point** is the saturation temperature at the water-vapor partial pressure $P_v=y_{H_2O}P$. (4) First law for reactants and products: $Q_{out}=\sum N_R\bar h_R-\sum N_P\bar h_P$ with $\bar h=\bar h_f^\circ+(\bar h-\bar h^\circ)$; for a **closed rigid** system subtract $R_uT$ from every gas: $\bar u=\bar h-R_uT$. (5) **Adiabatic flame temperature**: $H_R=H_P$ (less any heat loss), solved by two trials and a linear interpolation. (6) Heating values: HHV (water as liquid) against LHV (water as vapor); a liquid fuel needs $\bar h_f(liq)=\bar h_f(gas)-Mh_{fg}$.
+
+</Callout>
+
+## Part 1: the five assigned problems
+
+<Problem id="15-33" title="Methane burned with dry air: air-fuel ratio from the dry product analysis" tags="product analysis, balance, air-fuel ratio, percent theoretical air">
+
+<Statement>
+
+Methane is burned with dry air. The volumetric analysis of the products on a **dry basis** is 5.20 % CO₂, 0.33 % CO, 11.24 % O₂ and 83.23 % N₂. Find (a) the air-fuel ratio and (b) the percentage of theoretical air used. (Printed: 34.5 kg air/kg fuel, 200 %.)
+
+</Statement>
+
+<Think>
+
+The products are given, the reactants are unknown. Take **100 kmol of dry products**, write $x\,\mathrm{CH_4}+a(\mathrm{O_2}+3.76\mathrm{N_2})\to5.20\mathrm{CO_2}+0.33\mathrm{CO}+11.24\mathrm{O_2}+83.23\mathrm{N_2}+b\mathrm{H_2O}$ and use **atom balances**: N₂ gives $a$, C gives $x$, H gives $b$ (water is not in the dry analysis, so it comes out of the H balance). New in this problem: the dry analysis as a *basis*, and the O₂ balance as a **check**.
+
+</Think>
+
+<Plan>
+
+N₂: $3.76a=83.23$ → C: $x=5.20+0.33$ → H: $b=2x$ → normalize by $x$ → $AF$ and theoretical-air percentage.
+
+</Plan>
+
+<Steps>
+<Step title="1. Atom balances">
+
+N₂: $a=\dfrac{83.23}{3.76}=\mathbf{22.14}$. C: $x=5.20+0.33=\mathbf{5.53}$. H: $2b=4x\Rightarrow b=\mathbf{11.06}$. Check O: $22.14\times2=44.28$ against $5.20\times2+0.33+11.24\times2+11.06=10.40+0.33+22.48+11.06=44.27$ ✔ (your pages ✔).
+
+</Step>
+<Step title="2. Per kmol of fuel">
+
+Dividing by 5.53: $\mathrm{CH_4}+4.0(\mathrm{O_2}+3.76\mathrm{N_2})\to0.94\mathrm{CO_2}+0.06\mathrm{CO}+2.03\mathrm{O_2}+15.05\mathrm{N_2}+2\mathrm{H_2O}$ (your page ✔).
+
+</Step>
+<Step title="3. (a) Air-fuel ratio">
+
+$AF=\dfrac{m_{air}}{m_{fuel}}=\dfrac{4(4.76)(29)}{1(12)+2(2)}=\dfrac{552.2}{16}=\mathbf{34.5}$ kg air/kg fuel (your page: 34.52 ✔; the first line, written with the 100 kmol basis, reads 34.52 as well).
+
+</Step>
+<Step title="4. (b) Percentage of theoretical air">
+
+Theoretical: $\mathrm{CH_4}+2(\mathrm{O_2}+3.76\mathrm{N_2})\to\mathrm{CO_2}+2\mathrm{H_2O}+7.52\mathrm{N_2}$, so $a_{th}=2$ and $\dfrac{a}{a_{th}}=\dfrac{4}{2}=\mathbf{200\ \%}$ (your page: "5×4.76/2×4.76 = 200 %").
+
+</Step>
+</Steps>
+
+<Answer>
+
+(a) **$AF=34.5$ kg air/kg fuel**, (b) **200 % theoretical air** (= 100 % excess) ✔ (printed, your pages; recomputed 34.4–34.5 with $M_{air}=28.97$).
+
+</Answer>
+
+<RealWorld title="A gas-turbine combustor is this lean">
+
+11 % O₂ in the dry exhaust is a gas-turbine-like stack (most of the air only dilutes the flame to protect the blades); a household boiler runs near 3–5 % O₂ (20–30 % excess air). **Orsat-type analyzers** and the oxygen probes in boiler stacks do exactly the problem above, in reverse, to tune the air supply: too little air gives CO (0.33 % here), too much wastes heat up the chimney.
+
+</RealWorld>
+
+<MoleBarFigure title="Dry products of the methane burner (mole fractions)" parts={[{ label: 'CO₂', y: 0.052 }, { label: 'CO', y: 0.0033 }, { label: 'O₂', y: 0.1124 }, { label: 'N₂', y: 0.8323 }]} caption="15-33: the dry analysis the problem starts from; the water of combustion is not in it." />
+
+<Traps>
+
+- Your note in *Chapter 15 notes*: "number of atoms is conserved, **moles are not**".
+- A dry analysis excludes the H₂O: $b$ must come from the **H balance**, not from the O balance.
+- $a/a_{th}$ is a ratio of moles of air; it is 200 % = 100 % **excess**.
+
+</Traps>
+
+<Source>Anthony's Notes, pp. 1–2 (Notes-231117-01…02) and Chap 15 v2 p. 4 (Chap_15_v2-231216-03…04) ✔ · lib check in <code>hw2.test.ts</code></Source>
+
+</Problem>
+
+<Problem id="15-37" title="Colorado coal burned with 50 % excess air: fuel-air ratio" tags="ultimate analysis, mass basis, balance, fuel-air ratio">
+
+<Statement>
+
+Colorado coal has the ultimate analysis (by mass) 79.61 % C, 4.66 % H₂, 4.76 % O₂, 1.83 % N₂, 0.52 % S and 8.62 % ash. Find the fuel-air ratio when it is burned with 50 % excess air. (Printed: 0.0576 kg fuel/kg air.)
+
+</Statement>
+
+<Think>
+
+The fuel is given by **mass fractions**, the balance needs **moles**: convert on a 100 kg basis. The ash is a non-reactant, so you work with the combustible part (91.38 kg per 100 kg of coal); the fuel's own oxygen reduces the O₂ required from the air. Then the theoretical air from the O balance, 50 % excess = 150 % of it.
+
+</Think>
+
+<Plan>
+
+Ash-free mass fractions → kmol per 100 kg of combustibles → O balance for $a_{th}$ → $a=1.5a_{th}$ → $FA=m_{fuel}/m_{air}$.
+
+</Plan>
+
+<Steps>
+<Step title="1. Ash-free mass fractions">
+
+$mf_C=\dfrac{79.61}{91.38}=0.8712$, $mf_{H_2}=0.0510$, $mf_{O_2}=0.0521$, $mf_{N_2}=0.0200$, $mf_S=0.0057$ (your page: 0.8712, 0.051, 0.05209, 0.02003, 0.00569 ✔).
+
+</Step>
+<Step title="2. Moles per 100 kg of combustibles">
+
+$N_C=\dfrac{87.12}{12}=7.26$, $N_{H_2}=\dfrac{5.1}{2}=2.55$, $N_{O_2}=\dfrac{5.21}{32}=0.1628$, $N_{N_2}=\dfrac{2.0}{28}=0.0714$, $N_S=\dfrac{0.569}{32}=0.0178$ kmol, $N_m=10.06$ kmol (your page ✔), so per kmol of fuel mixture $y_C=0.7215$, $y_{H_2}=0.2535$, $y_{O_2}=0.0162$, $y_{N_2}=0.0071$, $y_S=0.0018$.
+
+</Step>
+<Step title="3. Oxygen balance for the theoretical air">
+
+$\mathrm{C+H_2+O_2+N_2+S}+a_{th}(\mathrm{O_2}+3.76\mathrm{N_2})\to\mathrm{CO_2+H_2O+SO_2+N_2}$: $a_{th}=N_C+\dfrac{N_{H_2}}{2}+N_S-N_{O_2}=7.26+1.275+0.0178-0.1628=\mathbf{8.39}$ kmol O₂ per 100 kg of combustibles (0.834 per kmol of fuel mixture). With 50 % excess, $a=1.5(8.39)=12.58$.
+
+</Step>
+<Step title="4. Fuel-air ratio">
+
+$m_{air}=12.58(4.76)(29)=1737$ kg per 100 kg of combustibles, so $FA=\dfrac{100}{1737}=\mathbf{0.0576}$ kg fuel/kg air (your page: $FA=0.0576$, i.e. $AF=17.4$ ✔).
+
+</Step>
+</Steps>
+
+<Callout kind="note" title="Check your page: the a_th line, and what 'fuel' means in the printed answer">
+
+The coefficient $a_{th}$ appears in your pages in two forms (8.38 on the 100 kg basis and 0.8379 per kmol of fuel mixture); the exact values are 8.39 and 0.834, and both lead to $FA=0.0576$. The printed 0.0576 counts only the **combustibles** (91.38 kg per 100 kg of coal) as fuel: if the 8.62 kg of ash were included in the fuel mass the ratio would be 0.0631 kg coal/kg air.
+
+</Callout>
+
+<Answer>
+
+**$FA=0.0576$ kg fuel/kg air** ($AF=17.4$) ✔ (printed and your page; recomputed 0.05762).
+
+</Answer>
+
+<RealWorld title="A pulverized-coal boiler">
+
+Power-plant boilers burn coal with 15–20 % excess air; this coal needs **17 kg of air per kg of combustible** (the plant's forced-draft fans move 17 kg of air for every kg of coal fed). The SO₂ ($y_S=0.0018$ here) is what flue-gas desulfurization removes downstream; the ash leaves as fly and bottom ash.
+
+</RealWorld>
+
+<Traps>
+
+- Convert mass fractions to **kmol** before the balance (divide by $M_i$).
+- Credit the fuel-bound oxygen: it lowers the air needed.
+- Exclude the ash from the reaction (and note the basis of "fuel" in the answer).
+
+</Traps>
+
+<Source>Anthony's Notes, pp. 2–5 (Notes-231117-02…05) and Chap 15 v2 pp. 6–7 ✔ · lib check in <code>hw2.test.ts</code></Source>
+
+</Problem>
+
+<Problem id="15-46" title="Enthalpy of combustion of methane at 25 °C from enthalpies of formation" tags="enthalpy of combustion, h_f, liquid water">
+
+<Statement>
+
+Find the enthalpy of combustion of methane at 25 °C and 1 atm from Table A-26, with the water in the products as a **liquid**. (Printed: −890 330 kJ/kmol.)
+
+</Statement>
+
+<Think>
+
+$h_C=H_P-H_R$ at the reference state: only the formation enthalpies appear ($\bar h=\bar h_f^\circ$ at 25 °C). The new point: **which water**: liquid ($-285\,830$) gives the HHV, vapor ($-241\,820$) the LHV.
+
+</Think>
+
+<Steps>
+<Step title="1. Reaction and table values">
+
+$\mathrm{CH_4}+2(\mathrm{O_2}+3.76\mathrm{N_2})\to\mathrm{CO_2}+2\mathrm{H_2O(l)}+7.52\mathrm{N_2}$. <T>A-26: h̄f° CH₄ = −74 850, CO₂ = −393 520, H₂O(l) = −285 830, H₂O(g) = −241 820 kJ/kmol; O₂, N₂ = 0</T>.
+
+</Step>
+<Step title="2. Enthalpy of combustion">
+
+$\bar h_C=1(-393\,520)+2(-285\,830)-1(-74\,850)=\mathbf{-890\,330}$ kJ/kmol (your pages ✔). With water vapor instead: $-393\,520+2(-241\,820)+74\,850=-802\,310$ kJ/kmol.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**$\bar h_C=-890\,330$ kJ/kmol of CH₄** ✔ (HHV: 55 497 kJ/kg; LHV with vapor: $-802\,310$ kJ/kmol, 50 010 kJ/kg).
+
+</Answer>
+
+<RealWorld title="Natural gas at the meter">
+
+Gas utilities sell on the **HHV**: about 55 MJ/kg or 38 MJ/m³ for methane. A condensing boiler can recover most of the 10 % difference to the LHV by condensing the water (see 15-24).
+
+</RealWorld>
+
+<Traps>
+
+- H₂O(l) for HHV, H₂O(g) for LHV: the 88 000 kJ/kmol gap is $2h_{fg}M$.
+- Elements in their natural state (O₂, N₂) have $\bar h_f^\circ=0$.
+
+</Traps>
+
+<Source>Anthony's Notes, p. 5 (Notes-231117-05) and Chap 15 v2 p. 9 ✔ · lib <code>heatingValues</code> in <code>lib.test.ts</code></Source>
+
+</Problem>
+
+<Problem id="15-67" title="Propane–methane mixture burned with theoretical air: dew point, heat, air flow" tags="fuel mixture, dew point, steady-flow first law, mass flow">
+
+<Statement>
+
+A gaseous fuel mixture of 40 % propane and 60 % methane (by volume) is burned with the theoretical amount of dry air in a steady-flow, constant-pressure process at 100 kPa. Fuel and air enter at 298 K and the products leave at 398 K. Find (a) the balanced equation, (b) the water condensed from the products, (c) the air flow required when the heat output is 97 000 kJ/h.
+
+</Statement>
+
+<Think>
+
+A **fuel mixture** is a weighted fuel: $0.4\mathrm{C_3H_8}+0.6\mathrm{CH_4}$ has 1.8 C and 5.6 H atoms per kmol. (b) asks whether the products at 398 K are below the dew point; they are not, so **nothing condenses**. (c) the heat per kmol of fuel from the energy balance with sensible enthalpies, the fuel flow from the heat output, then $\dot m_{air}=\dot m_{fuel}\cdot AF$.
+
+</Think>
+
+<Plan>
+
+Balance → $y_{H_2O}$, $P_v$, $T_{dp}$ → compare with 398 K → $Q_{out}=\sum N_R\bar h_f-\sum N_P(\bar h_f+\bar c_p\Delta T)$ → $\dot N=\dot Q/Q_{out}$ → $\dot m_{fuel}$, $AF$, $\dot m_{air}$.
+
+</Plan>
+
+<DewPointFigure Pv={16.84} label="15-67 products: 16.84 kPa" caption="15-67: the products at 100 kPa have $P_v=16.84$ kPa, so the dew point is 56 °C; they leave at 125 °C, far above it, so nothing condenses." />
+
+<Steps>
+<Step title="1. (a) Balance">
+
+C: $0.4(3)+0.6(1)=1.8$; H₂O: $0.4(4)+0.6(2)=2.8$; O₂: $a=1.8+1.4=3.2$. $0.4\mathrm{C_3H_8}+0.6\mathrm{CH_4}+3.2(\mathrm{O_2}+3.76\mathrm{N_2})\to1.8\mathrm{CO_2}+2.8\mathrm{H_2O}+12.032\mathrm{N_2}$ (your page ✔).
+
+</Step>
+<Step title="2. (b) Dew point">
+
+$N_P=1.8+2.8+12.032=16.632$, $P_v=\dfrac{2.8}{16.632}(100)=\mathbf{16.84}$ kPa; $T_{dp}=T_{sat}(16.84\ \mathrm{kPa})$: your v2 page reads 56.1 °C (a straight interpolation between the 15 and 20 kPa rows), v3 about 56.7; the exact value is **56.4 °C**. The products leave at 398 K = 125 °C, well above it: **no water condenses**.
+
+</Step>
+<Step title="3. (c) Heat per kmol of fuel">
+
+<T>A-26: h̄f° C₃H₈ = −103 850, CH₄ = −74 850, CO₂ = −393 520, H₂O(g) = −241 820 kJ/kmol; c̄p (Table in the statement): CO₂ 41.16, H₂O 34.28, N₂ 29.27 kJ/kmol·K</T>. $Q_{out}=\sum N_R\bar h_f-\sum N_P(\bar h_f+\bar c_p\Delta T)$ with $\Delta T=398-298=100$ K: $=0.4(-103\,850)+0.6(-74\,850)-\left[1.8(-393\,520+4116)+2.8(-241\,820+3428)+12.032(2927)\right]$ $=\mathbf{1\,246\,757}$ kJ/kmol fuel (your v2 page: 1 246 757.136 ✔; v3 shows 1 229 357).
+
+</Step>
+<Step title="4. Fuel flow, air-fuel ratio, air flow">
+
+$\dot N_{fuel}=\dfrac{97\,000}{1\,246\,800}=\mathbf{0.0778}$ kmol/h; $M_{fuel}=0.4(44)+0.6(16)=27.2$ kg/kmol, so $\dot m_{fuel}=0.0778(27.2)=\mathbf{2.116}$ kg/h. $AF=\dfrac{3.2(4.76)(29)}{27.2}=\mathbf{16.24}$, $\dot m_{air}=2.116(16.24)=\mathbf{34.4}$ kg/h (your page ✔).
+
+</Step>
+</Steps>
+
+<Callout kind="note" title="Check your page: the v3 heat of combustion">
+
+The 18 Dec copy (*Chap 15 v3*) has $Q=1\,229\,357$ kJ/kmol, 1.4 % below the v2 value and the recomputed 1 247 320. The line is partially hidden by the highlighter; the v2 value reproduces exactly from the data, so use it. With 1.23×10⁶ the fuel flow would be 0.0789 kmol/h and the air flow 34.9 kg/h.
+
+</Callout>
+
+<Answer>
+
+(a) $0.4\mathrm{C_3H_8}+0.6\mathrm{CH_4}+3.2(\mathrm{O_2}+3.76\mathrm{N_2})\to1.8\mathrm{CO_2}+2.8\mathrm{H_2O}+12.032\mathrm{N_2}$; (b) **none** ($T_{dp}=56$ °C against 125 °C); (c) **$\dot m_{air}=34.4$ kg/h** ($Q_{out}=1\,247\,000$ kJ/kmol, 2.12 kg/h of fuel, $AF=16.2$) ✔ (your v2 page; recomputed 1 247 320, 2.120, 16.18, 34.3).
+
+</Answer>
+
+<RealWorld title="A propane/natural-gas furnace">
+
+97 000 kJ/h is 27 kW, a small domestic furnace or a laboratory burner; it burns 2.1 kg/h of fuel with 34 kg/h of air (about 28 m³/h). The 125 °C flue is the **non-condensing** design: the dew point is 56 °C, so a **condensing furnace** that cools the flue below 56 °C recovers the latent heat of the 2.8 kmol of water per kmol of fuel (about 11 % more heat from this fuel).
+
+</RealWorld>
+
+<Traps>
+
+- Fuel mixture: weight the atoms by the **mole** fractions (by volume), and $M_{fuel}$ likewise.
+- $P_v$ uses the **total** products (16.632 kmol), with water vapor in it.
+- Compare the dew point with the **exit** temperature before saying "condensate".
+
+</Traps>
+
+<Source>Anthony's Notes, pp. 6–7 (Notes-231117-06…07), Chap 15 v2 pp. 13–15 and v3 p. 13 · lib check in <code>lib.test.ts</code> and <code>chapters.test.ts</code> · also in <Ch slug="combustion" /></Source>
+
+</Problem>
+
+<Problem id="15-79" title="Acetylene with 30 % excess air and heat loss: adiabatic flame temperature" tags="flame temperature, heat loss, iteration, interpolation">
+
+<Statement>
+
+Acetylene at 25 °C is burned in a steady-flow process with 30 % excess air at 27 °C; 75 000 kJ of heat is lost to the surroundings per kmol of acetylene. Assuming complete combustion, find the exit temperature of the products. (Printed: 2301 K.)
+
+</Statement>
+
+<Think>
+
+The energy balance $H_R=H_P+Q_{out}$ with the formation enthalpies: all the unknown temperature is in the products' $\bar h$. Guess a temperature from the **N₂ equivalent** (the product mixture behaves like 17 kmol of N₂: $\dfrac{\text{energy}}{\text{kmol}}$ → table T), evaluate $H_P$ at two temperatures that bracket the target and interpolate linearly. It is the same method as the 2021 final's decane problem. This problem is worked in <Ch slug="combustion">chapter 15</Ch>.
+
+</Think>
+
+<Steps>
+<Step title="1. Balance">
+
+$\mathrm{C_2H_2}+3.25(\mathrm{O_2}+3.76\mathrm{N_2})\to2\mathrm{CO_2}+\mathrm{H_2O}+0.75\mathrm{O_2}+12.22\mathrm{N_2}$ (theoretical $a_{th}=2.5$, 130 %: $3.25$).
+
+</Step>
+<Step title="2. Energy balance">
+
+$-75\,000=\sum N_P(\bar h_f^\circ+\bar h-\bar h^\circ)_P-\sum N_R(\bar h_f^\circ+\bar h-\bar h^\circ)_R$. The reactants carry $\bar h_f(\mathrm{C_2H_2})=226\,730$ and the air at 300 K ($\bar h_{300}$: O₂ 8736, N₂ 8723 against $\bar h_{298}$: 8682, 8669). Moving every known term to the right, what remains on the left is the table enthalpy of the products at the unknown temperature: $2\bar h_{CO_2}+\bar h_{H_2O}+0.75\bar h_{O_2}+12.22\bar h_{N_2}=\mathbf{1\,321\,784}$ kJ (your page ✔).
+
+</Step>
+<Step title="3. First trial: the N₂ equivalent">
+
+$\dfrac{1\,321\,784}{2+1+0.75+12.22}=\dfrac{1\,321\,784}{15.97}\approx82\,700$ kJ per kmol of products: the N₂ table gives about 2750 K for that value, and because CO₂ and H₂O absorb more energy per kelvin than N₂ the real temperature is **lower**, so you try 2500 K. At 2500 K: $2(\bar h_{CO_2})+\bar h_{H_2O}+0.75\bar h_{O_2}+12.22\bar h_{N_2}=\mathbf{1\,352\,961}$ kJ, higher than the target.
+
+</Step>
+<Step title="4. Second trial and interpolation">
+
+At 2300 K: $=\mathbf{1\,320\,517}$ kJ, just below the target, so the answer is "close enough" at 2300 K on your assignment page. In the 18 Dec re-solve you interpolate between 2300 K and 2350 K: $\dfrac{T-2300}{2350-2300}=\dfrac{1\,321\,784-1\,320\,517}{1\,352\,961-1\,320\,517}\Rightarrow T=\mathbf{2302}$ K.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**$T_P\approx2300$ K** (assignment page), **2302 K** (interpolated, your v3) ✔; printed 2301 K, recomputed 2303 K with the lib's NASA-polynomial enthalpies.
+
+</Answer>
+
+<RealWorld title="The oxy-acetylene torch">
+
+With air the flame is 2300 K (2030 °C); with **pure oxygen** the 12 kmol of N₂ that soak up the heat are gone, and the oxy-acetylene flame reaches about 3400 K (3100 °C), hot enough to cut steel, which burns in it. At 2300 K dissociation is already starting (chapter 16), so the true flame is a little cooler than the 2302 K from complete combustion.
+
+</RealWorld>
+
+<Traps>
+
+- Bracket the answer with trials on **both sides**, then interpolate; do not interpolate from one trial.
+- The heat loss enters as $-75\,000$ on the left: it **lowers** the temperature.
+- Use the **air inlet temperature** (300 K) for the air's $\bar h$; the fuel is at 298 K.
+
+</Traps>
+
+<Source>Anthony's Notes, pp. 7–10 (Notes-231117-07…10) and Chap 15 v2–v3 (the interpolation) ✔ · lib check in <code>chapters.test.ts</code> · worked in <Ch slug="combustion" /></Source>
+
+</Problem>
+
+## Part 2: extra practice from your notebooks
+
+<Problem id="15-24" title="Ethane burned with 20 % excess air: air-fuel ratio and dew point" tags="balance, air-fuel ratio, dew point, condensing boiler">
+
+<Statement>
+
+Ethane is burned with 20 % excess air at 100 kPa with complete combustion. Find (a) the air-fuel ratio and (b) the dew-point temperature of the products. (Printed: 19.3 and 52.4 °C.)
+
+</Statement>
+
+<Think>
+
+The dew point from the water **mole** fraction: $P_v=y_{H_2O}P$, then $T_{sat}(P_v)$ from the steam table.
+
+</Think>
+
+<Steps>
+<Step title="1. Balance and AF">
+
+$\mathrm{C_2H_6}+3.5(1.2)(\mathrm{O_2}+3.76\mathrm{N_2})\to2\mathrm{CO_2}+3\mathrm{H_2O}+0.7\mathrm{O_2}+15.792\mathrm{N_2}$; $AF=\dfrac{4.2(4.76)(29)}{30}=\mathbf{19.3}$ kg/kg (your page ✔).
+
+</Step>
+<Step title="2. Dew point">
+
+$N_P=2+3+0.7+15.792=21.49$; $P_v=\dfrac{3}{21.49}(100)=\mathbf{13.96}$ kPa; $T_{dp}=T_{sat}(13.96\ \mathrm{kPa})=\mathbf{52.4}$ °C (interpolating the 10 and 15 kPa rows, 45.81 and 53.97 °C, gives 52.3; the exact value is 52.4–52.5).
+
+</Step>
+</Steps>
+
+<Callout kind="note" title="Check your page: the last digits of the dew point">
+
+Your page reads "$T_{sat}=52.97$ (or 53.97)" with a ✔. The second digit of the 5x.97 is not clear: 53.97 °C is exactly the table value at **15 kPa**, which would mean the 15 kPa row was used without interpolating (the vapor pressure is 13.96). The interpolated 52.4 °C is the printed answer.
+
+</Callout>
+
+<Answer>
+
+**$AF=19.3$, $T_{dp}=52.4$ °C** ✔ (printed; recomputed 19.26, 52.5).
+
+</Answer>
+
+<RealWorld title="Why condensing boilers work">
+
+Natural-gas flue has a dew point of 52–57 °C; a condensing boiler returns water below that (30–40 °C) and the flue gas condenses in the heat exchanger: efficiency 95 %+ based on LHV, against 80–85 % for a conventional boiler.
+
+</RealWorld>
+
+<Traps>
+
+- Do not use the dew point of the **air** (a pure steam-table lookup at the wrong pressure).
+- $y_{H_2O}$ uses **all** products including N₂ and the excess O₂.
+
+</Traps>
+
+<Source>Anthony's Chap 15 v2 pp. 1–2 (Chap_15_v2-231216-01…02) and Chapter 15 slides · lib check in <code>hw2.test.ts</code></Source>
+
+</Problem>
+
+<Problem id="15-26" title="Butane in 200 % theoretical air: how much water to spray to make the dew point 60 °C" tags="dew point, water injection, mole fraction">
+
+<Statement>
+
+Butane is burned in 200 % theoretical air. For complete combustion, how many kmol of water must be sprayed into the combustion chamber per kmol of fuel if the products are to have a dew point of 60 °C at 100 kPa? (Your pages: 9.77.)
+
+</Statement>
+
+<Think>
+
+The extra water $x$ adds to the H₂O **and** to the total products: $\dfrac{5+x}{N_P+x}=\dfrac{P_g(60\,°C)}{P}$ with $P_g=19.947$ kPa.
+
+</Think>
+
+<Steps>
+<Step title="1. Balance with 200 % theoretical air">
+
+$\mathrm{C_4H_{10}}+13(\mathrm{O_2}+3.76\mathrm{N_2})+x\mathrm{H_2O}\to4\mathrm{CO_2}+(5+x)\mathrm{H_2O}+6.5\mathrm{O_2}+48.88\mathrm{N_2}$, so $N_P=4+5+6.5+48.88+x=64.38+x$ (your page writes 64.3).
+
+</Step>
+<Step title="2. Solve for x">
+
+<T>A-4: P_g at 60 °C = 19.947 kPa</T>. $\dfrac{5+x}{64.38+x}=0.19947\Rightarrow x=\dfrac{0.19947(64.38)-5}{1-0.19947}=\mathbf{9.80}$ kmol (your page: 9.77 with 64.3).
+
+</Step>
+</Steps>
+
+<Answer>
+
+**$x=9.8$ kmol of water per kmol of butane** ✔ (your 9.77 differs only by the rounding of $N_P$).
+
+</Answer>
+
+<RealWorld title="Water injection in a gas turbine">
+
+Gas turbines inject water or steam into the combustor to lower the flame temperature (less NOx) and to raise the turbine mass flow (more power). The 9.8 kmol here is 176 kg of water per 58 kg of butane: three times the fuel mass.
+
+</RealWorld>
+
+<Traps>
+
+- The sprayed water is **added to numerator and denominator**.
+- Use the 200 % **theoretical** air (13 kmol O₂ per kmol of C₄H₁₀ is $2\times6.5$), not 200 % excess.
+
+</Traps>
+
+<Source>Anthony's Chap 15 v2 pp. 2–3 (Chap_15_v2-231216-02…03) · lib check in <code>hw2.test.ts</code></Source>
+
+</Problem>
+
+<Problem id="15-35" title="Octane burned with 60 % excess air, 15 % of the carbon to CO: product fractions and dew point" tags="incomplete combustion, mole fractions, dew point">
+
+<Statement>
+
+n-Octane is burned with 60 % excess air with 15 % of the carbon in the fuel forming CO. Find the mole fractions of the products and the dew-point temperature at 1 atm. (Printed: CO₂ 0.0678, CO 0.0120, H₂O 0.0897, O₂ 0.0808, N₂ 0.7498, 44.0 °C.) In your notebook this problem is numbered 15-35.
+
+</Statement>
+
+<Think>
+
+The novelty is **partial combustion**: of the 8 C, 6.8 go to CO₂ and 1.2 to CO; the CO takes less O₂, so the O₂ balance is written last and **leaves the extra O₂ in the products**. Your highlighted note: "when you calculate the stoichiometric coefficient you assume perfect combustion".
+
+</Think>
+
+<Steps>
+<Step title="1. Air and balance">
+
+$a_{th}=8+\dfrac{18}{4}=12.5$; with 60 % excess, $a=1.6(12.5)=20$. $\mathrm{C_8H_{18}}+20(\mathrm{O_2}+3.76\mathrm{N_2})\to6.8\mathrm{CO_2}+1.2\mathrm{CO}+9\mathrm{H_2O}+8.1\mathrm{O_2}+75.2\mathrm{N_2}$ (your page ✔; O balance: $40=13.6+1.2+9+16.2$).
+
+</Step>
+<Step title="2. Mole fractions">
+
+$N_P=6.8+1.2+9+8.1+75.2=100.3$ kmol: $y_{CO_2}=0.0678$, $y_{CO}=0.0120$, $y_{H_2O}=0.0897$, $y_{O_2}=0.0808$, $y_{N_2}=0.7498$ (your page: 0.0677, 0.012, 0.09, 0.0808, 0.7499 ✔).
+
+</Step>
+<Step title="3. Dew point">
+
+$P_v=0.0897(101.325)=9.09$ kPa; $T_{dp}=T_{sat}(9.09\ \mathrm{kPa})=\mathbf{44.0}$ °C (your page: ≈ 44 °C).
+
+</Step>
+</Steps>
+
+<Answer>
+
+**$y_{CO_2}=0.0678$, $y_{CO}=0.0120$, $y_{H_2O}=0.0897$, $y_{O_2}=0.0808$, $y_{N_2}=0.7498$; $T_{dp}=44.0$ °C** ✔ (printed, your page; $AF=24.1$).
+
+</Answer>
+
+<MoleBarFigure title="Exhaust of the octane engine (mole fractions)" parts={[{ label: 'CO₂', y: 0.0678 }, { label: 'CO', y: 0.012 }, { label: 'H₂O', y: 0.0897 }, { label: 'O₂', y: 0.0808 }, { label: 'N₂', y: 0.7498 }]} caption="15-35: products with 15 % of the carbon in CO." />
+
+<RealWorld title="The wet exhaust of a cold gasoline engine">
+
+A petrol engine's exhaust has a dew point of about 44 °C, so on a cold start the water condenses in the exhaust pipe (the drip from the tailpipe) until the pipe passes 44 °C. The 1.2 % CO is what the catalytic converter oxidizes.
+
+</RealWorld>
+
+<DewPointFigure Pv={9.09} label="15-35 exhaust: 9.09 kPa" caption="15-35: Pv = 9.09 kPa gives a dew point of 44 °C." />
+
+<Traps>
+
+- Balance O₂ **last**, counting the CO's single oxygen.
+- Atoms are conserved, moles are not: $N_P=100.3$ is not 20×4.76.
+
+</Traps>
+
+<Source>Anthony's Chap 15 v2 p. 5 (Chap_15_v2-231216-05) ✔ and Chapter 15 slides · lib check in <code>hw2.test.ts</code></Source>
+
+</Problem>
+
+<Problem id="15-52" title="HHV and LHV of gaseous n-octane" tags="heating value, enthalpy of formation, h_fg">
+
+<Statement>
+
+Calculate the higher and lower heating values of gaseous n-octane and compare them with Table A-27.
+
+</Statement>
+
+<Think>
+
+HHV is the magnitude of the enthalpy of combustion with the water as liquid, LHV with the water as vapor; the difference is $N_{H_2O}M_{H_2O}h_{fg}=9\times44\,010$ kJ/kmol.
+
+</Think>
+
+<Steps>
+<Step title="1. Enthalpy of combustion">
+
+$\mathrm{C_8H_{18}(g)}+12.5(\mathrm{O_2}+3.76\mathrm{N_2})\to8\mathrm{CO_2}+9\mathrm{H_2O}+47\mathrm{N_2}$. <T>A-26: h̄f° C₈H₁₈(g) = −208 450; CO₂ −393 520; H₂O(l) −285 830; H₂O(g) −241 820</T>.
+
+</Step>
+<Step title="2. Per kmol and per kg">
+
+HHV: $|8(-393\,520)+9(-285\,830)-(-208\,450)|=\mathbf{5\,512\,180}$ kJ/kmol; LHV: $|8(-393\,520)+9(-241\,820)+208\,450|=\mathbf{5\,116\,090}$ kJ/kmol (your page ✔). With $M=114.23$: **48 255** and **44 787** kJ/kg (your slides page divides by 114: 48 352 and 44 877; the 0.2 % comes from $M$ = 114 instead of 114.23).
+
+</Step>
+</Steps>
+
+<Answer>
+
+**HHV = 5 512 180 kJ/kmol = 48 255 kJ/kg; LHV = 5 116 090 kJ/kmol = 44 787 kJ/kg** ✔. Your note: for the table we need to add the enthalpy of vaporization: Table A-27 lists octane as a **liquid**, whose heating value is smaller by $h_{fg}\approx363$ kJ/kg.
+
+</Answer>
+
+<RealWorld title="Gasoline energy content">
+
+Petrol is about 44 MJ/kg LHV (the figure here, 44.8, is for pure gaseous octane); the 7 % HHV−LHV gap is the water that leaves the tailpipe as vapor, which is why internal-combustion engines are always rated on the LHV.
+
+</RealWorld>
+
+<HhvLhvSim />
+
+<Traps>
+
+- The molar mass must be 114.23, not 114, for 0.2 % accuracy.
+- Gas versus liquid octane: a different $\bar h_f^\circ$ ($-208\,450$ against $-249\,950$).
+
+</Traps>
+
+<Source>Anthony's Chapter 15 slides pp. 9 (Chapter_15_slides-231209-09) and Chap 15 v2 p. 10 ✔ · lib <code>heatingValues</code> in <code>hw2.test.ts</code></Source>
+
+</Problem>
+
+<Problem id="15-59" title="Propane burned at AF = 25, products cooled to the dew point: heat per kg of fuel" tags="dew point, steady-flow heat, percent theoretical air">
+
+<Statement>
+
+Propane is burned with an air-fuel ratio of 25 in an atmospheric furnace. Find the heat transfer per kilogram of fuel when the products are at the temperature at which liquid water just begins to form.
+
+</Statement>
+
+<Think>
+
+Two steps in a row: first the dew point (so the products' state), then $Q_{out}$ with the products at the dew point and the reactants at 25 °C. The air-fuel ratio gives the excess air: $AF_{th}=\dfrac{5(4.76)(29)}{44}=15.68$, so $25/15.68=1.6$: **160 % theoretical air**.
+
+</Think>
+
+<Steps>
+<Step title="1. Balance">
+
+$\mathrm{C_3H_8}+8(\mathrm{O_2}+3.76\mathrm{N_2})\to3\mathrm{CO_2}+4\mathrm{H_2O}+3\mathrm{O_2}+30.08\mathrm{N_2}$, $N_P=40.08$ (your page: $30.8$, i.e. 30.08, as 8×3.76).
+
+</Step>
+<Step title="2. Dew point">
+
+$P_v=\dfrac{4}{40.08}(101.3)=\mathbf{10.12}$ kPa (your page: 10.13), $T_{dp}=T_{sat}(10.12)=\mathbf{46.0}$ °C. Your Dec-9 page reads 46.1 °C ≈ 319 K, the Dec-16 page uses the 10 kPa table row (45.81 °C): the difference is a table-row rounding.
+
+</Step>
+<Step title="3. Heat transfer per kmol of fuel">
+
+With the products at 318–320 K and the reactants at 25 °C, your Dec-9 slides page writes $-Q_{out}=3(-393\,520+10\,786-9364)+4(-241\,820+10\,639-9904)+3(9325-8682)+30(9306-8669)-(-103\,850)$ (the products' $\bar h$ are the 318 K table values) and obtains **$-Q_{out}=-2\,017\,510$ kJ/kmol**, that is $Q_{out}=2.0175\times10^{6}$ kJ/kmol $=\dfrac{2.0175\times10^{6}}{44.1}=\mathbf{45\,780}$ kJ/kg of fuel (recomputed: 2 018 510 kJ/kmol, 45 774 kJ/kg).
+
+</Step>
+</Steps>
+
+<Callout kind="warn" title="⚠ Re-solve of 16 Dec: the last line reads −2 297 xxx kJ/kmol (more than the fuel's HHV)">
+
+The 16 Dec re-solve ends with a number that reads about "$-2\,297\,460$" (or $-2\,297\,160$) kJ/kmol, ticked in blue. It cannot be right: the **entire higher heating value** of propane is $2.22\times10^{6}$ kJ/kmol (50 350 kJ/kg × 44.1), and a furnace whose products are only cooled to 46 °C recovers *less* than the HHV: 2.02×10⁶. The earlier Dec-9 page ($-2\,017\,510$) and the recomputation (2.0185×10⁶) agree; the digits of the Dec-16 line are partly ambiguous in the scan, so this is listed in the errata as an **uncertain reading** with the correct value.
+
+</Callout>
+
+<Answer>
+
+**$T_{dp}=46.0$ °C; $Q_{out}=2.018\times10^{6}$ kJ/kmol $=45\,770$ kJ/kg of propane** (Dec-9 page ✔: 2 017 510). The Dec-16 value ≈ 2.30×10⁶ is wrong.
+
+</Answer>
+
+<RealWorld title="How much of the HHV a furnace can capture">
+
+Cooling the products only to 46 °C recovers $2.018/2.220=91$ % of the HHV: the unrecovered 9 % is the latent heat of the 4 kmol of water (4×44 010 = 176 000 kJ/kmol) that is **still vapor** at the dew point. A condensing furnace goes below 46 °C and condenses it: that is the whole 91 %→ 100 % story.
+
+</RealWorld>
+
+<DewPointFigure Pv={10.12} label="15-59 products: 10.12 kPa" caption="15-59: Pv = 10.12 kPa gives T_dp = 46 °C." />
+
+<Traps>
+
+- The excess-air percentage comes from $AF/AF_{th}$ (1.60): not 25/15 or 25/17.
+- Use the **vapor** $\bar h_f$ for the water ($-241\,820$): liquid just begins to form, so all the water is still vapor.
+- Heat out per kg of fuel: divide per-kmol by 44.1.
+
+</Traps>
+
+<Source>Anthony's Chapter 15 slides pp. 10–11 (Chapter_15_slides-231209-10…11) and Chap 15 v2 pp. 11–12 · lib check in <code>chapters.test.ts</code> and <code>lib.test.ts</code></Source>
+
+</Problem>
+
+<Problem id="15-68" title="Methane and oxygen burned in a rigid tank: final pressure and heat transfer" tags="closed system, constant volume, ideal gas, u = h − R_uT">
+
+<Statement>
+
+A rigid tank contains 120 g of methane and 600 g of O₂ at 25 °C and 200 kPa. The mixture is ignited, the methane burns completely, and the final temperature is 1200 K. Find (a) the final pressure and (b) the heat transfer.
+
+</Statement>
+
+<Think>
+
+Constant volume, no work: $Q_{out}=U_R-U_P$ with $\bar u=\bar h-R_uT$ for every ideal gas. The pressure follows from the **mole count** of the products: $P_2=\dfrac{N_PR_uT_2}{V}$. The new points are the $-R_uT$ terms and the mole counts: $N_R=0.0075+0.01875$, $N_P=0.0075+0.015+0.00375$.
+
+</Think>
+
+<Steps>
+<Step title="1. Moles and balance">
+
+$N_{CH_4}=\dfrac{0.12}{16}=0.0075$ kmol, $N_{O_2}=\dfrac{0.6}{32}=0.01875$ kmol: $0.0075\mathrm{CH_4}+0.01875\mathrm{O_2}\to0.0075\mathrm{CO_2}+0.015\mathrm{H_2O}+0.00375\mathrm{O_2}$ (your page ✔: oxygen in excess by 0.00375).
+
+</Step>
+<Step title="2. (a) Volume and final pressure">
+
+$V=\dfrac{N_RR_uT_1}{P_1}=\dfrac{0.02625(8.314)(298)}{200}=\mathbf{0.325}$ m³ (your page ✔), $P_2=\dfrac{N_PR_uT_2}{V}=\dfrac{0.02625(8.314)(1200)}{0.3253}=\mathbf{805}$ kPa (your page: 805.82 ✔; recomputed 805.0).
+
+</Step>
+<Step title="3. (b) Heat transfer">
+
+$-Q_{out}=\sum N_P(\bar h_f^\circ+\bar h-\bar h^\circ-R_uT_2)-\sum N_R(\bar h_f^\circ-R_uT_1)$ (your page: "closed system", $-R_uT$). Products at 1200 K: <T>CO₂ 53 848, H₂O 44 380, O₂ 38 447 kJ/kmol (A-20, A-23, A-19)</T>; the energy balance gives **$Q_{out}=5251$ kJ** (recomputed).
+
+</Step>
+</Steps>
+
+<Callout kind="note" title="Check your page: 5951 or 5251 in the v3 re-solve">
+
+The v3 copy ends "Q = 5 9 5 1 kJ", with the digits for 2 and 9 written with the same stroke. The recomputation gives 5251 kJ; 5951 would be 13 % higher. The value is listed in the errata as an uncertain reading.
+
+</Callout>
+
+<Answer>
+
+(a) **$P_2=805$ kPa**, (b) **$Q_{out}=5251$ kJ** (your v2 page for P₂ ✔; the v3 heat reads 5951 or 5251: **Check your page**).
+
+</Answer>
+
+<RealWorld title="A confined methane explosion">
+
+Pressure rising from 200 to 805 kPa (×4) in a closed vessel is why gas explosions burst weak enclosures: the temperature ratio 1200/298 = 4.0 drives it (the mole count is unchanged). A real stoichiometric methane–air deflagration reaches about 8 bar (gauge) from atmospheric pressure, the figure vented-explosion design uses.
+
+</RealWorld>
+
+<Traps>
+
+- Closed rigid system: **subtract $R_uT$** from every $\bar h$ (reactants at 298 K, products at 1200 K).
+- The mole count is not conserved in general: here it is (3 kmol → 3 kmol for CH₄ + 2 O₂ → CO₂ + 2 H₂O), which is why $P_2/P_1=T_2/T_1$.
+
+</Traps>
+
+<Source>Anthony's Chap 15 v2 pp. 16–17 (Chap_15_v2-231216-16…17) and Chap 15 v3 p. 17 · lib <code>closedQMoles</code> in <code>lib.test.ts</code></Source>
+
+</Problem>
+
+<Callout kind="note" title="How to use this page in the exam">
+
+The final's combustion problem has this skeleton: **balance** (with a product analysis or excess air), **dew point** (water mole fraction × P), **heat transfer** (steady with sensible enthalpies, or rigid tank with $-R_uT$) and **one or two flame-temperature trials**. Keep your own checklist: balance with $\mathrm{O_2}$ last (v3: "always balance with O₂"), "number of atoms is conserved, moles are not", "liquid!!" for a liquid fuel (chapter 16), and read the statement's **pressure** (100 kPa in 15-67 gives 56.4 °C, 101.325 kPa gives 56.7 °C). See <Ch slug="combustion">chapter 15</Ch> and the <Ex id="final-2021">2021 final</Ex> (the decane flame temperature).
+
+</Callout>

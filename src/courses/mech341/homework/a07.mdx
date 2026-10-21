@@ -1,0 +1,673 @@
+<p className="eyebrow">Assignment 7 · psychrometrics and air conditioning (ch 14) · from your own notebooks</p>
+
+# Assignment 7: psychrometrics
+
+<div className="lede">
+
+The four assigned problems (14-84, 14-102, 14-108, 14-132, all read from the psychrometric chart) from the notebook *Hw* (5 Nov), five more from *Chqp 14*, *Chapter 14 v2* and *Gen3ral revision* (14-14, 14-16, 14-32, 14-43, 14-65), and four Çengel examples from your lecture notes; <Ch slug="psychrometrics">chapter 14 notes</Ch>. Your chart readings come first, then my recomputation from the formulas (saturation pressures from the steam tables, $\omega=0.622P_v/(P-P_v)$, $h=1.005T+\omega(2501.3+1.82T)$) and the printed or quoted answer. A chart can be read to about $\pm0.5$ g/kg and $\pm1$ kJ/kg, so differences of 1–3 % are **chart accuracy, not mistakes**; ⚠ is reserved for legible digits that disagree beyond that, and "Check your page" marks ambiguous handwriting.
+
+</div>
+
+<Callout kind="note" title="What this assignment teaches, in one paragraph">
+
+(1) Two properties fix a moist-air state at a given pressure: $(T,\varphi)$, $(T,T_{wb})$, $(T,T_{dp})$ or $(T,\omega)$. (2) The conserved quantities in an air-conditioning device are the **mass of dry air** (so $\dot m_a$ is the same in and out), the **mass of water** ($\dot m_w=\dot m_a(\omega_1-\omega_2)$ is what condenses or is added) and **energy**. (3) Cooling and dehumidification: $\dot Q_{out}=\dot m_a(h_1-h_2)-\dot m_wh_w$ with $h_w=h_f$ at the **condensate temperature**. (4) Adiabatic mixing is a straight line on the chart, weighted by dry-air flows: $\dfrac{\dot m_{a1}}{\dot m_{a2}}=\dfrac{\omega_2-\omega_3}{\omega_3-\omega_1}=\dfrac{h_2-h_3}{h_3-h_1}$. (5) A cooling tower balances **dry air** and **water**: the air gains the evaporation, the water is cooled by the loss of $h_f$.
+
+</Callout>
+
+## Part 1: the four assigned problems
+
+<Problem id="14-84" title="Automobile air conditioner: dew point, wet bulb, heat transfer, condensation" tags="cooling and dehumidification, chart, five air changes per minute">
+
+<Statement>
+
+Air from inside a car enters the evaporator of the air conditioner at 1 atm, 27 °C and 50 % relative humidity and returns at 10 °C and 90 % relative humidity. The passenger compartment is 2 m³ and five air changes per minute are needed. Find (a) the dew point and wet-bulb temperature at the evaporator inlet, (b) the heat transfer rate from the air to the evaporator fluid and (c) the rate of condensation of water vapor. (Answers quoted in your notes: 15.7 °C, 19.5 °C, 5.37 kW, 0.0464 kg/min.)
+
+</Statement>
+
+<Think>
+
+A cooling-and-dehumidifying coil. The air enters at state 1 (27 °C, 50 %) and leaves at state 2 (10 °C, 90 %); the water that condenses leaves as liquid at the exit temperature. The volume flow is **given indirectly**: $\dot V=2\ \mathrm{m^3}\times5\ \mathrm{min^{-1}}=10$ m³/min, then $\dot m_a=\dot V/v_1$ at the *inlet* state. New: dew point by a horizontal line to the saturation curve, wet bulb by following the wet-bulb line down to the dry-bulb line.
+
+</Think>
+
+<Plan>
+
+Chart: $T_{dp1}$, $T_{wb1}$, $h_1,v_1,\omega_1$; state 2: $h_2$, $\omega_2$ → $\dot m_a=\dot V/v_1$ → $\dot m_w=\dot m_a(\omega_1-\omega_2)$ → $\dot Q_{out}=\dot m_a(h_1-h_2)-\dot m_wh_{f@10\,°C}$.
+
+</Plan>
+
+<PsychroChart points={[{ T: 27, w: 0.01115, label: '1 in' }, { T: 10, w: 0.00686, label: '2 out' }]} />
+
+<Steps>
+<Step title="1. State 1 on the chart (your readings)">
+
+A horizontal line from (27 °C, 50 %) to the saturation curve gives $T_{dp1}=\mathbf{16}$ °C; the wet-bulb line through the point gives $T_{wb1}=\mathbf{19.5}$ °C. Also $h_1=56$ kJ/kg, $v_1=0.865$ m³/kg, $\omega_1=11$ g/kg (formulas: $P_v=0.5(3.6$ kPa$)=1.80$ kPa, $T_{dp}=15.7$ °C, $\omega_1=0.01115$, $h_1=55.6$).
+
+</Step>
+<Step title="2. State 2 (10 °C, 90 %)">
+
+Chart: $h_2=28$ kJ/kg, $\omega_2=7$ g/kg (formulas: $\omega_2=0.622(0.9)(1.2282)/(101.325-1.1054)=0.00686$, $h_2=27.3$).
+
+</Step>
+<Step title="3. Mass flows">
+
+$\dot m_a=\dfrac{\dot V}{v_1}=\dfrac{2\times5}{0.865}=\mathbf{11.56}$ kg/min (a constant through the coil). $\dot m_{v1}=0.011(11.56)=0.1271$ and $\dot m_{v2}=0.007(11.56)=0.0809$ kg/min, so the condensate is $\dot m_w=0.1271-0.0809=\mathbf{0.0461}$ kg/min (quoted answer 0.0464).
+
+</Step>
+<Step title="4. Energy balance on the coil">
+
+<T>A-4 at 10 °C: h_f = 42.02 kJ/kg</T>. $\dot Q_{out}=\dot m_a(h_1-h_2)-\dot m_wh_w=11.56(56-28)-0.0461(42.02)=321.7$ kJ/min $=\dfrac{321.7}{60}=\mathbf{5.36}$ kW (quoted 5.37).
+
+</Step>
+</Steps>
+
+<Answer>
+
+(a) **$T_{dp}=16$ °C, $T_{wb}=19.5$ °C**, (b) **$\dot Q_{out}=5.36$ kW**, (c) **0.0461 kg/min** (your page ✔; recomputed 15.7 °C, 19.5 °C, 5.40 kW, 0.0495 kg/min: the condensate differs by 7 % only because $\Delta\omega$ is a small difference of two chart readings, 4.0 against 4.3 g/kg).
+
+</Answer>
+
+<RealWorld title="An automobile air conditioner">
+
+A car's evaporator removes about 4–6 kW in hot humid weather, as here; **about a third** of it ($0.0495\ \mathrm{kg/min}\times2450\ \mathrm{kJ/kg}/60\approx2$ kW) is the latent heat of the water the passengers and the outside air bring in. That is why the evaporator drips and why recirculation (inside air at 50 %) is cheaper than fresh outside air at 80 %.
+
+</RealWorld>
+
+<Traps>
+
+- $\dot m_a$ is $\dot V/v_1$ with $v_1$ in m³ **per kg of dry air** at the **inlet** state.
+- Do not forget the enthalpy of the **condensate**, $\dot m_wh_f$, though it is only 0.6 % of the load here.
+- Five air changes per minute × 2 m³ = 10 m³/min, not 5.
+
+</Traps>
+
+<Source>Anthony's Hw, pp. 1–3 (Hw-231105-01…03) and Chapter 14 v2 · formulas recomputed with the lib <code>psyState</code> (in <code>hw2.test.ts</code>)</Source>
+
+</Problem>
+
+<Problem id="14-102" title="Adiabatic mixing of a hot humid stream and a cool saturated stream" tags="mixing, wet bulb, chart, dry-air weighting">
+
+<Statement>
+
+A stream of 8 kg/s (dry air) at 36 °C dry bulb and 30 °C wet bulb is mixed adiabatically with 10 kg/s (dry air) of saturated air at 12 °C, at 1 atm. Find (a) the temperature, (b) the humidity ratio and (c) the relative humidity of the mixture.
+
+</Statement>
+
+<Think>
+
+An adiabatic mixing chamber: dry air balances, water balances ($\dot m_{a1}\omega_1+\dot m_{a2}\omega_2=\dot m_{a3}\omega_3$) and energy balances ($\sum\dot m_ah$) give a **linear** mixture in $(\omega,h)$. The state 3 is then located with $\omega_3$ and $h_3$. The point of the problem is the weighting by the **dry-air** flows, not by total or volume flows. It is worked in <Ch slug="psychrometrics">chapter 14</Ch>; this is your version.
+
+</Think>
+
+<Plan>
+
+State 1 ($T_{db},T_{wb}$) → $\omega_1,h_1$; state 2 saturated → $\omega_2,h_2$ → solve the two weighted averages → chart.
+
+</Plan>
+
+<PsychroChart points={[{ T: 36, w: 0.02462, label: '1' }, { T: 12, w: 0.00873, label: '2' }, { T: 22.8, w: 0.01579, label: '3 mix' }]} />
+
+<Steps>
+<Step title="1. The two inlet states (your chart readings)">
+
+State 1: $\omega_1=25\times10^{-3}$, $h_1=100$ kJ/kg, $T_{dp1}=28$ °C. State 2 (12 °C saturated): $h_2=34.5$ kJ/kg, $\omega_2=9\times10^{-3}$. Formulas: $\omega_1=0.02462$, $h_1=99.4$; $\omega_2=0.00873$, $h_2=34.1$.
+
+</Step>
+<Step title="2. Humidity ratio of the mixture">
+
+$\dfrac{\dot m_{a1}}{\dot m_{a2}}=\dfrac{\omega_2-\omega_3}{\omega_3-\omega_1}\Rightarrow\dfrac{8}{10}=\dfrac{0.009-\omega_3}{\omega_3-0.025}\Rightarrow8\omega_3-0.2=0.09-10\omega_3$ (your page) $\Rightarrow18\omega_3=0.29$, so $\omega_3=\mathbf{0.0161}$ kg/kg (formulas: 0.01579).
+
+</Step>
+<Step title="3. Enthalpy of the mixture">
+
+$\dfrac{h_2-h_3}{h_3-h_1}=\dfrac{8}{10}\Rightarrow\dfrac{34.5-h_3}{h_3-100}=0.8\Rightarrow h_3=\mathbf{63.61}$ kJ/kg (formulas: 63.1).
+
+</Step>
+<Step title="4. Locate state 3 on the chart">
+
+Plotting $\omega_3=0.0161$ and $h_3=63.6$: $T_3=\mathbf{23}$ °C and $\varphi_3=\mathbf{90}$ % (formulas: $T_3=\dfrac{h_3-2501.3\omega_3}{1.005+1.82\omega_3}=22.8$ °C, $\varphi_3=90.2$ %).
+
+</Step>
+</Steps>
+
+<Callout kind="note" title="Check your page: later copies of the temperature">
+
+Your *Hw* page reads $T_3=23$ °C. In a later copy the same temperature looks like 27 °C or 22–23 °C (the stroke for 3 and 7 is almost the same). With $\omega_3=0.0161$ and $h_3=63.6$ the temperature is 22.8 °C, so the later reading as 27 °C would be wrong, but the digit in the scan is ambiguous, so no error is asserted.
+
+</Callout>
+
+<Answer>
+
+**$\omega_3=0.0161$, $T_3=23$ °C, $\varphi_3=90$ %** (your page; recomputed 0.01579, 22.8 °C, 90.2 %) ✔ within chart accuracy.
+
+</Answer>
+
+<RealWorld title="Fog and mixing boxes">
+
+An air-handling unit mixes cool return air with hot outside air exactly this way; mixing two humid streams on a cool day can cross the saturation curve (the curve is convex) and make fog, which is why a stack plume or a warm breath visibly condenses. Here the mixture is 90 %, **just** under fog.
+
+</RealWorld>
+
+<Traps>
+
+- Weigh by **dry-air** mass flow, not by volume flow or total mass flow.
+- Averaging the two temperatures gives 24 °C: close here but not the same, because the mixture line is straight in $(\omega,h)$, not in $(\omega,T)$.
+
+</Traps>
+
+<Source>Anthony's Hw, pp. 4–5 (Hw-231105-04…05) · lib check in <code>lib.test.ts</code> and <code>chapters.test.ts</code> · also worked in <Ch slug="psychrometrics" /></Source>
+
+</Problem>
+
+<Problem id="14-108" title="Wet cooling tower of a power plant: air flow and make-up water" tags="cooling tower, dry-air balance, water balance, energy balance">
+
+<Statement>
+
+Cooling water from the condenser of a power plant enters a wet cooling tower at 40 °C at 90 kg/s and is cooled to 25 °C by air entering at 1 atm, 23 °C and 60 % relative humidity and leaving saturated at 32 °C. Neglecting the fan power, find (a) the volume flow rate of air entering and (b) the mass flow rate of make-up water.
+
+</Statement>
+
+<Think>
+
+Two inlet streams (hot water 3, air 1) and two outlet streams (cooled water 4, air 2) with make-up water as the difference. Balances: dry air ($\dot m_{a1}=\dot m_{a2}$), water ($\dot m_3+\dot m_a\omega_1=\dot m_4+\dot m_a\omega_2$ so that the make-up is $\dot m_a(\omega_2-\omega_1)$) and energy: $\dot m_a(h_2-h_1)=\dot m_3h_3-\dot m_4h_4$ with $\dot m_4=\dot m_3-\dot m_{makeup}$. The energy balance gives $\dot m_a$ directly:
+
+$$\dot m_a=\frac{\dot m_3(h_3-h_4)}{(h_2-h_1)-(\omega_2-\omega_1)h_4}.$$
+
+</Think>
+
+<Plan>
+
+Chart: $h_1,\omega_1,v_1$, $h_2,\omega_2$; table: $h_3=h_f(40\,°C)$, $h_4=h_f(25\,°C)$ → $\dot m_a$ → $\dot V_1=\dot m_av_1$ → make-up.
+
+</Plan>
+
+<PsychroChart points={[{ T: 23, w: 0.01053, label: '1 air in' }, { T: 32, w: 0.03066, label: '2 air out' }]} />
+
+<Steps>
+<Step title="1. Air states (your chart readings)">
+
+State 1 (23 °C, 60 %): $h_1=50$ kJ/kg, $\omega_1=10.1\times10^{-3}$, $v_1=0.855$ m³/kg. State 2 (32 °C, saturated): $h_2=110$, $\omega_2=30\times10^{-3}$. Formulas: $\omega_1=0.01053$, $h_1=49.9$, $v_1=0.853$; $\omega_2=0.03066$, $h_2=110.6$.
+
+</Step>
+<Step title="2. Water enthalpies">
+
+<T>A-4: h_f(40 °C) = 167.53, h_f(25 °C) = 104.83 kJ/kg</T>.
+
+</Step>
+<Step title="3. Dry-air flow">
+
+$\dot m_a=\dfrac{90(167.53-104.83)}{(110-50)-(0.030-0.0101)(104.83)}=\dfrac{5643}{57.91}=\mathbf{97.47}$ kg/s (your page).
+
+</Step>
+<Step title="4. (a) Volume flow of air and (b) make-up">
+
+$\dot V_1=\dot m_av_1=97.47(0.855)=\mathbf{83.31}$ m³/s. Make-up: $\dot m_{makeup}=\dot m_a(\omega_2-\omega_1)=97.47(0.030-0.0101)=\mathbf{1.94}$ kg/s (your page).
+
+</Step>
+</Steps>
+
+<Answer>
+
+(a) **$\dot V_1=83.3$ m³/s**, (b) **$\dot m_{makeup}=1.94$ kg/s** (your page ✔; with formulas: $\dot m_a=96.3$ kg/s, $\dot V_1=82.1$ m³/s, make-up 1.94 kg/s: the make-up is robust because a larger $\dot m_a$ pairs with a smaller $\Delta\omega$).
+
+</Answer>
+
+<RealWorld title="A power-plant cooling tower">
+
+The water lost in this tower is $1.94/90=2.2$ % of the circulating flow: roughly **1 % per 6 K of cooling**, which is the usual rule for wet towers. A natural-draft tower of a 1 GW plant evaporates about 0.5–1 m³/s, and the 83 m³/s of air here is a wind of 8 m/s through a 10 m² opening. The water leaves the tower at 25 °C, within 8 K of the wet-bulb limit of the **ambient air** (the wet bulb of 23 °C and 60 % is 17.7 °C): that is why the tower cannot cool below the wet bulb.
+
+</RealWorld>
+
+<CoolingTowerSim />
+
+<Traps>
+
+- The water leaving the tower is **less** than the water entering by the make-up flow; the make-up is not the water flow itself.
+- The enthalpy of the water streams is $h_f$ at their temperatures, not $h_g$.
+- Use $v_1$ (inlet) to get $\dot V_1$; the exit air has a different specific volume.
+
+</Traps>
+
+<Source>Anthony's Hw, pp. 6–8 (Hw-231105-06…08) · lib check in <code>hw2.test.ts</code> · also worked in <Ch slug="psychrometrics" /></Source>
+
+</Problem>
+
+<Problem id="14-132" title="Cooling and dehumidifying coil with R-134a: heat, condensate, refrigerant flow" tags="dehumidification, coil, R-134a, chart">
+
+<Statement>
+
+Air enters an air-conditioning system at 30 °C, 70 % relative humidity and 4 m³/min and is cooled to 20 °C, 20 % at 1 atm. The coolant is R-134a entering the coil at 350 kPa with quality 20 % and leaving as saturated vapor. Find the heat transfer from the air to the coil, the condensate per minute, and the mass flow rate of the refrigerant.
+
+</Statement>
+
+<Think>
+
+The same coil balance as 14-84, now with a **second fluid**: the heat the air loses is the heat the refrigerant gains, $\dot Q=\dot m_R(h_{R2}-h_{R1})$, with $h_R$ from the R-134a table. The exit state (20 °C, 20 %) has a very low humidity ratio (about 3 g/kg), which is why it is a strong dehumidification and the chart reading of $\omega_2$ matters.
+
+</Think>
+
+<Plan>
+
+Chart: $\omega_1,h_1,v_1$; $\omega_2,h_2$ → $\dot m_a=\dot V_1/v_1$ → $\dot m_w$ → $\dot Q=\dot m_a(h_1-h_2)-\dot m_wh_f(20\,°C)$ → R-134a: $h_{R1}$ (350 kPa, x = 0.2), $h_{R2}=h_g$ → $\dot m_R$.
+
+</Plan>
+
+<PsychroChart points={[{ T: 30, w: 0.0188, label: '1 in' }, { T: 20, w: 0.00289, label: '2 out' }]} />
+
+<Steps>
+<Step title="1. Air states (your chart readings)">
+
+State 1: $\omega_1=19$ g/kg, $h_1=79$ kJ/kg, $v_1=0.885$ m³/kg. State 2: $\omega_2=3$ g/kg, $h_2=29$ kJ/kg. Formulas: 18.8 g/kg, 78.2, 0.8846; 2.89 g/kg, 27.4.
+
+</Step>
+<Step title="2. Flows">
+
+$\dot m_a=\dfrac{4}{0.885}=\mathbf{4.519}$ kg/min; $\dot m_w=\dot m_a(\omega_1-\omega_2)=4.519(0.019-0.003)=\mathbf{0.0723}$ kg/min.
+
+</Step>
+<Step title="3. Heat transfer from the air">
+
+<T>A-4 at 20 °C: h_f = 83.91 kJ/kg</T>. $\dot Q=\dot m_a(h_1-h_2)-\dot m_wh_f=4.519(79-29)-0.0723(83.9)=219.9$ kJ/min $=\mathbf{3.66}$ kW (your page 3.65).
+
+</Step>
+<Step title="4. Refrigerant flow">
+
+<T>A-12 (R-134a) at 350 kPa: your page reads h_R1 = 97.52 kJ/kg (x = 0.2) and h_R2 = h_g = 253.78 kJ/kg</T> (the lib gives 97.59 and 253.36). $\dot m_R=\dfrac{\dot Q}{h_{R2}-h_{R1}}=\dfrac{219.9}{253.78-97.52}=\mathbf{1.41}$ kg/min (your page: 1.406).
+
+</Step>
+</Steps>
+
+<Answer>
+
+**$\dot Q=3.65$ kW, $\dot m_w=0.0723$ kg/min, $\dot m_R=1.41$ kg/min** (your page ✔). Recomputed with the formulas: $\dot Q=3.73$ kW, condensate 0.072 kg/min, $\dot m_R=1.44$ kg/min: the difference of 2 % in $\dot Q$ is the chart reading of $h_2$ (29 against 27.4).
+
+</Answer>
+
+<RealWorld title="Latent load of a room air conditioner">
+
+Of the 3.7 kW removed, **about three quarters is latent** (the condensate carries $0.072\times2430/60\approx2.9$ kW). Dry desert air needs sensible cooling only; a humid summer needs a coil colder than the dew point of the air, around 15 °C here, which is exactly why a cooling coil operates at 5–8 °C.
+
+</RealWorld>
+
+<Traps>
+
+- Quality 0.2 at 350 kPa: $h_{R1}=h_f+0.2h_{fg}$, not $h_g$.
+- The statement says 20 % at the exit; $\omega_2\approx3$ g/kg is **correct** (a chart read at 20 % lands very low on the scale).
+
+</Traps>
+
+<Source>Anthony's Hw, pp. 9–11 (Hw-231105-09…11) · lib check in <code>lib.test.ts</code> (14-132) and <code>hw2.test.ts</code></Source>
+
+</Problem>
+
+## Part 2: extra practice from your notebooks
+
+<Problem id="14-14" title="Tank with 15 kg of dry air and 0.17 kg of vapor: ω, φ and volume" tags="humidity ratio, relative humidity, tank volume">
+
+<Statement>
+
+A tank contains 15 kg of dry air and 0.17 kg of water vapor at 30 °C and 100 kPa total pressure. Find (a) the specific humidity, (b) the relative humidity, (c) the volume of the tank. (Printed: 0.0113, 42.1 %, 13.3 m³.)
+
+</Statement>
+
+<Think>
+
+The three definitions in one problem: $\omega=m_v/m_a$, $\varphi=P_v/P_g$ with $P_v$ found by inverting $\omega=0.622P_v/(P-P_v)$, and the volume from the **dry-air** partial pressure $V=m_aR_aT/P_a$ with $P_a=P-P_v$.
+
+</Think>
+
+<Steps>
+<Step title="1. Humidity ratio">
+
+$\omega=\dfrac{m_v}{m_a}=\dfrac{0.17}{15}=\mathbf{0.01133}$ kg/kg.
+
+</Step>
+<Step title="2. Relative humidity">
+
+<T>A-4: P_g at 30 °C = 4.2469 kPa</T>. From $(P-\varphi P_g)\omega=0.622\varphi P_g$: $\varphi=\dfrac{\omega P}{P_g(0.622+\omega)}=\dfrac{0.01133(100)}{4.2469(0.6333)}=\mathbf{0.421}$ (your page: 42.1 %).
+
+</Step>
+<Step title="3. Volume">
+
+$P_v=\varphi P_g=1.79$ kPa, $P_a=100-1.79=98.21$ kPa; $V=\dfrac{m_aR_aT}{P_a}=\dfrac{15(0.287)(303)}{98.21}=\mathbf{13.3}$ m³.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**$\omega=0.0113$, $\varphi=42.1$ %, $V=13.3$ m³** ✔ (printed and your page).
+
+</Answer>
+
+<RealWorld title="Moisture in a compressed-air tank">
+
+A 13 m³ room-size volume at 42 % holds only 0.17 kg of water: even a "damp" room contains less than a cup. Compressed-air receivers condense that water when compressed, the reason for the drain valve under every compressor tank.
+
+</RealWorld>
+
+<Traps>
+
+- The volume uses the **dry-air partial pressure**, not 100 kPa (the difference is 1.8 %).
+
+</Traps>
+
+<Source>Anthony's Chapter 14 v2 pp. 2–3 (Chapter_14_v2-231217-02…03) ✔ · lib check in <code>hw2.test.ts</code></Source>
+
+</Problem>
+
+<Problem id="14-16" title="Saturated air at 30 °C and 105 kPa in an 8 m³ tank" tags="saturated air, dry-air mass, enthalpy">
+
+<Statement>
+
+An 8 m³ tank contains saturated air at 30 °C and 105 kPa. Find (a) the mass of dry air, (b) the specific humidity, (c) the enthalpy per unit mass of dry air.
+
+</Statement>
+
+<Think>
+
+Saturated means $\varphi=1$, so $P_v=P_g(30\ °C)$ directly.
+
+</Think>
+
+<Steps>
+<Step title="1. Dry air">
+
+<T>A-4: P_g at 30 °C = 4.2469 kPa</T>. $P_a=105-4.2469=100.75$ kPa; $m_a=\dfrac{P_aV}{R_aT}=\dfrac{100.75(8)}{0.287(303)}=\mathbf{9.26}$ kg.
+
+</Step>
+<Step title="2. Specific humidity and enthalpy">
+
+$\omega=\dfrac{0.622(4.2469)}{105-4.2469}=\mathbf{0.0262}$ kg/kg. $h=1.005(30)+0.0262(2556.3)=\mathbf{97.1}$ kJ/kg (with $h_g$ at 30 °C = 2556.3).
+
+</Step>
+</Steps>
+
+<Answer>
+
+**$m_a=9.26$ kg, $\omega=0.0262$, $h=97.1$ kJ/kg dry air**. Your pages carry the setup ($P_a=105-4.25$, $m=P_aV/R_aT$, $h=c_pT+\omega h_v$); the final numbers are not written: **Check your page**.
+
+</Answer>
+
+<RealWorld title="Fog in a compressor tank">
+
+A saturated mixture is "fog-ready": cooling it by 1 K condenses 0.0013 kg water per kg dry air. Hence tank and air-line moisture traps.
+
+</RealWorld>
+
+<Traps>
+
+- At 105 kPa (not 101.325) the humidity ratio is lower than the standard-pressure value (0.0272 at 101.325 kPa), because $P$ is in the denominator.
+
+</Traps>
+
+<Source>Anthony's Chapter 14 v2 p. 1 (Chapter_14_v2-231217-01) · lib check in <code>hw2.test.ts</code></Source>
+
+</Problem>
+
+<Problem id="14-32" title="Dry bulb 25 °C, wet bulb 17 °C at 95 kPa: ω, φ and h" tags="wet bulb, adiabatic saturation, non-atmospheric pressure">
+
+<Statement>
+
+The dry- and wet-bulb temperatures of atmospheric air at 95 kPa are 25 and 17 °C. Find (a) the specific humidity, (b) the relative humidity, (c) the enthalpy, in kJ/kg dry air.
+
+</Statement>
+
+<Think>
+
+The wet bulb is the adiabatic saturation temperature: the air at state 2 is saturated at 17 °C, so $\omega_2=0.622P_{g2}/(P-P_{g2})$ **at 95 kPa**, and then $\omega_1=\dfrac{c_p(T_2-T_1)+\omega_2h_{fg2}}{h_{g1}-h_{f2}}$. The chart cannot be used (it is for 1 atm); the pressure enters every formula.
+
+</Think>
+
+<Steps>
+<Step title="1. Saturated state at the wet bulb">
+
+<T>A-4 at 17 °C: P_g = 1.9384 kPa, h_f = 71.36, h_fg = 2460.6; at 25 °C: h_g = 2546.5</T>. $\omega_2=\dfrac{0.622(1.9384)}{95-1.9384}=\mathbf{0.01296}$ (your page: 0.0131: a slightly larger $P_g$).
+
+</Step>
+<Step title="2. Specific humidity at the dry bulb">
+
+$\omega_1=\dfrac{1.005(17-25)+0.01296(2460.6)}{2546.5-71.36}=\mathbf{0.00963}$ (your Gen3ral page: $9.69\times10^{-3}$).
+
+</Step>
+<Step title="3. Relative humidity and enthalpy">
+
+$\varphi=\dfrac{\omega_1P}{P_g(0.622+\omega_1)}=\dfrac{0.00963(95)}{3.1698(0.6316)}=\mathbf{0.457}$ (your page: 45.9 %). $h=1.005(25)+0.00963(2546.5)=\mathbf{49.65}$ kJ/kg (your page: 49.8).
+
+</Step>
+</Steps>
+
+<Answer>
+
+**$\omega=0.0096$, $\varphi=45.7$ %, $h=49.7$ kJ/kg** (your Gen3ral page: 0.00969, 45.9 %, 49.8 ✔ to 0.6 %). The book prints no answer for this problem in the edition on your drive.
+
+</Answer>
+
+<RealWorld title="Sling psychrometer at altitude">
+
+At 95 kPa (about 500 m above sea level) the same wet-bulb reading means **8 % more water per kg of dry air** than the sea-level chart gives: the reason handheld meters need a pressure input.
+
+</RealWorld>
+
+<Traps>
+
+- Use the **pressure given**: the same wet bulb at 101.325 kPa gives $\omega=8.8$ g/kg (8 % lower) and $\varphi=44.6$ %.
+- Subscript 2 is the saturated state, not "the second state of the air".
+
+</Traps>
+
+<Source>Anthony's Chapter 14 v2 p. 3–4 and Gen3ral revision pp. 7–8 (Gen3ral_revision-231218-07…08) ✔ · lib check in <code>lib.test.ts</code> (14-32)</Source>
+
+</Problem>
+
+<Problem id="14-43" title="Chart problem: 28 °C with a 20 °C dew point" tags="chart reading, dew point, vapor pressure">
+
+<Statement>
+
+Air at 1 atm and 28 °C has a dew point of 20 °C. Using the chart, find (a) the relative humidity, (b) the humidity ratio, (c) the enthalpy, (d) the wet-bulb temperature, (e) the vapor pressure.
+
+</Statement>
+
+<Think>
+
+A horizontal line at the dew point fixes $\omega$ and $P_v=P_g(T_{dp})$; the intersection with the 28 °C vertical gives the state.
+
+</Think>
+
+<PsychroChart points={[{ T: 28, w: 0.0147, label: '1' }, { T: 20, w: 0.0147, label: 'dew point' }]} />
+
+<Steps>
+<Step title="1. From the chart (your readings)">
+
+$\omega\approx15$ g/kg, $h\approx65$–66 kJ/kg, $T_{wb}\approx22.5$ °C, $\varphi\approx0.62$–0.65.
+
+</Step>
+<Step title="2. Check with the formulas">
+
+$P_v=P_g(20\ °C)=2.339$ kPa; $\varphi=\dfrac{2.339}{3.783}=\mathbf{0.618}$; $\omega=\dfrac{0.622(2.339)}{101.325-2.339}=\mathbf{0.0147}$; $h=1.005(28)+0.0147(2501.3+1.82(28))=\mathbf{65.7}$ kJ/kg; $T_{wb}=22.4$ °C.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**$\varphi=62$ %, $\omega=14.7$ g/kg, $h=65.7$ kJ/kg, $T_{wb}=22.4$ °C, $P_v=2.34$ kPa** (chart readings of 15 g/kg, 65–66, 22.5 ✔).
+
+</Answer>
+
+<RealWorld title="Why the dew point is the number that matters">
+
+The dew point is the temperature at which a cold surface starts to sweat; for $T_{dp}=20$ °C a 15 °C window, a cold-water pipe or a chilled-beam panel will drip. Building-comfort limits are written in dew point (about 16 °C) for exactly that reason.
+
+</RealWorld>
+
+<Traps>
+
+- The vapor pressure is **at the dew point** (2.34 kPa), not at the dry bulb (3.78 kPa).
+
+</Traps>
+
+<Source>Anthony's Chapter 14 (the chart pages and Gen3ral revision) · lib check in <code>hw2.test.ts</code></Source>
+
+</Problem>
+
+<Problem id="14-65" title="Cooling humid air at constant pressure to its dew point" tags="dew point, sensible cooling, 150 kPa">
+
+<Statement>
+
+Humid air at 150 kPa, 40 °C and 70 % relative humidity is cooled at constant pressure in a pipe to its dew-point temperature. Find the heat transfer in kJ/kg dry air. (Printed: 6.8 kJ/kg.)
+
+</Statement>
+
+<Think>
+
+Cooling at constant $\omega$ ends at the dew point: $T_{dp}=T_{sat}(P_v)$. Heat is $q=h_1-h_2=c_p(T_1-T_{dp})+\omega(h_{g1}-h_{g2})$.
+
+</Think>
+
+<Steps>
+<Step title="1. Vapor pressure and humidity ratio">
+
+<T>A-4: P_g at 40 °C = 7.385 kPa</T>. $P_v=0.7(7.385)=5.170$ kPa, $\omega=\dfrac{0.622(5.170)}{150-5.170}=\mathbf{0.0222}$ (your page: 5.1696, 0.0222).
+
+</Step>
+<Step title="2. Dew point">
+
+$T_{dp}=T_{sat}(5.170\ \mathrm{kPa})=\mathbf{33.5}$ °C (your page: 33.5 at $P_{g2}=5.1699$).
+
+</Step>
+<Step title="3. Heat transfer">
+
+$q=c_p(T_1-T_{dp})+\omega(h_{g1}-h_{g2})=1.005(6.53)+0.0222(2573.5-2561.9)=6.56+0.26=\mathbf{6.8}$ kJ/kg dry air (from $h_1-h_2$ with $h=1.005T+\omega(2501.3+1.82T)$: 6.83).
+
+</Step>
+</Steps>
+
+<Answer>
+
+**$q=6.8$ kJ/kg dry air** (printed ✔; recomputed 6.82). Your page gives the setup ($P_v$, $\omega$, $T_{dp}$ and the $h_1-h_2$ line); the final digits are not legible in the scan: **Check your page**.
+
+</Answer>
+
+<RealWorld title="Compressed-air dryers">
+
+The same arithmetic sizes the aftercooler of a compressor: 150 kPa, 40 °C air with 70 % has only 6.8 kJ/kg of sensible heat above its dew point, but every further degree of cooling removes water at 2450 kJ/kg: condensation, not temperature, dominates the load.
+
+</RealWorld>
+
+<Traps>
+
+- The pressure here is **150 kPa**: the dew point of the water vapor is found from $P_v$, not from $P_g(T_{dp})=P$.
+- Heat is positive out; do not subtract in the wrong order.
+
+</Traps>
+
+<Source>Anthony's Chqp 14 pp. 4–5 (Chqp_14-231205-04…05) · lib check in <code>hw2.test.ts</code></Source>
+
+</Problem>
+
+## Part 3: Çengel examples from your lecture notes
+
+<Problem id="Ex 14-1 and 14-2" title="A room at 25 °C and 75 %: humidity ratio, enthalpy, mass of vapor, dew point" tags="Example 14-1, Example 14-2, dew point, fogging">
+
+<Statement>
+
+(14-1) A 5 × 5 × 3 m room holds air at 25 °C and 100 kPa with 75 % relative humidity: find the partial pressures, ω, h, and the mass of dry air and vapor. (14-2) The air at 20 °C and 75 % cools against a window: at what window temperature does fog form?
+
+</Statement>
+
+<Think>
+
+Two uses of $P_v=\varphi P_g$: first to build the state (14-1), then to find the temperature at which that $P_v$ becomes the saturation pressure (14-2): $T_{dp}=T_{sat}(P_v)$.
+
+</Think>
+
+<Steps>
+<Step title="1. Example 14-1">
+
+<T>A-4: P_g at 25 °C = 3.1698 kPa</T>. $P_v=0.75(3.1698)=2.377$, $P_a=100-2.377=97.62$ kPa; $\omega=\dfrac{0.622(2.377)}{97.62}=0.01514$ (your page: 0.01525); $h=1.005(25)+0.01514(2546.5)=63.7$ kJ/kg; $m_a=\dfrac{97.62(75)}{0.287(298)}=85.6$ kg, $m_v=\omega m_a=1.30$ kg (textbook 85.61, 1.30 ✔).
+
+</Step>
+<Step title="2. Example 14-2">
+
+$P_v=0.75P_g(20\ °C)=0.75(2.339)=1.754$ kPa and $T_{dp}=T_{sat}(1.754\ \mathrm{kPa})=\mathbf{15.4}$ °C (your page: 15.29: a table-interpolation difference of 0.1 K ✔). Your boxed "golden rule": $\dot m_{a1}=\dot m_{a2}$; $\dot m_{a}\omega_1+\dot m_w=\dot m_a\omega_2$; $\dot m_ah_1+\dot m_wh_w=\dot m_ah_2$.
+
+</Step>
+</Steps>
+
+<Answer>
+
+14-1: **$\omega=0.0152$, $h=63.7$ kJ/kg, $m_a=85.6$ kg, $m_v=1.30$ kg**; 14-2: **$T_{dp}=15.4$ °C** ✔.
+
+</Answer>
+
+<RealWorld title="Window condensation in winter">
+
+When the outdoor glass surface is below the room's dew point (15.4 °C for the 20 °C, 75 % room) it fogs. Double-glazing raises the inner pane's temperature above the dew point, which is the whole point.
+
+</RealWorld>
+
+<Traps>
+
+- $P_{a}=P-P_v$, so the mass of dry air uses 97.62 kPa, not 100.
+
+</Traps>
+
+<Source>Anthony's Chqp 14 pp. 1–2 (Chqp_14-231205-01…02) ✔ · lib check in <code>chapters.test.ts</code> (Example 14-1)</Source>
+
+</Problem>
+
+<Problem id="Ex 14-5 and the cooling-tower example" tags="Example 14-5, heating and humidification, cooling tower, make-up water" title="Heating and humidifying 45 m³/min; a 100 kg/s wet cooling tower">
+
+<Statement>
+
+(14-5) 45 m³/min of air at 10 °C, 30 % (100 kPa) is heated to 22 °C and then humidified with steam to 25 °C, 60 %: find the heat and the steam. (Cooling tower) 100 kg/s of water at 35 °C is cooled to 22 °C by air entering at 20 °C, 60 % and leaving saturated at 30 °C: find the dry-air flow, the air volume flow and the make-up water.
+
+</Statement>
+
+<Think>
+
+14-5 is two processes in series on one chart (a horizontal heating line, then a rise in ω). The cooling tower is 14-108 again with other numbers.
+
+</Think>
+
+<Steps>
+<Step title="1. Example 14-5">
+
+State 1 (10 °C, 30 %): $\omega_1=0.0023$ (your page: $2.3\times10^{-3}$), $h_1=15.84$, $v_1=0.8157$ → $\dot m_a=45/0.8157=\mathbf{55.2}$ kg/min (your page 55.2). $h_2=1.005(22)+0.0023(2501.3+1.82(22))=27.95$; $\dot Q=\dot m_a(h_2-h_1)=55.2(27.95-15.84)=\mathbf{668}$ kJ/min (your page: 673). Steam: $\dot m_w=\dot m_a(\omega_3-\omega_1)=0.538$–0.539 kg/min (your page 0.539 ✔).
+
+</Step>
+<Step title="2. Cooling tower">
+
+Chart: $h_1=42.2$, $\omega_1=0.0087$, $h_2=100$, $\omega_2=0.0273$; $h_3=h_f(35\,°C)=146.6$, $h_4=h_f(22\,°C)=92.3$. $\dot m_a=\dfrac{100(146.6-92.3)}{(100-42.2)-(0.0273-0.0087)(92.3)}=\mathbf{96.9}$ kg/s (textbook), 97.5 with the formulas; $\dot V_1=\dot m_av_1\approx82$ m³/s; make-up $=\dot m_a(\omega_2-\omega_1)=\mathbf{1.80}$ kg/s.
+
+</Step>
+</Steps>
+
+<Answer>
+
+14-5: **668 kJ/min (11.1 kW), 0.539 kg/min** ✔; tower: **$\dot m_a=97$ kg/s, $\dot V_1=82$ m³/s, make-up 1.8 kg/s** (textbook 96.9, 81.6, 1.80 ✔).
+
+</Answer>
+
+<RealWorld title="A humidifier in a winter-heated building">
+
+Heating cold dry air to 22 °C gives 12 % relative humidity; humidifying to 60 % needs the steam found above: 0.54 kg/min for a 45 m³/min air system, the reason large buildings have humidifier plants.
+
+</RealWorld>
+
+<Traps>
+
+- Heating is at **constant ω**; humidifying with steam adds $\omega$ and almost no temperature change.
+
+</Traps>
+
+<Source>Anthony's Chqp 14 pp. 6–7 (Chqp_14-231205-06…07) ✔ · lib check in <code>chapters.test.ts</code></Source>
+
+</Problem>
+
+<Callout kind="note" title="How to use this page in the exam">
+
+Final-exam psychrometrics has the same skeleton every year: state 1 from $(T,\varphi)$ or $(T,T_{wb})$, a conserved dry-air flow, $\dot m_w=\dot m_a(\omega_1-\omega_2)$, and an energy balance with the condensate enthalpy. Expect the chart for 1 atm; if the pressure is different (95 kPa in 14-32, 100 kPa in the 2021 final) use the formulas. See <Ch slug="psychrometrics">chapter 14</Ch>, the <Ex id="final-2021">2021 final</Ex> (problem 5 is a dehumidifier) and the recipes page.
+
+</Callout>

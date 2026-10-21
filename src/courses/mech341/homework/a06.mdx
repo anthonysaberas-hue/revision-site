@@ -1,0 +1,623 @@
+<p className="eyebrow">Assignment 6 · ideal-gas mixtures (ch 13) · from your own notebooks</p>
+
+# Assignment 6: gas mixtures
+
+<div className="lede">
+
+The five assigned problems (13-34, 13-35, 13-41, 13-56, 13-63) from the notebook *Ass* (29 Oct) and five more from your re-solves (13-42, 13-52, 13-59, 13-62, 13-72) in *Chapter 13 exercises* (15 Dec) and *Gen3ral revision* (18 Dec); <Ch slug="mixtures">chapter 13 notes</Ch>. Your steps and numbers come first, then my recomputation (molar masses and specific heats of the lib's gas table, so the third digit can differ from the table values you read) and the printed answer when the book gives one. ⚠ marks legible digits that disagree with the recomputation beyond rounding; "Check your page" marks ambiguous handwriting or a method point. A reading tip from this chapter: in your hand a **1 and a 7 look almost the same** (compare the subscript in $T_1$ with the 7 in 473.2), so a number such as "787.1" has to be checked by redoing the arithmetic before anything is called an error.
+
+</div>
+
+<Callout kind="note" title="What this assignment teaches, in one paragraph">
+
+(1) A mixture is described by **mole fractions** for volume, pressure and $M_m$, and by **mass fractions** for $c_p$, $c_v$ and $R$: the two bases are linked by $y_i=\dfrac{mf_i/M_i}{\sum mf_j/M_j}$. (2) Dalton and Amagat give the same result for ideal gases: $P_i=y_iP_m$ and $V_i=y_iV_m$. (3) A closed mixing process with no constant pressure is solved with **internal energy**: $Q=\sum m_ic_{v,i}\Delta T$, never $c_p$. (4) Every entropy term of a mixture uses the **partial pressure**: $\Delta s_i=c_{p,i}\ln\dfrac{T_2}{T_1}-R_i\ln\dfrac{y_iP_{m,2}}{P_{i,1}}$. (5) Departure charts (13-72) enter mixtures through Amagat's law and Kay's rule: each component gets its own $Z_h$ at the **mixture** temperature and pressure.
+
+</Callout>
+
+## Part 1: the five assigned problems
+
+<Problem id="13-34" title="Adding 5 % oxygen to air: the new molar mass" tags="mole fraction, molar mass, volume fraction">
+
+<Statement>
+
+An engineer proposes mixing extra oxygen into the intake air of an engine to change the exhaust products. If an additional 5 % (by volume) of oxygen is mixed with standard air (21 % O₂, 79 % N₂), how does the molar mass of the mixture change?
+
+</Statement>
+
+<Think>
+
+For ideal gases the **volume fraction equals the mole fraction**, so "5 % by volume" means 0.05 kmol of extra O₂ for each kmol of air. Take 1 kmol of air as the basis, add 0.05 kmol O₂, renormalize the fractions, then $M_m=\sum y_iM_i$. What is new in this problem: the definition of the basis. Nothing else is needed.
+
+</Think>
+
+<Plan>
+
+Basis 1 kmol air → $N_{O_2}=0.21+0.05$, $N_{N_2}=0.79$, $N_m=1.05$ → $y_i$ → $M_m$ → compare with 28.84.
+
+</Plan>
+
+<Steps>
+<Step title="1. New mole fractions">
+
+$y_{O_2}=\dfrac{0.21+0.05}{1+0.05}=\dfrac{0.26}{1.05}=\mathbf{0.2476}$, $y_{N_2}=\dfrac{0.79}{1.05}=\mathbf{0.7524}$ (your pages: 0.2476 and 0.7524).
+
+</Step>
+<Step title="2. Molar mass">
+
+$M_m=y_{O_2}M_{O_2}+y_{N_2}M_{N_2}=0.2476(32)+0.7524(28)=\mathbf{28.99}$ kg/kmol. Standard air in the same 21/79 model gives $0.21(32)+0.79(28)=28.84$, so the molar mass rises by 0.15 kg/kmol (+0.5 %). (With $M_{O_2}=31.999$ and $M_{N_2}=28.013$ the result is 29.00.)
+
+</Step>
+</Steps>
+
+<Answer>
+
+**$M_m=28.99$ kg/kmol** (your page ✔, recomputed 29.00; unenriched air 28.84 in the 21/79 model, 28.97 from the table that includes argon).
+
+</Answer>
+
+<MoleBarFigure title="Intake gas of the enriched engine (mole fractions)" parts={[{ label: 'O₂', y: 0.2476 }, { label: 'N₂', y: 0.7524 }]} caption="13-34: the composition after adding 0.05 kmol O₂ per kmol of air. The O₂ fraction rises from 21 % to 24.8 %." />
+
+<RealWorld title="Enriched air in diving: nitrox">
+
+Recreational divers breathe exactly this mixture. **EAN32** ("nitrox 32") is 32 % O₂ in N₂; at 21 % O₂ the maximum operating depth for a partial pressure limit of 1.4 bar is 57 m, for EAN32 it is 34 m ($(1.4/0.32-1)\times10=33.75$ m). The same arithmetic ($P_{O_2}=y_{O_2}P_m$) sets the limit. The depth calculator is in <Ch slug="mixtures">chapter 13</Ch>.
+
+</RealWorld>
+
+<NitroxDepthSim />
+
+<Traps>
+
+- Your note in the *All mistakes* sheet: "5 %" is **per kmol of air** (0.05), not per 4.76 kmol (which would add 0.238 kmol of O₂ per kmol of air, a very different enrichment).
+- The mass fractions change differently from the mole fractions; use $y_i$ for $M_m$.
+
+</Traps>
+
+<Source>Anthony's Ass, p. 1 (Ass-231029-1) and Chapter 13 exercises p. 1–2 (the volume-equals-mole-fraction note) ✔ · lib check in <code>lib.test.ts</code> ("13-34")</Source>
+
+</Problem>
+
+<Problem id="13-35" title="Heating a rigid tank of argon and nitrogen" tags="rigid tank, ideal gas, Dalton">
+
+<Statement>
+
+A rigid tank holds 0.5 kmol of argon and 2 kmol of nitrogen at 250 kPa and 280 K. The mixture is heated to 400 K. Find the volume of the tank and the final pressure.
+
+</Statement>
+
+<Think>
+
+The tank is **rigid** and closed: $V$ and $N_m$ are constant, so $P_2/P_1=T_2/T_1$. The mixture behaves as one ideal gas with $N_m=N_{Ar}+N_{N_2}$; the composition never enters.
+
+</Think>
+
+<Plan>
+
+$N_m=2.5$ kmol → $V=N_mR_uT_1/P_1$ → $P_2=P_1T_2/T_1$. Check with the partial pressures.
+
+</Plan>
+
+<Steps>
+<Step title="1. Volume">
+
+$V=\dfrac{N_mR_uT_1}{P_1}=\dfrac{2.5(8.314)(280)}{250}=\mathbf{23.28}$ m³ (your page: 23.3 m³).
+
+</Step>
+<Step title="2. Final pressure">
+
+From $\dfrac{P_1V}{T_1}=\dfrac{P_2V}{T_2}$ (the same $NR_u$ on both sides): $P_2=250\left(\dfrac{400}{280}\right)=\mathbf{357.1}$ kPa (your page: 357.1).
+
+</Step>
+<Step title="3. Partial pressures as a check">
+
+$P_{Ar}=\dfrac{0.5}{2.5}(250)=50$ kPa and $P_{N_2}=200$ kPa initially; finally $71.4$ and $285.7$ kPa, which add to 357.1.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**$V=23.3$ m³, $P_2=357$ kPa** (your page ✔; your later copy: V = 23.3, P₂ = 357 ✔).
+
+</Answer>
+
+<RealWorld title="Gas cylinders in the sun">
+
+A welding-gas cylinder (a rigid, mixed-gas Ar/CO₂ bottle) left in a van at 60 °C instead of 20 °C sees $T_2/T_1=333/293=1.14$, so the pressure rises by 14 %. Cylinders have burst discs sized for this.
+
+</RealWorld>
+
+<Traps>
+
+- Use $R_u=8.314$ with kmol, or $R=R_u/M_m$ with kg. Mixing the two gives a factor $M_m$.
+- Temperatures in kelvin for the ratio.
+
+</Traps>
+
+<Source>Anthony's Ass, p. 1 (Ass-231029-1) and Chapter 13 exercises p. 2–3 ✔</Source>
+
+</Problem>
+
+<Problem id="13-41" title="Mass flow of a methane–air mixture into a four-stroke engine" tags="molar mass, engine volume flow, specific volume">
+
+<Statement>
+
+The inlet manifold of a natural-gas engine holds a mixture of air and methane with a methane mole fraction of 15 %. The engine runs at 3000 rpm and has a 5 L displacement. Find the mass flow rate of the mixture at 80 kPa and 20 °C. (Printed: 6.65 kg/min.)
+
+</Statement>
+
+<Think>
+
+Two pieces: the **thermodynamics** ($M_m$, then $v=R_uT/(M_mP)$) and the **engine** (how much volume does the engine swallow per minute?). A four-stroke engine takes one intake every **two** revolutions, so $\dot V=nV_d/2$. Your boxed lesson in *Chapter 13 exercises*: "4-stroke → one intake per 2 rev".
+
+</Think>
+
+<Plan>
+
+$M_m$ from $y_{CH_4}=0.15$ → $v$ → $\dot V=nV_d/2$ → $\dot m=\dot V/v$.
+
+</Plan>
+
+<Steps>
+<Step title="1. Molar mass of the mixture">
+
+$M_m=0.15(16)+0.85(28.97)=\mathbf{27.02}$ kg/kmol (your page: 27.02).
+
+</Step>
+<Step title="2. Volume flow swallowed by the engine">
+
+$\dot V=\dfrac{nV_d}{2}=\dfrac{3000(5\times10^{-3})}{2}=\mathbf{7.5}$ m³/min.
+
+</Step>
+<Step title="3. Specific volume and mass flow">
+
+$v=\dfrac{R_uT}{M_mP}=\dfrac{8.314(293)}{27.02(80)}=\mathbf{1.127}$ m³/kg, $\dot m=\dfrac{\dot V}{v}=\dfrac{7.5}{1.127}=\mathbf{6.65}$ kg/min (your page: 6.65).
+
+</Step>
+</Steps>
+
+<Answer>
+
+**$\dot m=6.65$ kg/min** (printed ✔, your page ✔; recomputed 6.654 with $M_{CH_4}=16.043$).
+
+</Answer>
+
+<RealWorld title="Natural-gas buses and generators">
+
+A methane-fuelled spark-ignition engine breathes a *premixed* charge. Methane's lower density means the same manifold carries fewer kilograms of fuel-plus-air than a petrol engine does, which is part of the power loss of natural-gas conversions.
+
+</RealWorld>
+
+<Traps>
+
+- $\dot V=n\,V_d$ (a two-stroke formula) doubles the answer.
+- $\dot m=\dot V\,\rho$, and $\rho=P/(RT)$ with $R=R_u/M_m$ of the **mixture**, not of air.
+
+</Traps>
+
+<Source>Anthony's Ass, p. 2 (Ass-231029-2) and Chapter 13 exercises p. 3–4 ✔ · lib check in <code>lib.test.ts</code></Source>
+
+</Problem>
+
+<Problem id="13-56" title="Oxygen and nitrogen mixed in an insulated and an uninsulated tank: pressure, heat, entropy generation" tags="mixing, closed system, Q = ΔU, entropy generation, partial pressure">
+
+<Statement>
+
+An insulated tank holds 1 kg of O₂ at 15 °C and 300 kPa; it is connected to an uninsulated 2 m³ tank with N₂ at 50 °C and 500 kPa. The valve is opened and the gases form a uniform mixture at 25 °C (the surroundings). Find (a) the final pressure, (b) the heat transfer, (c) the entropy generated, with $T_0=25$ °C. (Printed: 445 kPa, 187 kJ, 0.962 kJ/K.)
+
+</Statement>
+
+<Think>
+
+A **closed, rigid** system (both tanks together) that exchanges heat only. Three pieces, each with its own trap: (a) $P=NR_uT/V$ with the **total** moles and volume; (b) no work and no constant pressure, so $Q_{out}=\sum m_ic_{v,i}(T_i-T_2)$ with $c_v$; (c) the entropy change of each gas uses its **partial pressure** after mixing.
+
+</Think>
+
+<Plan>
+
+$V_{O_2}=mRT/P$, $N_{N_2}=PV/(R_uT)$ → $N_m$, $V_m$ → $P_2$ → $Q_{out}=\sum m c_v(T_i-T_2)$ → $S_{gen}=\sum m\Delta s+Q_{out}/T_0$.
+
+</Plan>
+
+<TwoTankFigure left={{ gas: 'O₂', mass: '1 kg', T: '15 °C', P: '300 kPa', V: '0.25 m³', insulated: true }} right={{ gas: 'N₂', mass: '10.43 kg', T: '50 °C', P: '500 kPa', V: '2 m³', insulated: false }} caption="13-56: after the valve is opened the 2.25 m³ mixture cools through the uninsulated N₂ tank to 25 °C." />
+
+<Steps>
+<Step title="1. Tank volumes and amounts">
+
+$V_{O_2}=\dfrac{mR_{O_2}T_1}{P_1}=\dfrac{1(0.2598)(288)}{300}=\mathbf{0.25}$ m³, so $V_m=2.25$ m³. $N_{O_2}=\dfrac{1}{32}=0.03125$ kmol. $m_{N_2}=\dfrac{P_1V}{R_{N_2}T_1}=\dfrac{500(2)}{0.2968(323)}=\mathbf{10.43}$ kg, $N_{N_2}=\dfrac{10.43}{28}=0.3725$ kmol, $N_m=\mathbf{0.40375}$ kmol (your pages ✔).
+
+</Step>
+<Step title="2. (a) Final pressure">
+
+$P_2=\dfrac{N_mR_uT_2}{V_m}=\dfrac{0.40375(8.314)(298)}{2.25}=\mathbf{444.6}$ kPa (your page: 444.6; printed 445).
+
+</Step>
+<Step title="3. (b) Heat transfer: internal energy, not enthalpy">
+
+No work, $Q_{out}=\Delta U$ in magnitude: $Q_{out}=\left[mc_v(T_1-T_2)\right]_{O_2}+\left[mc_v(T_1-T_2)\right]_{N_2}=1(0.658)(15-25)+10.43(0.743)(50-25)=-6.58+193.7=\mathbf{187.2}$ kJ out (your page: 187.2 ✔; printed 187). Your boxed note: "when we don't have constant pressure we can't use $c_p$".
+
+</Step>
+<Step title="4. (c) Entropy generation with partial pressures">
+
+$y_{O_2}=\dfrac{0.03125}{0.40375}=0.0774$, $y_{N_2}=0.9226$. $(s_2-s_1)_{O_2}=c_p\ln\dfrac{T_2}{T_1}-R\ln\dfrac{y_{O_2}P_2}{P_1}=0.918\ln\dfrac{298}{288}-0.2598\ln\dfrac{0.0774(444.6)}{300}=\mathbf{0.5952}$ kJ/kg·K. $(s_2-s_1)_{N_2}=1.039\ln\dfrac{298}{323}-0.2968\ln\dfrac{0.9226(444.6)}{500}=\mathbf{-0.0251}$ kJ/kg·K. Then $S_{gen}=1(0.5952)+10.43(-0.0251)+\dfrac{187.2}{298}=0.5952-0.2618+0.6282=\mathbf{0.962}$ kJ/K (your page: 0.962 ✔; printed 0.962).
+
+</Step>
+</Steps>
+
+<Callout kind="warn" title="⚠ Re-solve of 18 Dec: Q = 190.53 kJ (should be 187.1 kJ)">
+
+In the day-before-the-final copy (*Gen3ral revision*, p. 2) the pressure is right (444.57 kPa) and the line "$N=0.372$" is right, but the heat line uses $0.379\times28\times0.743(50-25)$: the nitrogen amount became 0.379 kmol instead of 0.3725 and the result is $190.53$ kJ, 1.8 % above the assignment value 187.2 (and the printed 187). Cross-check: $0.3725\times28=10.43$ kg gives $10.43(0.743)(25)=193.7$ and $193.7-6.58=187.1$ kJ. A small slip in $N_{N_2}$ is amplified by the 25 K and by the final subtraction of the small oxygen term.
+
+</Callout>
+
+<Answer>
+
+(a) **$P_2=444.6$ kPa**, (b) **$Q_{out}=187.1$ kJ** (assignment 187.2 ✔, printed 187), (c) **$S_{gen}=0.962$ kJ/K** ✔. The 18 Dec value 190.5 kJ is wrong.
+
+</Answer>
+
+<RealWorld title="Gas blending and cooling by mixing">
+
+Filling a diving cylinder with partial-pressure blending (oxygen first, then nitrogen or helium) is this process: the gas heats on compression, then the cylinder cools to room temperature, and the final pressure is what the fill station reads. The entropy generated is the irreversibility of the free mixing that a fill-from-a-bank always has.
+
+</RealWorld>
+
+<Traps>
+
+- $Q=\sum mc_v\Delta T$, **not** $mc_p\Delta T$ (nothing is held at constant pressure here).
+- The pressure inside the entropy formula is the **partial** pressure $y_iP_2$ and the initial pressure of **that** gas (300 and 500 kPa), not the mixture pressures.
+- Temperatures in kelvin inside the logarithm.
+
+</Traps>
+
+<Source>Anthony's Ass, pp. 3–6 (Ass-231029-3…5), Chapter 13 exercises pp. 8–11 and v2 pp. 8–10 ✔; Gen3ral revision pp. 1–4 (the 190.53) · lib check in <code>chapters.test.ts</code> · also worked in <Ch slug="mixtures" /></Source>
+
+</Problem>
+
+<Problem id="13-63" title="Products of combustion: molar mass, specific heat and water-vapor partial pressure" tags="mole fractions, molar mass, c_p of a mixture, partial pressure">
+
+<Statement>
+
+Products of the combustion of a hydrocarbon with air have the composition (by volume) 4.89 % CO₂, 6.50 % H₂O, 12.20 % O₂, 76.41 % N₂. Find the average molar mass, the average $c_p$ at 600 K in kJ/kmol·K, and the partial pressure of the water vapor at a mixture pressure of 200 kPa.
+
+</Statement>
+
+<Think>
+
+Volume fractions are mole fractions: $y_i$ directly. $M_m=\sum y_iM_i$; the **molar** specific heat averages with mole fractions, $\bar c_{p,m}=\sum y_i\bar c_{p,i}$; and $P_v=y_vP_m$ (Dalton). The only new thing is where each $c_p$ comes from: the **table at 600 K** (A-2b), not the 300 K values.
+
+</Think>
+
+<Plan>
+
+$M_m=\sum y_iM_i$ → $\bar c_p=\sum y_iM_ic_{p,i}$(600 K) → $P_v=0.065(200)$.
+
+</Plan>
+
+<MoleBarFigure title="Products of combustion (mole fractions)" parts={[{ label: 'CO₂', y: 0.0489 }, { label: 'H₂O', y: 0.065 }, { label: 'O₂', y: 0.122 }, { label: 'N₂', y: 0.7641 }]} caption="13-63: the dry products plus 6.5 % water vapor." />
+
+<Steps>
+<Step title="1. Molar mass">
+
+$M_m=0.0489(44)+0.065(18)+0.122(32)+0.7641(28)=\mathbf{28.62}$ kg/kmol (your page ✔; with exact molar masses 28.63).
+
+</Step>
+<Step title="2. Specific heat at 600 K">
+
+<T>A-2b at 600 K: c_p = 1.075 (CO₂), 2.015 (H₂O), 1.003 (O₂), 1.075 (N₂) kJ/kg·K</T>. $\bar c_{p,m}=\dfrac{4.89(44)(1.075)+6.5(18)(2.015)+12.2(32)(1.003)+76.41(28)(1.075)}{100}=\dfrac{3158.7}{100}=\mathbf{31.59}$ kJ/kmol·K (your page: 31.59). On the *Chapter 13 exercises* copy you also get $c_p=1.1017$ kJ/kg·K $\times28.62=31.53$ (the mass-fraction route): both are 31.5–31.6.
+
+</Step>
+<Step title="3. Partial pressure of the vapor">
+
+$P_v=y_vP_m=0.065(200)=\mathbf{13}$ kPa (your page: 13 kPa). The corresponding dew point is $T_{sat}$ at 13 kPa $=51.0$ °C: below that temperature the products condense, which is the subject of chapter 15.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**$M_m=28.62$ kg/kmol, $\bar c_{p,m}(600\ \mathrm{K})=31.6$ kJ/kmol·K, $P_v=13$ kPa** (your page ✔; recomputed 28.63, 31.58, 13.0).
+
+</Answer>
+
+<RealWorld title="Why the water vapor matters in a flue">
+
+A boiler stack with 6.5 % water vapor at 200 kPa has a dew point of 51 °C; a stack gas cooler that drops below it recovers the latent heat (the idea of a **condensing boiler**), but the condensate is acidic, so the flue material must be chosen for it.
+
+</RealWorld>
+
+<Traps>
+
+- Specific heats at **600 K**, not 300 K: for H₂O and CO₂ the difference is 10 %.
+- Do not mix bases: $y_i$ with molar $\bar c_p$, $mf_i$ with $c_p$ per kg.
+
+</Traps>
+
+<Source>Anthony's Ass, pp. 6–7 (Ass-231029-6…7) and Chapter 13 exercises pp. 16–17 ✔ · lib check in <code>lib.test.ts</code></Source>
+
+</Problem>
+
+## Part 2: extra practice from your notebooks
+
+<Problem id="13-42" title="Two tanks of different gases connected: volumes and final pressure" tags="Dalton, rigid tanks, isothermal mixing">
+
+<Statement>
+
+A rigid tank with 2 kg of N₂ at 25 °C and 550 kPa is connected to another rigid tank with 4 kg of O₂ at 25 °C and 150 kPa. The valve is opened and the gases mix at 25 °C. Find the volume of each tank and the final pressure. (Printed: 0.322 m³, 2.07 m³, 204 kPa.)
+
+</Statement>
+
+<Think>
+
+Same temperature before and after, so $N_mR_uT/V_{total}$ with the **sum** of moles and the **sum** of volumes. It teaches that the final pressure is the mole-weighted average of the initial pressures weighted by volume: $P=(N_1+N_2)R_uT/(V_1+V_2)$.
+
+</Think>
+
+<Steps>
+<Step title="1. Volumes">
+
+$V_1=\dfrac{N_{N_2}R_uT}{P_1}=\dfrac{(2/28)(8.314)(298)}{550}=\mathbf{0.3217}$ m³, $V_2=\dfrac{(4/32)(8.314)(298)}{150}=\mathbf{2.0657}$ m³ (your page: 0.3217 and 2.065).
+
+</Step>
+<Step title="2. Final pressure">
+
+$P=\dfrac{(N_1+N_2)R_uT}{V_1+V_2}=\dfrac{(0.07143+0.125)(8.314)(298)}{2.3874}=\mathbf{203.9}$ kPa (your page: 203.96).
+
+</Step>
+</Steps>
+
+<Answer>
+
+**$V_1=0.322$ m³, $V_2=2.07$ m³, $P=204$ kPa** ✔ (printed and your page).
+
+</Answer>
+
+<RealWorld title="Gas blending bank">
+
+Two cylinders connected by a hose settle at a pressure that depends on both volumes: a small high-pressure cylinder equalizing with a big low-pressure one gives the "transfill" pressure used in gas-cylinder swaps.
+
+</RealWorld>
+
+<Traps>
+
+- Do not average the two pressures: the **volume** of each tank weights its contribution.
+
+</Traps>
+
+<Source>Anthony's Chapter 13 exercises p. 5 (Chapter_13_exercises-231215-05) ✔ · lib check in <code>lib.test.ts</code></Source>
+
+</Problem>
+
+<Problem id="13-52" title="Heating a four-component gas stream at constant pressure" tags="volume fractions, mass fractions, mixture c_p, flow heating">
+
+<Statement>
+
+A mixture of 30 % O₂, 40 % N₂, 10 % CO₂ and 20 % CH₄ (by volume) is heated from 20 °C to 200 °C at a constant 150 kPa in a tube. Find the heat transfer per unit mass of mixture.
+
+</Statement>
+
+<Think>
+
+Steady flow at constant pressure: $q=c_p(T_2-T_1)$, but $c_p$ of a mixture is a **mass-fraction** average. The new idea of this problem is the conversion volume fractions → mass fractions on a basis of 1 kmol: $m_i=y_iM_i$, then $mf_i=m_i/m_m$.
+
+</Think>
+
+<Steps>
+<Step title="1. Mass of each component per kmol of mixture">
+
+$m_{O_2}=0.3(32)=9.6$, $m_{N_2}=0.4(28)=11.2$, $m_{CO_2}=0.1(44)=4.4$, $m_{CH_4}=0.2(16)=3.2$ kg, so $m_m=28.4$ kg (your page ✔).
+
+</Step>
+<Step title="2. Mass fractions and mixture c_p">
+
+$mf=0.338,\ 0.394,\ 0.155,\ 0.113$ (your page: 0.338, 0.394, 0.154, 0.1126). <T>A-2a at 300 K: c_p = 0.918 (O₂), 1.039 (N₂), 0.846 (CO₂), 2.2537 (CH₄)</T>: $c_p=\sum mf_ic_{p,i}=0.338(0.918)+0.394(1.039)+0.155(0.846)+0.113(2.2537)=\mathbf{1.105}$ kJ/kg·K (your page: $c_p=1.1$, then the heat line).
+
+</Step>
+<Step title="3. Heat per kilogram">
+
+$q=c_p(T_2-T_1)=1.105(200-20)=\mathbf{199.0}$ kJ/kg. Your last line reads 198.x kJ/kg (the digits of the last two places are not clear in the scan: **Check your page**). With the specific heats read at the mean temperature (variable $c_p$ for O₂, N₂ and CO₂ from the molar tables) the answer is about 203 kJ/kg, since $c_p$ rises with temperature.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**$q\approx199$ kJ/kg** (constant $c_p$ from 300 K; ≈203 kJ/kg with temperature-dependent $c_p$). Your notebook: ≈198–199 kJ/kg ✔. The book prints no answer for this problem.
+
+</Answer>
+
+<RealWorld title="Preheating a process gas">
+
+A biogas or syngas preheater sizes its coil with exactly this mass-fraction $c_p$; 20 % CH₄ makes the mixture's $c_p$ almost 10 % higher than a methane-free stream.
+
+</RealWorld>
+
+<Traps>
+
+- Volume fractions cannot be used to average $c_p$ per kg; convert to mass fractions.
+- $c_p$ at 300 K understates the heat for a 180 K rise by 2–3 %.
+
+</Traps>
+
+<Source>Anthony's Chapter 13 exercises pp. 6–7 and v2 pp. 6–7 (the second copy states "$c_p=1.1$" and the final) · lib check (mixture $c_p$) in <code>lib.test.ts</code></Source>
+
+</Problem>
+
+<Problem id="13-59" title="Isothermal reversible compression of a hydrocarbon gas mixture" tags="mass fractions to mole fractions, R of a mixture, isothermal work">
+
+<Statement>
+
+A mixture of 60 % methane, 25 % propane and 15 % butane **by weight** is compressed from 100 kPa and 20 °C to 800 kPa in a reversible, isothermal, steady-flow compressor. Find the work and the heat transfer per unit mass of mixture.
+
+</Statement>
+
+<Think>
+
+For an ideal gas the isothermal reversible work is $w=RT\ln(P_2/P_1)$ with the mixture's $R=R_u/M_m$. The problem is in the data: the composition is by **mass**, so you convert to moles on a 100 kg basis first. Energy balance: $\Delta h=0$ (isothermal ideal gas), so $q_{out}=w_{in}$.
+
+</Think>
+
+<Steps>
+<Step title="1. Moles per 100 kg">
+
+$N_{CH_4}=\dfrac{60}{16}=3.75$, $N_{C_3H_8}=\dfrac{25}{44}=0.5681$, $N_{C_4H_{10}}=\dfrac{15}{58}=0.2586$ kmol, $N_m=4.5767$ kmol (your pages ✔).
+
+</Step>
+<Step title="2. Molar mass and R">
+
+$M_m=\dfrac{100}{4.5767}=\mathbf{21.85}$ kg/kmol, $R=\dfrac{8.314}{21.85}=\mathbf{0.3805}$ kJ/kg·K.
+
+</Step>
+<Step title="3. Work and heat">
+
+$w_{in}=RT\ln\dfrac{P_2}{P_1}=0.3805(293)\ln8=\mathbf{231.8}$ kJ/kg, and $q_{out}=w_{in}$ because $c_p(T_2-T_1)=0$ (your page, Gen3ral: 231.8; boxed "isothermal!!"). With exact molar masses (16.043, 44.097, 58.123) the result is 231.4 kJ/kg.
+
+</Step>
+</Steps>
+
+<Answer>
+
+**$w_{in}=q_{out}\approx232$ kJ/kg** ✔ (your page 231.8, recomputed 231.4).
+
+</Answer>
+
+<RealWorld title="Pipeline compressor stations">
+
+Natural-gas pipelines recompress every 100–200 km. The isothermal limit $RT\ln r_p$ is the minimum work; real stations use intercooling to approach it. For a mixture that is 20 % heavier hydrocarbons the specific work per kg is **lower** than for pure methane ($R=0.52$ kJ/kg·K).
+
+</RealWorld>
+
+<Traps>
+
+- "Isothermal!!" (your own note): $\Delta h=0$ so heat out equals work in; do not use $c_p\Delta T$.
+- Use the **mixture** $R$, and $R_u$ never appears with kg.
+
+</Traps>
+
+<Source>Anthony's Chapter 13 exercises pp. 11–12, v2 pp. 11–12 and Gen3ral revision p. 4 ✔</Source>
+
+</Problem>
+
+<Problem id="13-62" title="Equimolar helium–argon turbine: isentropic work per kg" tags="mixture k, isentropic expansion, turbine work">
+
+<Statement>
+
+An equimolar mixture of helium and argon is the working fluid of a closed gas-turbine cycle. It enters the turbine at 2.5 MPa and 1300 K and expands isentropically to 200 kPa. Find the turbine work per unit mass.
+
+</Statement>
+
+<Think>
+
+An isentropic expansion of a (constant-$c_p$) ideal gas needs the mixture's $k=c_p/c_v$, so first the mixture's $c_p$ and $R$. New here: the equimolar basis → mass fractions (He 2/22, Ar 20/22 on a 1 kmol basis) → $c_p=\sum mf_ic_{p,i}$, $R=R_u/M_m$, $c_v=c_p-R$.
+
+</Think>
+
+<Steps>
+<Step title="1. Mixture properties">
+
+On 1 kmol: $m_{He}=0.5(4)=2$ kg, $m_{Ar}=0.5(40)=20$ kg, $M_m=22$. $c_p=\dfrac{2}{22}(5.1926)+\dfrac{20}{22}(0.5203)=\mathbf{0.9450}$ kJ/kg·K, $R=\dfrac{8.314}{22}=0.3779$, $c_v=c_p-R=0.5671$, $k=\dfrac{0.9450}{0.5671}=\mathbf{1.667}$ (your pages ✔: $c_p=0.9450$, $R=0.3779$, $c_v=0.5671$, $k=1.67$).
+
+</Step>
+<Step title="2. Exit temperature">
+
+$T_2=T_1\left(\dfrac{P_2}{P_1}\right)^{(k-1)/k}=1300\left(\dfrac{200}{2500}\right)^{0.4}=\dfrac{1300}{2.746}=\mathbf{473.4}$ K (your pages: 473.2 on the first copy, 473.41 on the second ✔).
+
+</Step>
+<Step title="3. Work">
+
+$w=c_p(T_1-T_2)=0.9450(1300-473.2)=\mathbf{781.3}$ kJ/kg (recomputed with 473.4: **781.9** kJ/kg).
+
+</Step>
+</Steps>
+
+<Callout kind="note" title="Check your page: the last line reads 787 only if the 1 is taken for a 7">
+
+The final digits of your first copy look like "787,12". In the same line your $T_1$ subscript and the figure in 1300 are written with the same stroke, and $0.945\times826.8=781.3$, so the line is **781.3**, which matches the recomputed 781.9 kJ/kg within the rounding of $T_2$ and $c_p$. There is no arithmetic slip on this page.
+
+</Callout>
+
+<Answer>
+
+**$w=781.9$ kJ/kg**, $T_2=473.4$ K ✔ (your page 781.3 with $T_2=473.2$).
+
+</Answer>
+
+<RealWorld title="Closed-cycle helium–argon turbines">
+
+Closed-loop Brayton cycles for high-temperature reactors and space power use He–Ar mixtures because a mixture with $M_m\approx22$–40 gives a blade-friendly speed of sound: pure helium (M = 4) would need many more compressor stages for the same pressure ratio, pure argon (M = 40) too few. A 20 K change in $T_2$ is a 2 % change in the work: precision in $k$ matters.
+
+</RealWorld>
+
+<Traps>
+
+- $c_p$ of the mixture is a **mass**-fraction average even though the data are in moles.
+- Work uses $c_p(T_1-T_2)$, not $c_v$.
+
+</Traps>
+
+<Source>Anthony's Chapter 13 exercises pp. 13–15 and v2 pp. 13–15 ✔ · lib check in <code>chapters.test.ts</code> ("13-62")</Source>
+
+</Problem>
+
+<Problem id="13-72" title="Hydrogen–nitrogen heated at constant pressure: ideal gas versus Amagat and departure charts" tags="Amagat, Kay, departure chart, enthalpy change">
+
+<Statement>
+
+A piston–cylinder device holds 6 kg of H₂ and 21 kg of N₂ at 160 K and 5 MPa. Heat is added at constant pressure until the temperature is 200 K. Find the heat transfer treating the mixture (a) as an ideal gas and (b) as a non-ideal gas by Amagat's law. (Printed: 4273 kJ and 4745 kJ.)
+
+</Statement>
+
+<Think>
+
+Constant pressure: $Q=\Delta H$. (a) Ideal gas: $\Delta H=\sum N_i\Delta\bar h_i$ with the molar enthalpy table. (b) Amagat's law: **add each component's real enthalpy change**, each with its own reduced state at the **mixture** $T$ and $P$: $\bar h_2-\bar h_1=(\bar h_2-\bar h_1)_{ideal}-R_uT_{cr}(Z_{h2}-Z_{h1})$.
+
+</Think>
+
+<Steps>
+<Step title="1. Moles">
+
+$N_{H_2}=6/2=3$ kmol, $N_{N_2}=21/28=0.75$ kmol.
+
+</Step>
+<Step title="2. (a) Ideal gas">
+
+<T>A-22, A-18: h̄(H₂) 4535.4 → 5669.2; h̄(N₂) 4648 → 5810 kJ/kmol</T>. $Q=3(5669.2-4535.4)+0.75(5810-4648)=3(1133.8)+0.75(1162)=\mathbf{4273}$ kJ. On *Gen3ral revision* (p. 5) you did it with constant specific heats at room temperature, $21(1.039)(40)+6(14.307)(40)=\mathbf{4306}$ kJ: 0.8 % higher than the table value.
+
+</Step>
+<Step title="3. (b) Departure corrections at the mixture's T and P">
+
+<T>Fig. A-29: H₂ T_R = 160/33.3 = 4.80, P_R = 5/1.30 = 3.85, Z_h ≈ 0 (both states); N₂ T_R = 160/126.2 = 1.27 (P_R = 5/3.39 = 1.47), Z_h1 = 1.3; at 200 K T_R = 1.58, Z_h2 = 0.7</T>. So H₂ is an ideal gas, and for N₂: $\Delta\bar h=1162+R_uT_{cr}(Z_{h1}-Z_{h2})=1162+8.314(126.2)(1.3-0.7)=\mathbf{1791.5}$ kJ/kmol. $Q=3(1133.8)+0.75(1791.5)=\mathbf{4745}$ kJ (the solution you pasted into your notes).
+
+</Step>
+</Steps>
+
+<Answer>
+
+(a) **$Q=4273$ kJ** (table; 4306 with constant $c_p$), (b) **$Q=4745$ kJ** from chart readings; the Lee–Kesler functions ($Z_{h1}=1.18$, $Z_{h2}=0.67$) give 4672 kJ. Your page ✔ for (a); for (b) you pasted the manual's solution.
+
+</Answer>
+
+<RealWorld title="Cryogenic hydrogen and nitrogen">
+
+At 160 K and 5 MPa nitrogen is near its critical point (126 K, 3.4 MPa), so the departure from ideal behavior adds **40 %** to its enthalpy change. The same effect makes heat exchangers in air separation and LNG plants be sized with real-gas models, not ideal ones.
+
+</RealWorld>
+
+<KaySim />
+
+<Traps>
+
+- Departure charts give $Z_h$ at $T_R=T/T_{cr,i}$ of **each component**, even for a mixture.
+- $R_u$ (not $R$) with $\bar h$ in kJ/kmol; the units must match.
+- Hydrogen at $T_R=4.8$: the correction is zero, so only the nitrogen term changes.
+
+</Traps>
+
+<Source>Anthony's Chapter 13 exercises p. 18 (pasted solution) and Gen3ral revision pp. 5–7 (4306 and the Amagat setup) · Lee–Kesler recomputation in <code>hw2.test.ts</code></Source>
+
+</Problem>
+
+<Callout kind="note" title="How to use this page in the exam">
+
+On the final, mixtures appear inside chapter 14 and 15 problems (partial pressure of water vapor, products mixture). The four moves from here to remember: (1) convert the given composition to the basis the formula needs ($y_i$ for $M_m$, $P_i$, $V_i$; $mf_i$ for $c_p$, $c_v$, $R$); (2) a closed constant-volume process is $Q=\sum m c_v\Delta T$; (3) entropy needs **partial pressures**; (4) the departure chart is applied per component. Your own checklist from the *All mistakes* sheet: "5 % per mole of air", "four-stroke: one intake per two revolutions", "$P_i$ in the entropy is partial". See <Ch slug="mixtures">chapter 13</Ch>.
+
+</Callout>
