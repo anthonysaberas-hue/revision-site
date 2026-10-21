@@ -1,0 +1,16 @@
+<p className="eyebrow">Calculator</p>
+
+# Rankine cycle: reheat and feedwater heaters
+
+<div className="lede">
+
+Use this for the vapor-power problems of chapter 10: boiler and condenser pressures, turbine and pump efficiencies, an optional reheat, and one feedwater heater that is open (mixing) or closed with the drain throttled back or pumped forward. It does the isentropic expansions, pump work, the bled fraction $y$ from the heater energy balance, the turbine and pump work, the heat input, the exit quality and the back-work ratio, and replaces the superheated and saturated steam tables A-4 to A-6 for a whole cycle. Every state is listed and drawn on a $T$–$s$ diagram with its isobars; states beyond the steam tables are flagged as "outside table range".
+
+</div>
+
+<RankineCalc />
+
+## Check against
+
+- <Asg n="02">Assignment 2/3, problem 10-55</Asg> (closed heater, drain throttled back; 3 MPa, 350 °C, 20 kPa, bleed at 1 MPa): book values $y=0.2437$, $w_T=740.9$ kJ/kg, $w_P=3.03$ kJ/kg, $q_{in}=2352.5$ kJ/kg; the first preset shows 0.2442, 740.5, 3.031 and 2351.3 (within 0.2 %, the table-interpolation difference).
+- <Asg n="02">Assignment 2/3, problem 10-98</Asg> (open heater at 500 kPa; 10 MPa, 500 °C, 10 kPa; $\eta_T=0.80$, $\eta_P=0.95$; 150 MW): $y=0.1718$, $\eta_{th}=34.5\ \%$ and $\dot m=159.7$ kg/s (second preset).

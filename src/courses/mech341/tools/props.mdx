@@ -1,0 +1,18 @@
+<p className="eyebrow">Calculator</p>
+
+# Fluid properties: water and R-134a
+
+<div className="lede">
+
+Use this when a problem hands you two properties of steam or R-134a and you need the rest: it replaces the superheated, saturated and compressed-liquid steam tables (A-4 to A-7) and the refrigerant tables (A-11 to A-13), including the interpolation you would do by hand. Pick the pair you know (P–T, P–x, T–x, P–h or P–s), read $v$, $u$, $h$, $s$, the phase and the quality, and see the state on a $T$–$s$ diagram. A state outside the tables (water $T>1300$ °C or $P>60$ MPa; R-134a $P>4$ MPa or $T$ outside $-40$ to $200$ °C) is flagged as "outside table range", never extrapolated.
+
+</div>
+
+<PropsCalc />
+
+## Check against
+
+Click the preset buttons above the calculator to load each case.
+
+- <Ex id="final-2021">2021 final, problem 4</Ex> (steam cogeneration): $h_1=3035.4$ kJ/kg and $s_1=6.8863$ kJ/kg·K at 1.6 MPa and 300 °C (first preset). The second preset takes the 10 kPa exit at $s=s_1$ and gives $h=2181.2$ kJ/kg with $x=0.8317$.
+- <Asg n="04">Assignment 4, problem 11-21</Asg> (R-134a refrigerator): the third preset is the saturated vapor entering the compressor at 200 kPa, $h_g\approx 244.5$ kJ/kg at $T_{sat}=-10.1$ °C, the state that problem starts from.

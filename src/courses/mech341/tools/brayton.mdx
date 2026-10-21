@@ -1,0 +1,17 @@
+<p className="eyebrow">Calculator</p>
+
+# Brayton cycle and turbojet
+
+<div className="lede">
+
+Use the **Brayton** mode for a gas-turbine problem with component efficiencies, a regenerator, and either constant $c_p$ and $k$ (the exam's cold-air-standard) or the variable-specific-heat air table A-17 ($h$ and $P_r$). Use the **Turbojet** mode for a flight problem: it builds the ambient state from the standard atmosphere A-16 (or from $T_a$, $P_a$), the ram rise, diffuser, compressor, burner, turbine and a converging or converging-diverging nozzle, and lists the stagnation temperature and pressure at stations 1 to 6 and the split of thrust into momentum and pressure terms. It replaces the air-table lookups and the long stagnation-state chain of the 2021 final, problem 1. Gas temperatures outside the 200 to 3000 K air table are flagged, never extrapolated.
+
+</div>
+
+<BraytonCalc />
+
+## Check against
+
+- <Asg n="01">Assignment 1, problem 9-95</Asg>: a gas turbine with $r_p=16$, $\eta_C=0.85$, $\eta_T=0.88$, $c_p=1.108$, $k=1.35$; the first preset gives $\dot W_{net}=6484$ kW, back-work ratio 0.511 and $\eta_{th}=37.8\ \%$.
+- <Asg n="01">Assignment 1, problem 9-136</Asg>: the turbojet at $T_a=241.15$ K, $P_a=32$ kPa, $V=280$ m/s, $\dot m=50$ kg/s, $r_c=12$, $T_{04}=1100$ K with ideal components; the second preset gives $V_e=832.5$ m/s, $F=27\,625$ N and $\dot W_P=7735$ kW.
+- <Ex id="final-2021">2021 final, problem 1</Ex>: the third preset (CD nozzle, $\eta_C=0.85$, $\eta_T=0.9$, $c_{pg}=1.147$, $f=0.020636$) gives $V_e=1008.1$ m/s; tick "count the fuel mass" for 1015.9 m/s, or choose the converging nozzle to see it choke.
