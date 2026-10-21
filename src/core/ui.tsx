@@ -1,4 +1,4 @@
-import { Children, ReactNode, createContext, isValidElement, useContext, useState } from 'react';
+import { Children, ReactNode, createContext, isValidElement, useContext, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import katex from 'katex';
 
@@ -40,6 +40,19 @@ export function Slider({
 export function Tex({ children, block = false }: { children: string; block?: boolean }) {
   const html = katex.renderToString(children, { displayMode: block, throwOnError: false });
   return block ? <div dangerouslySetInnerHTML={{ __html: html }} /> : <span dangerouslySetInnerHTML={{ __html: html }} />;
+}
+
+/* ---------------- MathTex (runtime KaTeX for MDX math; see core/mdxMath.ts) ---------------- */
+export function MathTex({ tex, display }: { tex: string; display?: boolean }) {
+  const html = useMemo(
+    () => katex.renderToString(tex, { displayMode: !!display, throwOnError: false, strict: 'ignore' }),
+    [tex, display],
+  );
+  return display ? (
+    <div className="math-display" dangerouslySetInnerHTML={{ __html: html }} />
+  ) : (
+    <span dangerouslySetInnerHTML={{ __html: html }} />
+  );
 }
 
 /* ---------------- Callouts ---------------- */
