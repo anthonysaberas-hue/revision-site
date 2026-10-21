@@ -1,0 +1,199 @@
+<p className="eyebrow">Exam toolkit · the machines</p>
+
+# Where the thermodynamics lives: sixteen machines
+
+<div className="lede">
+
+Every chapter of MECH 341 opens on a real machine, and every worked problem has a "real world" line. This page collects them in one place: **the key numbers of each machine** (all labelled ≈ or "typical": they come from public manufacturer and textbook data and vary with model, load and year, so treat them as orders of magnitude, not as data sheets), **which chapter and which problems model it**, and **what the course idealises away** so that you know how far the ideal answer sits from the real one. If you can say what a machine does and roughly how big its numbers are, you can usually rebuild the formula and spot a wrong answer.
+
+</div>
+
+## How big are the numbers
+
+Use these for the sanity check at the end of an exam question (an efficiency above Carnot, a COP of 40 or a back-work ratio of 1 % for a gas turbine is wrong before you look anywhere else).
+
+| Quantity | Typical value | Where it comes from |
+|---|---|---|
+| Petrol car engine, brake thermal efficiency | ≈ 25–35 % at best, ≈ 20 % in ordinary driving | <Ch slug="review">Chapter 8</Ch> |
+| Coal power plant | ≈ 33–40 % | <Ch slug="review">Chapter 8</Ch>, <Asg n="01">6-22</Asg> (30 %) |
+| Ultra-supercritical coal plant | ≈ 42–47 % (ideal cycle 46 %) | <Ch slug="vapor-cycles">Chapter 10</Ch>, <Asg n="02">10-110</Asg> |
+| Pressurized-water reactor | ≈ 33 % | <Ch slug="vapor-cycles">Chapter 10</Ch> |
+| Gas turbine alone (GE 7FA) | ≈ 36 % at ≈ 160 MW | <Asg n="01">9-109</Asg> (35.9 %) |
+| Combined cycle | ≈ 60–64 % | <Ch slug="vapor-cycles">Chapter 10</Ch> |
+| Carnot, 2000 K source and 300 K sink | 85 % | <Ch slug="review">Chapter 8</Ch> |
+| Home heat pump, seasonal COP | ≈ 2.5–4 (≈ 2 at −15 °C outdoors) | <Ch slug="refrigeration">Chapter 11</Ch> |
+| Household fridge / freezer COP | ≈ 2–3 | <Asg n="04">11-21</Asg> (2.72) |
+| Aircraft air-cycle pack COP | well below 1 | <Asg n="04">11-79</Asg> (0.48) |
+| Back-work ratio, gas turbine / steam plant | ≈ 40–60 % / ≈ 1–2 % | <Ch slug="gas-cycles">Chapter 9</Ch> |
+| Peak gas temperature in a car cylinder | ≈ 2500–3000 K for milliseconds | <Ch slug="review">Chapter 8</Ch> |
+| Turbine-inlet gas, jet engine / 7FA | ≈ 1600–1800 K / ≈ 1290 °C | <Ch slug="gas-cycles">Chapter 9</Ch> |
+| Stoichiometric kerosene flame | ≈ 2400 K, turbine inlet kept at ≈ 1400–1700 K | <Ch slug="combustion">Chapter 15</Ch> |
+| Rocket chamber | ≈ 10–20 MPa, ≈ 3500 K | <Ch slug="compressible">Chapter 17</Ch> |
+| Overall pressure ratio, CFM56 / 7FA / newest engines | ≈ 32 / ≈ 15–16 / 40+ | <Ch slug="gas-cycles">Chapter 9</Ch> |
+| Steam: PWR / ultra-supercritical | ≈ 7 MPa saturated / ≈ 25–30 MPa at ≈ 600 °C | <Ch slug="vapor-cycles">Chapter 10</Ch> |
+| Condenser | ≈ 5–10 kPa, 33–46 °C | <Ch slug="vapor-cycles">Chapter 10</Ch> |
+| Methane boiling point, LNG volume | −162 °C, ≈ 1/600 of the gas volume | <Ch slug="property-relations">Chapter 12</Ch> |
+| Haber–Bosch | ≈ 400–500 °C, ≈ 150–300 bar | <Ch slug="equilibrium">Chapter 16</Ch> |
+| Comfort air | ≈ 22–24 °C, 40–60 % relative humidity | <Ch slug="psychrometrics">Chapter 14</Ch> |
+| Airliner cruise | Ma ≈ 0.78–0.85 at ≈ 11 km, 216.65 K | <Ch slug="compressible">Chapter 17</Ch> |
+
+## The sixteen machines at a glance
+
+| # | Machine | Chapter |
+|---|---|---|
+| 1 | Car engine and its loss audit | <Ch slug="review">8</Ch> |
+| 2 | CFM56 / LEAP turbofan | <Ch slug="gas-cycles">9</Ch> |
+| 3 | GE 7FA industrial gas turbine | <Ch slug="gas-cycles">9</Ch> |
+| 4 | Combined-cycle plant | <Ch slug="vapor-cycles">10</Ch> |
+| 5 | Nuclear PWR | <Ch slug="vapor-cycles">10</Ch> |
+| 6 | Home heat pump and fridge | <Ch slug="refrigeration">11</Ch> |
+| 7 | Supermarket cascade | <Ch slug="refrigeration">11</Ch> |
+| 8 | Aircraft air-cycle pack | <Ch slug="refrigeration">11</Ch> |
+| 9 | LNG liquefier (Joule–Thomson) | <Ch slug="property-relations">12</Ch> |
+| 10 | Scuba nitrox and natural gas | <Ch slug="mixtures">13</Ch> |
+| 11 | Rooftop HVAC and cooling tower | <Ch slug="psychrometrics">14</Ch> |
+| 12 | Car λ sensor and condensing boiler | <Ch slug="combustion">15</Ch> |
+| 13 | Jet combustor | <Ch slug="combustion">15</Ch> |
+| 14 | NOx and the catalytic converter | <Ch slug="equilibrium">16</Ch> |
+| 15 | Haber–Bosch ammonia | <Ch slug="equilibrium">16</Ch> |
+| 16 | Airliner cruise and rocket nozzle | <Ch slug="compressible">17</Ch> |
+
+## 1 · The car engine: where the fuel goes
+
+**Numbers (≈).** Brake efficiency 25–35 % at best; 30–35 % of the fuel energy leaves in the exhaust at ≈ 700–900 °C, 25–30 % through the coolant; peak gas temperature 2500–3000 K. The Carnot limit for 2000 K and 300 K is 85 %, and the best real plants (the combined cycle) reach ≈ 60 %.
+
+**Modelled by.** <Ch slug="review">Chapter 8</Ch> (entropy balance, isentropic efficiency, exergy: how much of the heat is *worth* work) and the loss-audit figure on that page; <Asg n="01">6-22</Asg> (a 150 MW coal plant at 30 %) and <Asg n="01">7-26</Asg> (a paddle wheel: all the work becomes heat and entropy).
+
+**Idealised away.** Friction and pumping losses, heat loss through the cylinder wall (the 25–30 % that goes to the coolant is not a "cycle" loss at all), part-load throttling, incomplete combustion, and the fact that real fuel–air cycles have variable $c_p$. The course treats each device as adiabatic or with a stated efficiency.
+
+## 2 · The turbofan: CFM56 and LEAP
+
+**Numbers (≈).** CFM56-7B (737NG): bypass ratio ≈ 5.1, overall pressure ratio ≈ 32 at take-off, take-off thrust ≈ 120 kN, fan diameter ≈ 1.55 m, cruise TSFC ≈ 17 mg/(N·s) (≈ 0.6 lb/(lbf·h)). Most thrust comes from the cold bypass air. Turbine-inlet gas ≈ 1600–1800 K; single-crystal blades with internal cooling and ceramic coating keep the metal below ≈ 1300 K. Pressure ratios have climbed from 6–8 to 40+ because $\eta=1-r_p^{-(k-1)/k}$ rewards pressure ratio.
+
+**Modelled by.** <Ch slug="gas-cycles">Chapter 9</Ch>, jet-engine section (stations 1 to 6, ram, $w_T=w_C$, gross and net thrust); <Asg n="01">9-136</Asg> and <Asg n="01">9-137</Asg> (turbojet at 9150 m: 832 m/s, 7.7 MW, 0.624 kg/s; with real components 24 % overall efficiency instead of 29 %); <Ex id="final-2021">2021 final P1</Ex> (turbojet at 10 km, $r_c=15$), <Ex id="final-mock-b">practice final B</Ex> (turbofan with two streams), <Ex id="final-mock-a">practice final A</Ex> (turboprop, ESHP and ESFC), <Ex id="midterm-review">midterm review class</Ex> (test-stand turbojet).
+
+**Idealised away.** Pressure losses in the intake, combustor and bypass duct; **cooling air** bled from the compressor to protect the turbine (it never does turbine work and cools the gas it re-enters); tip-clearance and shock losses in the fan; variable $c_p$ and $k$ (the course uses 1.005/1.4 for air and 1.147/1.333 for hot gas); fuel mass added to the flow; and **part load** (the engine spends most of its life at cruise power, not at the design point).
+
+## 3 · The GE 7FA industrial gas turbine
+
+**Numbers (≈).** ≈ 160 MW at ≈ 36 % simple-cycle efficiency, pressure ratio ≈ 15–16, turbine inlet ≈ 1290 °C, exhaust ≈ 600 °C. Problem 9-109 uses 159 MW, 35.9 %, $r_p=14.7$, 1288 °C and back-solves the component efficiencies (turbine 84 %, compressor 95 %); a 65 % regenerator would raise the efficiency to 44.1 % in the course's idealised numbers.
+
+**Modelled by.** <Asg n="01">9-109</Asg>, <Asg n="01">9-95</Asg> (η 37.8 %, back-work ratio 0.511), <Asg n="01">9-97</Asg> (two shafts), <Asg n="01">9-126</Asg> (intercooling and reheat); the exhaust-diffuser section of <Ch slug="gas-cycles">Chapter 9</Ch>.
+
+**Idealised away.** Cooling air (a real 7FA bleeds a large share of the compressor flow to cool the first blade rows), inlet and exhaust pressure drops, mechanical and generator losses, the water or steam injection used for NOx, and a **regenerator** that would be enormous at 600 °C exhaust (real units go to a steam bottoming cycle instead).
+
+## 4 · The combined-cycle plant
+
+**Numbers (≈).** ≈ 60–64 % net efficiency, the highest of any thermal plant. A gas turbine (≈ 40 % alone) exhausts at ≈ 600 °C into a heat-recovery steam generator that raises steam for a bottoming Rankine cycle (typically three pressure levels with reheat, ≈ 125–170 bar, ≈ 565 °C).
+
+**Modelled by.** The "combined gas–vapor cycles" section of <Ch slug="vapor-cycles">Chapter 10</Ch>, with the pieces solved separately in <Asg n="01">9-109</Asg> (the gas turbine) and <Asg n="02">10-52</Asg>, <Asg n="02">10-110</Asg> (reheat and heater cycles on the steam side).
+
+**Idealised away.** The heat-recovery boiler's **pinch point** (the exhaust cannot be cooled to the water temperature), multiple steam pressure levels, pressure losses in the boiler and ducts, auxiliary power (pumps, fans) and supplementary firing. The course joins the two cycles with a single energy balance between the exhaust gas and the steam.
+
+## 5 · The pressurized-water reactor
+
+**Numbers (≈).** ≈ 33 % efficiency. Primary coolant ≈ 155 bar and ≈ 300–325 °C, never boiling; saturated steam at ≈ 7 MPa (≈ 286 °C) in the steam generator; condenser ≈ 5–10 kPa. Course check: an ideal Rankine cycle on 7 MPa saturated steam and a 7 kPa condenser has $\eta=37$ % but leaves the turbine at quality 0.68 (32 % liquid), so real plants use moisture separators, reheaters and feedwater heating.
+
+**Modelled by.** <Ch slug="vapor-cycles">Chapter 10</Ch> (the ideal Rankine cycle, reheat, open and closed feedwater heaters); <Asg n="02">10-61</Asg> (reheat with a closed heater: 44.4 %), <Asg n="02">10-98</Asg> (an 80 % turbine and 95 % pumps cost 8.5 points: 43.0 % ideal against 34.5 %), <Asg n="02">10-28</Asg> (a binary geothermal plant: same cycle, a different working fluid).
+
+**Idealised away.** Saturated steam gives wet expansion, and the course shows quality but not **blade erosion or moisture-separator losses**; also the low steam temperature (that is the physical reason the PWR sits near 33 % while a coal plant with 600 °C steam reaches over 40 %), pump and coolant-pump power, and the steam generator's temperature difference between primary and secondary side.
+
+## 6 · The home heat pump and fridge
+
+**Numbers (≈).** Heat pump seasonal COP ≈ 2.5–4 (about 3 on a mild winter day, about 2 at −15 °C), so 1 kW of electricity delivers about 3 kW of heat. A freezer has its evaporator at ≈ −20 to −25 °C and its condenser at ≈ 35–45 °C, with COP ≈ 2–3; the compressor draws about 100 W to remove about 250 W. Refrigerants: R-134a, R-600a (isobutane) or R-290.
+
+**Modelled by.** <Ch slug="refrigeration">Chapter 11</Ch> (Carnot limits, ideal and actual vapor-compression cycle); <Asg n="04">11-21</Asg> (a fridge: COP 2.72 real, 2.89 ideal), <Asg n="04">11-46</Asg> (ground-water heat pump, COP 4.69), <Asg n="04">11-62</Asg> (two evaporators, one compressor).
+
+**Idealised away.** Pressure drops in the lines and heat exchangers, the compressor's motor and mechanical losses (the course gives an isentropic efficiency and nothing else), the **finite temperature difference** across each heat exchanger (the evaporator is colder and the condenser hotter than the rooms), frost on the coil, defrost cycles and **part-load cycling** of the compressor, which is why the seasonal COP is lower than the design-point COP.
+
+## 7 · The supermarket cascade
+
+**Numbers (≈).** A low-temperature loop (CO₂ or R-134a) at ≈ −35 °C cools the freezer cases and rejects its heat into the evaporator of a second loop (ammonia or another refrigerant) that rejects outdoors: two loops, one heat exchanger. Course numbers: a single stage between −40 °C and 800 kPa has COP 2.28, while a two-stage cycle with a separator reaches 2.74 (<Asg n="04">11-60</Asg>); a flash-chamber tutorial gives COP ≈ 2.9.
+
+**Modelled by.** The cascade and multistage sections of <Ch slug="refrigeration">Chapter 11</Ch>; <Asg n="04">11-60</Asg>, <Asg n="04">11-62</Asg> and the flash-chamber tutorial in <Asg n="04">Assignment 4</Asg>; <Ex id="final-mock-b">practice final B</Ex> (cascade refrigeration).
+
+**Idealised away.** The temperature difference across the intermediate heat exchanger (a real cascade loses a few kelvin there), unequal compressor efficiencies, oil return, the defrost heat and the very different refrigerants' properties: the course uses one fluid (R-134a) and tables for it.
+
+## 8 · The aircraft air-cycle pack
+
+**Numbers (≈).** Engine bleed air ≈ 200–250 °C is cooled, compressed, cooled again and expanded through a turbine to well below zero: a **gas** refrigeration cycle (reversed Brayton). The COP is well below 1, but the refrigerant is the cabin air itself, weightless and leak-proof. Course value (11-79, regenerator of 0.434 effectiveness): COP 0.478 and 21.4 kW; the simple cycle has COP 0.599 and 24.7 kW.
+
+**Modelled by.** The gas-refrigeration section of <Ch slug="refrigeration">Chapter 11</Ch> and <Asg n="04">11-79</Asg>.
+
+**Idealised away.** Moisture in the bleed air (a real pack has a water separator, and the turbine exit can ice), the pressure drop in the heat exchangers, the ram-air side of the heat exchanger, the compressor driven by the turbine on the same shaft (the course counts the net power), and the engine penalty of taking the bleed air at all.
+
+## 9 · LNG and the Joule–Thomson valve
+
+**Numbers (≈).** Methane boils at −162 °C (111 K); LNG is ≈ 1/600 of the gas volume; liquefaction costs roughly 0.3–0.5 kWh per kg. The classical Linde liquefier compresses the gas, cools it against the returning cold stream and throttles it: $\mu_{JT}$ is positive below the inversion temperature, typically 0.2–0.5 K per bar for N₂ and CH₄ near room temperature and about 1 K/bar for CO₂. CO₂ pipelines run at ≈ 10 MPa and ≈ 40 °C with $Z\approx0.27$ (density ≈ 600 kg/m³ instead of the ideal 169); natural-gas transmission at ≈ 7 MPa has $Z\approx0.89$.
+
+**Modelled by.** <Ch slug="property-relations">Chapter 12</Ch>; <Asg n="05">12-58C</Asg> (helium throttled), <Asg n="05">12-62</Asg> (steam throttling calorimeter), <Asg n="05">12-75</Asg> (a CO₂ nozzle with departure charts), <Asg n="05">12-73</Asg> and <Asg n="05">12-97</Asg> (oxygen and propane with departure charts).
+
+**Idealised away.** The real liquefier is a multi-stage process with a turbo-expander and mixed refrigerants; the J–T valve is only the last step. The course also uses **one chart for every gas** (corresponding states: $Z$ and the departure functions as functions of $T_R$ and $P_R$), which is good to a few percent for simple fluids and worse for polar ones.
+
+## 10 · Scuba nitrox and natural gas
+
+**Numbers (≈).** EAN32: 32 % O₂ and 68 % N₂ by mole. Oxygen turns toxic above a partial pressure of ≈ 1.4 bar, so the deepest safe depth is where $P=1.4/0.32=4.375$ bar, i.e. ≈ 34 m (≈ 10 m of seawater per bar). A pipeline gas is ≈ 85–95 % CH₄ with $M\approx18$ kg/kmol, $R\approx0.466$ kJ/kg·K and $k\approx1.28$; air has $M=28.97$, $R=0.287$, $k=1.4$.
+
+**Modelled by.** <Ch slug="mixtures">Chapter 13</Ch> and its nitrox simulation; <Asg n="06">13-34</Asg> (enriched air: $M=28.99$), <Asg n="06">13-41</Asg> (methane–air into an engine), <Asg n="06">13-59</Asg> (hydrocarbon gas compressed), <Asg n="06">13-72</Asg> (Amagat versus Kay), <Ex id="final-mock-a">practice final A</Ex> (Kay's rule).
+
+**Idealised away.** Real-gas behaviour in a 200 bar cylinder (the course uses Dalton and ideal gas except where a problem asks for Kay or Amagat), the heating of the cylinder on filling, the narcosis and decompression limits that matter as much as oxygen toxicity, and the fact that natural gas composition varies with the field.
+
+## 11 · Rooftop HVAC unit and the cooling tower
+
+**Numbers (≈).** Comfort 22–24 °C and 40–60 %. A rooftop unit mixes outside air (say 35 °C, 45 %) with return air, passes it over a coil at ≈ 7–12 °C (colder than the dew point, so it dehumidifies) and often reheats it. In the chapter's example the coil removes ≈ 21 kJ per kg of dry air and 2.2 g/kg of water. 1 ton = 211 kJ/min = 3.517 kW. A natural-draft tower is ≈ 100–200 m tall and evaporates ≈ 1–3 % of the circulating water (1.8 kg/s from 100 kg/s in the class example, ≈ 80 % of the heat removed as latent heat).
+
+**Modelled by.** <Ch slug="psychrometrics">Chapter 14</Ch>; <Asg n="07">14-84</Asg> (car air conditioner), <Asg n="07">14-108</Asg> (cooling tower: make-up 1.94 kg/s), <Asg n="07">14-132</Asg> (coil: 3.65 kW), <Asg n="07">Example 14-5</Asg>, <Ex id="final-2021">2021 final P5</Ex> (an 11-ton air conditioner) and the cooling tower of <Ex id="final-mock-a">practice final A</Ex>.
+
+**Idealised away.** The coil's bypass factor (some air passes the coil untouched), fan power and duct heat gain, **pressure variation with altitude** (use the stated pressure, 14-32), the Lewis-number approximation behind the straight wet-bulb lines, the water-droplet carry-over of a real tower, and the dependence of tower performance on the wet-bulb temperature of the day.
+
+## 12 · The car's λ sensor and the condensing boiler
+
+**Numbers (≈).** Stoichiometric gasoline: AF ≈ 14.7 (pure octane gives 15.09 in the course). The oxygen sensor holds λ ≈ 1 by trimming the fuel, because the three-way catalyst only works in a narrow window around stoichiometric (lean gives NOx, rich gives CO). Natural gas: HHV ≈ 55.5 MJ/kg, LHV ≈ 50.0 MJ/kg (ratio 1.11); a condensing boiler cools the flue below the dew point (≈ 55–57 °C) and reaches ≈ 90–98 % on the HHV basis, i.e. ≈ 100–109 % on the LHV basis.
+
+**Modelled by.** <Ch slug="combustion">Chapter 15</Ch>; <Asg n="08">15-24</Asg> (ethane: AF 19.3, $T_{dp}=52.4$ °C), <Asg n="08">15-35</Asg> (octane with CO), <Asg n="08">15-46</Asg> and <Asg n="08">15-52</Asg> (HHV and LHV), <Asg n="08">15-59</Asg> (cool the products to the dew point), <Asg n="08">15-33</Asg> (air–fuel ratio from the dry analysis).
+
+**Idealised away.** Real fuels are blends (oxygenates, aromatics, varying methane number), the **acid** (nitric and sulphuric) in the condensate, the flue-gas heat exchanger's own limits (not all of the latent heat is caught), incomplete combustion and cycle-to-cycle variation in the engine, and the dependence of the sensor's output on exhaust temperature.
+
+## 13 · The jet combustor
+
+**Numbers (≈).** Overall, very lean: $f\approx0.02$ against stoichiometric kerosene at $f\approx0.067$ (λ ≈ 3.3, equivalence ratio ≈ 0.3), because the turbine cannot take the stoichiometric flame temperature of ≈ 2400 K. The flame burns near stoichiometric in the primary zone and the rest of the air dilutes the gas to ≈ 1400–1700 K at the turbine inlet. The 2021 final problem 2 is exactly this: decane, $f=0.0206$, answer ≈ 1365 K.
+
+**Modelled by.** <Ch slug="combustion">Chapter 15</Ch> (adiabatic flame temperature, the iteration on $T_P$); <Asg n="08">15-79</Asg> (acetylene with 30 % excess air: 2300 K), <Ex id="final-2021">2021 final P2</Ex>, <Ex id="final-mock-a">practice final A</Ex> (propane) and <Ex id="final-mock-b">practice final B</Ex> (ethanol).
+
+**Idealised away.** Heat loss to the liner, **dissociation** at the primary-zone temperature (chapter 16 shows it lowers the flame temperature), pressure loss across the combustor, incomplete combustion, liner and dilution cooling, and the fuel's real composition (kerosene is a blend, not decane). The course also treats the combustor as adiabatic with a single outlet temperature.
+
+## 14 · NOx and the catalytic converter
+
+**Numbers (≈).** Thermal NO is made by the Zeldovich chain and is very temperature-dependent: the chapter's equilibrium calculation for air at 1 atm gives ≈ 0.13 % NO at 1500 K, 0.8 % at 2000 K and 2.3 % at 2500 K. Real engines make far less (hundreds to a few thousand ppm) because the reaction is slower than the cooling. A platinum–palladium–rhodium catalyst at ≈ 300–800 °C converts CO, unburned hydrocarbons and NO together, but only at λ ≈ 1. NOx is cut by lowering the peak flame temperature (EGR, lean burn, staged combustion, water injection).
+
+**Modelled by.** <Ch slug="equilibrium">Chapter 16</Ch>; <Asg n="09">16-8C</Asg> (pressure does not matter for NO, $\Delta\nu=0$), <Asg n="09">16-31</Asg> (0.79 % NO at 2000 K), <Asg n="09">16-38</Asg> (propane burner: CO negligible), <Ex id="final-mock-b">practice final B</Ex> (NO equilibrium).
+
+**Idealised away.** **Kinetics versus equilibrium**: the course finds what the mixture would reach if it had infinite time, the catalyst's job is the rate; the real NO is frozen at whatever the gas had when it cooled, and the catalyst surface, poisoning and warm-up (most of the emissions come in the first minute) are outside the model.
+
+## 15 · Haber–Bosch
+
+**Numbers (≈).** N₂ + 3H₂ ⇌ 2NH₃ is exothermic and reduces the number of moles ($\Delta\nu=-2$), so Le Chatelier favours low $T$ and high $P$; but a low $T$ is too slow, so plants run at ≈ 400–500 °C and ≈ 150–300 bar over an iron catalyst, recycling the unreacted gas (≈ 15–25 % conversion per pass). The process feeds roughly half the world's food through fertiliser.
+
+**Modelled by.** <Ch slug="equilibrium">Chapter 16</Ch>, the six remarks about $K_p$ and the van 't Hoff equation; no assigned problem uses ammonia, but <Asg n="09">16-4C</Asg> and <Asg n="09">16-6C</Asg> use the same temperature, pressure and inert-gas reasoning ($\Delta\nu$ and $P/N_{total}$).
+
+**Idealised away.** Real-gas behaviour at 200 bar (fugacities, not partial pressures, enter the equilibrium; $K_p$ with pressure in atm is an ideal-gas statement), the rate and the catalyst, the recycle and purge loops, and the hydrogen source (steam reforming) which is itself the largest energy cost.
+
+## 16 · Airliner cruise and the rocket nozzle
+
+**Numbers (≈).** Cruise at Ma ≈ 0.78–0.85 and ≈ 11 km (216.65 K, 22.6 kPa): $c=295$ m/s, flight speed ≈ 230–251 m/s. A pitot probe sees stagnation values: $T_0\approx243$–248 K (the nose skin is 26–31 K warmer than the air) and $P_0\approx33.8$–36.3 kPa. A rocket chamber at ≈ 10–20 MPa and $T_0\approx3500$ K feeds a converging–diverging nozzle: the sonic throat sets the mass flow and the bell expands the gas to Ma ≈ 3–5 (for $k=1.2$, $A_e/A^*=15$ gives $Ma_e=3.56$). A converging nozzle chokes when $P_0/P_{amb}$ exceeds ≈ 1.9.
+
+**Modelled by.** <Ch slug="compressible">Chapter 17</Ch> and the tutorial <Ex id="tutorial-17">chapter 17 problems</Ex>; <Asg n="10">17-26</Asg> (A340: Ma 0.897), <Asg n="10">17-40</Asg> (Ma 1.1 at 12 km: $T_0=293.3$ K), <Asg n="10">17-39</Asg> and <Asg n="10">17-62</Asg> (throat and area ratio), <Asg n="10">17-18</Asg> (hot CO₂ in a nozzle), <Ex id="final-mock-b">practice final B</Ex> (nozzle regimes).
+
+**Idealised away.** Friction and shock waves (the course is isentropic; over- and under-expanded nozzles and normal shocks belong to MECH 430, see [MECH 430](#/mech430)), variable $k$ along a rocket nozzle (the hot gas changes composition), heat transfer to the nozzle wall, boundary layers, and the real drag rise near Mach 1.
+
+<Callout kind="note" title="One habit from all sixteen">
+
+Every machine above has a "design point" that the course solves and a "life" that it does not: part load, fouling, wear, off-design. When a number on an exam seems too good compared with the table at the top of this page, the reason is usually one of the idealisations listed under that machine.
+
+</Callout>
+
+<Examined>
+
+Not examined as such; the real-world lines in the notes and solutions use these machines, and an exam's context sentence ("a gas turbine in a power plant…") tells you which of these models to reach for.
+
+</Examined>
