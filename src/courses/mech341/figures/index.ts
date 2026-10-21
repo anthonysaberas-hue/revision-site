@@ -4,3 +4,4 @@ export * from './figsA';
 export * from './figsB';
 export * from './hwA';
 export * from './hwB';
+export * from './exams';

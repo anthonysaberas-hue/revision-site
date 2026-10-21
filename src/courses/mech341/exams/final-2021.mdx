@@ -1,0 +1,494 @@
+<p className="eyebrow">Final exam · April 20, 2021 · McGill MECH 341 · Prof. Habashi · the student copy and your Past_final notebook</p>
+
+# Final exam, April 20, 2021
+
+<div className="lede">
+
+The one complete final of the course that you have: the paper (12 pages with a classmate's handwritten answers, ungraded, so no marks to compare with) and your own solution notebook *Past_final* (18 pages, 18 Dec, the day before the final: you finished the turbojet through the turbine, started the decane flame temperature and the equilibrium problem, solved the air conditioner nearly to the end and the humidifier completely). Statements are paraphrased with every number kept. Each problem shows the solution, a recomputation from the lib, **the student copy**, **your notebook**, and the printed or recomputed answer. ⚠ marks a legible digit or method that disagrees with the recomputation; "Check your page" marks handwriting that cannot be read with confidence. The sixth problem is not in the copy: it is reconstructed from the last pages of your notebook.
+
+</div>
+
+<ExamFormatFigure />
+
+<Callout kind="note" title="Format, marking and how I would use the three hours">
+
+Problems 1, 2 and 3 are **mandatory** (25 + 15 + 10 = 50 marks); from problems 4, 5 and 6 (25 marks each) you **choose two**; if you attempt all three, only the best two count and **no partial credit** is given across the three. Allocate time in proportion to marks, solve the mandatory block first, and decide between 4, 5 and 6 after reading all three for ten minutes: problem 4 (steam cogeneration) is a straight read of tables; problem 5 (air conditioner) is the one that punishes careless psychrometrics (the pressure is 1 bar, not 101.325 kPa, and the condensate carries enthalpy); problem 6 (humidifier, reconstructed) is a mass and energy balance in four lines once the two humidity ratios are known. Chapter notes behind each problem: <Ch slug="gas-cycles">9</Ch>, <Ch slug="combustion">15</Ch>, <Ch slug="equilibrium">16</Ch>, <Ch slug="vapor-cycles">10</Ch>, <Ch slug="psychrometrics">14</Ch>.
+
+</Callout>
+
+| Problem | Marks | Topic | Copy vs recomputed | Your notebook |
+|---|---|---|---|---|
+| 1 | 25 | turbojet at 10 km, rc 15, CD nozzle | all of (a), (c)–(e), (g), (h) within 0.3 %; ⚠ (b) and (f) | through the turbine ✔; stops at the nozzle |
+| 2 | 15 | adiabatic flame temperature, decane | ⚠ concluded "above 1400 K, about 1430" (true 1365 K): two legible slips | method ✔, unfinished |
+| 3 | 10 | Kp at 4000 K; h̄f of liquid water | (a) ✔; (b) ⚠ wrong sign and wrong h_fg | (a) ✔; (b) unfinished |
+| 4 | 25 | steam cogeneration, 1 kg/s | ✔ (table rounding, 0.1 %) | not solved |
+| 5 | 25 | air conditioner, 11 tons | ⚠ h₁, ω₁, the ton, no condensate term: 57 kg/min instead of 48.6 | ✔ except 101.3 kPa, interpolation and the condensate term |
+| 6 | 25 | humidifier (reconstructed) | not in the copy | ✔ |
+
+<Problem id="P1" title="Problem 1 (25, mandatory): turbojet at 10 000 m, all calculations on stagnation conditions" tags="turbojet, ram, stagnation, nozzle, thrust">
+
+<Statement>
+
+A turbojet (diffuser, compressor, burner, turbine, convergent-divergent nozzle, stations 1 to 6) flies at 10 000 m on a standard day (use the standard-atmosphere table: $T_1=223.26$ K, $P_1=26.5$ kPa) at 270 m/s with an air flow of 0.50 kg/s. The compressor stagnation pressure ratio is 15; efficiencies: diffuser 100 %, compressor 85 %, turbine 90 %, nozzle 100 %; maximum stagnation temperature 1400 K; for air $c_{p}=1.005$ kJ/kg·K, $k=1.4$; for the gas $c_p=1.147$ kJ/kg·K, $k=1.333$. All calculations are on stagnation conditions, the stagnation pressure is constant through the combustor, the fuel/air ratio is 0.020636, and the nozzle is convergent-divergent. Fill a table: (a) inlet Mach number, (b) the ram pressure rise or pressure ratio in bars, (c) compressor work in kW, (d) turbine work in kW, (e) turbine exit pressure in bars, (f) nozzle exit pressure in bars, (g) nozzle exit velocity in m/s, (h) thrust due to pressure and thrust due to momentum.
+
+</Statement>
+
+<Think>
+
+A chain of stagnation states with one idea per station: **ram** (the flight speed raises $T_0$ and $P_0$ of the entering air), **compressor** (work from $\eta_C$), **turbine** (its work equals the compressor's, which fixes $T_{05}$; its efficiency then fixes $P_{05}$), **nozzle** (the C-D nozzle expands to ambient, so there is no pressure thrust). The fuel/air ratio is given, so the combustor needs no energy balance. Two points are ambiguous in the paper: what (b) wants, and whether the fuel mass counts in the exit momentum (below).
+
+</Think>
+
+<Plan>
+
+$c$, $Ma$ → $T_{01}$, $P_{01}$ → $T_{03s}$, $T_{03}$, $\dot W_C$ → $T_{05}$, $T_{05s}$, $P_{05}$ → $T_6$, $V_6$ at $P_6=P_1$ → $F$.
+
+</Plan>
+
+<Steps>
+<Step title="1. (a) Inlet Mach number">
+
+$c_1=\sqrt{kRT_1}=\sqrt{1.4(287)(223.26)}=\mathbf{299.5}$ m/s (the text table gives the same). $Ma_1=\dfrac{270}{299.5}=\mathbf{0.9015}$. Copy ✔, notebook ✔ (0.9015).
+
+</Step>
+<Step title="2. (b) Ram: stagnation temperature and pressure at the diffuser exit">
+
+$T_{01}=T_1+\dfrac{V^2}{2c_p}=223.26+\dfrac{270^2}{2000(1.005)}=259.53$ K. $\dfrac{P_{01}}{P_1}=\left(\dfrac{T_{01}}{T_1}\right)^{k/(k-1)}=\left(\dfrac{259.53}{223.26}\right)^{3.5}=\mathbf{1.694}$, so $P_{01}=1.694(26.5)=44.88$ kPa $=\mathbf{0.4488}$ bar; the **ram pressure rise** is $44.88-26.5=18.4$ kPa = 0.184 bar. With $\eta_D=100\ \%$, $P_{02}=P_{01}$: the diffuser recovery $P_{02}/P_{01}$ is exactly 1.
+
+</Step>
+<Step title="3. (c) Compressor">
+
+$T_{03s}=T_{02}(15)^{0.2857}=259.53(2.168)=562.6$ K; $w_s=1.005(562.6-259.53)=304.6$ kJ/kg; $w_C=\dfrac{304.6}{0.85}=358.4$ kJ/kg; $T_{03}=259.53+\dfrac{358.4}{1.005}=\mathbf{616.1}$ K (the number problem 2 needs). $\dot W_C=0.5(358.4)=\mathbf{179.2}$ kW. $P_{03}=P_{04}=15(44.88)=673.2$ kPa.
+
+</Step>
+<Step title="4. (d) Turbine work, (e) turbine exit pressure">
+
+The turbine drives only the compressor: $\dot W_T=\dot W_C=\mathbf{179.2}$ kW (the fuel mass is neglected in the turbine flow). Per kilogram with $c_{p,g}$: $1.147(1400-T_{05})=358.4\Rightarrow T_{05}=1400-312.4=1087.6$ K (the *real* exit). The isentropic exit follows from $\eta_T=\dfrac{T_{04}-T_{05}}{T_{04}-T_{05s}}=0.90$: $T_{05s}=1400-\dfrac{312.4}{0.90}=1052.9$ K. $\dfrac{P_{05}}{P_{04}}=\left(\dfrac{T_{05s}}{T_{04}}\right)^{k/(k-1)}=\left(\dfrac{1052.9}{1400}\right)^{4.003}=0.3195$, so $P_{05}=0.3195(673.2)=215.2$ kPa $=\mathbf{2.152}$ bar.
+
+</Step>
+<Step title="5. (f), (g) Nozzle expanded to ambient">
+
+A properly designed C-D nozzle expands to the ambient pressure with no shock in the divergent part: $P_6=P_1=\mathbf{0.265}$ bar. $T_6=T_{05}\left(\dfrac{P_6}{P_{05}}\right)^{(k-1)/k}=1087.6\left(\dfrac{26.5}{215.2}\right)^{0.2498}=644.5$ K ($\eta_N=1$), $V_6=\sqrt{2000(1.147)(1087.6-644.5)}=\mathbf{1008.1}$ m/s.
+
+</Step>
+<Step title="6. (h) Thrust">
+
+$F=\dot m_6V_6-\dot m_aV+(P_6-P_1)A_6$. The last term is zero because $P_6=P_1$: **pressure thrust 0**. Momentum thrust with the fuel included in the jet: $0.5(1.020636)(1008.1)-0.5(270)=514.5-135.0=\mathbf{379.5}$ N.
+
+</Step>
+</Steps>
+
+<Answer>
+
+| a | b | c (kW) | d (kW) | e (bar) | f (bar) | g (m/s) | h₁ pressure (N) | h₂ momentum (N) |
+|---|---|---|---|---|---|---|---|---|
+| 0.9015 | 1.694 (ram rise 0.184 bar; recovery 1) | 179.2 | 179.2 | 2.152 | 0.265 | 1008.1 | 0 | 379.5 |
+
+</Answer>
+
+<Callout kind="warn" title="⚠ Student copy: (b) and (f) are not what the table asks for">
+
+The copy's table reads **a 0.9015, b 1, c 179.17, d 179.17, e 2.158, f 1, g 1009.08, h 0 and 379.95**. (a), (c), (d), (e), (g), (h) agree with the recomputation to 0.1–0.3 % (the copy rounds $T_{05}$ to 1088 K, which moves $P_{05}$ from 2.152 to 2.158 bar). (b) is the diffuser recovery $P_{02}/P_{01}=1$, whereas "ram pressure rise or pressure ratio in bars" asks for $P_{01}/P_1=1.694$ or the rise 0.184 bar (the copy's own page 2 computes $P_{01}=0.449$ bar and then divides by itself). (f) is written 1: the copy's page 3 says "assume expansion is to ambient", so the cell should read **0.265 bar**. Both are cell-filling slips, not method errors.
+
+</Callout>
+
+<Callout kind="note" title="Your notebook, pages 1 to 6, and the ambiguities of the paper">
+
+Your notebook is right through the turbine: $c=299.5$, $Ma=0.9015$, $T_0=259.36$ K (you used 273 instead of 273.15 for the kelvin offset, so $T_1=223.1$ K: a 0.06 % difference), $P_0/P=1.69399\Rightarrow P_0=0.4489$ bar, then "Ratio = 1" for the diffuser; $T_{02s}=562.95$, $w=304.79/0.85=358.6$, $\dot W=179.05$ kW, and the correct reminder "$W_T=W_C$, use $c_p$ of the gas", $T_{05}=1088$ K, $T_{05s}=1053.3$ K. You stop at $P_{05}/P_{04}=(T_{05s}/T_{04})^{k/(k-1)}$; the nozzle is not on the pages. You also computed both candidate answers for (b): that is the right instinct, give **both** on the exam ("ram ratio 1.694, i.e. a rise of 0.184 bar; the isentropic diffuser itself has recovery 1"). **Basis of (h):** with the fuel counted in the jet (what the copy does, and the table above) $F=379.5$ N; per kilogram of air only, $0.5(1008.1-270)=369.1$ N; if the turbine flow also carries the fuel, $T_{05}$ is lower, $V_6=1015.9$ m/s and $F=383.4$ N. State the convention you use; the paper's "the fuel/air ratio is 0.020636" invites the first one.
+
+</Callout>
+
+<RealWorld title="A small jet at altitude">
+
+Half a kilogram per second of air, a compressor ratio of 15 and 380 N of thrust is the size of the small turbojets of target drones and light unmanned aircraft (typical thrust 300–500 N). The jet leaves at 1008 m/s, more than three times the flight speed, which is why a turbojet is efficient only at high speed: the propulsive efficiency here is $2V/(V+V_6)\approx0.42$ (low-subsonic transports use a turbofan to cut the exit speed).
+
+</RealWorld>
+
+<Traps>
+
+- Using **$T_1$ and $P_1$** instead of the stagnation state to start the compressor: the ram raises $T_{02}$ from 223 K to 260 K and the final $T_{03}$ from 530 K to 616 K.
+- Using $c_{p,a}$ in the turbine equation: the gas has $c_p=1.147$.
+- A C-D nozzle in this problem is *fully expanded*: no pressure thrust. (A convergent nozzle would choke, $P_{crit}=116$ kPa, and have a pressure term.)
+- Sign slips in the pressure ratio of the turbine: it is the *isentropic* temperature ratio that is raised to $k/(k-1)$.
+
+</Traps>
+
+<Source>April 2021 final, problem 1 (statement paraphrased, figures kept) · student copy p. 1–4 · your Past_final pp. 1–6 · lib <code>turbojet</code>, tests in <code>exams.test.ts</code> and <code>lib.test.ts</code> · also in <Ch slug="gas-cycles" /></Source>
+
+</Problem>
+
+<Problem id="P2" title="Problem 2 (15, mandatory): adiabatic flame temperature of decane with the compressor-exit air" tags="AFT, combustion, enthalpy of formation, two-trial iteration">
+
+<Statement>
+
+Suppose the turbine inlet temperature of problem 1 were not given and had to be computed. The fuel is decane ($\mathrm{C_{10}H_{22}}$, $\bar h_f=-300\,000$ kJ/kmol) injected at point 3 at 25 °C; combustion occurs with a fuel/air ratio of 0.020636. Taking the compressor-exit temperature of problem 1 for the air, find the adiabatic flame temperature at point 4. If iteration is needed, do not do more than two trials.
+
+</Statement>
+
+<Think>
+
+This is the hardest *bookkeeping* problem of the paper: the two traps are the **fuel/air ratio is by mass** (convert to moles with $M=142$ and $M_{air}=29$) and the **enthalpy balance includes formation enthalpies**: $H_R=H_P$ with $\bar h_f+\bar h-\bar h^\circ$ on both sides, not just sensible enthalpies. The air is hot (616 K) and the fuel is cold (25 °C), so the reactants' enthalpy is the sum of two different temperatures.
+
+</Think>
+
+<Plan>
+
+Mass ratio → $a$ kmol of O₂ per kmol fuel → products → $H_R$ with air at 616 K (table row 620 K) → $\sum N_P\bar h_P(T_4)$ → two trials → interpolate.
+
+</Plan>
+
+<Steps>
+<Step title="1. Balance from the fuel/air ratio">
+
+$f=\dfrac{M_{fuel}}{a(4.76)M_{air}}=\dfrac{142}{a(4.76)(29)}=0.020636\Rightarrow a=\mathbf{49.85}$ kmol O₂ per kmol of fuel (theoretical 15.5, so 322 % theoretical air). Products: $10\,\mathrm{CO_2}+11\,\mathrm{H_2O}+(49.85-15.5=\mathbf{34.35})\,\mathrm{O_2}+3.76(49.85)=\mathbf{187.4}\,\mathrm{N_2}$ (the copy and your notebook both have these). *Check:* O: $2(49.85)=99.7=20+11+2(34.35)$ ✓.
+
+</Step>
+<Step title="2. Energy balance, adiabatic, no work">
+
+$\sum N_R(\bar h_f+\bar h-\bar h^\circ)_R=\sum N_P(\bar h_f+\bar h-\bar h^\circ)_P$. <T>Table at 620 K: h̄(O₂) = 18 572, h̄(N₂) = 18 166 kJ/kmol; at 298 K: h̄° = 8682 (O₂), 8669 (N₂), 9364 (CO₂), 9904 (H₂O)</T>.
+$H_R=-300\,000+49.85(18\,572-8682)+187.4(18\,166-8669)=\mathbf{1.973\times10^{6}}$ kJ/kmol fuel. With $\sum N_P\bar h_f=10(-393\,520)+11(-241\,820)=-6.595\times10^6$ and $\sum N_P\bar h^\circ=2.125\times10^6$, the products must satisfy $\sum N_P\bar h_P(T_4)=1.973+6.595+2.125=\mathbf{10.693\times10^6}$ kJ (table form).
+
+</Step>
+<Step title="3. Two trials">
+
+At 1360 K (the guess from an "all N₂" equivalent): <T>h̄ = 51 521 (H₂O), 62 963 (CO₂), 44 198 (O₂), 42 227 (N₂)</T> gives $11(51\,521)+10(62\,963)+34.35(44\,198)+187.4(42\,227)=10.628\times10^6$, **below** the target. At 1400 K: <T>53 351, 65 271, 45 648, 43 605</T> gives $\mathbf{10.979\times10^6}$, **above** it. Linear interpolation: $T_4=1360+40\dfrac{10.693-10.628}{10.979-10.628}=\mathbf{1367}$ K.
+
+</Step>
+<Step title="4. Recomputation with the lib">
+
+Solving $H_R=H_P$ exactly with the lib's enthalpies gives **1364.8 K** (a 0.2 % difference from the two-trial interpolation, because $\bar h(T)$ is curved). With $M=142.29$ and $M_{air}=28.97$ instead of 142 and 29 the same $f$ gives $a=50.0$ and 1362.8 K: the answer is insensitive to this choice.
+
+</Step>
+</Steps>
+
+<Answer>
+
+$T_4\approx\mathbf{1365}$ K (two-trial table interpolation 1367 K, exact 1364.8 K). It is 35 K (2.5 %) *below* the 1400 K that problem 1 took for the turbine inlet: the problem asks you to compute the flame temperature for the given $f$, not to reproduce 1400 K.
+
+</Answer>
+
+<Callout kind="warn" title="⚠ Student copy: 'AFT above 1400 K, about 1430 K' comes from two legible slips">
+
+The copy's balance and products are right (49.85, 34.35, 187.4) and its first trial (1360 K, "guess 1360 K" from the N₂-equivalent) is actually **good**: with the right coefficients it lies 0.6 % below the target and the second trial brackets it. Two slips reverse the conclusion: (1) the trial sums are written with **22** in front of $\bar h_{H_2O}$ (22 is the number of hydrogen atoms; there are **11** kmol of H₂O) which inflates each sum by $11\bar h_{H_2O}\approx0.57\times10^6$; (2) the reactants' reference enthalpy of N₂ at 25 °C is written **7266** instead of 8669. With the sums as written (1.1222×10⁷ and 1.155×10⁷) against a target of 1.185×10⁷ both trials look *below* the target, which gives "above 1400 K, about 1430". With the 11 in place the trials bracket the target and the interpolation gives 1367 K. The copy also stops at 2 trials correctly and states its guess; on a real marking scheme the method marks are earned and the final number is lost.
+
+</Callout>
+
+<Callout kind="note" title="Your notebook, pp. 7–10: method right, unfinished">
+
+You balanced correctly ($x=49.85$; $10\,\mathrm{CO_2}+11\,\mathrm{H_2O}+34.35\,\mathrm{O_2}+187\,\mathrm{N_2}$), took the table row of 620 K for the air (O₂ 18 572, N₂ 18 166: the right entries for $T_{03}=616$ K) and used the **equivalent-N₂ shortcut** ($\sum N_P\bar h=242.79\,\bar h_{N_2}$, so $\bar h_{N_2}=43\,919$ kJ/kmol, which corresponds to about 1410 K). That is a fine starting guess for the first trial, but since CO₂ and H₂O store more enthalpy per kelvin than N₂ the true flame temperature is lower (1365 K): start about 40 K below the N₂-equivalent. Your page then writes "given 1400" and stops; the second trial and the interpolation are missing. *Check your page:* the last numbers of your trial sums are cut off.
+
+</Callout>
+
+<RealWorld title="Why the turbine sees 1400 K and the flame 2000 K">
+
+The adiabatic flame temperature at stoichiometric conditions in a jet engine is above 2300 K, which no turbine blade survives; the combustor burns lean (here 322 % of theoretical air) and the excess compressor air dilutes the products down to the turbine inlet temperature. That is exactly what this problem computes: a **diluted** flame at 1365 K. (Habashi's slide: jet engine about 2000 K against an internal-combustion engine about 3000 K at peak; the engine's turbine inlet is far below both.)
+
+</RealWorld>
+
+<Traps>
+
+- **Meaning of AFT:** $H_P=H_R$ with *formation enthalpies*; "enthalpy does not change" does not mean "nothing happens".
+- Ratio by **mass** (142/29) versus moles: 0.020636 is kg fuel per kg air.
+- Air enters at **616 K**, fuel at 298 K: do not take both at 298 K or both at 616 K.
+- Counting hydrogen atoms (22) instead of kmol of H₂O (11).
+- At most **two** trials: pick the second trial on the other side of the target and interpolate.
+
+</Traps>
+
+<Source>April 2021 final, problem 2 · student copy pp. 4–6 · your Past_final pp. 7–10 · lib <code>aft</code>, <code>burn</code> · also in <Ch slug="combustion" /></Source>
+
+</Problem>
+
+<Problem id="P3" title="Problem 3 (10, mandatory): which dissociation is likelier at 4000 K, and the enthalpy of formation of liquid water" tags="Kp, ln Kp, hf liquid, hfg">
+
+<Statement>
+
+(a) Which of the two reactions is more likely at 4000 K: $\mathrm{CO_2\to CO+\tfrac12O_2}$ or $\mathrm{N_2+O_2\to2NO}$? Justify. (b) Given $\bar h_f(\mathrm{H_2O},g)=-241\,820$ kJ/kmol in the formation table, calculate the enthalpy of formation of liquid water and compare it with the value listed in the same table.
+
+</Statement>
+
+<Think>
+
+(a) "More likely" means a **larger $K_p$** (more complete at the same $P$): look up $\ln K_p$ in Table A-28 and compare **on the basis of the reaction as written**. The NO row of the table is for $\tfrac12\mathrm{N_2}+\tfrac12\mathrm{O_2}\to\mathrm{NO}$, so doubling the equation squares $K_p$ (rule 6 of Habashi's remarks on $K_p$). (b) $\bar h_f(liq)=\bar h_f(gas)-M\,h_{fg}$, a pure formula question with $h_{fg}$ at 25 °C.
+
+</Think>
+
+<Steps>
+<Step title="1. (a) Look up and put on the same basis">
+
+<T>A-28 at 4000 K: ln Kp = +1.599 for CO₂ → CO + ½O₂; ln Kp = −1.216 for ½N₂ + ½O₂ → NO</T>. $K_{p,CO_2}=e^{1.599}=\mathbf{4.95}$. $K_p(\tfrac12\mathrm{N_2}+\tfrac12\mathrm{O_2}\to\mathrm{NO})=e^{-1.216}=0.296$, so for $\mathrm{N_2+O_2\to2NO}$: $K_p=0.296^2=\mathbf{0.0876}$ ($\ln K_p=-2.432$). The lib gives 1.608 and −1.207 (the table and the lib differ by 0.5 %).
+
+</Step>
+<Step title="2. (a) Conclude">
+
+$K_p=4.95\gg0.0876$: **CO₂ dissociation is far more likely** (about 90 % of the CO₂ is dissociated at 1 atm, while the 1:1 N₂–O₂ mixture forms only 0.26 kmol NO per kmol). Both statements can be read from the plot of $\ln K_p$ against $T$ below: the CO₂ curve crosses 0 near 3400 K; the NO curve is below zero all the way to 5000 K. The comparison is at the same $T$ and $P$.
+
+</Step>
+<Step title="3. (b) Liquid water">
+
+$\bar h_f(liq)=\bar h_f(g)-M\,h_{fg}=-241\,820-18.015(2441.7)=-241\,820-43\,987=\mathbf{-285\,810}$ kJ/kmol. <T>A-26: h̄f(H₂O, liquid) = −285 830 kJ/kmol</T>: difference 20 kJ/kmol (0.007 %), rounding of $h_{fg}$. Same result from the heating values: $HHV-LHV=285\,830-241\,820=44\,010$ kJ/kmol of H₂ burned, i.e. $44\,010/18.015=2443$ kJ/kg.
+
+</Step>
+</Steps>
+
+<KpCompareFigure />
+
+<Answer>
+
+(a) CO₂ → CO + ½O₂ ($K_p=4.95$ against 0.0876 for N₂ + O₂ → 2NO). (b) $\bar h_f(\mathrm{H_2O},liq)=-285\,810$ kJ/kmol, against the table's −285 830 kJ/kmol.
+
+</Answer>
+
+<Callout kind="warn" title="⚠ Student copy (a) ✔, (b) wrong in sign and in h_fg">
+
+(a) is right as written: 1.599 → 4.95, −1.216 → 0.296, squared 0.0876, conclusion correct, including the squaring (the copy's red arrow compares the two on the same basis). **(b) is wrong:** the copy sets $|HHV|=|LHV|+(mh_{fg})$, takes $|HHV|=241\,820$ (it is the *LHV* that equals the gas-phase formation enthalpy) and writes $\bar h_f(liq)=+283\,343$ kJ/kmol with a mysterious 41 523 kJ/kmol (that is 2305 kJ/kg, not the 2441.7 kJ/kg of 25 °C). Liquid water has a **more negative** formation enthalpy than vapor, because condensing releases $h_{fg}$.
+
+</Callout>
+
+<Callout kind="note" title="Your notebook p. 11: (a) ✔ in words, (b) not finished">
+
+You wrote that $\mathrm{CO_2\to CO+\tfrac12O_2}$ "has a high $K_p$ at 4000 K" and the values $e^{1.599}$ and $(e^{-1.216})^2$, the same comparison as the copy; for (b) the page has "241 820 ✓ ..." and stops. The one-line formula above is all that is needed.
+
+</Callout>
+
+<RealWorld title="Why a flame at 3000 K makes CO but a tailpipe makes NO">
+
+At the peak temperatures of an engine flame (about 2500–3000 K), CO₂ already dissociates to a noticeable extent (CO₂ is 44 % dissociated at 3000 K and 1 atm in the mock A exercise), which lowers the flame temperature; NO forms slowly but its equilibrium amount rises steeply with temperature, so it is "frozen in" when the gas cools quickly. That is the origin of both CO and NO emissions of an engine.
+
+</RealWorld>
+
+<Traps>
+
+- Comparing **different bases**: $\ln K_p(\mathrm{NO})=-1.216$ is for $\tfrac12\mathrm{N_2}+\tfrac12\mathrm{O_2}$, not for $\mathrm{N_2+O_2}$.
+- $K_p$ in the table is dimensionless with $P$ in **atm**; "more likely at 4000 K" is at fixed $T$ and $P$; $K_p$ does not change with $P$ but the composition does.
+- Formation enthalpy of the **liquid** is the more negative one; $\bar h_{fg}=M\,h_{fg}$ in kJ/kmol.
+
+</Traps>
+
+<Source>April 2021 final, problem 3 · student copy pp. 6–7 · your Past_final pp. 10–11 · lib <code>lnKpAt</code>, <code>HFG_WATER_25</code> · also in <Ch slug="equilibrium" />, tutorial problems on <Ex id="tutorial-16" /></Source>
+
+</Problem>
+
+<Problem id="P4" title="Problem 4 (25, choice): steam cogeneration, 1 kg/s at 1.6 MPa and 300 °C" tags="cogeneration, process heater, two-stage turbine, throttling">
+
+<Statement>
+
+A cogeneration plant takes 1 kg/s of steam from the boiler at 1.6 MPa and 300 °C to a two-stage turbine. A fraction 0.15 of the flow is extracted between the stages at 0.2 MPa and goes to a process heater (the load); the heater leaves liquid at 0.1 MPa, 60 °C with $h_6=251.22$ kJ/kg and the stream is then throttled to the condenser pressure of 0.1 bar (0.01 MPa). The other 0.85 of the flow expands in the second stage to 0.1 bar and condenses; the two streams leave the condenser together as saturated liquid at 0.1 bar and are pumped to 1.6 MPa. (a) Sketch the T–s diagram and fill the state table; calculate (b) the heat transfer rate in the boiler, (c) the net power, (d) the heat transfer to the load, (e) the heat transfer to the condenser cooling water, all in kW.
+
+</Statement>
+
+<Think>
+
+Reading the figure properly is half the problem: **the turbine is isentropic**; state 2 (0.2 MPa) and state 3 (0.1 bar) both have the entropy of state 1; state 4 is saturated liquid at 0.1 bar; the pump takes the *whole* 1 kg/s from state 4 to 1.6 MPa (state 5); state 7 has $h_7=h_6$ (throttle) and returns to the condenser. Per kilogram of boiler steam the flows are 1, 0.15, 0.85.
+
+</Think>
+
+<Steps>
+<Step title="1. States">
+
+<T>A-6: 1.6 MPa, 300 °C: h₁ = 3035.4 kJ/kg, s₁ = 6.8864; A-5: 0.2 MPa: s_f = 1.5302, s_fg = 5.5968; 10 kPa: h_f = 191.81, v_f = 0.001010, s_f = 0.6492, s_fg = 7.4996, h_fg = 2392.1</T>. State 2: $x_2=\dfrac{6.8864-1.5302}{5.5968}=0.957$, $h_2=\mathbf{2611.6}$ ($T=120.2$ °C). State 3: $x_3=\dfrac{6.8864-0.6492}{7.4996}=0.832$, $h_3=191.81+0.832(2392.1)=\mathbf{2181.2}$ (the copy reads 2182.03 from the rounded $x$). State 4: $h_4=191.81$. Pump: $w_P=0.001010(1600-10)=1.606$ kJ/kg, $h_5=\mathbf{193.4}$.
+
+</Step>
+<Step title="2. (b) Boiler">
+
+$\dot Q_{in}=\dot m(h_1-h_5)=3035.4-193.4=\mathbf{2842.0}$ kW.
+
+</Step>
+<Step title="3. (c) Net power">
+
+$\dot W_T=\dot m(h_1-h_2)+0.85\dot m(h_2-h_3)=(3035.4-2611.6)+0.85(2611.6-2181.2)=423.8+365.8=789.7$ kW; $\dot W_{net}=789.7-1.6=\mathbf{788.1}$ kW.
+
+</Step>
+<Step title="4. (d) Load and (e) condenser">
+
+$\dot Q_{load}=0.15(h_2-h_6)=0.15(2611.6-251.22)=\mathbf{354.1}$ kW. $\dot Q_{cond}=0.85(h_3-h_4)+0.15(h_7-h_4)$ with $h_7=h_6=251.22$: $0.85(2181.2-191.81)+0.15(251.22-191.81)=1690.9+8.9=\mathbf{1699.9}$ kW.
+
+*Check:* $\dot Q_{in}=\dot W_{net}+\dot Q_{load}+\dot Q_{cond}=788.1+354.1+1699.9=2842.1$ ✓ (utilization factor $\varepsilon_u=(788.1+354.1)/2842.0=40.2$ %).
+
+</Step>
+</Steps>
+
+<Answer>
+
+(b) 2842.0 kW; (c) 788.1 kW; (d) 354.1 kW; (e) 1699.9 kW.
+
+</Answer>
+
+<Callout kind="note" title="Student copy: ✔ (table rounding), with a few table cells to double check">
+
+The copy gets 2842.01, 787.33, 354.06 and 1700.58 kW: all within 0.1 %, the differences come from reading $h_3=2182.03$ instead of 2181.2 (rounded $x_3$) and from the pump work (1.6059 in one line, 1.5645 in the next). The copy's first-law check is not shown but works. It reads **table cells that do not belong to the states**: row 4 has $s=1.3028$ (that is $s_f$ at 100 kPa; at 10 kPa $s_f=0.6492$, which the copy's own work uses) and row 5 reads $T=100$ °C (the pump exit is compressed liquid at about 46 °C). They do not enter any result. *Check your page:* you did not solve this problem.
+
+</Callout>
+
+<RealWorld title="The same machine in a district-heating plant">
+
+A back-pressure or extraction turbine feeding a process heater turns the "waste" 1700 kW of condenser heat into 354 kW of useful low-pressure steam heat: here the cogeneration only reaches a 40 % utilization factor because 85 % of the steam still goes to the condenser; a typical industrial extraction plant sends most of the steam to the process (see the three modes of the <Ch slug="vapor-cycles">chapter 10 example</Ch>).
+
+</RealWorld>
+
+<Traps>
+
+- The pump handles the *full* flow: both streams are saturated liquid at 0.1 bar before it (the throttled stream rejoins in the condenser).
+- $h_7=h_6$: a throttling valve is isenthalpic; the heat given up in the condenser by the load stream is $h_7-h_4$, not $h_6-h_5$.
+- State 3 is a two-phase mixture ($x=0.832$), so use $h_f+xh_{fg}$ at 10 kPa, not the superheated table.
+
+</Traps>
+
+<Source>April 2021 final, problem 4 · student copy pp. 8–10 · lib <code>water</code> · tests in <code>exams.test.ts</code> · also in <Ch slug="vapor-cycles" /></Source>
+
+</Problem>
+
+<Problem id="P5" title="Problem 5 (25, choice): air conditioner, cooling and dehumidifying coil then a heater, 11 tons" tags="dehumidification, heating coil, tons, condensate">
+
+<Statement>
+
+Moist air at 30 °C, 1 bar and 70 % relative humidity enters the dehumidifier section (a cooling coil of 11 tons, leaving the air saturated at $T_2<T_1$ with $\omega_2<\omega_1$; the condensate leaves saturated at $T_2$), then passes through a heating coil and leaves at 25 °C, 1 bar and 40 % relative humidity. Find (a) $T_2$, (b) the entering volume flow in m³/min, (c) the condensate rate in kg/min, (d) the heating-coil power in kW. One ton of refrigeration is 211 kJ/min.
+
+</Statement>
+
+<Think>
+
+The full worked solution is on the psychrometrics page (<Ch slug="psychrometrics">chapter 14</Ch>, problem "Final 2021 · P5": $T_2=10.5$ °C, $\dot m_a=48.6$ kg/min, $\dot V_1=43.6$ m³/min, condensate 0.539 kg/min, heater 12.0 kW). Here is the exam-day version and the comparison with the two other solutions. The key idea: **the heater does not change $\omega$, so $\omega_2=\omega_3$ fixes the saturated state 2.**
+
+</Think>
+
+<Steps>
+<Step title="1. Humidity ratios (P = 100 kPa)">
+
+$\omega_1=\dfrac{0.622(0.7)(4.2469)}{100-0.7(4.2469)}=0.01906$; $h_1=1.005(30)+0.01906(2501.3+1.82(30))=78.86$ kJ/kg dry air; $v_1=\dfrac{0.287(303.15)}{97.03}=0.8967$ m³/kg. $\omega_3=\dfrac{0.622(0.4)(3.1698)}{100-1.268}=0.007988=\omega_2$.
+
+</Step>
+<Step title="2. (a) Coil exit">
+
+State 2 is saturated with $P_{g2}=P_{v3}=1.268$ kPa: $T_2=T_{sat}(1.268\ \mathrm{kPa})=\mathbf{10.5}$ °C, $h_2=30.66$ kJ/kg.
+
+</Step>
+<Step title="3. Dry-air flow, (b), (c), (d)">
+
+$\dot m_a=\dfrac{11(211)}{h_1-h_2-(\omega_1-\omega_2)h_{f2}}=\dfrac{2321}{78.86-30.66-0.011072(44.0)}=\mathbf{48.6}$ kg/min. (b) $\dot V_1=48.65(0.8967)=\mathbf{43.6}$ m³/min. (c) $48.65(0.011072)=\mathbf{0.539}$ kg/min. (d) $\dot Q=48.65(45.47-30.66)/60=\mathbf{12.0}$ kW.
+
+</Step>
+</Steps>
+
+<Answer>
+
+| a (°C) | b (m³/min) | c (kg/min) | d (kW) |
+|---|---|---|---|
+| 10.5 | 43.6 | 0.539 | 12.0 |
+
+</Answer>
+
+<Callout kind="warn" title="⚠ Student copy: right chart temperature, then four slips, 57 kg/min instead of 48.6">
+
+The copy reads the psychrometric chart: $T_2=10.5$ ✔, $h_2=30.5$ ✔, $\omega_2=8.0$ g/kg ✔, $h_3=45.5$ ✔, $\omega_3\approx8.25$ g/kg. The errors: (1) $h_1=71$ kJ/kg and $\omega_1=16.25$ g/kg are **chart misreadings**: at 30 °C, 70 % the table values are 78.9 kJ/kg and 19.06 g/kg; (2) **1 ton = 3.5 kW** (it is 3.517 kW; the exam gives 211 kJ/min), $\dot Q=38.5$ kW instead of 38.7 kW; (3) the energy balance is $\dot Q=\dot m_a(h_1-h_2)$ with **no condensate-enthalpy term**; (4) $v_1=0.875$ instead of 0.897. With $h_1-h_2=71-30.5=40.5$ the dry air flow comes out as 0.95 kg/s = **57 kg/min** (+17 %), the volume 49.9 m³/min (+14 %), the condensate 0.470 kg/min (−13 %) and the heater **14.25 kW** (+19 %). A chart is accepted to reading accuracy, but $h_1=71$ for air at 30 °C and 70 % is off the chart by 8 kJ/kg: check an enthalpy by $h\approx1.005T+\omega(2501+1.82T)$.
+
+</Callout>
+
+<Callout kind="warn" title="⚠ Your notebook: 48.05 kg/min and T₂ = 10.2 °C (the table-based values are 48.6 and 10.5)">
+
+Your pages 12–15 use the formulas with $P=101.3$ kPa instead of the 1 bar of the statement ($\omega_1=0.01880$, $\omega_3=7.883\times10^{-3}$, $P_v=1.267$ kPa), **interpolate $T_2$ linearly** between the 1.0 kPa (6.97 °C) and 1.5 kPa (12.99 °C) rows of the steam table ($10.21$ °C; the saturation curve is convex and the exact value at 1.267 kPa is 10.48 °C), take $h_2=29.9$ with the sensible term at 10 °C, and **leave out the condensate term**: $\dot m_a=2321/(78.2-29.9)=48.05$ kg/min. The effects partly cancel: the condensate term alone is a $+1$ % correction (48.5 with your other numbers). The page then gets $\dot m_w=48.05(0.010922)=0.5297$ kg/min and starts the heater ($\dot Q=\dot m_a(h_3-h_2)$) without a number. Two lessons: write the **pressure of the statement** (1 bar = 100 kPa) in the first line, and find the saturation temperature of a small vapor pressure from the temperature-indexed table (A-4: 1.2281 kPa at 10 °C and 1.3129 kPa at 11 °C give 10.47 °C), not by interpolating linearly between the pressure rows at 1.0 and 1.5 kPa. (Errata G1.)
+
+</Callout>
+
+<RealWorld title="Why dehumidifying costs more than cooling">
+
+In this problem the coil removes 2321 kJ/min, of which the condensate's latent heat is $0.539(2450)=1320$ kJ/min: 57 % of the cooling is spent on drying the air, and then 12 kW is spent to re-heat it. In humid climates this "reheat" mode is how a building controls humidity independently of temperature.
+
+</RealWorld>
+
+<Traps>
+
+- The pressure is **1 bar**, not 101.325 kPa: $\omega$ and $v$ change by 1 %.
+- The condensate carries away $\dot m_wh_f$ at $T_2$: it belongs in the energy balance.
+- $\omega_2=\omega_3$ because the heater adds no moisture.
+- Never read an enthalpy off the chart without a one-line plausibility check.
+
+</Traps>
+
+<Source>April 2021 final, problem 5 · student copy pp. 10–11 · your Past_final pp. 12–15 · lib <code>psyState</code>, <code>omega</code>, <code>Tdp</code> · full solution on <Ch slug="psychrometrics" /></Source>
+
+</Problem>
+
+<Problem id="P6" title="Problem 6 (25, choice, reconstructed): heating and humidifying with steam" tags="humidification, steam injection, heating coil, 95 kPa">
+
+<Callout kind="note" title="Statement reconstructed from your notes: the paper's problem 6 is not in the copy">
+
+The student copy has only problems 1 to 5. Your notebook's last three pages solve a humidifier problem that fits the sixth slot; the statement below is **reconstructed from the numbers on those pages** (10 °C and 70 % because your page computes $P_v=0.7P_g$; 95 kPa; 70 m³/min; steam as saturated vapor at 100 °C because your enthalpy is $h_g(100\,°C)=2675.6$; exit 20 °C and 60 %). If the paper differed, the method is unchanged.
+
+</Callout>
+
+<Statement>
+
+Air at 10 °C, 70 % relative humidity and 95 kPa enters a heating section at 70 m³/min. After the heating coil it passes a humidifier where saturated water vapor at 100 °C is injected; the air leaves at 20 °C and 60 % relative humidity. Find (a) the dry-air mass flow, (b) the steam flow rate, (c) the temperature after the heating coil, (d) the rate of heat transfer in the heating coil.
+
+</Statement>
+
+<Think>
+
+Two processes in series: **sensible heating at constant $\omega$** ($\omega_1=\omega_2$), then **steam injection** (state 3 has a higher $\omega$ and the steam brings its own enthalpy $h_g$). So $\omega_1$ and $\omega_3$ give the steam flow; the second energy balance gives $h_2$, and $T_2$ follows from $h_2$ at the *known* $\omega_2=\omega_1$.
+
+</Think>
+
+<Steps>
+<Step title="1. Inlet state at 95 kPa">
+
+<T>P_g(10 °C) = 1.2281 kPa</T>, $P_v=0.7(1.2281)=0.8597$ kPa, $\omega_1=\dfrac{0.622(0.8597)}{95-0.8597}=\mathbf{5.680\times10^{-3}}$; $v_1=\dfrac{0.287(283.15)}{95-0.8597}=0.8632$ m³/kg (your 0.8627 with 283 K); $h_1=1.005(10)+0.00568(2501.3+18.2)=24.36$ kJ/kg.
+
+</Step>
+<Step title="2. (a) Dry air flow">
+
+$\dot m_a=\dfrac{\dot V_1}{v_1}=\dfrac{70}{0.8632}=\mathbf{81.1}$ kg/min (your 81.13).
+
+</Step>
+<Step title="3. (b) Steam flow">
+
+<T>P_g(20 °C) = 2.3392 kPa</T>, $P_{v3}=0.6(2.3392)=1.4035$ kPa, $\omega_3=\dfrac{0.622(1.4035)}{95-1.4035}=9.328\times10^{-3}$; $h_3=1.005(20)+0.009328(2501.3+36.4)=43.77$ kJ/kg. $\dot m_w=\dot m_a(\omega_3-\omega_2)=81.09(9.328-5.680)\times10^{-3}=\mathbf{0.2958}$ kg/min.
+
+</Step>
+<Step title="4. (c) Air after the coil">
+
+$\dot m_ah_2+\dot m_wh_g=\dot m_ah_3$, $h_g(100\,°C)=2675.6$: $h_2=h_3-\dfrac{\dot m_w}{\dot m_a}h_g=43.77-\dfrac{0.2958}{81.09}(2675.6)=34.01$ kJ/kg. With $\omega_2=0.00568$: $34.01=1.005T_2+0.00568(2501.3+1.82T_2)$, so $T_2=\mathbf{19.5}$ °C.
+
+</Step>
+<Step title="5. (d) Heating coil">
+
+$\dot Q=\dot m_a(h_2-h_1)=81.09(34.01-24.36)=\mathbf{782.6}$ kJ/min $=13.0$ kW. (Your page: 789.9 kJ/min.)
+
+</Step>
+</Steps>
+
+<Answer>
+
+(a) 81.1 kg/min; (b) 0.2958 kg/min of steam; (c) $T_2=19.5$ °C; (d) 783 kJ/min (13.0 kW).
+
+</Answer>
+
+<Callout kind="note" title="Your notebook, pp. 15–18: ✔ except a 0.9 % difference in the heat">
+
+Everything matches: $\omega_1=5.68\times10^{-3}$, $v_1=0.8627$ (283 vs 283.15 K), $\dot m_a=81.13$, $\omega_3=9.327\times10^{-3}$, $\dot m_w=0.2958$, $h_g=2675.6$, $h_2=34.07$ (34.01 recomputed), $T_2=19.51$. The heat is $789.9$ kJ/min against 782.6: the heat is the difference of two numbers near 30 kJ/kg ($h_2-h_1=9.7$ kJ/kg), so 0.06 kJ/kg in $h_2$ moves it 0.7 %; no slip is asserted. *Check your page:* your last page (p. 18) solves $\omega=\dfrac{0.622\varphi P_g}{P-\varphi P_g}$ for $\varphi$ with $P_g(20\,°C)=2.3392$: that is the relative humidity the air would have at 20 °C with the *inlet* humidity ratio, which I recompute as 0.367; the first digit of your result could be a 3 or a 7. (Errata G2.)
+
+</Callout>
+
+<RealWorld title="Winter humidification">
+
+In winter, outdoor air at 10 °C and 70 % brought indoors and heated to 20 °C would be at about 37 % humidity; adding 0.3 kg/min of steam per 81 kg/min of dry air brings it to a comfortable 60 %. Hospitals and museums do exactly this with steam-injection humidifiers (typical).
+
+</RealWorld>
+
+<Traps>
+
+- Steam brings its **enthalpy** ($h_g$ at its own temperature): leaving it out puts the whole humidification enthalpy into the air and gives a heating coil that is 10 °C too small.
+- Heating happens at constant $\omega$; the humidifier is the step that changes $\omega$.
+- 95 kPa: $P_{air}=P-P_v$, not 101.325 − $P_v$.
+
+</Traps>
+
+<Source>Your Past_final pp. 15–18 (the statement is reconstructed from them; paper not in the copy) · lib <code>psyState</code>, <code>omega</code> · also in <Ch slug="psychrometrics" /></Source>
+
+</Problem>
+
+<Examined>
+
+**What the 2021 final tells you about the next one.** (1) The jet-engine problem is a pure stagnation-state chain with a table to fill: do the table cells you are *certain* of first and write two answers where the wording is ambiguous. (2) The AFT problem is "balance → enthalpy equation → two trials": the marks are in the balance (mass ratio to moles) and the energy-equation set-up; wrong coefficients in the trial sum (22 for 11) are the usual way to lose them. (3) Problem 3 is a 10-minute "one table lookup, one formula" question. (4) Of the choice problems, cogeneration needs only the steam tables, the air conditioner needs the right pressure and the condensate term, and the humidifier is two balances. See <Ch slug="errata">the errata page</Ch>, rows G1–G6, for the slips of this paper.
+
+</Examined>
