@@ -1,0 +1,173 @@
+<p className="eyebrow">Chapter 17 · compressible flow · instructor's uncovered problems</p>
+
+# Tutorial: chapter 17 problems
+
+<div className="lede">
+
+The instructor's *Chapter 17 uncovered tutorial problems* (3 pages) are two textbook problems and the printed solution of the second: **17-48C** (what dropping the back pressure well below the critical value does to a converging nozzle) and **17-62** (air accelerated isentropically from 0.5 MPa, 420 K and 110 m/s to the sonic point). Both are also worked on <Asg n="10">assignment 10</Asg> from your notebook; this page gives each as the final would ask it, shows the claims **with numbers** (a back-pressure table for 17-48C), and explains **why the printed answer of 17-62 is wrong** (the printed solution page contradicts itself: it computes two different Mach numbers and reads an area ratio that matches neither). Chapter notes: <Ch slug="compressible">17</Ch>. Statements paraphrased.
+
+</div>
+
+<Callout kind="note" title="What the final asks about compressible flow">
+
+Expect **one** nozzle problem (stagnation properties from $T$, $V$; the Mach number; $A/A^*$ or the choked exit state) and one or two conceptual questions (static versus stagnation: Habashi says many students at the end of the semester still cannot tell them apart; converging versus converging-diverging nozzles; what the back pressure does). The rules: $T_0=T+\dfrac{V^2}{2c_p}$; $\dfrac{T_0}{T}=1+\dfrac{k-1}2Ma^2$; $\dfrac{P_0}{P}=\left(\dfrac{T_0}{T}\right)^{k/(k-1)}$; critical ratios (air) $T^*/T_0=0.8333$, $P^*/P_0=0.5283$; a converging nozzle can never exceed $Ma=1$ at its exit.
+
+</Callout>
+
+<Problem id="17-48C" title="Converging nozzle with the critical pressure at the exit: back pressure dropped well below it" tags="choking, back pressure, conceptual">
+
+<Statement>
+
+Subsonic flow in a converging nozzle has given inlet conditions and the critical pressure at the exit. What is the effect of dropping the back pressure well below the critical pressure on (a) the exit velocity, (b) the exit pressure, and (c) the mass flow rate through the nozzle?
+
+</Statement>
+
+<Think>
+
+Once the exit is sonic, a pressure signal (which travels at the speed of sound) can no longer propagate upstream against the flow, so the flow *inside* the nozzle cannot "see" the back pressure: the nozzle is **choked**. All three quantities are fixed by the inlet stagnation state and the exit area.
+
+</Think>
+
+<Steps>
+<Step title="1. The three answers">
+
+(a) The exit velocity **does not change**: it stays sonic, $V^*=\sqrt{kRT^*}$. (b) The exit pressure **does not change**: it stays at $P^*=0.5283P_0$ (for air); the remaining expansion down to the back pressure happens *outside* the nozzle, in the jet. (c) The mass flow rate **does not change**: it is already the maximum $\dot m^*=A\,P_0\sqrt{\dfrac{k}{RT_0}}\left(\dfrac2{k+1}\right)^{\frac{k+1}{2(k-1)}}$ for that area and stagnation state.
+
+</Step>
+<Step title="2. Shown with numbers">
+
+Air with $P_0=500$ kPa, $T_0=300$ K and an exit area of 10 cm² (my values): $P^*=264.1$ kPa and $\dot m^*=1.1668$ kg/s. Lowering the back pressure from 450 to 50 kPa gives:
+
+| back pressure (kPa) | exit pressure (kPa) | exit velocity (m/s) | mass flow (kg/s) |
+|---|---|---|---|
+| 450 | 450.0 | 133.7 | 0.720 |
+| 400 | 400.0 | 193.0 | 0.956 |
+| 300 | 300.0 | 286.2 | 1.154 |
+| 264.1 (critical) | 264.1 | 317.0 | 1.167 |
+| 200 | 264.1 | 317.0 | 1.167 |
+| 100 | 264.1 | 317.0 | 1.167 |
+| 50 | 264.1 | 317.0 | 1.167 |
+
+Above the critical back pressure the flow grows as the back pressure falls; at and below it every row is identical.
+
+</Step>
+</Steps>
+
+<ChokedFlowFigure />
+
+<Answer>
+
+(a) exit velocity: **unchanged** (sonic); (b) exit pressure: **unchanged** ($P^*$, above the back pressure); (c) mass flow rate: **unchanged** (maximum, choked).
+
+</Answer>
+
+<Callout kind="note" title="Your notebook and the sheet">
+
+Your Chapter 17 page copies the statement and goes on to 17-62 without writing an answer (*Check your page:* no answer to compare). Your Ass12 reasoning for 17-33C ("maximum velocity is sonic, flow rate set by the area") is the answer to this problem too. The instructor's sheet prints only the statement for 17-48C.
+
+</Callout>
+
+<RealWorld title="Why a rocket throat is always choked">
+
+A rocket's throat is choked for the entire flight, so its propellant mass flow depends only on chamber pressure and throat area, not on the altitude; what altitude changes is the exit-plane pressure relative to ambient (over- or under-expansion), which is what the bell shape of the nozzle is designed around. The same fact makes a gas-turbine first-stage nozzle a flow meter for the engine (typical).
+
+</RealWorld>
+
+<Traps>
+
+- Lowering the back pressure below $P^*$ does **not** speed up the flow inside a converging nozzle; the extra expansion is in the jet (an under-expanded jet with expansion waves).
+- Above the critical back pressure the exit pressure *equals* the back pressure and the flow is subsonic; do not apply the critical ratios there.
+- A **converging-diverging** nozzle has more regimes (shock in the divergent part, over- and under-expansion): see the mock final B, problem 6.
+
+</Traps>
+
+<Source>Instructor's Chapter 17 tutorial sheet, p. 1 (statement only) · also <Asg n="10">assignment 10</Asg> · lib <code>critical</code> · tests in <code>exams.test.ts</code> · <Ch slug="compressible" /></Source>
+
+</Problem>
+
+<Problem id="17-62" title="Air accelerated isentropically from 0.5 MPa, 420 K and 110 m/s to the sonic point" tags="stagnation properties, critical properties, area ratio, continuity">
+
+<Statement>
+
+Air enters a nozzle at 0.5 MPa and 420 K with a velocity of 110 m/s. Approximating the flow as isentropic, find the pressure and the temperature at a location where the air velocity equals the speed of sound, and the ratio of the area at that location to the entrance area. (The textbook prints: 355 K, 278 kPa, 0.428.)
+
+</Statement>
+
+<Think>
+
+Three layers. The inlet is **not** a stagnation state (110 m/s), so compute $T_0$ and $P_0$ first; the sonic state follows from the **critical ratios**; the area ratio comes from $A/A^*$ at the inlet Mach number, which is the reciprocal of what the table lists ($A^*/A_1=1/(A/A^*)_1$). Compute the area ratio **two ways** (the area-Mach formula and continuity with the critical state): agreement is the exam habit that exposes a bad printed answer.
+
+</Think>
+
+<Plan>
+
+$c_1$, $Ma_1$ → $T_0$, $P_0$ → $T^*=T_0/1.2$, $P^*=P_0/1.2^{3.5}$ → $A^*/A_1$ by formula and by continuity.
+
+</Plan>
+
+<Steps>
+<Step title="1. Inlet Mach number and stagnation state">
+
+$c_1=\sqrt{1.4(287)(420)}=410.8$ m/s, $Ma_1=\dfrac{110}{410.8}=\mathbf{0.2678}$. $T_0=420+\dfrac{110^2}{2(1005)}=\mathbf{426.02}$ K; $P_0=500\left(\dfrac{426.02}{420}\right)^{3.5}=\mathbf{525.5}$ kPa (the same from $500(1+0.2\cdot0.2678^2)^{3.5}$).
+
+</Step>
+<Step title="2. Sonic state">
+
+$T^*=\dfrac{426.02}{1.2}=\mathbf{355.0}$ K; $P^*=0.5283(525.5)=\mathbf{277.6}$ kPa. (Both agree with the printed 355 K and 278 kPa.)
+
+</Step>
+<Step title="3. Area ratio, formula">
+
+$\dfrac{A}{A^*}=\dfrac1{Ma}\left[\dfrac{1+0.2Ma^2}{1.2}\right]^3=\dfrac{1}{0.2678}\left[\dfrac{1.01434}{1.2}\right]^3=2.255$, so $\dfrac{A^*}{A_1}=\dfrac1{2.255}=\mathbf{0.4434}$.
+
+</Step>
+<Step title="4. Area ratio, continuity">
+
+$\rho_1=\dfrac{500}{0.287(420)}=4.148$, $\rho^*=\dfrac{277.6}{0.287(355.0)}=2.725$ kg/m³, $V^*=\sqrt{1.4(287)(355.0)}=377.7$ m/s: $\dfrac{A^*}{A_1}=\dfrac{\rho_1V_1}{\rho^*V^*}=\dfrac{4.148(110)}{2.725(377.7)}=\mathbf{0.4434}$ ✓.
+
+</Step>
+</Steps>
+
+<AreaMachFigure Ma1={0.2678} caption="17-62: A/A* against Mach number for air. The inlet at Ma = 0.268 needs 2.26 times the area of the sonic section, so a converging duct must narrow to 0.443 of its entrance area to reach Ma = 1." />
+
+<Answer>
+
+$T^*=355.0$ K, $P^*=277.6$ kPa, **$A^*/A_1=0.443$** (not the printed 0.428).
+
+</Answer>
+
+<Callout kind="warn" title="⚠ The printed 0.428 is an error, and the printed solution page shows where it comes from">
+
+The solution page on the instructor's sheet computes **two** inlet Mach numbers: $Ma_i=110/410.8=0.2678$ and, on the next line, $Ma_i=150/410.8=0.3651$ (a leftover from a version of the problem with 150 m/s). It then reads "$A_i/A^*=2.3343$" from table A-32 and gets $A^*/A=1/2.3343=0.428$. But **neither Mach number gives 2.3343**: the table (and the formula) give $A/A^*=2.255$ at $Ma=0.2678$ and 1.715 at $Ma=0.3651$; 2.3343 belongs to $Ma\approx0.258$. The correct ratio is $1/2.255=0.4434$ by the formula, by continuity, and by the exact area-Mach relation of the lib. The temperature and pressure of the printed solution are right. (Errata P2.)
+
+</Callout>
+
+<Callout kind="note" title="Your notebook">
+
+Your Chapter 17 pages (7–8) reproduce the sonic temperature and pressure, $T^*=355$ K and $P^*\approx0.277$ MPa ✔, and stop before the area ratio: the digits of $P^*$ are partly legible (errata U11). You did not copy the printed 0.428, so the discrepancy never reached your page; see <Asg n="10">assignment 10, problem 17-62</Asg>.
+
+</Callout>
+
+<RealWorld title="How much the duct must narrow">
+
+To take a 110 m/s stream (Mach 0.27) to Mach 1 the duct narrows to 44 % of its entrance area and the pressure falls to 55 % of the inlet value: those are the proportions of the convergent section of a compressed-air blow-off nozzle or of the inlet to a choked first-stage turbine nozzle guide vane (typical).
+
+</RealWorld>
+
+<Traps>
+
+- $A/A^*\ge1$ in the table: take the **reciprocal** for $A^*/A_1$.
+- $V^*$ uses the **critical** temperature $T^*$, not $T_1$.
+- Check any area ratio two ways; a printed answer is not a proof.
+
+</Traps>
+
+<Source>Instructor's Chapter 17 tutorial sheet, pp. 2–3 (statement, answers 355 K / 278 kPa / 0.428, and the printed solution) · also <Asg n="10">assignment 10</Asg> · lib <code>areaRatio</code>, <code>critical</code>, <code>machFromAreaRatio</code> · tests in <code>exams.test.ts</code> · <Ch slug="compressible" /></Source>
+
+</Problem>
+
+<Examined>
+
+**Using these two on the final.** A converging-nozzle question is always "is it choked?": compare the back pressure with $0.5283P_0$ (air); if it is lower, the exit state is $T^*$, $P^*$, $V^*=c^*$ and the flow is the maximum value. A "find the sonic state from a moving inlet" question is 17-62 with other numbers: $T_0$, $P_0$, critical ratios, $A^*/A$ by the formula, **checked by continuity**. And if the answer sheet and your computation disagree, recompute the area ratio the second way before you decide who is wrong. Next: the practice finals <Ex id="final-mock-a" /> and <Ex id="final-mock-b" /> (problem 6 of B is a C-D nozzle).
+
+</Examined>

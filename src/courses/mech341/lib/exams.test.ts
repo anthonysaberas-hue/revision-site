@@ -414,6 +414,8 @@ describe('tutorial chapter 16', () => {
     near(a.NO, 0.2199, 1e-3);
     near(b.NO, a.NO, 1e-9);
     near(a.NO / 4.76, 0.0462, 2e-3);
+    near(lnK, -4.207, 1e-3);
+    near(Math.exp(lnK), 0.0149, 1e-2);
     // Kp depends on T only: ln Kp(2000) < ln Kp(3000)
     expect(lnKpAt(LN_NO, 2000)).toBeLessThan(lnKpAt(LN_NO, 3000));
   });
@@ -426,7 +428,9 @@ describe('tutorial chapter 16', () => {
     // exothermic combustion: h_R of the formation of CO2 from CO + 1/2 O2 is negative, so Kp(formation) falls with T
     const rx = A28.find((r) => r.label === LN_CO2)!;
     expect(hR(rx, 2250)).toBeGreaterThan(0); // dissociation is endothermic
-    near(hR(rx, 2250), vantHoff(lnKpAt(LN_CO2, 2000), 2000, lnKpAt(LN_CO2, 2500), 2500), 4e-2);
+    near(hR(rx, 2250), 276600, 1e-3);
+    near(vantHoff(lnKpAt(LN_CO2, 2000), 2000, lnKpAt(LN_CO2, 2500), 2500), 276700, 1e-3);
+    near(at(2000).CO / 1, 0.0151, 5e-3);
   });
   it('16-40: heating O2 to 3000 K: 1986 kJ/min with dissociation, 1533 without; printed 1990', () => {
     const lnK = lnKpAt('O₂ ⇌ 2O', 3000);
@@ -439,6 +443,9 @@ describe('tutorial chapter 16', () => {
     near(((2 - 2 * x) ** 2 / x) * (1 / (2 - x)), Math.exp(lnK), 1e-2);
     const Q = r.O2 * hbar('O2', 3000) + r.O * hbar('O', 3000) - hbar('O2', 298.15);
     near(Q, 127137, 1e-3);
+    near(Q - (hbar('O2', 3000) - hbar('O2', 298.15)), 29300, 1.5e-2);
+    near(127363 / 32, 3980, 1e-3);
+    near(0.943 * (106780 - 8682) + 0.114 * (249190 + 63425 - 6852), 127363, 1e-3);
     near((Q * 0.5) / 31.999, 1986.6, 1e-3);
     near(((hbar('O2', 3000) - hbar('O2', 298.15)) * 0.5) / 31.999, 1533.5, 1e-3);
     // printed (table values, x = 0.943, 0.114 O)

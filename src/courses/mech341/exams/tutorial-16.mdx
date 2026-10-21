@@ -1,0 +1,211 @@
+<p className="eyebrow">Tutorial 10 · chapter 16 · chemical equilibrium · instructor's uncovered problems</p>
+
+# Tutorial: chapter 16 problems
+
+<div className="lede">
+
+The instructor's *Tutorial 10* sheet (8 pages) has three problems from the textbook's chapter 16 and, after each, the printed solution page (with your red annotation on the last one): **16-8C** (what a tripled pressure does to an NO equilibrium), **16-52C** (at 2000 or 2500 K does a fuel burn more completely?) and **16-40** (heating oxygen to 3000 K with and without dissociation). All three are also assigned problems on <Asg n="09">assignment 9</Asg>, where your notebook versions are compared line by line; this page gives each one **as the final would ask it**: the one-paragraph answer, the numbers behind it recomputed from the equilibrium solver of the lib (so the claim is *shown*, not only stated), and the comparison with the printed solution. Chapter notes: <Ch slug="equilibrium">16</Ch>. The statements are paraphrased.
+
+</div>
+
+<Callout kind="note" title="The six remarks about Kp that these problems exercise (from the review session)">
+
+1. $K_p$ depends on **temperature only**. 2. $K_p$ of the reverse reaction is $1/K_p$. 3. The larger $K_p$, the more complete the reaction. 4. The mixture **pressure** changes the equilibrium *composition* but not $K_p$ (through $(P/N_{total})^{\Delta\nu}$). 5. **Inert** gases change the composition (through $N_{total}$) but not $K_p$. 6. Doubling the stoichiometric coefficients **squares** $K_p$. Habashi writes "some students do not easily digest these conclusions". Tutorial 16-8C is remarks 1 and 4, 16-52C is remark 3 with the van 't Hoff equation, 16-40 is the quantitative routine with $N_{total}$.
+
+</Callout>
+
+<Problem id="16-8C" title="NO, O2 and N2 in equilibrium: the pressure is tripled" tags="Kp, delta nu = 0, pressure independence">
+
+<Statement>
+
+A mixture of NO, O₂ and N₂ is in equilibrium at a given temperature and pressure; the pressure is now tripled. (a) Does the equilibrium constant $K_p$ change? (b) Do the numbers of moles of NO, O₂ and N₂ change, and how?
+
+</Statement>
+
+<Think>
+
+Two separate questions, two separate rules. (a) $K_p$ is a function of $T$ only. (b) The pressure acts on the composition **only through the factor $(P/N_{total})^{\Delta\nu}$**, so the question is the value of $\Delta\nu$ for $\mathrm{N_2+O_2\rightleftharpoons2NO}$: $\Delta\nu=2-1-1=0$.
+
+</Think>
+
+<Steps>
+<Step title="1. (a) Kp">
+
+No: $K_p$ depends on temperature only ($\ln K_p=-\Delta G^\circ(T)/R_uT$), and the temperature has not changed.
+
+</Step>
+<Step title="2. (b) Composition">
+
+$K_p=\dfrac{N_{NO}^2}{N_{N_2}N_{O_2}}\left(\dfrac{P}{N_{total}}\right)^{0}=\dfrac{N_{NO}^2}{N_{N_2}N_{O_2}}$: the pressure has dropped out, so tripling it changes **nothing**: the mole numbers of NO, O₂ and N₂ stay the same (the total number of moles does not change in the reaction, so Le Chatelier's principle has no side to prefer).
+
+</Step>
+<Step title="3. Shown with numbers">
+
+Air (3.76 N₂ + 1 O₂) at 3000 K: $\ln K_p(\tfrac12\mathrm{N_2}+\tfrac12\mathrm{O_2}\to\mathrm{NO})=-2.1035$, so for $\mathrm{N_2+O_2\to2NO}$: $\ln K_p=-4.207$, $K_p=0.0149$. Solving for the extent gives **0.2199 kmol NO** (N₂ 3.650, O₂ 0.890; $y_{NO}=0.2199/4.76=4.62$ %) at **1 atm and also at 3 atm**, to 9 digits. Contrast with a reaction that has $\Delta\nu\ne0$: CO₂ ⇌ CO + ½O₂ at 3000 K dissociates 43.9 % at 1 atm and 24.2 % at 10 atm.
+
+</Step>
+</Steps>
+
+<Answer>
+
+(a) **No**, $K_p$ depends on $T$ only. (b) **No change** in the moles of NO, O₂ and N₂, because $\Delta\nu=2-1-1=0$: the pressure does not enter the equilibrium relation of this reaction.
+
+</Answer>
+
+<Callout kind="note" title="The printed solution matches, and your page 1 of assignment 9">
+
+The instructor's page gives the same two answers with the same exponent "$2-1-1=0$". Your notebook (assignment 9) reaches the same conclusion; see <Asg n="09">16-8C</Asg>.
+
+</Callout>
+
+<RealWorld title="NO in an engine does not care about boost pressure (to first order)">
+
+Because the NO-forming equilibrium has $\Delta\nu=0$, the equilibrium NO fraction of an engine's burned gas depends on the **temperature** (the Zeldovich route), not on the cylinder pressure; turbo-charging raises NO only through the higher flame temperature it causes (typical).
+
+</RealWorld>
+
+<Traps>
+
+- "More pressure shifts toward fewer moles" is the rule for $\Delta\nu\ne0$; when the mole count does not change, there is no shift.
+- $K_p$ never changes with $P$; do not mix up $K_p$ with the composition.
+
+</Traps>
+
+<Source>Instructor's Tutorial 10 (chapter 16), pp. 2–3 · also <Asg n="09">assignment 9</Asg> · lib <code>equilibrium</code>, <code>lnKpAt</code> · <Ch slug="equilibrium" /></Source>
+
+</Problem>
+
+<Problem id="16-52C" title="Will a fuel burn more completely at 2000 K or at 2500 K?" tags="exothermic, van't Hoff, dissociation, Kp">
+
+<Statement>
+
+Will a fuel burn more completely at 2000 K or at 2500 K?
+
+</Statement>
+
+<Think>
+
+A one-line conceptual question with the **van 't Hoff** equation behind it: $\dfrac{d\ln K_p}{dT}=\dfrac{\bar h_R}{R_uT^2}$. Combustion is exothermic ($\bar h_R<0$), so $K_p$ of the *forming* reaction **falls** as $T$ rises: the reaction is less complete at the higher temperature. The answer is **2000 K**.
+
+</Think>
+
+<Steps>
+<Step title="1. The argument">
+
+Write the burning step as $\mathrm{CO+\tfrac12O_2\to CO_2}$ (or $\mathrm{H_2+\tfrac12O_2\to H_2O}$): $\bar h_R<0$. Van 't Hoff: $K_p$ decreases with $T$, and "the larger $K_p$, the more complete". So the fuel burns more completely at the **lower** temperature, 2000 K.
+
+</Step>
+<Step title="2. Shown with numbers (CO₂ at 1 atm)">
+
+For the reverse (dissociation) reaction CO₂ → CO + ½O₂: $\ln K_p=-6.629$ at 2000 K and $-3.301$ at 2500 K (the lib; table A-28 values agree to 0.5 %). Starting from 1 kmol CO₂ at 1 atm the extent is 0.0151 at 2000 K and **0.1298 at 2500 K**: 1.5 % against 13 % of the carbon is left as CO. Van 't Hoff from the two $K_p$ values: $\bar h_R=\dfrac{R_u\ln(K_2/K_1)}{1/T_1-1/T_2}=\dfrac{8.314(3.328)}{1/2000-1/2500}=+276\,700$ kJ/kmol, positive for the dissociation (so negative, $-277$ MJ per kmol of CO₂ formed, for the combustion step), in agreement with the lib's enthalpy of reaction at 2250 K (276 600).
+
+</Step>
+</Steps>
+
+<Answer>
+
+**At 2000 K.** Combustion is exothermic, and exothermic reactions are more complete at lower temperatures ($K_p$ of the forming reaction decreases with $T$): for CO₂ at 1 atm, 1.5 % dissociated at 2000 K against 13 % at 2500 K.
+
+</Answer>
+
+<Callout kind="note" title="The printed solution and a caution">
+
+The instructor's printed answer is the same one-sentence argument. One caution for a full-marks answer: raising the pressure pushes every dissociation back toward the products (at 10 atm the CO₂ extent at 2500 K is 6.3 %, half of the 1-atm value), so "more completely" holds *at the same pressure*.
+
+</Callout>
+
+<RealWorld title="Why the hottest flame is not the 'cleanest'">
+
+Peak flame temperatures of 2500–3000 K are above the temperature at which CO₂ and H₂O dissociate appreciably, which is why dilution (excess air, exhaust-gas recirculation, steam) lowers CO and also NO, and why gas-turbine combustors burn lean (typical).
+
+</RealWorld>
+
+<Traps>
+
+- Decide the direction with the **sign of $\bar h_R$**, not with $\Delta\nu$; $\Delta\nu$ is for pressure questions.
+- State the reaction you mean: "burns more completely" is the *forming* reaction (exothermic); the dissociation is its reverse.
+
+</Traps>
+
+<Source>Instructor's Tutorial 10 (chapter 16), pp. 4–5 · also <Asg n="09">assignment 9</Asg> (16-52C) · lib <code>lnKpAt</code>, <code>equilibrium</code>, <code>vantHoff</code> · <Ch slug="equilibrium" /></Source>
+
+</Problem>
+
+<Problem id="16-40" title="Oxygen heated at 1 atm from 298 K to 3000 K at 0.5 kg/min: heat supplied with and without dissociation" tags="dissociation, O2 to 2O, steady flow, Q">
+
+<Statement>
+
+Oxygen (O₂) is heated in a steady-flow process at 1 atm from 298 K to 3000 K at a rate of 0.5 kg/min. Determine the rate of heat supply needed (a) if some O₂ dissociates into O, and (b) if no dissociation takes place.
+
+</Statement>
+
+<Think>
+
+Three tasks in order: **composition** at 3000 K and 1 atm from $K_p$ of $\mathrm{O_2\rightleftharpoons2O}$; **steady-flow energy balance** with the formation enthalpy of atomic oxygen (the dissociation heat is hidden in $\bar h_f(\mathrm O)$); **convert** per kmol to the kg/min flow. Part (b) is the plain sensible heating of O₂.
+
+</Think>
+
+<Plan>
+
+$x$ from $K_p$ → products $x\mathrm{O_2}+2(1-x)\mathrm{O}$ → $Q=\sum N_P\bar h_P-\bar h_{O_2}(298)$ → $\times\dot N$.
+
+</Plan>
+
+<Steps>
+<Step title="1. Equilibrium composition">
+
+$\mathrm{O_2\to xO_2+2(1-x)O}$, $N_{total}=2-x$, $\Delta\nu=2-1=1$. <T>A-28: ln K_p = −4.357 at 3000 K for O₂ ⇌ 2O</T>, $K_p=0.01282$: $0.01282=\dfrac{[2(1-x)]^2}{x}\left(\dfrac{1}{2-x}\right)$, i.e. $4.0128x^2-8.0256x+4=0$, so $x=\dfrac{8.0256-\sqrt{0.2057}}{2(4.0128)}=\mathbf{0.943}$ (lib: 0.9435): the products are $0.943\,\mathrm{O_2}+0.114\,\mathrm{O}$.
+
+</Step>
+<Step title="2. (a) Energy balance (W = 0)">
+
+<T>Table A-26 and A-18/A-19: h̄f(O) = 249 190 kJ/kmol; h̄(O, 298) = 6852, h̄(O, 3000) = 63 425; h̄(O₂, 298) = 8682, h̄(O₂, 3000) = 106 780</T>. $\bar Q_{in}=0.943(0+106\,780-8682)+0.114(249\,190+63\,425-6852)-0=92\,500+34\,860=\mathbf{127\,360}$ kJ/kmol of O₂ (lib: 127 137).
+
+</Step>
+<Step title="3. Flow and rate">
+
+$\dot N=\dfrac{0.5}{32}=0.01563$ kmol/min. (a) $\dot Q=0.01563(127\,360)=\mathbf{1990}$ kJ/min (lib, exact extent: **1986.6**).
+
+</Step>
+<Step title="4. (b) No dissociation">
+
+$\dot Q=\dot N(\bar h_2-\bar h_1)=0.01563(106\,780-8682)=\mathbf{1533}$ kJ/min (lib 1533.5).
+
+</Step>
+</Steps>
+
+<Answer>
+
+(a) **1990 kJ/min** (1986.6 with the unrounded extent; the printed solution gives 1990). (b) **1533 kJ/min**. Dissociation costs 30 % more heat (29 300 kJ per kmol of O₂ fed), although 94 % of the oxygen molecules survive.
+
+</Answer>
+
+<Callout kind="note" title="Printed solution ✔; your notebook pages are compared on assignment 9">
+
+The instructor's page is the solution above with $x=0.943$, products $0.943\,\mathrm{O_2}+0.114\,\mathrm{O}$, $\bar Q_{in}=127\,363$ kJ/kmol and 1990 / 1533 kJ/min. Your red note "you can also follow $\dot Q=\dot m\,Q$" is the mass-basis version: $\bar Q/M=127\,363/32=3980$ kJ/kg, $\times0.5=1990$ kJ/min. Your own assignment pages give 1966 or 1986 (the third digit is ambiguous in your handwriting; errata U9) and 1532.7 for (b) ✔.
+
+</Callout>
+
+<RealWorld title="Why hot air takes more heat than the tables of an ideal gas say">
+
+Above about 2500 K, dissociation of O₂ and N₂ makes air absorb extra heat at the same temperature: that is why the specific heat of a re-entry shock layer or of a rocket-chamber gas at 3000 K is effectively much larger than the ideal-gas value (typical), and why the real flame temperature is below the no-dissociation one.
+
+</RealWorld>
+
+<Traps>
+
+- Write the reaction **as in table A-28** ($\mathrm{O_2\to2O}$, $\Delta\nu=+1$) and put the unknown on the *products*: $x\mathrm{O_2}+2(1-x)\mathrm{O}$, $N_{total}=2-x$.
+- The heat is the *change of absolute enthalpy*: use $\bar h_f(\mathrm O)=249\,190$, not the sensible rows alone.
+- Per kmol → per minute: $\dot N=\dot m/M$ with $M=32$ kg/kmol; the reaction is per kmol of O₂ fed, not per kmol of products.
+
+</Traps>
+
+<Source>Instructor's Tutorial 10 (chapter 16), pp. 6–8 (the last two pages are the printed solution, with your red annotation) · also <Asg n="09">assignment 9</Asg> (16-40) · lib <code>equilibrium</code>, <code>hbar</code> · <Ch slug="equilibrium" /></Source>
+
+</Problem>
+
+<Examined>
+
+**How the final asks chapter 16** (the 2021 paper, problem 3, is on <Ex id="final-2021" />): one $K_p$ comparison or a one-reaction dissociation, one van 't Hoff or heat-transfer step, and one-paragraph conceptual answers on $P$, inerts and $T$. The routine: (1) write the reaction as in A-28 (or invert it and change the sign of $\ln K_p$); (2) amounts in terms of one unknown, $N_{total}$ of **gas** only; (3) $K_p=\prod N^\nu(P/N_{total})^{\Delta\nu}$ with $P$ in atm; (4) first law with the equilibrium amounts and $\bar h_f(liq)$ for liquid fuels; (5) conceptual answers by the six remarks above. Chapter 17 tutorial problems: <Ex id="tutorial-17" />.
+
+</Examined>
