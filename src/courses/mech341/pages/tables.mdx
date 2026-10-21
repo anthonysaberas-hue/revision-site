@@ -1,0 +1,162 @@
+<p className="eyebrow">Exam toolkit · tables and charts</p>
+
+# Tables: which one to use when, and how to read and interpolate it
+
+<div className="lede">
+
+MECH 341 uses the property tables of the textbook appendix (numbered A-1 to A-30 here) and one chart, the psychrometric chart. The exam hands you the tables you need; this page is about **choosing** the right one, **entering it with the right pair of properties**, and **interpolating** without losing a digit (three of the errata rows on this site are table slips). The numbers on this page come from the same property library as the calculators, so they agree with a printed table to its last digit or one digit off; for any value not tabulated use the <ToolLink tool="props">property calculator</ToolLink>, and for the humid-air state the <ToolLink tool="psychro">psychrometric calculator</ToolLink>.
+
+</div>
+
+## The map: which table for which question
+
+| Table | What it holds | Enter with | Typical use |
+|---|---|---|---|
+| **A-4** | water, saturated, listed by $T$ | $T$ | $P_g(T)$ for a humidity; $h_f$, $h_{fg}$, $v_f$ at a temperature |
+| **A-5** | water, saturated, listed by $P$ | $P$ | $T_{sat}$, $h_f$, $v_f$, $s_f$, $s_{fg}$ at a pressure (condenser, bleed, boiler) |
+| **A-6** | water, superheated vapor | $P$ and $T$ (or $s$, $h$) | turbine inlet, reheat, compressor outlet |
+| **A-7** | water, compressed liquid | $P$ and $T$ | pump exit at high pressure (otherwise $h\approx h_f+v\Delta P$) |
+| **A-8** | water, saturated ice–vapor | $T$ | sublimation pressure (12-28) |
+| **A-11 / A-12 / A-13** | R-134a: sat by $T$ / sat by $P$ / superheated | as A-4, A-5, A-6 | every refrigeration problem |
+| **A-16** | standard atmosphere | altitude | $T$, $P$ at 9150 m, 11 km |
+| **A-17** | air as an ideal gas: $T$, $h$, $u$, $s^\circ$, $P_r$, $v_r$ | $T$ (or $h$, $P_r$) | variable-$c_p$ Brayton; isentropic by $P_r$ |
+| **A-18 to A-26** | ideal-gas molar tables: $\bar h$, $\bar u$, $\bar s^\circ$ of N₂, O₂, CO₂, CO, H₂, H₂O, OH, O; formation data | $T$ | combustion and equilibrium enthalpy balances |
+| **A-27** | heating values of common fuels | fuel | HHV and LHV check |
+| **A-28** | $\ln K_p$ for seven reactions, 298–6000 K | $T$ | chapter 16 |
+| **Z chart, A-29 and A-30** | generalized compressibility, enthalpy and entropy departure charts | $T_R$, $P_R$ | real gases (12-72, 13-72) |
+| **Psychrometric chart** | humid air at 101.325 kPa | any two of $T$, $\omega$, $\varphi$, $T_{wb}$, $h$ | chapter 14 |
+| **A-1, A-2** | molar mass, $R$, critical constants; $c_p$ of gases | gas | $T_{cr}$, $P_{cr}$ for $T_R$ and $P_R$; constant-$c_p$ estimates |
+
+The official sheet gives you the constants ($c_{pa}=1.005$ and the others) and shortcuts for water; **the tables themselves are handed out with the question paper**. If a question gives you its own small table, use it instead of the appendix.
+
+## Rules of interpolation
+
+1. **Bracket as tightly as the table allows.** A wide step hides the curvature: in 12-40 the first sheet used rows 400 kPa apart and was 11 % off; the closer bracket was 0.3 %.
+2. **Straight-line interpolation** between rows $(x_1,y_1)$ and $(x_2,y_2)$: $y=y_1+\dfrac{x-x_1}{x_2-x_1}(y_2-y_1)$. Do the arithmetic with the table's own digits and round at the end.
+3. **Interpolate the quantity that is nearly linear.** For a vapor volume, $Pv\approx RT$ is almost constant, so interpolate **$P\cdot v$** between pressures and divide: never $v$ itself. Example (4-9): water vapor at 200 °C, $v=2.1724$ at 100 kPa and $1.0805$ at 200 kPa. The straight line for 150 kPa gives $1.6265$ (wrong); interpolating $Pv=217.24$ and $216.10$ gives $216.67$, so $v=1.4445$ m³/kg (the exact value is $1.4445$). That difference changes the boundary work by 64 % (see <Asg n="01">4-9</Asg> and the errata).
+4. **$h$, $u$, $s$ may be interpolated linearly** over a normal table step in $T$ or $P$. Interpolate $s$ in $\ln P$ only if a very wide step is used.
+5. **Double interpolation** (superheated tables, A-6 and A-13): first interpolate in $T$ at each of the two bracketing pressures, then interpolate those two results in $P$. For an unknown $T$ with $h$ or $s$ given, interpolate $T$ inside the pressure row, then between rows.
+6. **Saturation temperature of a vapor pressure that is not listed:** use the **closest** rows (A-4 is listed every 1 °C near the ambient range), never a coarse pair. Vapor pressure is exponential in $T$, so for 1.27 kPa the rows 1.2282 kPa (10 °C) and 1.3129 kPa (11 °C) give 10.49 °C, whereas interpolating over a factor 1.5 in pressure (the 1.0 and 1.5 kPa rows) gave 10.21 °C (the 2021 final, row G1 in the errata).
+7. **$\ln K_p$ and $K_p$:** interpolate $\ln K_p$ (it is nearly linear in $1/T$), then take the exponential. Interpolating $K_p$ itself over several hundred kelvin can be off by a factor.
+8. **Air table:** $T$ against $h$ and $u$ is smooth; $P_r$ and $v_r$ are exponential, so interpolate the logarithm (or interpolate over a narrow step). Never use $P_r$ for an ideal-gas ratio that came from a constant-$c_p$ assumption.
+9. **Do not extrapolate.** If the state falls outside the table, the assumption (ideal gas, incompressible liquid) is probably what the question expects.
+10. **Round last**, keep four digits of a ratio like $T/P$ before subtracting two close volumes (N6 in the errata).
+
+## Reading the steam tables (A-4 to A-7)
+
+**Step 1, find the region.** Compare the given pair with saturation at that pressure or temperature.
+
+| Given | Test | Region |
+|---|---|---|
+| $P$, $T$ | $T<T_{sat}(P)$ | compressed liquid (A-7, or $h\approx h_f(T)+v_f(P-P_{sat})$) |
+| $P$, $T$ | $T>T_{sat}(P)$ | superheated (A-6) |
+| $P$, $v$ | $v_f<v<v_g$ | saturated mixture: $x=\dfrac{v-v_f}{v_{fg}}$ |
+| $P$, $s$ | $s_f<s<s_g$ | mixture: $x=\dfrac{s-s_f}{s_{fg}}$, $h=h_f+xh_{fg}$ |
+| $P$, $h$ | $h_f<h<h_g$ | mixture: $x=\dfrac{h-h_f}{h_{fg}}$ |
+
+**Step 2, read the right row.** Example, the condenser of the class Rankine cycle: <T>A-5 at 10 kPa: $T_{sat}=45.81$ °C, $v_f=0.001010$, $h_f=191.81$, $h_{fg}=2392.1$, $s_f=0.6492$, $s_{fg}=7.4996$</T>. The turbine exit at $s_4=6.7715$: $x_4=\dfrac{6.7715-0.6492}{7.4996}=0.816$ (a mixture, so use $h=h_f+xh_{fg}$). The inlet <T>A-6 at 4 MPa, 400 °C: $h=3214.5$, $s=6.7715$</T>.
+
+**Step 3, pump exit.** Compressed liquid at 4 MPa: $w_P=v_f(P_2-P_1)=0.001010(4000-10)=4.03$ kJ/kg, $h_2=191.81+4.03=195.84$. The tables A-7 give 195.85: the shortcut $h\approx h_f(T)$ (given on the sheet) is wrong by 4 kJ/kg here, so keep the $v\Delta P$ term at 4 MPa.
+
+**Common slips.** Reading $h_f$ at the wrong pressure (the closed feedwater heater's feedwater leaves at $T_{sat}$ of the **bleed**, 10-55); reading $v_f$ for a quality; a transposed digit in $s$ (10-61: 6.785 for 6.7585); interpolating $v$ across a pressure doubling.
+
+## Reading the R-134a tables (A-11 to A-13)
+
+The tables are laid out as the water tables. Typical reading for a freezer ($-25$ °C evaporator, 800 kPa condenser, <Ch slug="refrigeration">Chapter 11</Ch>):
+
+| State | Table | Reading |
+|---|---|---|
+| 1, saturated vapor at $-25$ °C | A-11 | $P=106.4$ kPa, $h_g=235.31$, $s_g=0.9505$ |
+| 2s, at 800 kPa and $s=0.9505$ | A-13 (800 kPa rows) | between 40 and 50 °C: $T\approx40.7$ °C, $h\approx277.2$ |
+| 3, saturated liquid at 800 kPa | A-12 | $T_{sat}=31.33$ °C, $h_f=95.50$ |
+| 4, throttle | – | $h_4=h_3$ |
+
+Pick the **superheated table of the condenser pressure** for state 2 (the errata row N5: the 0.5 MPa rows gave $h_2=276$ instead of 286.3 and a COP of 4.03 instead of 3.24). The ideal compressor work is $277.2-235.3=41.9$ kJ/kg. A subcooled refrigerant liquid has $h\approx h_f$ at its temperature.
+
+## Reading the air table A-17
+
+Enter with $T$ (K) to get $h$, $u$, $P_r$, $v_r$ and $s^\circ$; or enter with $h$ or $P_r$ to get the temperature.
+
+| $T$ | $h$ (kJ/kg) | $P_r$ | $v_r$ |
+|---|---|---|---|
+| 300 K | 300.19 | 1.386 | 621.2 |
+| 600 K | ≈ 607 | ≈ 16.3 | ≈ 106 |
+| 1300 K | ≈ 1395 | ≈ 331 | – |
+
+**Isentropic process:** $\dfrac{P_{r2}}{P_{r1}}=\dfrac{P_2}{P_1}$ and $\dfrac{v_{r2}}{v_{r1}}=\dfrac{v_2}{v_1}$. Example: compress air from 300 K by $r_p=8$: $P_{r2}=8(1.386)=11.09$, then $T_{2s}\approx539.6$ K (the cold-air formula gives 543.4 K, a 0.7 % difference that grows with the temperature range). Isentropic efficiencies are applied to **enthalpies**: $h_2=h_1+(h_{2s}-h_1)/\eta_C$ and then $T_2$ comes back from the table.
+
+## Reading the molar tables A-18 to A-26
+
+Each table (N₂, O₂, CO₂, CO, H₂, H₂O, OH, O) lists $\bar h(T)$ and $\bar u(T)$ in kJ/kmol and $\bar s^\circ(T)$ in kJ/kmol·K; A-26 holds the **enthalpy of formation** $\bar h_f^\circ$, Gibbs function and entropy at 25 °C.
+
+- The **sensible enthalpy** is $\bar h(T)-\bar h^\circ$ with $\bar h^\circ=\bar h$ at 298 K: N₂ 8669, O₂ 8682, CO₂ 9364, H₂O 9904, CO 8669, H₂ 8468.
+- The total of a species in a reaction is $\bar h_f^\circ+(\bar h-\bar h^\circ)$: **formation plus sensible**.
+- Closed system: $\bar u=\bar h-R_uT$ for a gas (the $-R_uT$ term of chapter 15).
+- Entropy at partial pressure: $\bar s(T,p_i)=\bar s^\circ(T)-R_u\ln(p_i/1\ \mathrm{atm})$.
+- Interpolate linearly between the 100 K rows; the tables are smooth.
+- Liquid fuel: $\bar h_f(liq)=\bar h_f(gas)-M\,h_{fg}$ (A-27 lists the fuel's $h_{fg}$).
+
+Example: <T>A-18 to A-23 at 1500 K: $\bar h-\bar h^\circ$: CO₂ 61 617, CO 38 804, H₂O 48 239, O₂ 40 568, N₂ 38 369 kJ/kmol</T>. A product mixture of 2.7 CO₂, 0.3 CO, 4 H₂O, 2.65 O₂ and 28.2 N₂ at 1500 K has $H_P=-502\,501$ kJ/kmol of fuel with the formation terms.
+
+**Adiabatic flame temperature.** Two trial temperatures that bracket $H_R$, then linear interpolation of $T$ (see the recipe for AFT). If the sum jumps over $H_R$ by a lot, add a third trial: the curvature matters more than the rounding.
+
+## Reading the equilibrium table A-28
+
+A-28 lists $\ln K_p$ (not $K_p$) for these reactions as written, with $P$ in atm:
+
+| Reaction | $\ln K_p$ at 1000 K | 2000 K | 3000 K |
+|---|---|---|---|
+| H₂ ⇌ 2H | −39.8 | −12.84 | −3.69 |
+| O₂ ⇌ 2O | −45.2 | −14.62 | −4.36 |
+| N₂ ⇌ 2N | −99.1 | −41.65 | −22.36 |
+| H₂O ⇌ H₂ + ½O₂ | −23.2 | −8.15 | −3.11 |
+| H₂O ⇌ ½H₂ + OH | −26.0 | −8.73 | −2.95 |
+| CO₂ ⇌ CO + ½O₂ | −23.5 | −6.63 | −1.10 |
+| ½N₂ + ½O₂ ⇌ NO | −9.36 | −3.91 | −2.10 |
+
+(from the library: the printed table can differ by a digit; for example the NO row near 2000 K reads about −3.9.) **Use rules:** a reaction written the other way has $\ln K_p\to-\ln K_p$; coefficients doubled mean $\ln K_p\to2\ln K_p$ (doubling the NO reaction gives N₂ + O₂ ⇌ 2NO); combine reactions by adding $\ln K_p$ values; a negative $\ln K_p$ means the reaction as written lies to the left. Interpolate $\ln K_p$, and better in $1/T$.
+
+Example (16-31): $\ln K_p(\mathrm{NO})$ at 2000 K $=-3.91$, so $K_p=0.020$ and the equilibrium in air at 1 atm holds ≈ 0.8 % NO. The **atoms** are negligible at 2000 K: $\ln K_p(\mathrm{O_2\rightleftharpoons2O})=-14.6$ and $\ln K_p(\mathrm{N_2\rightleftharpoons2N})=-41.7$.
+
+## Real-gas charts (Z chart, A-29 and A-30)
+
+1. $T_R=T/T_{cr}$ and $P_R=P/P_{cr}$ with $T_{cr}$, $P_{cr}$ from A-1 (kelvin and the same pressure unit).
+2. Read $Z$ from the compressibility chart at $(T_R,P_R)$; $Z_h$ from the enthalpy departure chart and $Z_s$ from the entropy departure chart.
+3. $\Delta\bar h=\Delta\bar h_{ideal}-R_uT_{cr}(Z_{h2}-Z_{h1})$; $\Delta\bar s=\Delta\bar s_{ideal}-R_u(Z_{s2}-Z_{s1})$; $\Delta\bar u=\Delta\bar h-R_u(Z_2T_2-Z_1T_1)$.
+4. Chart accuracy is about ±2 % in $Z$ and worse in the departure functions; the library's Lee–Kesler functions give $Z=0.693$, $Z_h=1.45$, $Z_s=0.845$ at $T_R=1.27$, $P_R=1.76$ (and $Z=0.910$ at 1.5, 1.0).
+5. Use the **chart** only when the substance has no table; for water and R-134a use the tables (12-72 shows the difference).
+6. Mixtures: Kay's rule, $T'_{cr}=\sum y_iT_{cr,i}$ and $P'_{cr}=\sum y_iP_{cr,i}$; or Amagat, $Z_m=\sum y_iZ_i$ (13-72).
+
+## Reading the psychrometric chart
+
+The chart shows humid air at one pressure (101.325 kPa unless the problem says otherwise: for 95 kPa or 150 kPa use the formulas).
+
+- **Dry-bulb** $T$ on the horizontal axis (vertical lines), **humidity ratio** $\omega$ on the right axis (horizontal lines, usually in kg water per kg dry air or in g/kg).
+- **Relative humidity** curves $\varphi=10$ to 100 %; the **saturation curve** (100 %) is the upper boundary and is also the **wet-bulb** and **dew-point** curve.
+- **Dew point:** move horizontally (constant $\omega$) to the left until the saturation curve; read its temperature.
+- **Wet bulb:** follow the slanted line through the state down to the saturation curve; read its temperature. **Enthalpy** $h$ runs along nearly the same slanted lines (read from the scale beyond the saturation curve); $h$ (kJ per kg dry air) and $T_{wb}$ are almost the same lines.
+- **Specific volume** $v$ (m³ per kg dry air) from the slanted volume lines.
+- **Processes:** sensible heating or cooling is horizontal; cooling below the dew point follows the saturation curve down (dehumidification); evaporative cooling follows a wet-bulb line; humidifying with steam is nearly vertical; **mixing** is the **straight line** between the two states, with the mixed state at the distance weighted by **dry-air** mass flow.
+- **Accuracy:** about ±2 % of $\omega$ (the 14-84 condensate differed by 7 % between two chart readings of a 4 g/kg difference). Use the formulas for a small difference of two readings, and check the chart value of $h_1$ with $1.005T+\omega(2501+1.82T)$ (an enthalpy read 8 kJ/kg too high at 30 °C and 70 % was one of the slips behind the 57 against 48.6 kg/min of errata row G6).
+
+Check readings: 28 °C and a 20 °C dew point give $\varphi=62$ %, $\omega=14.7$ g/kg, $h=65.7$ kJ/kg, $T_{wb}=22.4$ °C (<Asg n="07">14-43</Asg>); 25 °C and 75 %: $\omega=0.0152$, $h=63.7$ kJ/kg, $T_{dp}=15.4$ °C.
+
+<PsychroChart points={[{ T: 28, w: 0.0147, label: '28 °C, 62 %' }, { T: 20, w: 0.0147, label: 'dew point 20 °C' }]} />
+
+## The calculators and the tables
+
+- <ToolLink tool="props">Property calculator</ToolLink> (water and R-134a): any two properties to the full state, checks your table reading.
+- <ToolLink tool="brayton">Brayton and turbojet</ToolLink>, <ToolLink tool="rankine">Rankine</ToolLink>, <ToolLink tool="refrigeration">refrigeration</ToolLink>: the cycles with the same tables.
+- <ToolLink tool="psychro">Psychrometric chart and processes</ToolLink>, <ToolLink tool="combustion">combustion</ToolLink>, <ToolLink tool="equilibrium">equilibrium</ToolLink>, <ToolLink tool="nozzle">isentropic nozzle</ToolLink>: the chapter 14–17 calculations, with the tables inside.
+
+<Callout kind="warn" title="Closed book: what to practise">
+
+Practise three readings under time: a superheated double interpolation (A-6), a $P\cdot v$ interpolation between two saturation pressures, and an $\ln K_p$ read from A-28. These are the three where a digit slips and the final answer changes by more than the rounding, and the recipes list where each is used.
+
+</Callout>
+
+<Examined>
+
+The paper comes with the appendix tables. Marks are lost on **which** table and **which** pressure row, then on interpolation; a numerical answer within the rounding of a different table is accepted, one with the wrong table is not. See the <a href="#/mech341/page/recipes">recipes</a> and the <a href="#/mech341/page/errata">errata</a>.
+
+</Examined>
